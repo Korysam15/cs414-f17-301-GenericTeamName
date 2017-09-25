@@ -48,7 +48,7 @@ public class ReadUtils {
 		return ret;
 	}
 	
-	public static Task readTask(DataInputStream din) {
+	public static Task readTask(DataInputStream din) throws IOException {
 		return TaskFactory.getInstance().createTaskFromDataInputStream(din);
 	}
 	
