@@ -1,7 +1,7 @@
 /**
  * 
  */
-package transmission;
+package pflagert.transmission;
 
 /**
  * @author pflagert

@@ -1,4 +1,4 @@
-package server;
+package pflagert.server;
 
 import java.io.IOException;
 import java.nio.channels.SelectionKey;
@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import server.session.ClientSession;
-import transmission.Task;
+import pflagert.server.session.ClientSession;
+import pflagert.transmission.Task;
 
 /**
  * @author pflagert

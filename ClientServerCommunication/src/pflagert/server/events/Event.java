@@ -1,7 +1,7 @@
 /**
  * 
  */
-package server.events;
+package pflagert.server.events;
 
 /**
  * @author pflagert

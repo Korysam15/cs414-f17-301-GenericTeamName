@@ -1,13 +1,13 @@
 /**
  * 
  */
-package client;
+package pflagert.client;
 
 import java.net.InetSocketAddress;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 
-import transmission.Task;
+import pflagert.transmission.Task;
 
 /**
  * @author pflagert

@@ -1,11 +1,11 @@
 /**
  * 
  */
-package client;
+package pflagert.client;
 
 import java.net.InetSocketAddress;
 
-import transmission.Task;
+import pflagert.transmission.Task;
 
 /**
  * @author pflagert

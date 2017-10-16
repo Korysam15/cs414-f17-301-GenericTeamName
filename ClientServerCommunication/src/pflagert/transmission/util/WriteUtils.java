@@ -1,7 +1,7 @@
 /**
  * 
  */
-package transmission.util;
+package pflagert.transmission.util;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
@@ -9,7 +9,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-import transmission.Task;
+import pflagert.transmission.Task;
 
 /**
  * @author pflagert

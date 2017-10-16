@@ -1,7 +1,7 @@
 /**
  * 
  */
-package server.session;
+package pflagert.server.session;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -9,9 +9,9 @@ import java.io.IOException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 
-import server.AbstractServer;
-import transmission.Task;
-import transmission.TaskFactory;
+import pflagert.server.AbstractServer;
+import pflagert.transmission.Task;
+import pflagert.transmission.TaskFactory;
 
 /**
  * @author pflagert
