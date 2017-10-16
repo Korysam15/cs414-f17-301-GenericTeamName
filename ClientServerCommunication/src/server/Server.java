@@ -180,7 +180,11 @@ public class Server extends AbstractServer {
 			} 
 
 			if(selectedKey != null) {
-				ret = new ClientSession(this,selectedKey,null);
+				try {
+					ret = new ClientSession(this,selectedKey,null);
+				} catch (IOException e) {
+					ret = null;
+				}
 			}
 		}
 		return ret;
