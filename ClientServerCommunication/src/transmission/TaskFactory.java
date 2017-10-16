@@ -25,7 +25,18 @@ public final class TaskFactory {
 	
 	public Task createTask(int taskCode) {
 		Task t = null;
-		
+		switch(taskCode) {
+		case TaskConstents.TASK: 
+			
+			break;
+		case TaskConstents.FORWARD_TASK:
+			
+			break;
+			
+		case TaskConstents.REGISTER_TASK:
+			
+			break;
+		}
 		return t;
 	}
 	
@@ -33,6 +44,7 @@ public final class TaskFactory {
 		ByteArrayInputStream ba = ReadUtils.getByteInputStream(bytes);
 		DataInputStream din = ReadUtils.getDataInputStream(ba);
 		Task t = createTaskFromDataInputStream(din);
+		ReadUtils.closeInputStreams(ba, din);
 		return t;
 	}
 	

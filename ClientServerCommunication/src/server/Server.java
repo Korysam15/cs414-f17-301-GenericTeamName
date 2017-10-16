@@ -9,7 +9,11 @@ import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
+import server.events.ReceiveEvent;
 import server.session.ClientSession;
 import transmission.Task;
 
@@ -20,10 +24,25 @@ import transmission.Task;
  */
 public class Server extends AbstractServer {
 
+	/* Thread Pool Initialization variables */
+	public static final int CORE_THREAD_POOL_SIZE = 8;
+	public static final int MAX_THREAD_POOL_SIZE = 16;
+	public static final int THREAD_KEEP_ALIVE_TIME = 10;
+	public static final TimeUnit ALIVE_TIME_UNIT = TimeUnit.MINUTES;
+	
+	/* Server Settings variables */
+	public static final int EVENT_TIME_OUT = 30;
+	public static final TimeUnit TIME_OUT_UNIT = TimeUnit.SECONDS;
+	
 	/**
 	 * Keeps track of whether or not the server is running. 
 	 */
 	private Boolean isRunning;
+	
+	/**
+	 * A thread pool to manage client sessions
+	 */
+	private ThreadPoolExecutor threadPool;
 
 	/**
 	 * Creates a new Server that will listen for incoming connections/messages on the
@@ -41,7 +60,17 @@ public class Server extends AbstractServer {
 			serverChannel.socket().bind(address);
 			serverChannel.register(selector, SelectionKey.OP_ACCEPT);
 			isRunning = false;
+			initThreadPool();
 		}		
+	}
+	
+	private void initThreadPool() {
+		threadPool = new ThreadPoolExecutor(CORE_THREAD_POOL_SIZE,
+				MAX_THREAD_POOL_SIZE,
+				THREAD_KEEP_ALIVE_TIME,
+				ALIVE_TIME_UNIT,
+				new LinkedBlockingQueue<Runnable>());
+		threadPool.prestartCoreThread();
 	}
 
 	/**
@@ -66,7 +95,9 @@ public class Server extends AbstractServer {
 		}
 
 		try {
+			int eventCount;
 			while(isRunning()) {
+				eventCount = 0;
 				selector.select();
 				Iterator<SelectionKey> selectedKeys = selector.selectedKeys().iterator();
 				while(selectedKeys.hasNext()) {
@@ -79,10 +110,16 @@ public class Server extends AbstractServer {
 						ClientSession client = accept(key);
 						clientConnected(client,key);
 					} else if(key.isReadable()) {
+						eventCount++;
 						ClientSession client = clientMap.get(key);
-						if(client != null) {
-							client.receive();
-						}
+						threadPool.execute(new ReceiveEvent(client));
+					}
+				}
+				if(eventCount > 0) {
+					try {
+						threadPool.awaitTermination(EVENT_TIME_OUT, TIME_OUT_UNIT);
+					} catch (InterruptedException e) {
+				
 					}
 				}
 			}

@@ -43,12 +43,39 @@ public abstract class AbstractSession {
 		return ID;
 	}
 	
+	/**
+	 * The receive method constructs a new Task through the TaskFactory
+	 * from the bytes received from the client. 
+	 * This method then calls server.handleTask() with the newly created task as the parameter.
+	 * @throws IOException
+	 */
 	public abstract void receive() throws IOException;
 	
+	/**
+	 * The send method constructs a byte Array by calling t.toByteArray().
+	 * After the byte array is constructed, the bytes are then “sent” to the client 
+	 * by writing the bytes to the SocketChannel (associated with the SelectionKey passed
+	 * into the constructor).
+	 * @param t
+	 * @throws IOException
+	 */
 	public abstract void send(Task t) throws IOException;
 	
+	/**
+	 * The disconnect method disconnects the SocketChannel by calling SocketChannel.close().
+	 * Then calls server.clientDisconnected().
+	 * Note that when a client is disconnected, they will not be reconnected until the
+	 * send a connection request to the server.
+	 * After calling disconnect on an instance of this class, 
+	 * that instance will no longer be able to communicate to the client.
+	 */
 	public abstract void disconnect();
 	
+	/**
+	 * The isConnected method returns true if the SocketChannel is able to be written to
+	 * or read from (i.e The SocketChannel is open).
+	 * Otherwise returns false.
+	 */
 	public abstract boolean isConnected();
 	
 	public abstract boolean isRegisteredWithServer();

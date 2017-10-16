@@ -10,7 +10,7 @@ import transmission.Task;
 
 /**
  * @author pflagert
- *
+ * IGNORE THIS CLASS FOR NOW
  */
 public class ServerSession extends AbstractSession{
 
