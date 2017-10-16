@@ -3,6 +3,7 @@
  */
 package server.session;
 
+import java.io.IOException;
 import java.nio.channels.SelectionKey;
 
 import server.AbstractServer;
@@ -42,9 +43,9 @@ public abstract class AbstractSession {
 		return ID;
 	}
 	
-	public abstract void receive();
+	public abstract void receive() throws IOException;
 	
-	public abstract void send(Task t);
+	public abstract void send(Task t) throws IOException;
 	
 	public abstract void disconnect();
 	
