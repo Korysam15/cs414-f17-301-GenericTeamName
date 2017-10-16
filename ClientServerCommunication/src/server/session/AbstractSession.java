@@ -28,7 +28,21 @@ public abstract class AbstractSession {
 		isRegistered = false;
 	}
 	
-	protected abstract void receive();
+	/**
+	 * @param ID - The ID to represent an instance of AbstractSession
+	 */
+	public void setID(String ID) {
+		this.ID = ID;
+	}
+	
+	/**
+	 * @return The ID that represents an instance of AbstractSession
+	 */
+	public String getID() {
+		return ID;
+	}
+	
+	public abstract void receive();
 	
 	public abstract void send(Task t);
 	

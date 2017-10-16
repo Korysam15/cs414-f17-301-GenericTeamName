@@ -24,7 +24,7 @@ public class ClientSession extends AbstractSession {
 	}
 
 	@Override
-	protected void receive() {
+	public void receive() {
 		// TODO Auto-generated method stub
 		
 	}

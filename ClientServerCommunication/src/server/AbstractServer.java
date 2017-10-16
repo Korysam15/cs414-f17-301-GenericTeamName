@@ -1,5 +1,6 @@
 package server;
 
+import java.io.IOException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
@@ -26,6 +27,11 @@ public abstract class AbstractServer {
 	protected Map<SelectionKey,ClientSession> clientMap;
 	
 	/**
+	 * Keeps track of registered clients
+	 */
+	protected Map<String,ClientSession> registeredClients;
+	
+	/**
 	 * The selector instance variable is used to determine which SelectionKey is ready to
 	 * read/write/connect to. 
 	 * Note that the Selector class is imported from: java.nio.channels.Selector
@@ -38,10 +44,11 @@ public abstract class AbstractServer {
 	 */
 	protected ServerSocketChannel serverChannel;
 	
-	protected AbstractServer() {
+	protected AbstractServer() throws IOException {
 		clientMap = new HashMap<SelectionKey,ClientSession>();
-		selector = null;
-		serverChannel = null;
+		registeredClients = new HashMap<String, ClientSession>();
+		serverChannel = ServerSocketChannel.open();
+		selector = Selector.open();
 	}
 	
 	/**
@@ -73,11 +80,26 @@ public abstract class AbstractServer {
 	public abstract boolean isRunning();
 	
 	/**
+	 * The getRegisteredClient method returns a ClientSession associated with param ID.
+	 * @param ID - The ID for the ClientSession.
+	 * @return The {@link ClientSession} associated with the ID.  Or null if there are no
+	 * ClientSessions with that ID.
+	 */
+	public abstract ClientSession getRegisteredClient(String ID);
+	
+	/**
 	 * The getClients method returns a List of ClientSessions. 
 	 * Note that the getClients method constructs the list of clients from the clientMap.
 	 * @return A list of ClientSessions
 	 */
 	public abstract List<ClientSession> getClients();
+	
+	/**
+	 * The getRegisterClients method returns a List of ClientSessions. 
+	 * Note that the getRegisteredClients method constructs the list of clients from the registeredClients map.
+	 * @return A list of ClientSessions
+	 */
+	public abstract List<ClientSession> getRegisteredClients();
 	
 	/**
 	 * The default implementation of handleTask simply executes the Task that was passed into this method.
@@ -86,6 +108,12 @@ public abstract class AbstractServer {
 	 * @param t - The {@link Task} to be handled.
 	 */
 	public abstract void handleTask(Task t);
+	
+	/**
+	 * The registerClient method adds a new entry into the registeredClients map.
+	 * Note that registering client implies logging in or the creation of a new account. 
+	 */
+	public abstract void registerClient(ClientSession client, String ID);
 	
 	/**
 	 * The accept method accepts a client connection request, creates a new ClientSession, 
