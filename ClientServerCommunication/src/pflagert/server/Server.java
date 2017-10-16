@@ -108,7 +108,8 @@ public class Server extends AbstractServer {
 						continue;
 					} else if(key.isAcceptable()) {
 						ClientSession client = accept(key);
-						clientConnected(client,key);
+						if(client != null)
+							clientConnected(client,key);
 					} else if(key.isReadable()) {
 						eventCount++;
 						ClientSession client = clientMap.get(key);
