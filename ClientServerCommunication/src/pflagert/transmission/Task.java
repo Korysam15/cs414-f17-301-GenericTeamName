@@ -3,6 +3,8 @@
  */
 package pflagert.transmission;
 
+import java.io.IOException;
+
 /**
  * @author pflagert
  *
@@ -13,7 +15,7 @@ public class Task implements Runnable {
 		return TaskConstents.TASK;
 	}
 	
-	public byte[] toByteArray() {
+	public byte[] toByteArray() throws IOException {
 		return new byte[0];
 	}
 	
