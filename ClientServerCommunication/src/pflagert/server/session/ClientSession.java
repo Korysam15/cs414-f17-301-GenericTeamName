@@ -3,9 +3,8 @@
  */
 package pflagert.server.session;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 
@@ -20,14 +19,15 @@ import pflagert.transmission.TaskFactory;
 public class ClientSession extends AbstractSession {
 
 	private SocketChannel channel;
-	private DataInputStream din;
-	private DataOutputStream dout;
+
+	private Object writeLock;
+	private Object readLock;
 
 	public ClientSession(AbstractServer server, SelectionKey key, String ID) throws IOException {
 		super(server, key, ID);
 		channel = (SocketChannel) key.channel();
-		din = new DataInputStream(channel.socket().getInputStream());
-		dout = new DataOutputStream(channel.socket().getOutputStream());
+		writeLock = new Object();
+		readLock = new Object();
 	}
 
 	public ClientSession(AbstractSession s) throws IOException {
@@ -36,30 +36,79 @@ public class ClientSession extends AbstractSession {
 
 	@Override
 	public void receive() throws IOException {
-		synchronized(din) {
-			int dataLength = din.readInt();
-			byte[] data = new byte[dataLength];
-			din.readFully(data, 0, dataLength);
-			Task t = TaskFactory.getInstance().createTaskFromBytes(data);
-			server.handleTask(t);
+		ByteBuffer localWrite = null;
+
+		ByteBuffer readBuffer = ByteBuffer.allocate(7000);
+		int temp = 0, read = 0, total = 0;
+		int size = -1;
+		synchronized(readLock) {
+			while( (temp = channel.read(readBuffer)) > 0 ) {
+				read+=temp;
+				if(read >= 4) {
+					readBuffer.flip();
+					size = readBuffer.getInt();
+					System.out.println("READ " + size + " For the amount of required bytes");
+					if(size >= 1) {
+						localWrite = ByteBuffer.allocate(size);
+						if(read > 4) {
+							localWrite.put(readBuffer);
+						}
+						total += receiveTask(localWrite,size, read);
+						read = 0;
+						readBuffer.clear();
+					}
+				}
+			}
+			System.out.println("DONE READING BYTES: READ " + total + " TOTAL BYTES");
 		}
+	}
+
+	private int receiveTask(ByteBuffer local, int size, int currentRead) throws IOException {
+		int temp = 0,read = currentRead;
+		while( local.hasRemaining() && (temp = channel.read(local)) > -1) {
+			read += temp;
+		}
+		System.out.println("Done reading the required bytes: " + (read-currentRead));
+		if(temp == -1) {
+			server.clientDisconnected(this, key);
+		} else {
+			createTask(local);
+		}
+		return read;
+	}
+
+	private void createTask(ByteBuffer local) throws IOException {
+		/*for(byte b: local.array()) {
+				System.out.println(b);
+			} */
+		Task t = TaskFactory.getInstance().createTaskFromBytes(local.array());
+		server.handleTask(t);
 	}
 
 	@Override
 	public void send(Task t) throws IOException {
-		synchronized(dout) {
+		synchronized(writeLock) {
 			byte[] data = t.toByteArray();
 			int dataLength = data.length;
-			dout.writeInt(dataLength);
-			dout.write(data,0,dataLength);
-			dout.flush();
+			System.out.println("Sending: " + dataLength + " bytes for TaskCode: " + t.getTaskCode());
+			/*for(byte b: data) {
+				System.out.println(b);
+			} */
+			ByteBuffer writeBuffer = ByteBuffer.allocate(dataLength+4);
+			writeBuffer.putInt(dataLength);
+			writeBuffer.put(data);
+			writeBuffer.flip();
+			int written = 0;
+			while(writeBuffer.hasRemaining()) {
+				written += channel.write(writeBuffer);
+			}
+			System.out.println("Sent: " + written + " total bytes");
 		}
 	}
 
 	@Override
 	public void disconnect() {
-		// TODO Auto-generated method stub
-
+		server.clientDisconnected(this, key);
 	}
 
 	@Override

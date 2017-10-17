@@ -52,7 +52,7 @@ public final class TaskFactory {
 		Task t = null;
 		
 		int taskCode = din.readInt();
-		
+		System.out.println("Task code is: " + taskCode);
 		switch(taskCode) {
 		case TaskConstents.TASK: 
 			
@@ -63,6 +63,9 @@ public final class TaskFactory {
 			
 		case TaskConstents.REGISTER_TASK:
 			
+			break;
+		case TaskConstents.TEST_TASK:
+			t = new TestTask(din);
 			break;
 		}
 		

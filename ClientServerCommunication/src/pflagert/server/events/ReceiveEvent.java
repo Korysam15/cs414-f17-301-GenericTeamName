@@ -9,10 +9,7 @@ public class ReceiveEvent implements Event{
 	private ClientSession client;
 	
 	public ReceiveEvent(ClientSession client) {
-		if(client == null)
-			throw new IllegalArgumentException("The client in a ReceiveEvent can not be null");
-		else
-			this.client = client;
+		this.client = client;
 	}
 	
 	@Override

@@ -17,8 +17,12 @@ public class TestTask extends Task {
 	private String msg;
 
 	public TestTask() {
+		this("");
+	}
+	
+	public TestTask(String msg) {
 		super();
-		msg = null;
+		this.msg = msg;
 	}
 	
 	public TestTask(DataInputStream din) throws IOException {
@@ -39,10 +43,9 @@ public class TestTask extends Task {
 	public byte[] toByteArray() throws IOException {
 		ByteArrayOutputStream bs = WriteUtils.getByteOutputStream();
 		DataOutputStream dout = WriteUtils.getDataOutputStream(bs);
-
+		dout.writeInt(getTaskCode());
 		WriteUtils.writeString(msg,dout);
-		byte[] data = WriteUtils.getBytesAndCloseStreams(bs,dout);
-		return data;
+		return WriteUtils.getBytesAndCloseStreams(bs,dout);
 	}
 
 	public String toString() {
