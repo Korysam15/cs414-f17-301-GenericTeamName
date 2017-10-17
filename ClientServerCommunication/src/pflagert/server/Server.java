@@ -95,39 +95,44 @@ public class Server extends AbstractServer {
 		}
 
 		try {
-			int eventCount;
-			while(isRunning()) {
-				eventCount = 0;
-				selector.select();
-				Iterator<SelectionKey> selectedKeys = selector.selectedKeys().iterator();
-				while(selectedKeys.hasNext()) {
-					SelectionKey key = (SelectionKey) selectedKeys.next();
-					selectedKeys.remove();
-
-					if(!key.isValid()) {
-						continue;
-					} else if(key.isAcceptable()) {
-						ClientSession client = accept(key);
-						clientConnected(client,key);
-					} else if(key.isReadable()) {
-						eventCount++;
-						ClientSession client = clientMap.get(key);
-						threadPool.execute(new ReceiveEvent(client));
-					}
-				}
-				if(eventCount > 0) {
-					try {
-						threadPool.awaitTermination(EVENT_TIME_OUT, TIME_OUT_UNIT);
-					} catch (InterruptedException e) {
-				
-					}
-				}
-			}
+			runServer();
 		} catch (IOException e) {
 
 		} finally {
 			synchronized(isRunning) {
 				isRunning = false;
+			}
+		}
+	}
+	
+	private void runServer() throws IOException {
+		int eventCount;
+		while(isRunning()) {
+			eventCount = 0;
+			selector.select();
+			Iterator<SelectionKey> selectedKeys = selector.selectedKeys().iterator();
+			while(selectedKeys.hasNext()) {
+				SelectionKey key = (SelectionKey) selectedKeys.next();
+				selectedKeys.remove();
+
+				if(!key.isValid()) {
+					continue;
+				} else if(key.isAcceptable()) {
+					ClientSession client = accept(key);
+					if(client != null)
+						clientConnected(client,key);
+				} else if(key.isReadable()) {
+					eventCount++;
+					ClientSession client = clientMap.get(key);
+					threadPool.execute(new ReceiveEvent(client));
+				}
+			}
+			if(eventCount > 0) {
+				try {
+					threadPool.awaitTermination(EVENT_TIME_OUT, TIME_OUT_UNIT);
+				} catch (InterruptedException e) {
+			
+				}
 			}
 		}
 	}
