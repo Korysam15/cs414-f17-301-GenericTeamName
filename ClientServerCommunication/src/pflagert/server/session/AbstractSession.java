@@ -44,6 +44,13 @@ public abstract class AbstractSession {
 	}
 	
 	/**
+	 * @return The SelectionKey associate with an instance of AbstractSession
+	 */
+	public SelectionKey getKey() {
+		return key;
+	}
+	
+	/**
 	 * The receive method constructs a new Task through the TaskFactory
 	 * from the bytes received from the client. 
 	 * This method then calls server.handleTask() with the newly created task as the parameter.

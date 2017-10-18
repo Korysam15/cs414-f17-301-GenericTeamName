@@ -72,8 +72,8 @@ public class WriteUtils {
 		dout.write(bytes);
 	}
 	
-	public byte[] getBytesAndCloseStreams(ByteArrayOutputStream ba, DataOutputStream dout) throws IOException {
-		ba.flush();
+	public static byte[] getBytesAndCloseStreams(ByteArrayOutputStream ba, DataOutputStream dout) throws IOException {
+		dout.flush();
 		byte[] ret = ba.toByteArray();
 		closeOutputStreams(ba,dout);
 		return ret;

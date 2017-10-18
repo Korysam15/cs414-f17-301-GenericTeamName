@@ -137,6 +137,6 @@ public abstract class AbstractServer {
 	 * @param client - The {@link ClientSession} that has disconnected.
 	 * @param key - The {@link SelectionKey} that the client was connected too.
 	 */
-	protected abstract void clientDisconnected(ClientSession client, SelectionKey key);
+	public abstract void clientDisconnected(ClientSession client, SelectionKey key);
 	
 }

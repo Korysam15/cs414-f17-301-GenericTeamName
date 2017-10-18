@@ -81,16 +81,18 @@ public abstract class AbstractClient {
 	 * After the byte array is constructed, the bytes are then “sent” to the server by writing the bytes
 	 * to the SocketChannel (channel) created via the call to connectToServer().
 	 * @param t - The {@link Task} to send to the server.
+	 * @throws IOException 
 	 */
-	public abstract void sendToServer(Task t);
+	public abstract void sendToServer(Task t) throws IOException;
 	
 	/**
 	 * The receive method constructs a new Task through the TaskFactory
 	 * from the bytes received from the server. 
 	 * This method then calls client.handleTask() with the newly created task as the parameter.
 	 * @return - The constructed {@link Task}
+	 * @throws IOException 
 	 */
-	public abstract Task receive();
+	public abstract void receive() throws IOException;
 	
 	/**
 	 * The default implementation of handleTask simply executes the Task that was passed into this method.
