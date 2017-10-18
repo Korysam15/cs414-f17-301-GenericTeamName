@@ -335,7 +335,7 @@ public class Client extends AbstractClient {
 			while(true) {
 				client.sendToServer(new TestTask(msg));
 				System.out.println("Just chillen");
-				Thread.sleep(2000);
+				Thread.sleep(200000);
 				msg+=msg;
 			}
 
