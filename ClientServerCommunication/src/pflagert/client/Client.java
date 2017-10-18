@@ -323,7 +323,7 @@ public class Client extends AbstractClient {
 				port = Integer.parseInt(args[1]);
 				if(port <=0 ) 
 					throw new NumberFormatException();
-			} catch (NumberFormatException ex) {
+			} catch (NumberFormatException ex) { 
 				System.out.println("Invalid port: " + args[1]);
 				return;
 			}
