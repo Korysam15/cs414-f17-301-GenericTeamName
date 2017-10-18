@@ -1,7 +1,7 @@
 
 public class Soldier extends Piece {
 
-	public Soldier(boolean color,Square isOn) {
+	public Soldier(boolean color) {
 		super.rank=1;
 		super.color=color;
 		super.isOn=isOn;

@@ -1,7 +1,7 @@
 
 public class Chariot extends Piece {
 
-	public Chariot(boolean color,Square isOn) {
+	public Chariot(boolean color) {
 		super.rank=4;
 		super.color=color;
 		super.isOn=isOn;

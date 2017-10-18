@@ -1,7 +1,7 @@
 
 public class Elephant extends Piece {
 
-	public Elephant(boolean color, Square isOn) {
+	public Elephant(boolean color) {
 		super.rank=5;
 		super.color=color;
 		super.isOn=isOn;
