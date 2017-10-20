@@ -380,6 +380,7 @@ public class Server extends AbstractServer {
 			Server server = null;
 			server = new Server(address);
 			server.start();
+			ActiveServer.setInstance(server);
 			
 		}
 	}

@@ -58,11 +58,13 @@ public final class TaskFactory {
 			
 			break;
 		case TaskConstents.FORWARD_TASK:
-			
+			t = new ForwardTask(din);
 			break;
-			
+		case TaskConstents.LOGIN_TASK:
+			//t = new LoginTask(din);
+			break;
 		case TaskConstents.REGISTER_TASK:
-			
+		//	t = new RegisterTask(din);
 			break;
 		case TaskConstents.MESSAGE_TASK:
 			t = new MessageTask(din);
