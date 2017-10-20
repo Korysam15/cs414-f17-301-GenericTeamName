@@ -77,7 +77,11 @@ public class ClientSession extends AbstractSession {
 					continue;
 				}
 			}
-			debugPrintln("DONE READING BYTES: READ " + total + " TOTAL BYTES");
+			if(temp == -1) {
+				server.clientDisconnected(this, key);
+			} else {
+				debugPrintln("DONE READING BYTES: READ " + total + " TOTAL BYTES");
+			}
 		}
 		debugPrintFooter("receive");
 	}
