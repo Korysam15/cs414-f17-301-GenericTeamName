@@ -173,8 +173,11 @@ public class ClientSession extends AbstractSession {
 		// String password = t.getPassword();
 		
 		// Verify email is unique in DB
+		// enter email in DB
 		// Verify nickname is unique in DB
+		// enter nickname in DB
 		// Verify password meets our conditions????
+		// enter password in DB
 		server.registerClient(this, nickname);
 	}
 
