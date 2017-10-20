@@ -154,11 +154,7 @@ public class Client extends AbstractClient {
 						}
 					}
 				} catch (IOException e) {
-					try {
-						disconnectFromServer();
-					} catch (IOException e1) {
-						// rare
-					}
+					disconnectFromServer();
 				}
 			}
 		};
@@ -209,14 +205,19 @@ public class Client extends AbstractClient {
 	}
 
 	@Override
-	public void disconnectFromServer() throws IOException {
+	public void disconnectFromServer() {
 		synchronized(readLock) {
 			synchronized(writeLock) {
 				stopReceiving();
-				channel.close();
-				channel = null;
-				serverChannel.close();
-				serverChannel = null;
+				try {
+					channel.close();
+					serverChannel.close();
+				} catch (IOException e) {
+					
+				} finally {
+					channel = null;
+					serverChannel = null;
+				}
 			}
 		}
 	}
