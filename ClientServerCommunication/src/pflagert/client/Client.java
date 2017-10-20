@@ -10,7 +10,6 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
-import java.util.concurrent.TimeUnit;
 
 import pflagert.transmission.Task;
 import pflagert.transmission.TaskFactory;
@@ -23,11 +22,10 @@ import pflagert.transmission.TestTask;
  */
 public class Client extends AbstractClient {
 
-	/* Thread Pool Initialization variables */
-	public static final int CORE_THREAD_POOL_SIZE = 2;
-	public static final int MAX_THREAD_POOL_SIZE = 4;
-	public static final int THREAD_KEEP_ALIVE_TIME = 2;
-	public static final TimeUnit ALIVE_TIME_UNIT = TimeUnit.MINUTES;
+	/*
+	 * Time out variables for "select" operations Milliseconds
+	 */
+	public static final int SELECT_TIMEOUT = 500;
 
 	private SocketChannel serverChannel;
 
@@ -129,7 +127,7 @@ public class Client extends AbstractClient {
 			public void run() {
 				try{
 					while(isReceiving()) {
-						selector.select();
+						selector.select(SELECT_TIMEOUT);
 						Iterator<SelectionKey> selectedKeys = selector.selectedKeys().iterator();
 						while(selectedKeys.hasNext()) {
 							SelectionKey key = (SelectionKey) selectedKeys.next();
@@ -155,7 +153,7 @@ public class Client extends AbstractClient {
 	private void connect() {
 		try {
 			while(true) {
-				selector.select();
+				selector.select(SELECT_TIMEOUT);
 				Iterator<SelectionKey> selectedKeys = this.selector.selectedKeys().iterator();
 				while(selectedKeys.hasNext()) {
 					SelectionKey key = (SelectionKey) selectedKeys.next();
@@ -235,7 +233,7 @@ public class Client extends AbstractClient {
 	public void sendToServer(Task t) throws IOException {
 		try {
 			while(true) {
-				selector.select();
+				selector.select(SELECT_TIMEOUT);
 				Iterator<SelectionKey> selectedKeys = this.selector.selectedKeys().iterator();
 				while(selectedKeys.hasNext()) {
 					SelectionKey key = (SelectionKey) selectedKeys.next();
