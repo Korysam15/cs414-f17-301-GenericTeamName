@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename Java project &apos;ClientServerCommunication&apos; to &apos;P3&apos;&#x0A;- Original element: &apos;ClientServerCommunication&apos;&#x0A;- Renamed element: &apos;ClientServerCommunication&apos;&#x0A;- Update references to refactored element" description="Rename Java project &apos;ClientServerCommunication&apos;" flags="7" id="org.eclipse.jdt.ui.rename.java.project" input="=ClientServerCommunication" name="P3" references="true" stamp="1508521817928" version="1.0"/>
-</session>
