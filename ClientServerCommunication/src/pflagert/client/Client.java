@@ -279,7 +279,13 @@ public class Client extends AbstractClient {
 						total += receiveTask(localWrite,size, read);
 						read = 0;
 						readBuffer.clear();
+					} else {
+						System.out.println("SIZE: " + size + " is an invalid ammount of bytes.");
+						System.out.println("returning");
+						return;
 					}
+				} else {
+					continue;
 				}
 			}
 			System.out.println("DONE READING BYTES: READ " + total + " TOTAL BYTES");
@@ -288,16 +294,25 @@ public class Client extends AbstractClient {
 
 	private int receiveTask(ByteBuffer local, int size, int currentRead) throws IOException {
 		int temp = 0,read = currentRead;
-		while( local.hasRemaining() && (temp = channel.read(local)) > -1) {
-			read += temp;
+		
+		if(read < size) {
+			while(local.hasRemaining() && (temp = channel.read(local)) > -1) {
+				read += temp;
+				if(read >= size) {
+					break;
+				}
+			}
 		}
-		System.out.println("Done reading the required bytes: " + (read-currentRead));
+		
+		System.out.println("Done reading the required bytes: " + (read - 4));
+		
 		if(temp == -1) {
 			disconnectFromServer();
 			System.out.println("Server disconnected");
 		} else {
 			handleTask(createTask(local));
 		}
+		
 		return read;
 	}
 
