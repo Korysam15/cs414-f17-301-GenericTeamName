@@ -247,7 +247,7 @@ public class Client extends AbstractClient {
 	@Override
 	public void sendToServer(Task t) throws IOException {
 		try {
-			while(true) {
+			while(isConnected()) {
 				selector.select(SELECT_TIMEOUT);
 				Iterator<SelectionKey> selectedKeys = this.selector.selectedKeys().iterator();
 				while(selectedKeys.hasNext()) {
