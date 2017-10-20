@@ -77,7 +77,7 @@ public class ClientSession extends AbstractSession {
 					continue;
 				}
 			}
-			if(temp == -1) {
+			if(temp == -1 || !channel.isConnected()) {
 				server.clientDisconnected(this, key);
 			} else {
 				debugPrintln("DONE READING BYTES: READ " + total + " TOTAL BYTES");
@@ -111,7 +111,7 @@ public class ClientSession extends AbstractSession {
 
 	private void createTask(ByteBuffer local) throws IOException {
 		Task t = TaskFactory.getInstance().createTaskFromBytes(local.array());
-		send(t);
+		server.handleTask(t);
 	}
 
 	@Override
