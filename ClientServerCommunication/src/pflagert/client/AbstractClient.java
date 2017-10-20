@@ -53,15 +53,15 @@ public abstract class AbstractClient {
 	public abstract void connectToServer(String address, int port) throws IOException;
 	
 	/**
-	 * @return True if the {@link AbstractClient} is listening for incoming messages from the Server,
-	 * Otherwise returns false.
+	 * The isReceiving method returns true if and only if a "client" is connected to a server and 
+	 * is actively listening for incoming messages.
+	 * @return True if the "client" is connected and listening for incoming messages to/from the Server, Otherwise returns false.
 	 */
 	public abstract boolean isReceiving();
 	
 	/**
-	 * The isConnected method returns true if and only if a client is is receiving from the server,
-	 * the channel is open, and the channel is connected.
-	 * @return True if {@link #isReceiving()}, {@link SocketChannel#isOpen()}, and {@link SocketChannel#isConnected()} all return true.
+	 * The isConnected method returns true if and only if the channel is open and the channel is connected.
+	 * @return True if {@link SocketChannel#isOpen()}, and {@link SocketChannel#isConnected()} all return true.
 	 * Otherwise returns false.
 	 */
 	public abstract boolean isConnected();
