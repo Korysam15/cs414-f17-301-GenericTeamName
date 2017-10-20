@@ -10,7 +10,6 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
-import java.util.concurrent.TimeUnit;
 
 import pflagert.transmission.Task;
 import pflagert.transmission.TaskFactory;
@@ -23,11 +22,10 @@ import pflagert.transmission.TestTask;
  */
 public class Client extends AbstractClient {
 
-	/* Thread Pool Initialization variables */
-	public static final int CORE_THREAD_POOL_SIZE = 2;
-	public static final int MAX_THREAD_POOL_SIZE = 4;
-	public static final int THREAD_KEEP_ALIVE_TIME = 2;
-	public static final TimeUnit ALIVE_TIME_UNIT = TimeUnit.MINUTES;
+	/*
+	 * Time out variables for "select" operations Milliseconds
+	 */
+	public static final int SELECT_TIMEOUT = 500;
 
 	private SocketChannel serverChannel;
 
@@ -87,7 +85,7 @@ public class Client extends AbstractClient {
 		synchronized(writeLock) {
 			synchronized(readLock) {
 
-				if(channel != null && channel.isConnected()) {
+				if(isConnected()) {
 					disconnectFromServer();
 				}
 				channel = SocketChannel.open();
@@ -107,29 +105,53 @@ public class Client extends AbstractClient {
 	@Override
 	public boolean isReceiving() {
 		synchronized(isReceiving) {
-			return isReceiving;
+			return isReceiving && isConnected();
 		}
 	}
 
 	@Override
-	public void startReceiving() {
-		if(channel == null || !channel.isOpen()) {
-			throw new IllegalStateException("You must be connected to a server "
-					+ "before receiving from a server");
-		} else if(isReceiving() && receivingThread != null && receivingThread.isAlive()) {
-			return;
-		} else {
-			constructReceivingThread();
-			receivingThread.start();
-		}		
+	public boolean isConnected() {
+		synchronized(writeLock) {
+			synchronized(readLock) {
+				return isChannelConnected(channel) && isChannelConnected(serverChannel);
+			}
+		}
+	}
+
+	private boolean isChannelConnected(SocketChannel c) {
+		return c != null && c.isConnected() && c.isOpen();
 	}
 	
+	@Override
+	public void stopReceiving() {
+		synchronized(isReceiving) {
+			isReceiving = false;
+		}		
+	}
+
+	@Override
+	public void startReceiving() {
+		synchronized(isReceiving) {
+			if(!isConnected()) {
+				throw new IllegalStateException("You must be connected to a server "
+						+ "before receiving from a server");
+			} else if(isReceiving() && receivingThread != null && receivingThread.isAlive()) {
+				return;
+			} else {
+				isReceiving = true;
+				constructReceivingThread();
+				System.out.println("Starting Receiver Thread");
+				receivingThread.start();
+			}
+		}
+	}
+
 	private void constructReceivingThread() {
 		receivingThread = new Thread(){
 			public void run() {
 				try{
 					while(isReceiving()) {
-						selector.select();
+						selector.select(SELECT_TIMEOUT);
 						Iterator<SelectionKey> selectedKeys = selector.selectedKeys().iterator();
 						while(selectedKeys.hasNext()) {
 							SelectionKey key = (SelectionKey) selectedKeys.next();
@@ -142,11 +164,9 @@ public class Client extends AbstractClient {
 						}
 					}
 				} catch (IOException e) {
-					try {
-						disconnectFromServer();
-					} catch (IOException e1) {
-						// rare
-					}
+					
+				} finally {
+					stopReceiving();
 				}
 			}
 		};
@@ -155,7 +175,7 @@ public class Client extends AbstractClient {
 	private void connect() {
 		try {
 			while(true) {
-				selector.select();
+				selector.select(SELECT_TIMEOUT);
 				Iterator<SelectionKey> selectedKeys = this.selector.selectedKeys().iterator();
 				while(selectedKeys.hasNext()) {
 					SelectionKey key = (SelectionKey) selectedKeys.next();
@@ -181,7 +201,7 @@ public class Client extends AbstractClient {
 
 			if(((SocketChannel) key.channel()).isConnected()) {
 				System.out.println("Connected!");
-				key.interestOps(SelectionKey.OP_WRITE);
+				key.interestOps(SelectionKey.OP_READ);
 				serverChannel = ((SocketChannel)key.channel());
 			}
 		} catch (IOException e) {
@@ -190,67 +210,58 @@ public class Client extends AbstractClient {
 	}
 
 	@Override
-	public void stopReceiving() {
-		synchronized(isReceiving) {
-			isReceiving = false;
-		}		
-	}
-
-	@Override
-	public void disconnectFromServer() throws IOException {
+	public void disconnectFromServer() {
 		synchronized(readLock) {
 			synchronized(writeLock) {
 				stopReceiving();
-				channel.close();
-				channel = null;
-				serverChannel.close();
-				serverChannel = null;
+				try {
+					channel.close();
+					serverChannel.close();
+				} catch (IOException e) {
+
+				} finally {
+					channel = null;
+					serverChannel = null;
+				}
 			}
 		}
 	}
 
 	public void send(Task t) throws IOException {
-		if(!isReceiving()) {
-			//throw new IllegalStateException("You must be receiving from a server "
-			//	+ "before sending to a server");
-		} //else {
-		synchronized(writeLock) {
-			byte[] data = t.toByteArray();
-			int dataLength = data.length;
-			System.out.println("Sending: " + dataLength + " bytes for TaskCode: " + t.getTaskCode());
-			/*for(byte b: data) {
-				System.out.println(b);
-			} */
-			ByteBuffer writeBuffer = ByteBuffer.allocate(dataLength+4);
-			writeBuffer.putInt(dataLength);
-			writeBuffer.put(data);
-			writeBuffer.flip();
-			int written = 0;
-			while(writeBuffer.hasRemaining()) {
-				written += serverChannel.write(writeBuffer);
+		if(!isConnected()) {
+			System.out.println("no longer connected");
+			return;
+		} else {
+			synchronized(writeLock) {
+				byte[] data = t.toByteArray();
+				int dataLength = data.length;
+				System.out.println("Sending: " + dataLength + " bytes for TaskCode: " + t.getTaskCode());
+				ByteBuffer writeBuffer = ByteBuffer.allocate(dataLength+4);
+				writeBuffer.putInt(dataLength);
+				writeBuffer.put(data);
+				writeBuffer.flip();
+				int written = 0;
+				while(writeBuffer.hasRemaining()) {
+					written += serverChannel.write(writeBuffer);
+				}
+				System.out.println("Done Sending: " + written + " bytes");
 			}
-			System.out.println("Done Sending: " + written + " bytes");
 		}
-		//}
 	}
 
 	@Override
 	public void sendToServer(Task t) throws IOException {
+		if(!isConnected()) {
+			throw new IllegalStateException("You must be connected to a server "
+					+ "before receiving from a server");
+		}
+		else if(!isReceiving()) {
+			System.out.println("You must be receiving from a server "
+					+ "before sending to a server");
+			startReceiving();
+		}
 		try {
-			while(true) {
-				selector.select();
-				Iterator<SelectionKey> selectedKeys = this.selector.selectedKeys().iterator();
-				while(selectedKeys.hasNext()) {
-					SelectionKey key = (SelectionKey) selectedKeys.next();
-					selectedKeys.remove();
-					if(!key.isValid())
-						continue;
-					else if(key.isWritable()) {
-						send(t);
-						return;
-					}
-				}
-			}
+			send(t);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -279,7 +290,13 @@ public class Client extends AbstractClient {
 						total += receiveTask(localWrite,size, read);
 						read = 0;
 						readBuffer.clear();
+					} else {
+						System.out.println("SIZE: " + size + " is an invalid ammount of bytes.");
+						System.out.println("returning");
+						return;
 					}
+				} else {
+					continue;
 				}
 			}
 			System.out.println("DONE READING BYTES: READ " + total + " TOTAL BYTES");
@@ -288,16 +305,25 @@ public class Client extends AbstractClient {
 
 	private int receiveTask(ByteBuffer local, int size, int currentRead) throws IOException {
 		int temp = 0,read = currentRead;
-		while( local.hasRemaining() && (temp = channel.read(local)) > -1) {
-			read += temp;
+
+		if(read < size) {
+			while(local.hasRemaining() && (temp = channel.read(local)) > -1) {
+				read += temp;
+				if(read >= size) {
+					break;
+				}
+			}
 		}
-		System.out.println("Done reading the required bytes: " + (read-currentRead));
+
+		System.out.println("Done reading the required bytes: " + (read - 4));
+
 		if(temp == -1) {
 			disconnectFromServer();
 			System.out.println("Server disconnected");
 		} else {
 			handleTask(createTask(local));
 		}
+
 		return read;
 	}
 

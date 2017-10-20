@@ -39,7 +39,7 @@ public class Server extends AbstractServer {
 	public static final int SELECT_TIME_OUT = 3000; // Milliseconds
 	
 	/* Used for debugging */
-	public static final boolean DEBUG = true;
+	public static final boolean DEBUG = false;
 	public static final String DEBUG_TAB = "    ";
 	private static int NUM_TABS = 0;
 	
@@ -121,7 +121,7 @@ public class Server extends AbstractServer {
 	private void runServer() throws IOException {
 		int eventCount;
 		debugPrintHeader("runServer");
-		debugPrintln("Server is listening on: " +
+		System.out.println("Server is listening on: " +
 				this.serverChannel.getLocalAddress().toString());
 		while(isRunning()) {
 			eventCount = 0;
@@ -237,6 +237,14 @@ public class Server extends AbstractServer {
 	}
 	
 	@Override
+	public void handleTask(Task t, ClientSession client) {
+		debugPrintHeader("handleTask");
+		debugPrintln("Running TaskCode: " + t.getTaskCode());
+		t.run();
+		debugPrintFooter("handleTask");
+	}
+	
+	@Override
 	public void registerClient(ClientSession client, String ID) {
 		synchronized(registeredClients) {
 			registeredClients.put(ID, client);
@@ -294,6 +302,7 @@ public class Server extends AbstractServer {
 	protected void clientConnected(ClientSession client, SelectionKey key) {
 		synchronized(clientMap) {
 			clientMap.put(key, client);
+			System.out.println("New client connected");
 		}		
 	}
 

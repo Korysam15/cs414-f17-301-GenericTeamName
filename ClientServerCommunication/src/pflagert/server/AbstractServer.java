@@ -110,6 +110,14 @@ public abstract class AbstractServer {
 	public abstract void handleTask(Task t);
 	
 	/**
+	 * The default implementation of handleTask simply executes the Task that was passed into this method.
+	 * If a different behavior is desired from this method, this class should be extended then this method
+	 * can be overwritten
+	 * @param t - The {@link Task} to be handled.
+	 */
+	public abstract void handleTask(Task t, ClientSession client);
+	
+	/**
 	 * The registerClient method adds a new entry into the registeredClients map.
 	 * Note that registering client implies logging in or the creation of a new account. 
 	 */
