@@ -45,6 +45,7 @@ public class RegisterTask extends Task {
 	public void run() {
 		// No need for a run method.
 		// Registration and Login require direct integration
+		// run method will not be called
 		return;
 	}
 	
