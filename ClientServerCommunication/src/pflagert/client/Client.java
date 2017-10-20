@@ -117,23 +117,33 @@ public class Client extends AbstractClient {
 			}
 		}
 	}
-	
+
 	private boolean isChannelConnected(SocketChannel c) {
 		return c != null && c.isConnected() && c.isOpen();
+	}
+	
+	@Override
+	public void stopReceiving() {
+		synchronized(isReceiving) {
+			isReceiving = false;
+		}		
 	}
 
 	@Override
 	public void startReceiving() {
-		if(isConnected()) {
-			throw new IllegalStateException("You must be connected to a server "
-					+ "before receiving from a server");
-		} else if(isReceiving() && receivingThread != null && receivingThread.isAlive()) {
-			return;
-		} else {
-			constructReceivingThread();
-			System.out.println("Starting Receiver Thread");
-			receivingThread.start();
-		}		
+		synchronized(isReceiving) {
+			if(!isConnected()) {
+				throw new IllegalStateException("You must be connected to a server "
+						+ "before receiving from a server");
+			} else if(isReceiving() && receivingThread != null && receivingThread.isAlive()) {
+				return;
+			} else {
+				isReceiving = true;
+				constructReceivingThread();
+				System.out.println("Starting Receiver Thread");
+				receivingThread.start();
+			}
+		}
 	}
 
 	private void constructReceivingThread() {
@@ -154,7 +164,9 @@ public class Client extends AbstractClient {
 						}
 					}
 				} catch (IOException e) {
-					disconnectFromServer();
+					
+				} finally {
+					stopReceiving();
 				}
 			}
 		};
@@ -198,13 +210,6 @@ public class Client extends AbstractClient {
 	}
 
 	@Override
-	public void stopReceiving() {
-		synchronized(isReceiving) {
-			isReceiving = false;
-		}		
-	}
-
-	@Override
 	public void disconnectFromServer() {
 		synchronized(readLock) {
 			synchronized(writeLock) {
@@ -213,7 +218,7 @@ public class Client extends AbstractClient {
 					channel.close();
 					serverChannel.close();
 				} catch (IOException e) {
-					
+
 				} finally {
 					channel = null;
 					serverChannel = null;
@@ -223,9 +228,9 @@ public class Client extends AbstractClient {
 	}
 
 	public void send(Task t) throws IOException {
-		if(!isReceiving()) {
-			System.out.println("You must be receiving from a server "
-					+ "before sending to a server");
+		if(!isConnected()) {
+			System.out.println("no longer connected");
+			return;
 		} else {
 			synchronized(writeLock) {
 				byte[] data = t.toByteArray();
@@ -246,6 +251,15 @@ public class Client extends AbstractClient {
 
 	@Override
 	public void sendToServer(Task t) throws IOException {
+		if(!isConnected()) {
+			throw new IllegalStateException("You must be connected to a server "
+					+ "before receiving from a server");
+		}
+		else if(!isReceiving()) {
+			System.out.println("You must be receiving from a server "
+					+ "before sending to a server");
+
+		}
 		try {
 			while(isConnected()) {
 				selector.select(SELECT_TIMEOUT);
