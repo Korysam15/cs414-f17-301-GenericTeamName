@@ -111,7 +111,6 @@ public class ClientSession extends AbstractSession {
 
 	private void createTask(ByteBuffer local) throws IOException {
 		Task t = TaskFactory.getInstance().createTaskFromBytes(local.array());
-		server.handleTask(t);
 		send(t);
 	}
 
