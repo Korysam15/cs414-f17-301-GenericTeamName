@@ -64,7 +64,7 @@ public final class TaskFactory {
 		case TaskConstents.REGISTER_TASK:
 			
 			break;
-		case TaskConstents.TEST_TASK:
+		case TaskConstents.MESSAGE_TASK:
 			t = new MessageTask(din);
 			break;
 			

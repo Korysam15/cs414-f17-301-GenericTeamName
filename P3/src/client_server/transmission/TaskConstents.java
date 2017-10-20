@@ -27,6 +27,6 @@ public class TaskConstents {
 	.....
 	.....
 */
-	public static final int TEST_TASK = Integer.MAX_VALUE;
+	public static final int MESSAGE_TASK = Integer.MAX_VALUE;
 	
 }
