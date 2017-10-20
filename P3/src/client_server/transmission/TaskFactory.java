@@ -64,7 +64,7 @@ public final class TaskFactory {
 			//t = new LoginTask(din);
 			break;
 		case TaskConstents.REGISTER_TASK:
-		//	t = new RegisterTask(din);
+			t = new RegisterTask(din);
 			break;
 		case TaskConstents.MESSAGE_TASK:
 			t = new MessageTask(din);
