@@ -7,8 +7,12 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import pflagert.server.AbstractServer;
+import pflagert.server.Server;
 import pflagert.transmission.Task;
 import pflagert.transmission.TaskFactory;
 
@@ -18,9 +22,16 @@ import pflagert.transmission.TaskFactory;
  */
 public class ClientSession extends AbstractSession {
 
+	/* Used for debugging */
+	public static final boolean DEBUG = Server.DEBUG;
+	public static final String DEBUG_TAB = "    ";
+	private static int NUM_TABS = 0;
+	
 	private SocketChannel channel;
 
+	// prevents two threads from writing to the same channel at the same time
 	private Object writeLock;
+	// prevents two from reading from the same channel at the same time
 	private Object readLock;
 
 	public ClientSession(AbstractServer server, SelectionKey key, String ID) throws IOException {
@@ -36,6 +47,7 @@ public class ClientSession extends AbstractSession {
 
 	@Override
 	public void receive() throws IOException {
+		debugPrintHeader("receive");
 		ByteBuffer localWrite = null;
 
 		ByteBuffer readBuffer = ByteBuffer.allocate(7000);
@@ -47,7 +59,7 @@ public class ClientSession extends AbstractSession {
 				if(read >= 4) {
 					readBuffer.flip();
 					size = readBuffer.getInt();
-					System.out.println("READ " + size + " For the amount of required bytes");
+					debugPrintln("READ " + size + " For the amount of required bytes");
 					if(size >= 1) {
 						localWrite = ByteBuffer.allocate(size);
 						if(read > 4) {
@@ -57,16 +69,17 @@ public class ClientSession extends AbstractSession {
 						read = 0;
 						readBuffer.clear();
 					} else {
-						System.out.println("SIZE: " + size + " is an invalid ammount of bytes.");
-						System.out.println("returning");
+						debugPrintln("SIZE: " + size + " is an invalid ammount of bytes.");
+						debugPrintln("returning");
 						return;
 					}
 				} else {
 					continue;
 				}
 			}
-			System.out.println("DONE READING BYTES: READ " + total + " TOTAL BYTES");
+			debugPrintln("DONE READING BYTES: READ " + total + " TOTAL BYTES");
 		}
+		debugPrintFooter("receive");
 	}
 
 	private int receiveTask(ByteBuffer local, int size, int currentRead) throws IOException {
@@ -81,7 +94,7 @@ public class ClientSession extends AbstractSession {
 			}
 		}
 		
-		System.out.println("Done reading the required bytes: " + (read - 4));
+		debugPrintln("Done reading the required bytes: " + (read - 4));
 		
 		if(temp == -1) {
 			server.clientDisconnected(this, key);
@@ -95,14 +108,16 @@ public class ClientSession extends AbstractSession {
 	private void createTask(ByteBuffer local) throws IOException {
 		Task t = TaskFactory.getInstance().createTaskFromBytes(local.array());
 		server.handleTask(t);
+		send(t);
 	}
 
 	@Override
 	public void send(Task t) throws IOException {
+		debugPrintHeader("send");
 		synchronized(writeLock) {
 			byte[] data = t.toByteArray();
 			int dataLength = data.length;
-			System.out.println("Sending: " + dataLength + " bytes for TaskCode: " + t.getTaskCode());
+			debugPrintln("Sending: " + dataLength + " bytes for TaskCode: " + t.getTaskCode());
 			ByteBuffer writeBuffer = ByteBuffer.allocate(dataLength+4);
 			writeBuffer.putInt(dataLength);
 			writeBuffer.put(data);
@@ -111,8 +126,9 @@ public class ClientSession extends AbstractSession {
 			while(writeBuffer.hasRemaining()) {
 				written += channel.write(writeBuffer);
 			}
-			System.out.println("Sent: " + written + " total bytes");
+			debugPrintln("Sent: " + written + " total bytes");
 		}
+		debugPrintFooter("send");
 	}
 
 	@Override
@@ -152,6 +168,38 @@ public class ClientSession extends AbstractSession {
 	public boolean equals(Object o) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	private String getDate() {
+		Date now = new Date(); // java.util.Date, NOT java.sql.Date or java.sql.Timestamp!
+		return new SimpleDateFormat("HH:mm:ss.S", Locale.ENGLISH).format(now);
+	}
+	
+	private synchronized String getTabs() {
+		String ret = "";
+		for(int i=0;i<NUM_TABS;i++) {
+			ret+=DEBUG_TAB;
+		}
+		return "[" + getDate() + "]" + ret;
+	}
+	
+	private synchronized void debugPrint(String msg) {
+		if(DEBUG)
+			System.out.print(getTabs()+msg);
+	}
+	
+	private synchronized void debugPrintln(String msg) {
+		debugPrint(msg+System.lineSeparator());
+	}
+	
+	private synchronized void debugPrintHeader(String methodName) {
+		debugPrintln("---------------[ " + methodName + " ]---------------");
+		NUM_TABS++;
+	}
+	
+	private synchronized void debugPrintFooter(String methodName) {
+		NUM_TABS--;
+		debugPrintln("===============[ " + methodName + " ]===============\n");
 	}
 
 }
