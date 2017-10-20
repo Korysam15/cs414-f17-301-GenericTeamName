@@ -11,9 +11,9 @@ public class TaskConstents {
 	public static final int TASK = -1;
 	public static final int REGISTER_TASK = 0;
 	public static final int FORWARD_TASK = 1;
-/*	public static final int TASK = 2;
-	public static final int TASK = 3;
-	public static final int TASK = 4;
+	public static final int INVITE_TASK = 2;
+	public static final int CREATGAME_TASK = 3;
+/*	public static final int TASK = 4;
 	public static final int TASK = 5;
 	public static final int TASK = 6;
 	public static final int TASK = 7;

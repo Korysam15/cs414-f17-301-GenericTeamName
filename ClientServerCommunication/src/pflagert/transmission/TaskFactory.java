@@ -65,7 +65,15 @@ public final class TaskFactory {
 			
 			break;
 		case TaskConstents.TEST_TASK:
-			t = new TestTask(din);
+			t = new MessageTask(din);
+			break;
+			
+		case TaskConstents.INVITE_TASK:
+			t = new InviteTask(din);
+			break;
+			
+		case TaskConstents.CREATGAME_TASK:
+			t = new CreateGameTask(din);
 			break;
 		}
 		
