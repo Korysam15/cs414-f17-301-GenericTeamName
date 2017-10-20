@@ -56,7 +56,11 @@ public class ClientSession extends AbstractSession {
 						total += receiveTask(localWrite,size, read);
 						read = 0;
 						readBuffer.clear();
+					} else {
+						return;
 					}
+				} else {
+					continue;
 				}
 			}
 			System.out.println("DONE READING BYTES: READ " + total + " TOTAL BYTES");
@@ -65,8 +69,13 @@ public class ClientSession extends AbstractSession {
 
 	private int receiveTask(ByteBuffer local, int size, int currentRead) throws IOException {
 		int temp = 0,read = currentRead;
-		while( local.hasRemaining() && (temp = channel.read(local)) > -1) {
-			read += temp;
+		if(read < size) {
+			while(local.hasRemaining() && (temp = channel.read(local)) > -1) {
+				read += temp;
+				if(read >= size) {
+					break;
+				}
+			}
 		}
 		System.out.println("Done reading the required bytes: " + (read-currentRead));
 		if(temp == -1) {
