@@ -124,6 +124,7 @@ public class ClientSession extends AbstractSession {
 				if(t instanceof RegisterTask) {
 					registerWithServer((RegisterTask)t);
 				}
+				break;
 			default:
 				server.handleTask(t);
 			}
@@ -178,6 +179,7 @@ public class ClientSession extends AbstractSession {
 		// enter nickname in DB
 		// Verify password meets our conditions????
 		// enter password in DB
+		setID(nickname);
 		server.registerClient(this, nickname);
 	}
 

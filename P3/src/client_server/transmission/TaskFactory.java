@@ -52,7 +52,6 @@ public final class TaskFactory {
 		Task t = null;
 		
 		int taskCode = din.readInt();
-		System.out.println("Task code is: " + taskCode);
 		switch(taskCode) {
 		case TaskConstents.TASK: 
 			

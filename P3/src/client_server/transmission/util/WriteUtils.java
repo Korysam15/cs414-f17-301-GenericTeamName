@@ -43,7 +43,8 @@ public class WriteUtils {
 	}
 	
 	public static void writeTask(Task t, DataOutputStream dout) throws IOException {
-		dout.writeInt(t.getTaskCode());
+		byte[] data = t.toByteArray();
+		dout.writeInt(data.length);
 		writeByteArray(t.toByteArray(),dout);
 	}
 	

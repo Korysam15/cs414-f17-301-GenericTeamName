@@ -248,7 +248,8 @@ public class Server extends AbstractServer {
 	public void registerClient(ClientSession client, String ID) {
 		synchronized(registeredClients) {
 			registeredClients.put(ID, client);
-		}	
+		}
+		System.out.println("Registered: " + ID);
 	}
 
 	@Override
@@ -379,8 +380,8 @@ public class Server extends AbstractServer {
 			InetSocketAddress address = new InetSocketAddress(port);
 			Server server = null;
 			server = new Server(address);
-			server.start();
 			ActiveServer.setInstance(server);
+			server.start();
 			
 		}
 	}

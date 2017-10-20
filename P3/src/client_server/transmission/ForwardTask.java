@@ -48,9 +48,12 @@ public class ForwardTask extends Task {
 	}
 
 	public void run() {
+		System.out.println("FORWARD TASK");
 		AbstractServer server = ActiveServer.getInstance();	
 		if(server != null) {
 			forwardTheTask(server);
+		} else {
+			System.out.println("SERVER IS NULL :(");
 		}
 	}
 	
@@ -62,6 +65,7 @@ public class ForwardTask extends Task {
 		
 		if(clientFrom != null) { // ensures that the client sending is registered
 			if(clientTo != null) {
+				System.out.println("Sending message to: " + clientTo.getID());
 				try {
 					clientTo.send(task);
 					success = true;

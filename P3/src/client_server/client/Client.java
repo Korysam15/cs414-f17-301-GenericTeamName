@@ -11,7 +11,9 @@ import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 
+import client_server.transmission.ForwardTask;
 import client_server.transmission.MessageTask;
+import client_server.transmission.RegisterTask;
 import client_server.transmission.Task;
 import client_server.transmission.TaskFactory;
 
@@ -343,12 +345,15 @@ public class Client extends AbstractClient {
 	}
 
 	public static void main(String[] args) throws IOException, InterruptedException {
-		if(args.length != 2) {
-			System.out.println("Expected 2 arguments: <server-host> <server-port>");
+		if(args.length != 5) {
+			System.out.println(
+					"Expected 5 arguments: <server-host> <server-port> <email> <nickname> <password>"
+					);
 			return;
 		}
 		else {
-			String host = args[0]; 
+			String host = args[0];
+			String email, nickname, password;
 			int port;
 
 			try {
@@ -359,17 +364,25 @@ public class Client extends AbstractClient {
 				System.out.println("Invalid port: " + args[1]);
 				return;
 			}
+			
+			email = args[2];
+			nickname = args[3];
+			password = args[4];
 
 			InetSocketAddress address = new InetSocketAddress(host,port);
 
-			Client client = new Client(address);
-			String msg = "This is my first test";
+			Client c1 = new Client(address);
+			c1.sendToServer(new RegisterTask(email,nickname,password));
+			Thread.sleep(2000);
+			
+			//c1.sendToServer(new MessageTask("Hello tanner"));
+			c1.sendToServer(new ForwardTask(nickname,
+					new MessageTask("Hello tanner"),
+					"tanner"));
 			while(true) {
-				client.sendToServer(new MessageTask(msg));
-				System.out.println("Just chillen");
-				Thread.sleep(200000);
-				msg+=msg;
+				Thread.sleep(1000);
 			}
+			
 
 		}
 	}

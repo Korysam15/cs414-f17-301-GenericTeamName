@@ -49,7 +49,10 @@ public class ReadUtils {
 	}
 	
 	public static Task readTask(DataInputStream din) throws IOException {
-		return TaskFactory.getInstance().createTaskFromDataInputStream(din);
+		int length = din.readInt();
+		byte[] data = new byte[length];
+		din.readFully(data);
+		return TaskFactory.getInstance().createTaskFromBytes(data);
 	}
 	
 	public static List<Task> readTaskList(DataInputStream din) throws IOException {
