@@ -78,9 +78,6 @@ public class ClientSession extends AbstractSession {
 	}
 
 	private void createTask(ByteBuffer local) throws IOException {
-		/*for(byte b: local.array()) {
-				System.out.println(b);
-			} */
 		Task t = TaskFactory.getInstance().createTaskFromBytes(local.array());
 		server.handleTask(t);
 	}
@@ -91,9 +88,6 @@ public class ClientSession extends AbstractSession {
 			byte[] data = t.toByteArray();
 			int dataLength = data.length;
 			System.out.println("Sending: " + dataLength + " bytes for TaskCode: " + t.getTaskCode());
-			/*for(byte b: data) {
-				System.out.println(b);
-			} */
 			ByteBuffer writeBuffer = ByteBuffer.allocate(dataLength+4);
 			writeBuffer.putInt(dataLength);
 			writeBuffer.put(data);
