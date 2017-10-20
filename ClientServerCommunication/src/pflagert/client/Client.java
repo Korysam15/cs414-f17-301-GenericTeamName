@@ -85,7 +85,7 @@ public class Client extends AbstractClient {
 		synchronized(writeLock) {
 			synchronized(readLock) {
 
-				if(channel != null && channel.isConnected()) {
+				if(isConnected()) {
 					disconnectFromServer();
 				}
 				channel = SocketChannel.open();
@@ -105,20 +105,26 @@ public class Client extends AbstractClient {
 	@Override
 	public boolean isReceiving() {
 		synchronized(isReceiving) {
-			return isReceiving;
-		}
-	}
-	
-	@Override
-	public boolean isConnected() {
-		synchronized(isReceiving) {
-			return isReceiving;
+			return isReceiving && isConnected();
 		}
 	}
 
 	@Override
+	public boolean isConnected() {
+		synchronized(writeLock) {
+			synchronized(readLock) {
+				return isChannelConnected(channel) && isChannelConnected(serverChannel);
+			}
+		}
+	}
+	
+	private boolean isChannelConnected(SocketChannel c) {
+		return c != null && c.isConnected() && c.isOpen();
+	}
+
+	@Override
 	public void startReceiving() {
-		if(channel == null || !channel.isOpen()) {
+		if(isConnected()) {
 			throw new IllegalStateException("You must be connected to a server "
 					+ "before receiving from a server");
 		} else if(isReceiving() && receivingThread != null && receivingThread.isAlive()) {
@@ -129,7 +135,7 @@ public class Client extends AbstractClient {
 			receivingThread.start();
 		}		
 	}
-	
+
 	private void constructReceivingThread() {
 		receivingThread = new Thread(){
 			public void run() {
@@ -218,21 +224,22 @@ public class Client extends AbstractClient {
 	public void send(Task t) throws IOException {
 		if(!isReceiving()) {
 			System.out.println("You must be receiving from a server "
-				+ "before sending to a server");
-		}
-		synchronized(writeLock) {
-			byte[] data = t.toByteArray();
-			int dataLength = data.length;
-			System.out.println("Sending: " + dataLength + " bytes for TaskCode: " + t.getTaskCode());
-			ByteBuffer writeBuffer = ByteBuffer.allocate(dataLength+4);
-			writeBuffer.putInt(dataLength);
-			writeBuffer.put(data);
-			writeBuffer.flip();
-			int written = 0;
-			while(writeBuffer.hasRemaining()) {
-				written += serverChannel.write(writeBuffer);
+					+ "before sending to a server");
+		} else {
+			synchronized(writeLock) {
+				byte[] data = t.toByteArray();
+				int dataLength = data.length;
+				System.out.println("Sending: " + dataLength + " bytes for TaskCode: " + t.getTaskCode());
+				ByteBuffer writeBuffer = ByteBuffer.allocate(dataLength+4);
+				writeBuffer.putInt(dataLength);
+				writeBuffer.put(data);
+				writeBuffer.flip();
+				int written = 0;
+				while(writeBuffer.hasRemaining()) {
+					written += serverChannel.write(writeBuffer);
+				}
+				System.out.println("Done Sending: " + written + " bytes");
 			}
-			System.out.println("Done Sending: " + written + " bytes");
 		}
 	}
 
@@ -296,7 +303,7 @@ public class Client extends AbstractClient {
 
 	private int receiveTask(ByteBuffer local, int size, int currentRead) throws IOException {
 		int temp = 0,read = currentRead;
-		
+
 		if(read < size) {
 			while(local.hasRemaining() && (temp = channel.read(local)) > -1) {
 				read += temp;
@@ -305,16 +312,16 @@ public class Client extends AbstractClient {
 				}
 			}
 		}
-		
+
 		System.out.println("Done reading the required bytes: " + (read - 4));
-		
+
 		if(temp == -1) {
 			disconnectFromServer();
 			System.out.println("Server disconnected");
 		} else {
 			handleTask(createTask(local));
 		}
-		
+
 		return read;
 	}
 
