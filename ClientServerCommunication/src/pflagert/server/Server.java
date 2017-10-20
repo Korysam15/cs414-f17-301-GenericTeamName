@@ -237,6 +237,14 @@ public class Server extends AbstractServer {
 	}
 	
 	@Override
+	public void handleTask(Task t, ClientSession client) {
+		debugPrintHeader("handleTask");
+		debugPrintln("Running TaskCode: " + t.getTaskCode());
+		t.run();
+		debugPrintFooter("handleTask");
+	}
+	
+	@Override
 	public void registerClient(ClientSession client, String ID) {
 		synchronized(registeredClients) {
 			registeredClients.put(ID, client);
