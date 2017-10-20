@@ -258,7 +258,7 @@ public class Client extends AbstractClient {
 		else if(!isReceiving()) {
 			System.out.println("You must be receiving from a server "
 					+ "before sending to a server");
-
+			startReceiving();
 		}
 		try {
 			while(isConnected()) {
