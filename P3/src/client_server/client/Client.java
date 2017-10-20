@@ -215,8 +215,10 @@ public class Client extends AbstractClient {
 			synchronized(writeLock) {
 				stopReceiving();
 				try {
-					channel.close();
-					serverChannel.close();
+					if(channel != null)
+						channel.close();
+					if(serverChannel != null)
+						serverChannel.close();
 				} catch (IOException e) {
 
 				} finally {
@@ -299,7 +301,11 @@ public class Client extends AbstractClient {
 					continue;
 				}
 			}
-			System.out.println("DONE READING BYTES: READ " + total + " TOTAL BYTES");
+			if(temp == -1 || !isConnected()) {
+				disconnectFromServer();
+			} else {
+				System.out.println("DONE READING BYTES: READ " + total + " TOTAL BYTES");
+			}
 		}
 	}
 
