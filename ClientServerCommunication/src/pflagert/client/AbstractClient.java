@@ -59,6 +59,14 @@ public abstract class AbstractClient {
 	public abstract boolean isReceiving();
 	
 	/**
+	 * The isConnected method returns true if and only if a client is is receiving from the server,
+	 * the channel is open, and the channel is connected.
+	 * @return True if {@link #isReceiving()}, {@link SocketChannel#isOpen()}, and {@link SocketChannel#isConnected()} all return true.
+	 * Otherwise returns false.
+	 */
+	public abstract boolean isConnected();
+	
+	/**
 	 * The startReceiving method will make the client listen to the server that it is connected to. 
 	 */
 	public abstract void startReceiving();
