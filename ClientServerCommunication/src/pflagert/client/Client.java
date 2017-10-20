@@ -218,9 +218,6 @@ public class Client extends AbstractClient {
 			byte[] data = t.toByteArray();
 			int dataLength = data.length;
 			System.out.println("Sending: " + dataLength + " bytes for TaskCode: " + t.getTaskCode());
-			/*for(byte b: data) {
-				System.out.println(b);
-			} */
 			ByteBuffer writeBuffer = ByteBuffer.allocate(dataLength+4);
 			writeBuffer.putInt(dataLength);
 			writeBuffer.put(data);
