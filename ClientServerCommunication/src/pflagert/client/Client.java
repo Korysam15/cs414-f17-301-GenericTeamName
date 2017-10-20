@@ -108,6 +108,13 @@ public class Client extends AbstractClient {
 			return isReceiving;
 		}
 	}
+	
+	@Override
+	public boolean isConnected() {
+		synchronized(isReceiving) {
+			return isReceiving;
+		}
+	}
 
 	@Override
 	public void startReceiving() {
@@ -118,6 +125,7 @@ public class Client extends AbstractClient {
 			return;
 		} else {
 			constructReceivingThread();
+			System.out.println("Starting Receiver Thread");
 			receivingThread.start();
 		}		
 	}
@@ -209,9 +217,9 @@ public class Client extends AbstractClient {
 
 	public void send(Task t) throws IOException {
 		if(!isReceiving()) {
-			//throw new IllegalStateException("You must be receiving from a server "
-			//	+ "before sending to a server");
-		} //else {
+			System.out.println("You must be receiving from a server "
+				+ "before sending to a server");
+		}
 		synchronized(writeLock) {
 			byte[] data = t.toByteArray();
 			int dataLength = data.length;
@@ -226,7 +234,6 @@ public class Client extends AbstractClient {
 			}
 			System.out.println("Done Sending: " + written + " bytes");
 		}
-		//}
 	}
 
 	@Override
