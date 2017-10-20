@@ -201,7 +201,7 @@ public class Client extends AbstractClient {
 
 			if(((SocketChannel) key.channel()).isConnected()) {
 				System.out.println("Connected!");
-				key.interestOps(SelectionKey.OP_WRITE);
+				key.interestOps(SelectionKey.OP_READ);
 				serverChannel = ((SocketChannel)key.channel());
 			}
 		} catch (IOException e) {
@@ -261,20 +261,7 @@ public class Client extends AbstractClient {
 			startReceiving();
 		}
 		try {
-			while(isConnected()) {
-				selector.select(SELECT_TIMEOUT);
-				Iterator<SelectionKey> selectedKeys = this.selector.selectedKeys().iterator();
-				while(selectedKeys.hasNext()) {
-					SelectionKey key = (SelectionKey) selectedKeys.next();
-					selectedKeys.remove();
-					if(!key.isValid())
-						continue;
-					else if(key.isWritable()) {
-						send(t);
-						return;
-					}
-				}
-			}
+			send(t);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
