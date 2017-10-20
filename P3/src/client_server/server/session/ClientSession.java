@@ -13,7 +13,9 @@ import java.util.Locale;
 
 import client_server.server.AbstractServer;
 import client_server.server.Server;
+import client_server.transmission.RegisterTask;
 import client_server.transmission.Task;
+import client_server.transmission.TaskConstents;
 import client_server.transmission.TaskFactory;
 
 /**
@@ -111,7 +113,21 @@ public class ClientSession extends AbstractSession {
 
 	private void createTask(ByteBuffer local) throws IOException {
 		Task t = TaskFactory.getInstance().createTaskFromBytes(local.array());
-		server.handleTask(t);
+		if(t != null) {
+			switch(t.getTaskCode()) {
+			case TaskConstents.LOGIN_TASK:
+				// handle login
+				// for now just send to server
+				server.handleTask(t);
+				break;
+			case TaskConstents.REGISTER_TASK:
+				if(t instanceof RegisterTask) {
+					registerWithServer((RegisterTask)t);
+				}
+			default:
+				server.handleTask(t);
+			}
+		}
 	}
 
 	@Override
@@ -151,8 +167,15 @@ public class ClientSession extends AbstractSession {
 	}
 
 	@Override
-	public void registerWithServer() {
-
+	public void registerWithServer(RegisterTask t) {
+		// String email = t.getEmail();
+		String nickname = t.getNickname();
+		// String password = t.getPassword();
+		
+		// Verify email is unique in DB
+		// Verify nickname is unique in DB
+		// Verify password meets our conditions????
+		server.registerClient(this, nickname);
 	}
 
 	@Override
