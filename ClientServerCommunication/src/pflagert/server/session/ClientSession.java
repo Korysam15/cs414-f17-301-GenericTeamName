@@ -57,6 +57,8 @@ public class ClientSession extends AbstractSession {
 						read = 0;
 						readBuffer.clear();
 					} else {
+						System.out.println("SIZE: " + size + " is an invalid ammount of bytes.");
+						System.out.println("returning");
 						return;
 					}
 				} else {
@@ -69,6 +71,7 @@ public class ClientSession extends AbstractSession {
 
 	private int receiveTask(ByteBuffer local, int size, int currentRead) throws IOException {
 		int temp = 0,read = currentRead;
+		
 		if(read < size) {
 			while(local.hasRemaining() && (temp = channel.read(local)) > -1) {
 				read += temp;
@@ -77,12 +80,15 @@ public class ClientSession extends AbstractSession {
 				}
 			}
 		}
-		System.out.println("Done reading the required bytes: " + (read-currentRead));
+		
+		System.out.println("Done reading the required bytes: " + (read - 4));
+		
 		if(temp == -1) {
 			server.clientDisconnected(this, key);
 		} else {
 			createTask(local);
 		}
+		
 		return read;
 	}
 
