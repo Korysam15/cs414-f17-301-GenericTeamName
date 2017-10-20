@@ -1,13 +1,13 @@
 /**
  * 
  */
-package pflagert.server.session;
+package client_server.server.session;
 
 import java.io.IOException;
 import java.nio.channels.SelectionKey;
 
-import pflagert.server.AbstractServer;
-import pflagert.transmission.Task;
+import client_server.server.AbstractServer;
+import client_server.transmission.Task;
 
 /**
  * @author pflagert

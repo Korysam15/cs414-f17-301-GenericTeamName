@@ -1,7 +1,7 @@
 /**
  * 
  */
-package pflagert.client;
+package client_server.client;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -11,9 +11,9 @@ import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 
-import pflagert.transmission.Task;
-import pflagert.transmission.TaskFactory;
-import pflagert.transmission.TestTask;
+import client_server.transmission.MessageTask;
+import client_server.transmission.Task;
+import client_server.transmission.TaskFactory;
 
 /**
  * @author pflagert
@@ -359,7 +359,7 @@ public class Client extends AbstractClient {
 			Client client = new Client(address);
 			String msg = "This is my first test";
 			while(true) {
-				client.sendToServer(new TestTask(msg));
+				client.sendToServer(new MessageTask(msg));
 				System.out.println("Just chillen");
 				Thread.sleep(200000);
 				msg+=msg;

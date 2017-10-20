@@ -1,7 +1,7 @@
 /**
  * 
  */
-package pflagert.transmission.util;
+package client_server.transmission.util;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
@@ -10,8 +10,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import pflagert.transmission.Task;
-import pflagert.transmission.TaskFactory;
+import client_server.transmission.Task;
+import client_server.transmission.TaskFactory;
 
 /**
  * @author pflagert

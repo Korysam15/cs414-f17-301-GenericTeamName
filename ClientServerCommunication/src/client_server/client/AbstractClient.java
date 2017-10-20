@@ -1,14 +1,14 @@
 /**
  * 
  */
-package pflagert.client;
+package client_server.client;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 
-import pflagert.transmission.Task;
+import client_server.transmission.Task;
 
 /**
  * @author pflagert

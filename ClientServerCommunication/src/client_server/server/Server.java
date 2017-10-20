@@ -1,4 +1,4 @@
-package pflagert.server;
+package client_server.server;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -16,9 +16,9 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import pflagert.server.events.ReceiveEvent;
-import pflagert.server.session.ClientSession;
-import pflagert.transmission.Task;
+import client_server.server.events.ReceiveEvent;
+import client_server.server.session.ClientSession;
+import client_server.transmission.Task;
 
 /**
  * @author pflagert

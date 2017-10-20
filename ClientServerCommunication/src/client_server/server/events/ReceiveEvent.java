@@ -1,8 +1,8 @@
-package pflagert.server.events;
+package client_server.server.events;
 
 import java.io.IOException;
 
-import pflagert.server.session.ClientSession;
+import client_server.server.session.ClientSession;
 
 public class ReceiveEvent implements Event{
 

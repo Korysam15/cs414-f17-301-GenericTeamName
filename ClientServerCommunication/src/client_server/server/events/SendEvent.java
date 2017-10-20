@@ -1,4 +1,4 @@
-package pflagert.server.events;
+package client_server.server.events;
 
 public class SendEvent implements Event {
 

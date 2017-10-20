@@ -1,7 +1,7 @@
 /**
  * 
  */
-package pflagert.transmission;
+package client_server.transmission;
 
 /**
  * @author pflagert

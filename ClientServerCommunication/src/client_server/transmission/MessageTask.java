@@ -1,12 +1,12 @@
-package pflagert.transmission;
+package client_server.transmission;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import pflagert.transmission.util.ReadUtils;
-import pflagert.transmission.util.WriteUtils;
+import client_server.transmission.util.ReadUtils;
+import client_server.transmission.util.WriteUtils;
 
 /**
  * @author pflagert

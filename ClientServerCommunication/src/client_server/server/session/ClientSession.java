@@ -1,7 +1,7 @@
 /**
  * 
  */
-package pflagert.server.session;
+package client_server.server.session;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -11,10 +11,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import pflagert.server.AbstractServer;
-import pflagert.server.Server;
-import pflagert.transmission.Task;
-import pflagert.transmission.TaskFactory;
+import client_server.server.AbstractServer;
+import client_server.server.Server;
+import client_server.transmission.Task;
+import client_server.transmission.TaskFactory;
 
 /**
  * @author pflagert

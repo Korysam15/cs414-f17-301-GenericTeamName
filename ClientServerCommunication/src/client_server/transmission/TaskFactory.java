@@ -1,13 +1,13 @@
 /**
  * 
  */
-package pflagert.transmission;
+package client_server.transmission;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 
-import pflagert.transmission.util.ReadUtils;
+import client_server.transmission.util.ReadUtils;
 
 /**
  * @author pflagert
