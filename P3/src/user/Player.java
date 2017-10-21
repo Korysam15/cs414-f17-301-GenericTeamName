@@ -50,7 +50,7 @@ public class Player {
 	/* Creates a new invitation with a message and an arraylist of players to send it to */
 	public void sendInvitation(String message,ArrayList<Player> playersToInvite) throws IOException
 	{
-		this.invite = new Invitation(this.nickName,message,playersToInvite);
+//		this.invite = new Invitation(this.nickName,message,playersToInvite);
 		this.client.sendToServer(new InviteTask(this.invite));
 	}
 	
