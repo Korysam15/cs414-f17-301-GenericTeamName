@@ -39,7 +39,7 @@ public class Server extends AbstractServer {
 	public static final int SELECT_TIME_OUT = 3000; // Milliseconds
 	
 	/* Used for debugging */
-	public static final boolean DEBUG = true;
+	public static final boolean DEBUG = false;
 	public static final String DEBUG_TAB = "    ";
 	private static int NUM_TABS = 0;
 	
