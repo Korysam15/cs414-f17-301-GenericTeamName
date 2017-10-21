@@ -1,9 +1,6 @@
 package user;
 
 public class Profile {
-	
-	
-	
 	public static void main(String[] args) {
 		Profile nick = new Profile("Nick");
 		nick.history.addWin();
