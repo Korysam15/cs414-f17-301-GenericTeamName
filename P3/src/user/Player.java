@@ -1,5 +1,6 @@
 package user;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,12 +9,17 @@ import java.util.Scanner;
 import banqi.BanqiGame;
 import client_server.client.AbstractClient;
 import client_server.client.Client;
+import client_server.server.AbstractServer;
 import client_server.transmission.CreateGameTask;
 import client_server.transmission.InviteTask;
+import client_server.transmission.LoginTask;
 import client_server.transmission.MessageTask;
+import client_server.transmission.RegisterTask;
 import client_server.transmission.Task;
 
 public class Player {
+	public static InputStream SCANNER; 
+	
 	/* GLOBAL VARIABLES */
 	private String email; // Unique
 	private String password;
@@ -22,6 +28,7 @@ public class Player {
 	private BanqiGame game;
 	private Profile profile;
 	private AbstractClient client;
+	
 
 	/* Constructor */
 	public Player(String email,String password,String nickName,String host,int port) throws IOException
@@ -48,10 +55,10 @@ public class Player {
 	}
 
 	/* Creates a new invitation with a message and an arraylist of players to send it to */
-	public void sendInvitation(String message,ArrayList<Player> playersToInvite) throws IOException
+	public void sendInvitation(String message,ArrayList<String> playersToInvite) throws IOException
 	{
 		this.invite = new Invitation(this.nickName,message,playersToInvite);
-		this.client.sendToServer(new InviteTask(this.invite));
+		this.client.sendToServer(invite.toTask());
 	}
 	
 	public AbstractClient getClient() 
@@ -95,8 +102,9 @@ public class Player {
 		}
 		
 		/* Will prompt the user for their login/registration credentials. Will update the player variable. */
-		public static void Authenticate(String host,int port) throws IOException
+		public static Player Authenticate(String host,int port) throws IOException
 		{
+			Player player;
 			Scanner scanner = new Scanner(System.in);
 			while(true)
 			{
@@ -117,7 +125,9 @@ public class Player {
 					else
 					{
 						// add player to server/database
-						Player player = new Player(email,password,nickName,host,port);
+						player = new Player(email,password,nickName,host,port);
+						player.getClient().sendToServer(new RegisterTask(email,nickName,password));
+						ActivePlayer.setInstance(player);
 						break;
 					}
 				}
@@ -133,7 +143,9 @@ public class Player {
 						String nickName = scanner.nextLine();
 						if(checkIfRegistered(email,nickName))
 						{
-							Player player = getPlayerAccount(email,nickName);
+							player = getPlayerAccount(email,nickName);
+//							player.getClient().sendToServer(new LoginTask(email,nickName,password));
+							ActivePlayer.setInstance(player);
 							player.client = new Client(host,port);
 							break;
 						}
@@ -149,8 +161,7 @@ public class Player {
 					System.out.println("Invalid input. Please type in 'register' to register or 'login' to login.\n");
 				}
 			}
-			scanner.close();
-			
+			return player;
 		}
 		public static void main(String[] args) throws IOException, InterruptedException {
 			if(args.length != 2) 
@@ -173,7 +184,8 @@ public class Player {
 					System.out.println("Invalid port: " + args[1]);
 					return;
 				}
-				Authenticate(host,port);
+				Player tanner = Authenticate(host,port);
+				tanner.sendInvitation("Whats up dude!", new ArrayList<String>(Arrays.asList("Tanner","Kory")));
 			}
 		}
 	}

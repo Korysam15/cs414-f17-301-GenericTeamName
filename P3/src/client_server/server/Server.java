@@ -7,6 +7,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -44,6 +45,11 @@ public class Server extends AbstractServer {
 	private static int NUM_TABS = 0;
 	
 	/**
+	 * Used for sending registered clients the nicknames of all the players 
+	 */
+	private List<String> playerNicknames;
+	
+	/**
 	 * Keeps track of whether or not the server is running. 
 	 */
 	private Boolean isRunning;
@@ -69,6 +75,7 @@ public class Server extends AbstractServer {
 			serverChannel.configureBlocking(false);
 			serverChannel.socket().bind(address);
 			serverChannel.register(selector, SelectionKey.OP_ACCEPT);
+			playerNicknames = new LinkedList<String>();
 			isRunning = false;
 			initThreadPool();
 		}		
@@ -207,6 +214,13 @@ public class Server extends AbstractServer {
 	}
 
 	@Override
+	public List<String> getClientNicknames() {
+		synchronized(playerNicknames) {
+			return new ArrayList<String>(playerNicknames);
+		}
+	}
+	
+	@Override
 	public List<ClientSession> getClients() {
 		List<ClientSession> sessions = new LinkedList<ClientSession>();
 		synchronized(clientMap) {
@@ -248,6 +262,9 @@ public class Server extends AbstractServer {
 	public void registerClient(ClientSession client, String ID) {
 		synchronized(registeredClients) {
 			registeredClients.put(ID, client);
+		}
+		synchronized(playerNicknames) {
+			playerNicknames.add(ID);
 		}
 		System.out.println("Registered: " + ID);
 	}

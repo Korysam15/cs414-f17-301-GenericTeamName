@@ -65,11 +65,11 @@ public class ClientSession extends AbstractSession {
 					if(size >= 1) {
 						localWrite = ByteBuffer.allocate(size);
 						if(read > 4) {
-							localWrite.put(readBuffer);
+							fillLocal(localWrite,readBuffer);
 						}
 						total += receiveTask(localWrite,size, read);
-						read = 0;
-						readBuffer.clear();
+						read -= size;
+						//readBuffer.clear();
 					} else {
 						debugPrintln("SIZE: " + size + " is an invalid ammount of bytes.");
 						debugPrintln("returning");
@@ -79,6 +79,9 @@ public class ClientSession extends AbstractSession {
 					continue;
 				}
 			}
+			if(read > 0 && readBuffer.remaining() >= 4) {
+				handleOverread(readBuffer);
+			}
 			if(temp == -1 || !channel.isConnected()) {
 				server.clientDisconnected(this, key);
 			} else {
@@ -86,6 +89,31 @@ public class ClientSession extends AbstractSession {
 			}
 		}
 		debugPrintFooter("receive");
+	}
+	
+	private void handleOverread(ByteBuffer readBuffer) throws IOException {
+		debugPrintHeader("handleOverread");
+		while(readBuffer.remaining() >= 4) {
+			int size = readBuffer.getInt();
+			debugPrintln("READ " + size + " For the amount of required bytes");
+			if(size >= 1) {
+				ByteBuffer localWrite = ByteBuffer.allocate(size);
+				fillLocal(localWrite,readBuffer);
+				receiveTask(localWrite,size, 0);
+			} else {
+				debugPrintln("SIZE: " + size + " is an invalid ammount of bytes.");
+				debugPrintln("returning");
+				return;
+			}
+			
+		}
+		debugPrintFooter("handleOverread");
+	}
+	
+	private void fillLocal(ByteBuffer local, ByteBuffer readBuffer) {
+		while(local.hasRemaining() && readBuffer.hasRemaining()) {
+			local.put(readBuffer.get());
+		}
 	}
 
 	private int receiveTask(ByteBuffer local, int size, int currentRead) throws IOException {

@@ -88,6 +88,13 @@ public abstract class AbstractServer {
 	public abstract ClientSession getRegisteredClient(String ID);
 	
 	/**
+	 * The getClientNicknames method returns a list of Strings that represents
+	 * all of the registered clients.
+	 * @return A list of player nicknames
+	 */
+	public abstract List<String> getClientNicknames();
+	
+	/**
 	 * The getClients method returns a List of ClientSessions. 
 	 * Note that the getClients method constructs the list of clients from the clientMap.
 	 * @return A list of ClientSessions
