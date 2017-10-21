@@ -1,5 +1,6 @@
 package user;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,6 +18,8 @@ import client_server.transmission.RegisterTask;
 import client_server.transmission.Task;
 
 public class Player {
+	public static InputStream SCANNER; 
+	
 	/* GLOBAL VARIABLES */
 	private String email; // Unique
 	private String password;
@@ -55,11 +58,7 @@ public class Player {
 	public void sendInvitation(String message,ArrayList<String> playersToInvite) throws IOException
 	{
 		this.invite = new Invitation(this.nickName,message,playersToInvite);
-		ArrayList<Task> tasks = this.invite.getListOfTasks();
-		for(Task invite: tasks)
-		{
-			this.client.sendToServer(invite);
-		}
+		this.client.sendToServer(invite.toTask());
 	}
 	
 	public AbstractClient getClient() 
@@ -162,7 +161,6 @@ public class Player {
 					System.out.println("Invalid input. Please type in 'register' to register or 'login' to login.\n");
 				}
 			}
-			scanner.close();
 			return player;
 		}
 		public static void main(String[] args) throws IOException, InterruptedException {
@@ -187,7 +185,7 @@ public class Player {
 					return;
 				}
 				Player tanner = Authenticate(host,port);
-				tanner.sendInvitation("Whats up dude!", new ArrayList<String>(Arrays.asList("Kory")));
+				tanner.sendInvitation("Whats up dude!", new ArrayList<String>(Arrays.asList("Tanner","Kory")));
 			}
 		}
 	}

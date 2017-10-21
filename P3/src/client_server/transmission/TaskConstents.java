@@ -12,10 +12,10 @@ public class TaskConstents {
 	public static final int REGISTER_TASK = 0;
 	public static final int LOGIN_TASK = 1;
 	public static final int FORWARD_TASK = 2;
-	public static final int INVITE_TASK = 3;
-	public static final int CREATGAME_TASK = 4;
-/*	public static final int TASK = 5;
-	public static final int TASK = 6;
+	public static final int MULTI_FORWARD_TASK = 3;
+	public static final int INVITE_TASK = 4;
+	public static final int CREATGAME_TASK = 5;
+/*	public static final int TASK = 6;
 	public static final int TASK = 7;
 	public static final int TASK = 8;
 	public static final int TASK = 9;

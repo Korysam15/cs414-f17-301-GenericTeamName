@@ -40,7 +40,7 @@ public class Server extends AbstractServer {
 	public static final int SELECT_TIME_OUT = 3000; // Milliseconds
 	
 	/* Used for debugging */
-	public static final boolean DEBUG = false;
+	public static final boolean DEBUG = true;
 	public static final String DEBUG_TAB = "    ";
 	private static int NUM_TABS = 0;
 	
@@ -75,6 +75,7 @@ public class Server extends AbstractServer {
 			serverChannel.configureBlocking(false);
 			serverChannel.socket().bind(address);
 			serverChannel.register(selector, SelectionKey.OP_ACCEPT);
+			playerNicknames = new LinkedList<String>();
 			isRunning = false;
 			initThreadPool();
 		}		

@@ -3,6 +3,7 @@ import java.util.ArrayList;
 
 import client_server.transmission.ForwardTask;
 import client_server.transmission.InviteTask;
+import client_server.transmission.MultiForwardTask;
 import client_server.transmission.Task;
 
 public class Invitation {
@@ -39,14 +40,10 @@ public class Invitation {
 		return message;
 	}
 	
-	public ArrayList<Task> getListOfTasks()
+	public Task toTask()
 	{
-		ArrayList<Task> listOfTasks = new ArrayList<Task>();
-		for(String playerToInvite: this.playersToInvite)
-		{
-			listOfTasks.add(new ForwardTask(this.fromPlayer,new InviteTask(this.fromPlayer,message,playerToInvite),playerToInvite));
-		}
-		return listOfTasks;
+		Task invite = new InviteTask(fromPlayer,message);
+		return new MultiForwardTask(fromPlayer,invite,playersToInvite);
 	}
 	
 	public ArrayList<String> getPlayersToInvite() 
