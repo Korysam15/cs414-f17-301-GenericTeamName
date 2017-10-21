@@ -11,6 +11,7 @@ import client_server.client.Client;
 import client_server.transmission.CreateGameTask;
 import client_server.transmission.InviteTask;
 import client_server.transmission.MessageTask;
+import client_server.transmission.Task;
 
 public class Player {
 	/* GLOBAL VARIABLES */
@@ -51,6 +52,11 @@ public class Player {
 	{
 		this.invite = new Invitation(this.nickName,message,playersToInvite);
 		this.client.sendToServer(new InviteTask(this.invite));
+	}
+	
+	public AbstractClient getClient() 
+	{
+		return this.client;
 	}
 
 	public void acceptInvitation()
