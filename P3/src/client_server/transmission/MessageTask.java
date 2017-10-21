@@ -34,7 +34,7 @@ public class MessageTask extends Task {
 
 	public int getTaskCode() 
 	{
-		return TaskConstents.TEST_TASK;
+		return TaskConstents.MESSAGE_TASK;
 	}
 
 	public byte[] toByteArray() throws IOException 
@@ -48,7 +48,7 @@ public class MessageTask extends Task {
 
 	public String toString() 
 	{
-		return "Taskcode: " + TaskConstents.TEST_TASK + " Message: " + msg ;
+		return "Taskcode: " + TaskConstents.MESSAGE_TASK + " Message: " + msg ;
 	}
 
 	public void run() 

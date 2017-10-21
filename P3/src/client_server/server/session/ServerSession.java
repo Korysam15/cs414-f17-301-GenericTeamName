@@ -6,6 +6,7 @@ package client_server.server.session;
 import java.nio.channels.SelectionKey;
 
 import client_server.server.AbstractServer;
+import client_server.transmission.RegisterTask;
 import client_server.transmission.Task;
 
 /**
@@ -54,7 +55,7 @@ public class ServerSession extends AbstractSession{
 	}
 
 	@Override
-	public void registerWithServer() {
+	public void registerWithServer(RegisterTask t) {
 		// TODO Auto-generated method stub
 		
 	}

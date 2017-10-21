@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.channels.SelectionKey;
 
 import client_server.server.AbstractServer;
+import client_server.transmission.RegisterTask;
 import client_server.transmission.Task;
 
 /**
@@ -87,12 +88,12 @@ public abstract class AbstractSession {
 	
 	public abstract boolean isRegisteredWithServer();
 	
-	public abstract void registerWithServer();
+	public abstract void registerWithServer(RegisterTask t);
 	
 	public abstract String toString();
 	
 	public abstract int hashCode();
 	
-	public abstract boolean equals(Object o);	
+	public abstract boolean equals(Object o);
 	
 }

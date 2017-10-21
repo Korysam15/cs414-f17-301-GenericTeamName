@@ -39,7 +39,7 @@ public class Server extends AbstractServer {
 	public static final int SELECT_TIME_OUT = 3000; // Milliseconds
 	
 	/* Used for debugging */
-	public static final boolean DEBUG = false;
+	public static final boolean DEBUG = true;
 	public static final String DEBUG_TAB = "    ";
 	private static int NUM_TABS = 0;
 	
@@ -248,7 +248,8 @@ public class Server extends AbstractServer {
 	public void registerClient(ClientSession client, String ID) {
 		synchronized(registeredClients) {
 			registeredClients.put(ID, client);
-		}	
+		}
+		System.out.println("Registered: " + ID);
 	}
 
 	@Override
@@ -379,6 +380,7 @@ public class Server extends AbstractServer {
 			InetSocketAddress address = new InetSocketAddress(port);
 			Server server = null;
 			server = new Server(address);
+			ActiveServer.setInstance(server);
 			server.start();
 			
 		}
