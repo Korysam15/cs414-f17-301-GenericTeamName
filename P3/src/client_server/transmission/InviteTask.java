@@ -6,6 +6,9 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import client_server.server.AbstractServer;
+import client_server.server.ActiveServer;
+import client_server.server.session.ClientSession;
 import client_server.transmission.util.ReadUtils;
 import client_server.transmission.util.WriteUtils;
 import user.Invitation;
@@ -48,11 +51,9 @@ public class InviteTask extends Task {
 	
 	public void run()
 	{
-		System.out.println(this.playerFrom + " has invited you to play a game of Banqi.");
-		System.out.println('"' + this.message + '"');
-		for(String name: this.playersToInvite)
+		for(String playerToInvite: this.playersToInvite)
 		{
-			System.out.println(name);
+			new ForwardTask(this.playerFrom,this,playerToInvite);
 		}
-	}
+	}	
 }

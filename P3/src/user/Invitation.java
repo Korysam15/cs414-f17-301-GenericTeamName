@@ -5,11 +5,11 @@ public class Invitation {
 	/* GLOBAL VARIABLES */
 	private String fromPlayer;
 	private String message;
-	private ArrayList<Player> playersToInvite;
+	private ArrayList<String> playersToInvite;
 	
 	
 	/* Constructor */
-	public Invitation(String fromPlayer,String message, ArrayList<Player> playersToInvite)
+	public Invitation(String fromPlayer,String message, ArrayList<String> playersToInvite)
 	{
 		this.fromPlayer = fromPlayer;
 		this.message = message;
@@ -18,7 +18,7 @@ public class Invitation {
 	
 	public void sendInvite()
 	{
-		for(Player player : this.playersToInvite)
+		for(String player : this.playersToInvite)
 		{
 			/* Use server to send invite to players */
 			System.out.println(player);
@@ -38,9 +38,9 @@ public class Invitation {
 	public ArrayList<String> getPlayersToInvite() 
 	{
 		ArrayList<String> ret = new ArrayList<String>(playersToInvite.size());
-		for(Player p: playersToInvite)
+		for(String nickName: playersToInvite)
 		{
-			ret.add(p.getNickName());
+			ret.add(nickName);
 		}
 		return ret;
 	}
