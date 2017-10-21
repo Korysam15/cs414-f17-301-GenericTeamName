@@ -7,6 +7,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -211,6 +212,13 @@ public class Server extends AbstractServer {
 		}
 	}
 
+	@Override
+	public List<String> getClientNicknames() {
+		synchronized(playerNicknames) {
+			return new ArrayList<String>(playerNicknames);
+		}
+	}
+	
 	@Override
 	public List<ClientSession> getClients() {
 		List<ClientSession> sessions = new LinkedList<ClientSession>();
