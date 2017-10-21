@@ -44,6 +44,11 @@ public class Server extends AbstractServer {
 	private static int NUM_TABS = 0;
 	
 	/**
+	 * Used for sending registered clients the nicknames of all the players 
+	 */
+	private List<String> playerNicknames;
+	
+	/**
 	 * Keeps track of whether or not the server is running. 
 	 */
 	private Boolean isRunning;
@@ -248,6 +253,9 @@ public class Server extends AbstractServer {
 	public void registerClient(ClientSession client, String ID) {
 		synchronized(registeredClients) {
 			registeredClients.put(ID, client);
+		}
+		synchronized(playerNicknames) {
+			playerNicknames.add(ID);
 		}
 		System.out.println("Registered: " + ID);
 	}
