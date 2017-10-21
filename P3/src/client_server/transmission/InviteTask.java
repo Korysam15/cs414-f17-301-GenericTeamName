@@ -70,5 +70,6 @@ public class InviteTask extends Task {
 			} catch (Exception e) {
 			}
 		}
+		input.close();
 	}	
 }
