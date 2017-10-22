@@ -357,8 +357,7 @@ public class BanqiGame {
 			else if(!from.getOn().faceUp){
 				flipPiece(from);
 				System.out.println(gameBoard);
-				return;
-
+				break;
 			}
 			else{
 				System.out.println("to");
@@ -374,7 +373,7 @@ public class BanqiGame {
 
 
 					System.out.println(gameBoard);
-					return;
+					break;
 				}
 				System.out.println("Invalid Move - "+from.getOn().getClass()+" can't move like that");
 				

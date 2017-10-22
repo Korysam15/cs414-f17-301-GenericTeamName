@@ -21,15 +21,6 @@ public class Invitation {
 		this.playersToInvite = playersToInvite;
 	}
 	
-	public void sendInvite()
-	{
-		for(String player : this.playersToInvite)
-		{
-			/* Use server to send invite to players */
-			System.out.println(player);
-		}
-	}
-	
 	public String getPlayerFrom()
 	{
 		return fromPlayer;

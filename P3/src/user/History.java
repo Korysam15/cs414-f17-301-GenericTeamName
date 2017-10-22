@@ -77,4 +77,10 @@ public class History {
 		ret += "Games Played: "+this.gamesPlayed;
 		return ret;
 	}
+	
+	public static void main(String[] args)
+	{
+		History history = new History();
+		System.out.println(history);
+	}
 }
