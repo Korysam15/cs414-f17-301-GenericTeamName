@@ -234,6 +234,11 @@ public class BanqiGame {
 		return false;
 
 	}
+	
+	@Override
+	public int hashCode() {
+		return gameID;
+	}
 
 
 

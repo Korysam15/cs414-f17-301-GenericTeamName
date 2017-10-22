@@ -4,29 +4,33 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Random;
 
 import banqi.BanqiGame;
 import client_server.transmission.util.ReadUtils;
 import client_server.transmission.util.WriteUtils;
-import user.Invitation;
+import user.ActivePlayer;
 import user.Player;
 
 public class CreateGameTask extends Task {
-	private String banqiGameInfo;
-	private BanqiGame game;
-	private Player one;
-	private Player two;
+	private int gameID;
+	private String playerOne;
+	private String playerTwo;
 	
-	public CreateGameTask(Player one, Player two)
+	public CreateGameTask(String playerOne, String playerTwo)
 	{
 		super();
-		this.banqiGameInfo = game.toString();
+		Random rand = new Random();
+		this.gameID = rand.nextInt();
+		this.playerOne = playerOne;
+		this.playerTwo = playerTwo;
 	}
 	
 	public CreateGameTask(DataInputStream din) throws IOException
 	{
-		this.banqiGameInfo = ReadUtils.readString(din);
+		gameID = din.readInt();
+		playerOne = ReadUtils.readString(din);
+		playerTwo = ReadUtils.readString(din);
 	}
 	
 	public int getTaskCode() 
@@ -39,13 +43,22 @@ public class CreateGameTask extends Task {
 		ByteArrayOutputStream bs = WriteUtils.getByteOutputStream();
 		DataOutputStream dout = WriteUtils.getDataOutputStream(bs);
 		dout.writeInt(getTaskCode());
-		WriteUtils.writeString(this.banqiGameInfo, dout);
+		dout.writeInt(gameID);
+		WriteUtils.writeString(playerOne, dout);
+		WriteUtils.writeString(playerTwo, dout);
 		return WriteUtils.getBytesAndCloseStreams(bs,dout);
 	}
 	
 	public void run()
 	{
-		System.out.println("Banqi Game ID: " + this.banqiGameInfo);
-		// Have server send game to both players
+		Player player = ActivePlayer.getInstance();
+		if(player != null) {
+			createGame(player);
+		}
+	}
+	
+	private void createGame(Player player) {
+		BanqiGame game = new BanqiGame(gameID);
+		player.addGame(gameID, game);
 	}
 }

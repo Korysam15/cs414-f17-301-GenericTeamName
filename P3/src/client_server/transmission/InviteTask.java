@@ -66,7 +66,7 @@ public class InviteTask extends Task {
 			System.out.println("You entered in yes!");
 			Player player = ActivePlayer.getInstance();
 			try {
-				player.getClient().sendToServer(new ForwardTask(player.getNickName(),new MessageTask(player.getNickName() + " has accepted your invitation!"),playerFrom));
+				player.getClient().sendToServer(new ForwardTask(player.getNickName(),new AcceptInviteTask(player.getNickName()),playerFrom));
 			} catch (Exception e) {
 			}
 		}

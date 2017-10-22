@@ -4,6 +4,8 @@ import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Scanner;
 
 import banqi.BanqiGame;
@@ -25,7 +27,7 @@ public class Player {
 	private String password;
 	private String nickName; // Unique
 	private Invitation invite;
-	private BanqiGame game;
+	private HashMap<Integer,BanqiGame> games;
 	private Profile profile;
 	private AbstractClient client;
 	
@@ -36,6 +38,7 @@ public class Player {
 		this.email = email;
 		this.password = password;
 		this.nickName = nickName;
+		games = new HashMap<Integer,BanqiGame>();
 		this.profile = new Profile(nickName);
 		this.client = new Client(host,port);
 	}
@@ -50,8 +53,25 @@ public class Player {
 	public void createNewGame() throws IOException
 	{
 		// User id and timestampe for id of game board
-		this.game = new BanqiGame(0);
+		//this.game = new BanqiGame(0);
 //		this.client.sendToServer(new CreateGameTask(this.game,this,new Player("Sam","alpha","maycellman","127.0.0.01",8080)));
+	}
+	
+	public BanqiGame getGame(int gameID) {
+		synchronized(games) {
+			return games.get(gameID);
+		}
+	}
+	
+	public void addGame(int gameID, BanqiGame game) {
+		synchronized(games) {
+			if(games.containsKey(gameID)) {
+				throw new IllegalArgumentException("Can not have two games with the same game ID");
+			} else {
+				games.put(gameID,game);
+				System.out.println("You are now a player in a new banqi game: " + gameID);
+			}
+		}
 	}
 
 	/* Creates a new invitation with a message and an arraylist of players to send it to */
