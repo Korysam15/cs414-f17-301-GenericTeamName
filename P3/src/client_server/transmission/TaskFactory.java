@@ -88,7 +88,10 @@ public final class TaskFactory {
 			break;
 		
 		case TaskConstents.MOVE_TASK:
-			// t = new MoveTask(din);
+			t = new MoveTask(din);
+			break;
+		case TaskConstents.FLIP_PIECE_TASK:
+			t = new FlipPieceTask(din);
 			break;
 		}
 		
