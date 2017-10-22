@@ -1,7 +1,6 @@
 package user;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -11,13 +10,8 @@ import java.util.Scanner;
 import banqi.BanqiGame;
 import client_server.client.AbstractClient;
 import client_server.client.Client;
-import client_server.server.AbstractServer;
-import client_server.transmission.CreateGameTask;
-import client_server.transmission.InviteTask;
-import client_server.transmission.LoginTask;
 import client_server.transmission.MessageTask;
 import client_server.transmission.RegisterTask;
-import client_server.transmission.Task;
 
 public class Player {
 	public static InputStream SCANNER; 
@@ -43,18 +37,16 @@ public class Player {
 		this.client = new Client(host,port);
 	}
 	
+	/* Gets a Players nickName */
 	public String getNickName()
 	{
 		return this.nickName;
 	}
-
-	/* ------------------------ ADDED CODE ----------------------------------------- */
-	/* Allows a player to make a new Banqi Game */
-	public void createNewGame() throws IOException
+	
+	/* Prints the Profile of a user */
+	public void getProfileInformation()
 	{
-		// User id and timestampe for id of game board
-		//this.game = new BanqiGame(0);
-//		this.client.sendToServer(new CreateGameTask(this.game,this,new Player("Sam","alpha","maycellman","127.0.0.01",8080)));
+		System.out.println(this.profile.toString());
 	}
 	
 	public BanqiGame getGame(int gameID) {
@@ -81,23 +73,11 @@ public class Player {
 		this.client.sendToServer(invite.toTask());
 	}
 	
+	/* Returns an instance of the Players Client */
 	public AbstractClient getClient() 
 	{
 		return this.client;
 	}
-
-	public void acceptInvitation()
-	{
-		// CREATE ACCEPT TASK
-		// send response accept
-	}
-
-	public void rejectInvitation() throws IOException
-	{
-		this.client.sendToServer(new MessageTask("reject invitation"));
-	}
-	
-	/* ------------------------------------------------------------------------------------- */
 
 	public String toString()
 	{

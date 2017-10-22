@@ -142,7 +142,7 @@ public class Client extends AbstractClient {
 			} else {
 				isReceiving = true;
 				constructReceivingThread();
-				System.out.println("Starting Receiver Thread");
+//				System.out.println("Starting Receiver Thread");
 				receivingThread.start();
 			}
 		}
@@ -239,7 +239,7 @@ public class Client extends AbstractClient {
 			synchronized(writeLock) {
 				byte[] data = t.toByteArray();
 				int dataLength = data.length;
-				System.out.println("Sending: " + dataLength + " bytes for TaskCode: " + t.getTaskCode());
+//				System.out.println("Sending: " + dataLength + " bytes for TaskCode: " + t.getTaskCode());
 				ByteBuffer writeBuffer = ByteBuffer.allocate(dataLength+4);
 				writeBuffer.putInt(dataLength);
 				writeBuffer.put(data);
@@ -248,7 +248,7 @@ public class Client extends AbstractClient {
 				while(writeBuffer.hasRemaining()) {
 					written += serverChannel.write(writeBuffer);
 				}
-				System.out.println("Done Sending: " + written + " bytes");
+//				System.out.println("Done Sending: " + written + " bytes");
 			}
 		}
 	}
@@ -285,7 +285,7 @@ public class Client extends AbstractClient {
 				if(read >= 4) {
 					readBuffer.flip();
 					size = readBuffer.getInt();
-					System.out.println("READ " + size + " For the amount of required bytes");
+//					System.out.println("READ " + size + " For the amount of required bytes");
 					if(size >= 1) {
 						localWrite = ByteBuffer.allocate(size);
 						if(read > 4) {
@@ -295,8 +295,8 @@ public class Client extends AbstractClient {
 						read -= size;
 						//readBuffer.clear();
 					} else {
-						System.out.println("SIZE: " + size + " is an invalid ammount of bytes.");
-						System.out.println("returning");
+//						System.out.println("SIZE: " + size + " is an invalid ammount of bytes.");
+//						System.out.println("returning");
 						return;
 					}
 				} else {
@@ -309,7 +309,7 @@ public class Client extends AbstractClient {
 			if(temp == -1 || !isConnected()) {
 				disconnectFromServer();
 			} else {
-				System.out.println("DONE READING BYTES: READ " + total + " TOTAL BYTES");
+//				System.out.println("DONE READING BYTES: READ " + total + " TOTAL BYTES");
 			}
 		}
 	}
@@ -346,11 +346,11 @@ public class Client extends AbstractClient {
 			}
 		}
 
-		System.out.println("Done reading the required bytes: " + (read - 4));
+//		System.out.println("Done reading the required bytes: " + (read - 4));
 
 		if(temp == -1) {
 			disconnectFromServer();
-			System.out.println("Server disconnected");
+//			System.out.println("Server disconnected");
 		} else {
 			handleTask(createTask(local));
 		}

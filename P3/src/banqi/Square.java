@@ -1,4 +1,8 @@
 package banqi;
+/**
+ * @author Sam Maxwell
+ *
+ */
 public class Square {
 	
 	private int x,y; // x,y coordinates of the square
