@@ -1,35 +1,61 @@
 package banqi;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
+import java.util.Scanner;
+import user.Player;
 
+/**
+ * @author Sam
+ *
+ */
 public class BanqiGame {
 
+	
+	
 	private int gameID;            // unique id
 	private GameBoard gameBoard;   // board that the game is played on
 	private Piece pieces[];        // pieces in game
+	private Player first;		   // first Player
+	private Player second;		   // second Player
+	private boolean test=false;	   // TESTING
+	
 
-	public static void main(String []args){
-
-		BanqiGame game= new BanqiGame(1);
+	public static void main(String []args) throws IOException{
+		 Player first = new Player("Sam","alpha","maycellman","127.0.0.01",8080);
+		 Player second = new Player("Sam","alpha","maycellman","127.0.0.01",8080);
+		BanqiGame game= new BanqiGame(1,first,second,true);
 		for(Square s: game.gameBoard.getSquaresOnBoard()){
 			System.out.println(s);
 		}
 
 		System.out.println(game.gameBoard);
-
-		//System.out.println(game.isvalidMove(game.gameBoard.getSquaresOnBoard()[16],game.gameBoard.getSquaresOnBoard()[8]));  //true
-		//System.out.println(game.isvalidMove(game.gameBoard.getSquaresOnBoard()[16],game.gameBoard.getSquaresOnBoard()[9]));  //false
-
+		game.makeMove(game.getSquare("F4"));
+		System.out.println(game.gameBoard);
 
 	}
-	public BanqiGame(int gameID) {
-		super();
+	public BanqiGame(int gameID,Player first, Player second) {
+		
 		this.gameID = gameID;
 		this.gameBoard= new GameBoard();
 		this.pieces= new Piece[32];
+		this.first=first;             
+		this.second=second;
 		getAllPieces();
+
+	}
+	public BanqiGame(int gameID,Player first, Player second, boolean test) {
+		
+		
+		this.gameID = gameID;
+		this.gameBoard= new GameBoard();
+		this.pieces= new Piece[32];
+		this.test=test;
+		getAllPieces();
+		
 
 	}
 
@@ -40,7 +66,15 @@ public class BanqiGame {
 			list.add(i);
 		}
 
-		Collections.shuffle(list);                      //randomize list
+		
+		if(test){
+			
+			Collections.shuffle(list,new Random(123)); 
+		}
+		else{
+			Collections.shuffle(list);                      //randomize list
+		}
+		
 
 
 		//red pieces
@@ -132,32 +166,32 @@ public class BanqiGame {
 	}
 
 
-
-
-	/*Check every time whether the piece clicked is faceUp 
-	 * or
-	 * Have the server know.
-	 * If the piece clicked is face up wait for another click then call isvalidMove. 
-	 * If the piece clicked is face down immediately call flipPiece  */
-
-
-
-	public  void movePiece(Square from, Square to){
+	public  boolean movePiece(Square from, Square to){
 
 
 		if(getValidMoves(from).contains(to)){        //check if the move is valid
 
 			to.setOn(from.getOn());
 			from.setOn(null);
+			return true;
 		}
 
-
+		return false;
 
 
 
 
 	}
-	
+	public boolean makeMove(Square from){
+
+		if(from.getOn().faceUp==false)
+		{
+			from.getOn().flipPiece();
+			return true;
+		}
+		return false;
+
+	}
 	public boolean flipPiece(Square from){
 
 		if(from.getOn().faceUp==false)
@@ -185,34 +219,36 @@ public class BanqiGame {
 
 		}
 		else{
+			if(from.getY()!=0){
+				Square up =gameBoard.getSquare(from.getX(), from.getY()-1);
+				if(up.isEmpty()||canOverTake(from,up)){   //check square above
 
-			Square up =gameBoard.getSquare(from.getX(), from.getY()-1);
-			if(from.getY()!=0&&(up.isEmpty()||canOverTake(from,up))){   //check square above
-
-				validMoves.add(up);
+					validMoves.add(up);
+				}
 			}
+			if(from.getY()!=3){
+				Square down =gameBoard.getSquare(from.getX(), from.getY()+1);
+				if(down.isEmpty()||canOverTake(from,down)){  //check square below
 
+					validMoves.add(down);
+				}
 
-			Square down =gameBoard.getSquare(from.getX(), from.getY()+1);
-			if(from.getY()!=3&&(down.isEmpty()||canOverTake(from,down))){  //check square below
-
-				validMoves.add(down);
 			}
+			if(from.getX()!=0){
+				Square left =gameBoard.getSquare(from.getX()-1, from.getY());
+				if(left.isEmpty()||canOverTake(from,left)){  //check square to the left
 
+					validMoves.add(left);
+				}
 
-			Square left =gameBoard.getSquare(from.getX()-1, from.getY());
-			if(from.getX()!=0&&(left.isEmpty()||canOverTake(from,left))){  //check square to the left
-
-				validMoves.add(left);
 			}
+			if(from.getX()!=7){
+				Square right =gameBoard.getSquare(from.getX()+1, from.getY());
+				if(right.isEmpty()||canOverTake(from,right)){  //check square to the right
 
-
-			Square right =gameBoard.getSquare(from.getX()+1, from.getY());
-			if(from.getX()!=7&&(right.isEmpty()||canOverTake(from,right))){  //check square to the right
-
-				validMoves.add(right);
+					validMoves.add(right);
+				}
 			}
-
 
 		}
 
@@ -232,6 +268,74 @@ public class BanqiGame {
 			return from.getOn().rank>=to.getOn().rank;
 		}
 		return false;
+
+	}
+
+	public void promptTurn(Player p){
+		System.out.println("Your Turn!");
+		while(true)
+		{
+
+			System.out.println("Make a move!  ex. A1");
+			Scanner scanner = new Scanner(System.in);
+			String in1 = scanner.nextLine();
+			if(in1.length()>2){
+				System.out.println("Invalid Move");
+			}
+			Square from =getSquare(in1);
+
+			if(from.isEmpty()){
+				System.out.println("Invalid Move - No piece at: "+in1);
+			}
+			else if(!from.getOn().faceUp){
+				flipPiece(from);
+				System.out.println(gameBoard);
+				return;
+
+			}
+			else{
+				System.out.println("to");
+
+
+				String in2 = scanner.nextLine();
+				if(in2.length()>2){
+					System.out.println("Invalid Move");
+				}
+				Square to =getSquare(in2);
+				if(movePiece(from,to)){
+
+
+
+					System.out.println(gameBoard);
+					return;
+				}
+				System.out.println("Invalid Move - "+from.getOn().getClass()+" can't move like that");
+				
+			}
+			//check for the right color 
+
+
+		}
+
+	}
+	public Square getSquare(String from){
+		
+		from=from.toUpperCase();
+		char letter= from.charAt(0);
+		char num=from.charAt(1);
+
+		int x=(Character.getNumericValue(letter)-10);
+		int y = num-49;
+
+		Square s=gameBoard.getSquare(x, y);
+
+		return s;
+
+
+
+
+
+
 
 	}
 
