@@ -49,6 +49,10 @@ public class CreateGameTask extends Task {
 		return WriteUtils.getBytesAndCloseStreams(bs,dout);
 	}
 	
+	public int getGameID() {
+		return gameID;
+	}
+	
 	public void run()
 	{
 		Player player = ActivePlayer.getInstance();

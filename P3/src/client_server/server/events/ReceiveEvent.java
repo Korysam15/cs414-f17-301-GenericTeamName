@@ -18,6 +18,7 @@ public class ReceiveEvent implements Event{
 			client.receive();
 		} catch (IOException e) {
 			System.out.println("Receive failed");
+			e.printStackTrace();
 		}
 	}
 
