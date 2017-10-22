@@ -1,10 +1,11 @@
-package user;
+
+
 /**
  * @author Nick Wilson
  * 
  */
 public class History {
-	private int wins, losses, gamesPlayed;
+	private int wins, losses, draws, gamesPlayed;
 	/**
 	 * History constructor;
 	 */
@@ -12,7 +13,14 @@ public class History {
 		this.wins = 0;
 		this.losses = 0;
 		this.gamesPlayed = 0;
+		this.draws = 0;
 	}
+	
+	public void addDraw(){
+		this.draws++;
+		this.gamesPlayed++;
+	}
+	
 	/**
 	 * Resets all stats for this History
 	 */
@@ -74,6 +82,7 @@ public class History {
 		ret += "\n";
 		ret += "Losses: "+this.losses + "\tLoss Ratio: "+this.getLossRatio();
 		ret += "\n";
+		ret += "Draws: " + this.draws + "\n";
 		ret += "Games Played: "+this.gamesPlayed;
 		return ret;
 	}
