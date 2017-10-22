@@ -81,9 +81,15 @@ public final class TaskFactory {
 			break;
 		case TaskConstents.ACCEPT_INVITE_TASK:
 			t = new AcceptInviteTask(din);
-        
+			break;
+			
 		case TaskConstents.REJECTINVITE_TASK:
 			t = new RejectInviteTask(din);
+			break;
+		
+		case TaskConstents.MOVE_TASK:
+			// t = new MoveTask(din);
+			break;
 		}
 		
 		return t;
