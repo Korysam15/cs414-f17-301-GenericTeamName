@@ -124,7 +124,7 @@ public class BanqiGame {
 			Collections.shuffle(list,new Random(123)); 
 		}
 		else{
-			Collections.shuffle(list);                      //randomize list
+			Collections.shuffle(list,new Random(gameID));                      //randomize list
 		}
 		
 

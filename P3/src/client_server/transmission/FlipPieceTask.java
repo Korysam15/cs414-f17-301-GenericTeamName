@@ -36,7 +36,7 @@ public class FlipPieceTask extends Task {
 	}
 
 	public int getTaskCode() {
-		return TaskConstents.MOVE_TASK;
+		return TaskConstents.FLIP_PIECE_TASK;
 	}
 
 	public byte[] toByteArray() throws IOException {
