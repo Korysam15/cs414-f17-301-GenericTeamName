@@ -79,6 +79,9 @@ public final class TaskFactory {
 		case TaskConstents.CREATGAME_TASK:
 			t = new CreateGameTask(din);
 			break;
+			
+		case TaskConstents.REJECTINVITE_TASK:
+			t = new RejectInviteTask(din);
 		}
 		
 		return t;

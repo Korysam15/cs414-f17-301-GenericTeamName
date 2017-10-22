@@ -51,17 +51,17 @@ public class InviteTask extends Task {
 	
 	public void run()
 	{
-		System.out.print(this.playerFrom + " wants to play a game of Banqi! Do you wish to accept or reject?: ");
-		BufferedReader fromConsole = 
-				new BufferedReader(new InputStreamReader(System.in));
-		String choice = "no";
+		System.out.print(this.playerFrom + " wants to play a game of Banqi! Do you wish to accept or reject?\n");
+		System.out.print("Type 'accept' to accept and 'reject' to reject: ");
+		BufferedReader fromConsole = new BufferedReader(new InputStreamReader(System.in));
+		String choice = "reject";
 		try {
 			choice = fromConsole.readLine();
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		if(choice.toLowerCase().equals("yes"))
+		if(choice.toLowerCase().equals("accept"))
 		{
 			System.out.println("You entered in yes!");
 			Player player = ActivePlayer.getInstance();
@@ -75,7 +75,7 @@ public class InviteTask extends Task {
 			System.out.println("You entered in no!");
 			Player player = ActivePlayer.getInstance();
 			try {
-				player.getClient().sendToServer(new ForwardTask(player.getNickName(),new MessageTask(player.getNickName() + " has rejected your invitation!"),playerFrom));
+				player.getClient().sendToServer(new ForwardTask(player.getNickName(),new RejectInviteTask(player.getNickName()," has rejected your invitation!"),playerFrom));
 			} catch (Exception e) {
 			}
 		}
