@@ -26,21 +26,45 @@ public class GameBoard {
 	}
 	public Square getSquare(int x,int y)
 	{
+		System.out.println(x+" "+y);
+		
+		if(y>3||x>7)
+		{
+			return null;
+		}
 		return squaresOnBoard[8*y+x];
 	}
 
 	@Override
 	public String toString() {
-		String board = null;
+
+		String board = "       A       B       C       D       E       F       G       H  \n";
 		for(int i=0;i<4;i++){
-			board+="\n----------------------------------------\n";
+
+			board+="   # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # \n";
+			board+="   #       #       #       #       #       #       #       #       #\n";
+			board+=i+1+"  ";
+			
 			for(int j=0;j<8;j++){
-				board+="| "+squaresOnBoard[8*i+j].getOn().rank+" |";
+				if(squaresOnBoard[8*i+j].getOn().faceUp){
+					
+					board+="#   "+squaresOnBoard[8*i+j].getOn().icon+"   ";
+					
+				}
+				else{
+				
+					board+="#   "+0+"   ";
+					
+					
+				}
+				
 			}
+			board+="#\n   #       #       #       #       #       #       #       #       #\n";
+			
 
 
 		}
-		board+="\n----------------------------------------";
+		board+="   # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # \n";
 		return board;
 	}
 
