@@ -405,6 +405,9 @@ public class BanqiGame {
 
 
 	}
+	public Square getSquare(int x, int y) {
+		return gameBoard.getSquare(x, y);
+	}
 
 
 
