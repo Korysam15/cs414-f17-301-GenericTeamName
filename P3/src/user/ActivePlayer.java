@@ -4,7 +4,7 @@ import client_server.server.AbstractServer;
 /**
 	 * ActiveServer is responsible for managing/accessing an AbstractServer.
 	 * @author pflagert
-	 *
+	 *test
 	 */
 	public class ActivePlayer {
 		private static Player instance;
