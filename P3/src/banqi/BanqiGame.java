@@ -74,6 +74,16 @@ public class BanqiGame {
 		
 
 	}
+  
+  	public BanqiGame(int gameID) {
+		super();
+		this.gameID = gameID;
+		this.gameBoard= new GameBoard();
+		this.pieces= new Piece[32];
+		getAllPieces();
+
+	}
+  
 	public BanqiGame(int gameID,Player first, Player second) {
 		
 		this.gameID = gameID;
