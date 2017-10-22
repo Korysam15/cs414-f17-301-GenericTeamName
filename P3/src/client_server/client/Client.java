@@ -289,11 +289,11 @@ public class Client extends AbstractClient {
 					if(size >= 1) {
 						localWrite = ByteBuffer.allocate(size);
 						if(read > 4) {
-							localWrite.put(readBuffer);
+							fillLocal(localWrite,readBuffer);
 						}
 						total += receiveTask(localWrite,size, read);
-						read = 0;
-						readBuffer.clear();
+						read -= size;
+						//readBuffer.clear();
 					} else {
 						System.out.println("SIZE: " + size + " is an invalid ammount of bytes.");
 						System.out.println("returning");
@@ -303,11 +303,34 @@ public class Client extends AbstractClient {
 					continue;
 				}
 			}
+			if(read > 0 && readBuffer.remaining() >= 4) {
+				handleOverread(readBuffer);
+			}
 			if(temp == -1 || !isConnected()) {
 				disconnectFromServer();
 			} else {
 				System.out.println("DONE READING BYTES: READ " + total + " TOTAL BYTES");
 			}
+		}
+	}
+	
+	private void handleOverread(ByteBuffer readBuffer) throws IOException {
+		while(readBuffer.remaining() >= 4) {
+			int size = readBuffer.getInt();
+			if(size >= 1) {
+				ByteBuffer localWrite = ByteBuffer.allocate(size);
+				fillLocal(localWrite,readBuffer);
+				receiveTask(localWrite,size, 0);
+			} else {
+				return;
+			}
+			
+		}
+	}
+	
+	private void fillLocal(ByteBuffer local, ByteBuffer readBuffer) {
+		while(local.hasRemaining() && readBuffer.hasRemaining()) {
+			local.put(readBuffer.get());
 		}
 	}
 
