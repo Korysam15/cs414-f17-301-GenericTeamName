@@ -61,12 +61,13 @@ public class FlipPieceTask extends Task {
 			BanqiGame game = player.getGame(gameID);
 			if(game != null) {
 				makeMove(game);
+				game.promptTurn(player, playerWhoMadeMove);
 			}
 		}
 	}
 	
 	private void makeMove(BanqiGame game) {
 		Square from = game.getSquare(fromX, fromY);
-		game.makeMove(from);
+		game.flipPiece(from);
 	}
 }

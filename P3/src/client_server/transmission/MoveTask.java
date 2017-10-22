@@ -70,6 +70,7 @@ public class MoveTask extends Task {
 			BanqiGame game = player.getGame(gameID);
 			if(game != null) {
 				makeMove(game);
+				game.promptTurn(player, playerWhoMadeMove);
 			}
 		}
 	}
