@@ -10,6 +10,9 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import client_server.transmission.ForwardTask;
 import client_server.transmission.MessageTask;
@@ -29,6 +32,17 @@ public class Client extends AbstractClient {
 	 */
 	public static final int SELECT_TIMEOUT = 500;
 
+	/* Thread Pool Initialization variables */
+	public static final int CORE_THREAD_POOL_SIZE = 4;
+	public static final int MAX_THREAD_POOL_SIZE = 8;
+	public static final int THREAD_KEEP_ALIVE_TIME = 10;
+	public static final TimeUnit ALIVE_TIME_UNIT = TimeUnit.MINUTES;
+	
+	/**
+	 * A thread pool to manage tasks
+	 */
+	private ThreadPoolExecutor threadPool;
+	
 	private SocketChannel serverChannel;
 
 	private Boolean isReceiving;
@@ -51,6 +65,7 @@ public class Client extends AbstractClient {
 		writeLock = new Object();
 		readLock = new Object();
 		receivingThread = null;
+		initThreadPool();
 	}
 
 	/**
@@ -80,6 +95,15 @@ public class Client extends AbstractClient {
 	 */
 	public Client(String address, int port) throws IOException {
 		this(new InetSocketAddress(address,port));
+	}
+	
+	private void initThreadPool() {
+		threadPool = new ThreadPoolExecutor(CORE_THREAD_POOL_SIZE,
+				MAX_THREAD_POOL_SIZE,
+				THREAD_KEEP_ALIVE_TIME,
+				ALIVE_TIME_UNIT,
+				new LinkedBlockingQueue<Runnable>());
+		threadPool.prestartCoreThread();
 	}
 
 	@Override
@@ -364,7 +388,7 @@ public class Client extends AbstractClient {
 
 	@Override
 	public void handleTask(Task t) {
-		t.run();
+		threadPool.execute(t);
 	}
 
 	public static void main(String[] args) throws IOException, InterruptedException {
