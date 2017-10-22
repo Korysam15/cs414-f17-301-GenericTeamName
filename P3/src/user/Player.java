@@ -34,18 +34,16 @@ public class Player {
 		this.client = new Client(host,port);
 	}
 	
+	/* Gets a Players nickName */
 	public String getNickName()
 	{
 		return this.nickName;
 	}
-
-	/* ------------------------ ADDED CODE ----------------------------------------- */
-	/* Allows a player to make a new Banqi Game */
-	public void createNewGame() throws IOException
+	
+	/* Prints the Profile of a user */
+	public void getProfileInformation()
 	{
-		// User id and timestampe for id of game board
-//		this.game = new BanqiGame(0);
-//		this.client.sendToServer(new CreateGameTask(this.game,this,new Player("Sam","alpha","maycellman","127.0.0.01",8080)));
+		System.out.println(this.profile.toString());
 	}
 
 	/* Creates a new invitation with a message and an arraylist of players to send it to */
@@ -55,23 +53,11 @@ public class Player {
 		this.client.sendToServer(invite.toTask());
 	}
 	
+	/* Returns an instance of the Players Client */
 	public AbstractClient getClient() 
 	{
 		return this.client;
 	}
-
-	public void acceptInvitation()
-	{
-		// CREATE ACCEPT TASK
-		// send response accept
-	}
-
-	public void rejectInvitation() throws IOException
-	{
-		this.client.sendToServer(new MessageTask("reject invitation"));
-	}
-	
-	/* ------------------------------------------------------------------------------------- */
 
 	public String toString()
 	{
