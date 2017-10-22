@@ -1,5 +1,8 @@
 package banqi;
-
+/**
+ * @author Sam Maxwell
+ *
+ */
 public class Chariot extends Piece {
 
 	public Chariot(boolean color) {
@@ -7,10 +10,10 @@ public class Chariot extends Piece {
 		super.color=color;
 		super.isOn=isOn;
 		if(color){
-			super.icon="\u2658 ";
+			super.icon="\u001b[1;31m4\u001b[0m";
 		}
 		else{
-			super.icon="\u265E ";
+			super.icon="4";
 		}
 	}
 

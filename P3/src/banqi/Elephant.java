@@ -1,5 +1,8 @@
 package banqi;
-
+/**
+ * @author Sam Maxwell
+ *
+ */
 public class Elephant extends Piece {
 
 	public Elephant(boolean color) {
@@ -7,10 +10,10 @@ public class Elephant extends Piece {
 		super.color=color;
 		super.isOn=isOn;
 		if(color){
-			super.icon="E ";
+			super.icon="\u001b[1;31m5\u001b[0m";
 		}
 		else{
-			super.icon="e";
+			super.icon="5";
 		}
 	}
 

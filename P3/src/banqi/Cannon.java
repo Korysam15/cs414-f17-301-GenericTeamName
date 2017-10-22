@@ -1,5 +1,8 @@
 package banqi;
-
+/**
+ * @author Sam Maxwell
+ *
+ */
 public class Cannon extends Piece {
 
 	public Cannon(boolean color) {
@@ -7,10 +10,10 @@ public class Cannon extends Piece {
 		super.color=color;
 		super.isOn=isOn;
 		if(color){
-			super.icon="\u2656 ";
+			super.icon="\u001b[1;31m2\u001b[0m";
 		}
 		else{
-			super.icon="\u265C ";
+			super.icon="2";
 		}
 	}
 

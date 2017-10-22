@@ -9,7 +9,7 @@ import java.util.Scanner;
 import user.Player;
 
 /**
- * @author Sam
+ * @author Sam Maxwell
  *
  */
 public class BanqiGame {
@@ -33,8 +33,45 @@ public class BanqiGame {
 		}
 
 		System.out.println(game.gameBoard);
-		game.makeMove(game.getSquare("F4"));
+		game.makeMove(game.getSquare("A1"));
 		System.out.println(game.gameBoard);
+		game.makeMove(game.getSquare("A2"));
+		System.out.println(game.gameBoard);
+		game.makeMove(game.getSquare("A1"),game.getSquare("A2"));
+		System.out.println(game.gameBoard);
+		game.makeMove(game.getSquare("B2"));
+		System.out.println(game.gameBoard);
+		game.makeMove(game.getSquare("B1"));
+		System.out.println(game.gameBoard);
+		game.makeMove(game.getSquare("C1"));
+		System.out.println(game.gameBoard);
+		game.makeMove(game.getSquare("C2"));
+		System.out.println(game.gameBoard);
+		game.makeMove(game.getSquare("C3"));
+		System.out.println(game.gameBoard);
+		game.makeMove(game.getSquare("C4"));
+		System.out.println(game.gameBoard);
+		game.makeMove(game.getSquare("B4"));
+		System.out.println(game.gameBoard);
+		game.makeMove(game.getSquare("B3"));
+		System.out.println(game.gameBoard);
+		game.makeMove(game.getSquare("B2"),game.getSquare("B3"));
+		System.out.println(game.gameBoard);
+		game.makeMove(game.getSquare("B4"),game.getSquare("B3"));
+		System.out.println(game.gameBoard);
+		game.makeMove(game.getSquare("D4"));
+		System.out.println(game.gameBoard);
+		game.makeMove(game.getSquare("D3"));
+		System.out.println(game.gameBoard);
+		game.makeMove(game.getSquare("D2"));
+		System.out.println(game.gameBoard);
+		game.makeMove(game.getSquare("D1"));
+		System.out.println(game.gameBoard);
+		game.makeMove(game.getSquare("C1"),game.getSquare("D1"));
+		System.out.println(game.gameBoard);
+		game.makeMove(game.getSquare("D1"),game.getSquare("D2"));
+		System.out.println(game.gameBoard);
+		
 
 	}
 	public BanqiGame(int gameID,Player first, Player second) {
@@ -166,16 +203,27 @@ public class BanqiGame {
 	}
 
 
-	public  boolean movePiece(Square from, Square to){
-
-
-		if(getValidMoves(from).contains(to)){        //check if the move is valid
+	public  boolean makeMove(Square from, Square to){
+		if(from==null||to==null)
+		{
+			System.out.println("Not a valid move");
+			return false;
+		}
+		if(from.getOn()==null){
+			System.out.println("There is no piece there");
+			return false;
+		}
+		if(from.getOn().faceUp==false){
+			System.out.println("This piece must be flipped first");
+			return false;
+		}
+		 if(getValidMoves(from).contains(to)){        //check if the move is valid
 
 			to.setOn(from.getOn());
 			from.setOn(null);
 			return true;
 		}
-
+		System.out.println("Not a valid move");
 		return false;
 
 
@@ -183,12 +231,21 @@ public class BanqiGame {
 
 	}
 	public boolean makeMove(Square from){
-
+		if (from==null)
+		{
+			System.out.println("Not a valid move");
+			return false;
+		}
+		if(from.getOn()==null){
+			System.out.println("There is no piece there");
+			return false;
+		}
 		if(from.getOn().faceUp==false)
 		{
 			from.getOn().flipPiece();
 			return true;
 		}
+		
 		return false;
 
 	}
@@ -302,7 +359,7 @@ public class BanqiGame {
 					System.out.println("Invalid Move");
 				}
 				Square to =getSquare(in2);
-				if(movePiece(from,to)){
+				if(makeMove(from,to)){
 
 
 
@@ -326,7 +383,7 @@ public class BanqiGame {
 
 		int x=(Character.getNumericValue(letter)-10);
 		int y = num-49;
-
+		
 		Square s=gameBoard.getSquare(x, y);
 
 		return s;

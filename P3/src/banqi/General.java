@@ -1,5 +1,8 @@
 package banqi;
-
+/**
+ * @author Sam Maxwell
+ *
+ */
 public class General extends Piece {
 
 	public General(boolean color) {
@@ -7,10 +10,10 @@ public class General extends Piece {
 		super.color=color;
 		super.isOn=isOn;
 		if(color){
-			super.icon="\u001B[31m \u2654 ";
+			super.icon="\u001b[1;31m7\u001b[0m";
 		}
 		else{
-			super.icon="\u265A ";
+			super.icon="7";
 		}
 		
 	}

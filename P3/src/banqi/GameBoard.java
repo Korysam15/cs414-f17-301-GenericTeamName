@@ -1,6 +1,9 @@
 package banqi;
 import java.util.Arrays;
-
+/**
+ * @author Sam Maxwell
+ *
+ */
 public class GameBoard {
 
 	private Square squaresOnBoard[]; 
@@ -26,10 +29,11 @@ public class GameBoard {
 	}
 	public Square getSquare(int x,int y)
 	{
-		System.out.println(x+" "+y);
 		
+
 		if(y>3||x>7)
 		{
+			
 			return null;
 		}
 		return squaresOnBoard[8*y+x];
@@ -44,23 +48,27 @@ public class GameBoard {
 			board+="   # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # \n";
 			board+="   #       #       #       #       #       #       #       #       #\n";
 			board+=i+1+"  ";
-			
+
 			for(int j=0;j<8;j++){
-				if(squaresOnBoard[8*i+j].getOn().faceUp){
-					
-					board+="#   "+squaresOnBoard[8*i+j].getOn().icon+"   ";
-					
+
+				if(squaresOnBoard[8*i+j].getOn()==null){
+
+					board+="#       ";
+
+				}
+				else if(!squaresOnBoard[8*i+j].getOn().faceUp){
+					board+="#   "+0+"   ";
 				}
 				else{
-				
-					board+="#   "+0+"   ";
-					
-					
+
+					board+="#   "+squaresOnBoard[8*i+j].getOn().icon+"   ";
+
+
 				}
-				
+
 			}
 			board+="#\n   #       #       #       #       #       #       #       #       #\n";
-			
+
 
 
 		}

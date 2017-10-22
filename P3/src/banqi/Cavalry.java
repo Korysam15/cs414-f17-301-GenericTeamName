@@ -1,5 +1,8 @@
 package banqi;
-
+/**
+ * @author Sam Maxwell
+ *
+ */
 public class Cavalry extends Piece {
 
 	public Cavalry(boolean color) {
@@ -7,10 +10,10 @@ public class Cavalry extends Piece {
 		super.color=color;
 		super.isOn=isOn;
 		if(color){
-			super.icon="\u2657 ";
+			super.icon="\u001b[1;31m3\u001b[0m";
 		}
 		else{
-			super.icon="\u265D ";
+			super.icon="3";
 		}
 	}
 
