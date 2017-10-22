@@ -7,6 +7,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import banqi.BanqiGame;
 import client_server.transmission.util.ReadUtils;
 import client_server.transmission.util.WriteUtils;
 import user.ActivePlayer;
@@ -51,6 +52,15 @@ public class AcceptInviteTask extends Task {
 				player.getClient().sendToServer(response);
 			} catch (IOException e) {
 			}
+			int gameID = ((CreateGameTask) gameTask).getGameID();
+			startGame(player, gameID);
+		}
+	}
+	
+	public void startGame(Player player, int gameID) {
+		BanqiGame game = player.getGame(gameID);
+		if(game != null) {
+			game.promptTurn(player, playerWhoAccepted);
 		}
 	}
 }

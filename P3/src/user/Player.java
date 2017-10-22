@@ -185,7 +185,7 @@ public class Player {
 					return;
 				}
 				Player tanner = Authenticate(host,port);
-				tanner.sendInvitation("Whats up dude!", new ArrayList<String>(Arrays.asList("Tanner","Kory")));
+				tanner.sendInvitation("Whats up dude!", new ArrayList<String>(Arrays.asList("John")));
 			}
 		}
 	}

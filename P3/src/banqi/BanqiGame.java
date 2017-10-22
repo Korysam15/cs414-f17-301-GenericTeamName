@@ -6,6 +6,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+
+import client_server.transmission.FlipPieceTask;
+import client_server.transmission.ForwardTask;
+import client_server.transmission.MoveTask;
+import client_server.transmission.Task;
 import user.Player;
 
 /**
@@ -119,7 +124,7 @@ public class BanqiGame {
 			Collections.shuffle(list,new Random(123)); 
 		}
 		else{
-			Collections.shuffle(list);                      //randomize list
+			Collections.shuffle(list,new Random(gameID));                      //randomize list
 		}
 		
 
@@ -340,6 +345,7 @@ public class BanqiGame {
 
 	public void promptTurn(Player p){
 		System.out.println("Your Turn!");
+		System.out.println(gameBoard);
 		while(true)
 		{
 
@@ -384,6 +390,63 @@ public class BanqiGame {
 		}
 
 	}
+	
+	public void promptTurn(Player p, String otherPlayer){
+		System.out.println("Your Turn!");
+		System.out.println(gameBoard);
+		Task notify;
+		while(true)
+		{
+
+			System.out.println("Make a move!  ex. A1");
+			Scanner scanner = new Scanner(System.in);
+			String in1 = scanner.nextLine();
+			if(in1.length()>2){
+				System.out.println("Invalid Move");
+			}
+			Square from =getSquare(in1);
+
+			if(from.isEmpty()){
+				System.out.println("Invalid Move - No piece at: "+in1);
+			}
+			else if(!from.getOn().faceUp){
+				flipPiece(from);
+				System.out.println(gameBoard);
+				notify = new FlipPieceTask(p.getNickName(),this.gameID,from);
+				break;
+
+			}
+			else{
+				System.out.println("to");
+
+
+				String in2 = scanner.nextLine();
+				if(in2.length()>2){
+					System.out.println("Invalid Move");
+				}
+				Square to =getSquare(in2);
+				if(makeMove(from,to)){
+					System.out.println(gameBoard);
+					notify = new MoveTask(p.getNickName(),this.gameID,from,to);
+					break;
+				}
+				System.out.println("Invalid Move - "+from.getOn().getClass()+" can't move like that");
+				
+			}
+			//check for the right color 
+
+
+		}
+		if(notify != null) {
+			Task forward = new ForwardTask(p.getNickName(),notify,otherPlayer);
+			try {
+				p.getClient().sendToServer(forward);
+			} catch (IOException e) {
+			}
+		}
+
+	}
+	
 	public Square getSquare(String from){
 		
 		from=from.toUpperCase();
@@ -403,6 +466,9 @@ public class BanqiGame {
 
 
 
+	}
+	public Square getSquare(int x, int y) {
+		return gameBoard.getSquare(x, y);
 	}
 
 
