@@ -1,33 +1,38 @@
 package user;
 
+
+
 public class Profile {
-	/* Global Variables */
-	private String name;
-	protected History history;
 	
-	/* Constructor. Creates a new Profile based on a Player's NickName */
-	public Profile(String name)
-	{
-		this.name = name;
-		this.history = new History();
+	
+	
+	public static void main(String[] args) {
+		Profile nick = new Profile("Nick");
+		System.out.println(nick.toString());
 	}
+	public Profile(String name){
+		this.name = name;
+	}
+	private String name;
 	
 	/**
 	 * @see History
 	 * @return the History object associated with this profile
 	 */
-	public History getHistory()
-	{
-		return this.history;
+	
+	public String toString(){
+		return this.name;
+	}
+	public String getName(){
+		return this.name;
+	}
+	public boolean equals(Object o){
+		if(o instanceof Profile){
+			return ((Profile)o).name.equals(this.name);
+		}
+		else{
+			return false;
+		}
 	}
 	
-	/**
-	 * @see History for toString()
-	 * @return the nickname and history of a Player
-	 */
-	public String toString()
-	{
-		return this.name + "\n" + this.history.toString();
-	}
-
 }
