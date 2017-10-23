@@ -26,6 +26,11 @@ public class Player {
 	private Profile profile;
 	private AbstractClient client;
 	
+	
+	public Player(String host, int port) throws IOException
+	{
+		this.client = new Client(host,port);
+	}
 
 	/* Constructor */
 	public Player(String email,String password,String nickName,String host,int port) throws IOException
@@ -36,6 +41,22 @@ public class Player {
 		games = new HashMap<Integer,BanqiGame>();
 		this.profile = new Profile(nickName);
 		this.client = new Client(host,port);
+	}
+	
+	public void setEmail(String email)
+	{
+		this.email = email;
+	}
+	
+	public void setNickName(String nickName)
+	{
+		games = new HashMap<Integer,BanqiGame>();
+		this.profile = new Profile(nickName);
+	}
+	
+	public void setPassword(String password) 
+	{
+		this.password = password;
 	}
 	
 	/* Gets a Players nickName */
