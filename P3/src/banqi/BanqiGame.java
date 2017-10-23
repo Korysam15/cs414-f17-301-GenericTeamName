@@ -13,6 +13,7 @@ import client_server.transmission.ForwardTask;
 import client_server.transmission.MoveTask;
 import client_server.transmission.Task;
 import client_server.transmission.UpdateRecordTask;
+import console.JavaConsole;
 import user.Player;
 
 /**
@@ -22,7 +23,7 @@ import user.Player;
 public class BanqiGame {
 
 
-
+	private JavaConsole console;
 	private int gameID;            // unique id
 	private GameBoard gameBoard;   // board that the game is played on
 	private Piece pieces[];        // pieces in game
@@ -87,6 +88,7 @@ public class BanqiGame {
 		this.gameID = gameID;
 		this.gameBoard= new GameBoard();
 		this.pieces= new Piece[32];
+		console = new JavaConsole();
 		getAllPieces();
 
 	}
@@ -98,6 +100,7 @@ public class BanqiGame {
 		this.pieces= new Piece[32];
 		this.first=first;             
 		this.second=second;
+		console = new JavaConsole();
 		getAllPieces();
 
 	}
@@ -108,6 +111,7 @@ public class BanqiGame {
 		this.gameBoard= new GameBoard();
 		this.pieces= new Piece[32];
 		this.test=test;
+		console = new JavaConsole();
 		getAllPieces();
 
 

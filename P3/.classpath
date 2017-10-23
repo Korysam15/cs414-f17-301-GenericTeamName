@@ -7,5 +7,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
+	<classpathentry kind="lib" path="/Users/koryclark/Downloads/jansi-1.16.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
