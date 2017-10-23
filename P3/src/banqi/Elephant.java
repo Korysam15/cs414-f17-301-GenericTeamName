@@ -10,10 +10,10 @@ public class Elephant extends Piece {
 		super.color=color;
 		super.isOn=isOn;
 		if(color){
-			super.icon="\u001b[1;31m5\u001b[0m";
+			super.icon="\u2464";
 		}
 		else{
-			super.icon="5";
+			super.icon="\u24EF";
 		}
 	}
 

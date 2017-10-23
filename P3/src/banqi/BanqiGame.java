@@ -89,6 +89,7 @@ public class BanqiGame {
 		this.gameBoard= new GameBoard();
 		this.pieces= new Piece[32];
 		console = new JavaConsole();
+		console.setTitle(this.first.getNickName());
 		getAllPieces();
 
 	}
@@ -101,6 +102,7 @@ public class BanqiGame {
 		this.first=first;             
 		this.second=second;
 		console = new JavaConsole();
+		console.setTitle(this.first.getNickName());
 		getAllPieces();
 
 	}
@@ -112,6 +114,7 @@ public class BanqiGame {
 		this.pieces= new Piece[32];
 		this.test=test;
 		console = new JavaConsole();
+//		console.setTitle(this.first.getNickName());
 		getAllPieces();
 
 
@@ -480,6 +483,14 @@ public class BanqiGame {
 			else if(in1.toLowerCase().equals("help"))
 			{
 				System.out.println("Below is a list of each piece with their associated number that represents that piece.");
+				System.out.println("White General: \u2466 \t\t Black General: \u2F41" 
+				+ "White Advisor: \u2465 \t\t Black Advisor: \u24F0" 
+				+ "White Elephant: \u2464 \t\t Black Elephant: \u24EF" 
+				+ "White Chariot: \u2463 \t\t Black Chariot: \u24EE"
+				+ "White Cavalry: \u2462 \t\t Black Cavalry: \u24ED"
+				+ "White Cannon: \u2461 \t\t Black Cannon: \u24EC"
+				+ "White Soldier: \u2460 \t\t Black Soldier: \u24EB");
+				
 				System.out.println("7: General\n6: Advisor\n5: Elephant\n4: Chariot\n3: Cavalry\n2: Soldier\n1: Cannon");
 				System.out.println("Rules:\n Only pieces of equal or lower rank may be captured. However, A Cannon can capture any piece and can be captured by every piece except a Soldier.\n");
 			}

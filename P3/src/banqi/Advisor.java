@@ -10,10 +10,10 @@ public class Advisor extends Piece {
 		super.rank=6;
 		super.color=color;
 		if(color){
-			super.icon="\u001b[1;31m6\u001b[0m";
+			super.icon="\u2465";
 		}
 		else{
-			super.icon="6";
+			super.icon="\u24F0";
 		}
 	}
 

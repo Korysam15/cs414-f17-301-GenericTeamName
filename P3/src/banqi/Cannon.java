@@ -10,10 +10,10 @@ public class Cannon extends Piece {
 		super.color=color;
 		super.isOn=isOn;
 		if(color){
-			super.icon="\u001b[1;31m2\u001b[0m";
+			super.icon="\u2461";
 		}
 		else{
-			super.icon="2";
+			super.icon="\u24EC";
 		}
 	}
 

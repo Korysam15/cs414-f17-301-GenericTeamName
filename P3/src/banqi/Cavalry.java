@@ -10,10 +10,10 @@ public class Cavalry extends Piece {
 		super.color=color;
 		super.isOn=isOn;
 		if(color){
-			super.icon="\u001b[1;31m3\u001b[0m";
+			super.icon="\u2462";
 		}
 		else{
-			super.icon="3";
+			super.icon="\u24ED";
 		}
 	}
 

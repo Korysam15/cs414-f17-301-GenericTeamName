@@ -47,10 +47,8 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 		
 		textArea=new JTextArea();
 		textArea.setCaret(new BlockCaret()); //DWM 02-07-2012
-		textArea.setBackground(Color.black); //DWM 02-07-2012
-		textArea.setForeground(Color.white); //DWM 02-07-2012
 		textArea.setCaretColor(textArea.getForeground()); //DWM 02-07-2012
-		textArea.setFont(new Font("Lucida Sans", Font.BOLD, 14)); //DWM 02-07-2012
+		textArea.setFont(new Font("monospaced", Font.PLAIN, 14)); //DWM 02-07-2012
 		textArea.setLineWrap(true); //DWM 02-07-2012
 		textArea.setWrapStyleWord(true); //DWM 02-07-2012
 		textArea.setEditable(true); //DWM 02-07-2012
@@ -67,7 +65,7 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 		try
 		{
 			PipedOutputStream pout=new PipedOutputStream(this.pin);
-			System.setOut(new PrintStream(pout,true)); 
+			System.setOut(new PrintStream(pout,true));
 		} 
 		catch (java.io.IOException io)
 		{
@@ -286,5 +284,12 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 	 */
 	public void setTitle(String title) { //DWM 02-07-2012
 		frame.setTitle(title);
+	}
+	
+	public static void main(String[] args)
+	{
+		new JavaConsole();
+		System.out.println("\u24F5 + \u24F6 + \u24F7 + \u24F8+ \u24F9 + \u24FA + \u24FB");
+		System.out.println("\u24EB + \u24EC + \u24ED + \u24EF + \u24F0 + \u24F1 + \u24F2");
 	}
 }
