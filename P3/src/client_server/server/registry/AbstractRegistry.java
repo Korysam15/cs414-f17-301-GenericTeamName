@@ -44,26 +44,25 @@ public abstract class AbstractRegistry {
 	}
 	
 	/**
-	 * Returns true if and only if the email / nickname are not taken 
+	 * Returns an error message if the registration is INVALID otherwise returns null. 
 	 * @param register - A {@link RegisterTask} that represents the users Registration info.
-	 * @return - True if the registration is valid
+	 * @return - An error message or null
 	 */
-	public abstract boolean isValidRegistration(RegisterTask register);
+	public abstract String isValidRegistration(RegisterTask register);
 	
 	/**
-	 * Returns true if and only if the email/password associated with the login, is the same as
-	 * the password stored.
+	 * Returns an error message if the login is invalid, otherwise null;
 	 * @param login - The login submitted
-	 * @return True if the email / password are the same.
+	 * @return An error message or null
 	 */
-	public abstract boolean isValidLogin(LoginTask login);
+	public abstract String isValidLogin(LoginTask login);
 	
 	/**
 	 * Registers a new user with the system
 	 * @param register - A {@link RegisterTask} that represents the users Registration info.
-	 * @return True if registration is successful.
+	 * @return a String that represents an error or null if registration is successful.
 	 */
-	public abstract boolean registerNewUser(RegisterTask register);
+	public abstract String registerNewUser(RegisterTask register);
 	
 	/**
 	 * Unregisters the User u from the system.

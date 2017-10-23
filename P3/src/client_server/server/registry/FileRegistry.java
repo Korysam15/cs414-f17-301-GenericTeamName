@@ -161,44 +161,49 @@ public class FileRegistry extends AbstractRegistry {
 	}
 
 	@Override
-	public synchronized boolean isValidRegistration(RegisterTask register) {
+	public synchronized String isValidRegistration(RegisterTask register) {
 		User u = createUser(register);
 		if(u == null) {
-			return false;
+			return "Invalid registration.";
 		} else if(isEmailTaken(u.getEmail())) {
-			return false;
+			return "'" + u.getEmail() + "'" + " is already in use.";
 		} else if(isNicknameTaken(u.getNickname())) {
-			return false;
+			return "'" + u.getNickname() + "'" + " is already in use.";
+		} else if(u.getEmail().contains(":")) {
+			return "':'" + " is not allowed in the email address.";
+		} else if(u.getNickname().contains(":")) {
+			return "':'" + " is not allowed in the nickname.";
 		} else {
-			return true;
+			return null;
 		}
 	}
 
 	@Override
-	public synchronized boolean isValidLogin(LoginTask login) {
+	public synchronized String isValidLogin(LoginTask login) {
 		User copy = createUser(login);
-		if(copy != null) {
-			User stored = getUser(copy.getEmail());
-			if(stored != null) {
-				copy.setSalt(stored.getSalt());
-				return copy.equals(stored);
-			} else {
-				return false;
-			}
-		} else {
-			return false;
+		if(copy == null) {
+			return "Invalid login.";
 		}
+		User stored = getUser(copy.getEmail());
+		if(stored != null) {
+			copy.setSalt(stored.getSalt());
+			if(copy.getPassword().equals(stored.getPassword())) {
+				return null;
+			}
+		}
+		return "Invalid login creditials.";
 	}
 
 	@Override
-	public synchronized boolean registerNewUser(RegisterTask register) {
+	public synchronized String registerNewUser(RegisterTask register) {
 		User u = createUser(register);
-		if(u != null && isValidRegistration(register)) {
+		String msg = isValidRegistration(register);
+		if(u != null && msg == null) {
 			u.generateSalt();
 			addUserAndUpdate(u);
-			return true;
+			return null;
 		} else {
-			return false;
+			return msg;
 		}
 	}
 
