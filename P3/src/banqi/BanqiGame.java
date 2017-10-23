@@ -288,7 +288,7 @@ public class BanqiGame {
 		if(from.getOn() instanceof Cannon){
 			int x = from.getX();
 			int y = from.gety();
-			while (x > 2){
+			while (x > 1){
 				x--;
 				Square next = gameBoard.getSquare(x, y);
 				if(!next.isEmpty()){
@@ -311,7 +311,7 @@ public class BanqiGame {
 					}
 				}
 			}
-			while (y > 2){
+			while (y > 1){
 				y--;
 				Square next = gameBoard.getSquare(x, y);
 				if(!next.isEmpty()){
@@ -323,7 +323,7 @@ public class BanqiGame {
 				}
 			}
 			y = from.gety();
-			while (y < 1){
+			while (y < 2){
 				y++;
 				Square next = gameBoard.getSquare(x, y);
 				if(!next.isEmpty()){
