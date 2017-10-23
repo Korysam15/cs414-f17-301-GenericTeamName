@@ -1,14 +1,12 @@
 package client_server.server.registry;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.Reader;
 
 import client_server.transmission.LoginTask;
 import client_server.transmission.RegisterTask;
