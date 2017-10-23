@@ -47,8 +47,8 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 		
 		textArea=new JTextArea();
 		textArea.setCaret(new BlockCaret()); //DWM 02-07-2012
-//		textArea.setBackground(Color.black); //DWM 02-07-2012
-//		textArea.setForeground(Color.white); //DWM 02-07-2012
+		textArea.setBackground(Color.black); //DWM 02-07-2012
+		textArea.setForeground(Color.white); //DWM 02-07-2012
 		textArea.setCaretColor(textArea.getForeground()); //DWM 02-07-2012
 		textArea.setFont(new Font("Lucida Sans", Font.BOLD, 14)); //DWM 02-07-2012
 		textArea.setLineWrap(true); //DWM 02-07-2012
@@ -234,31 +234,31 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 	/**
 	 * @return the consol's background color
 	 */
-//	public Color getBackground() { //DWM 02-07-2012
-//		return textArea.getBackground();
-//	}
+	public Color getBackground() { //DWM 02-07-2012
+		return textArea.getBackground();
+	}
 
 	/**
 	 * @param bg the desired background Color
 	 */
-//	public void setBackground(Color bg) { //DWM 02-07-2012
-//		this.textArea.setBackground(bg);
-//	}	
+	public void setBackground(Color bg) { //DWM 02-07-2012
+		this.textArea.setBackground(bg);
+	}	
 
 	/**
 	 * @return the consol's foreground color
 	 */
-//	public Color getForeground() { //DWM 02-07-2012
-//		return textArea.getForeground();
-//	}
+	public Color getForeground() { //DWM 02-07-2012
+		return textArea.getForeground();
+	}
 
 	/**
 	 * @param fg the desired foreground Color
 	 */
-//	public void setForeground(Color fg) { //DWM 02-07-2012
-//		this.textArea.setForeground(fg);
-//		this.textArea.setCaretColor(fg);
-//	}
+	public void setForeground(Color fg) { //DWM 02-07-2012
+		this.textArea.setForeground(fg);
+		this.textArea.setCaretColor(fg);
+	}
 	
 	/**
 	 * @return the consol's font
@@ -286,10 +286,5 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 	 */
 	public void setTitle(String title) { //DWM 02-07-2012
 		frame.setTitle(title);
-	}
-	
-	public static void main(String[] args)
-	{
-		new JavaConsole();
 	}
 }
