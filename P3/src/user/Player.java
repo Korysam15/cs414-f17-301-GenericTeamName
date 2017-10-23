@@ -188,5 +188,5 @@ public class Player {
 				tanner.sendInvitation("Whats up dude!", new ArrayList<String>(Arrays.asList("John")));
 			}
 		}
-	}
+	} 
 }
