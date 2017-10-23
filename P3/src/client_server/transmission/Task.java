@@ -9,21 +9,15 @@ import java.io.IOException;
  * @author pflagert
  *
  */
-public class Task implements Runnable {	
+public abstract class Task implements Runnable {	
 	
-	public int getTaskCode() {
-		return TaskConstents.TASK;
-	}
+	public abstract int getTaskCode();
 	
-	public byte[] toByteArray() throws IOException {
-		return new byte[0];
-	}
+	public abstract byte[] toByteArray() throws IOException;
 	
 	public String toString() {
-		return TaskConstents.TASK + "";
+		return "Task Code: " + this.getTaskCode();
 	}
 	
-	public void run() {
-		return;
-	}
+	public abstract void run();
 }

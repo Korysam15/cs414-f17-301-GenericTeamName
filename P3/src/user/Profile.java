@@ -4,6 +4,10 @@ package user;
 
 public class Profile {
 	
+	/* Global Variables */
+	private History history;
+	private String name;
+	
 	
 	
 	public static void main(String[] args) {
@@ -12,13 +16,18 @@ public class Profile {
 	}
 	public Profile(String name){
 		this.name = name;
+		this.history = new History();
 	}
-	private String name;
+
 	
 	/**
 	 * @see History
 	 * @return the History object associated with this profile
 	 */
+	public History getHistory()
+	{
+		return this.history;
+	}
 	
 	public String toString(){
 		return this.name;

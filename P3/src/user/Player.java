@@ -44,6 +44,12 @@ public class Player {
 		return this.nickName;
 	}
 	
+	/* Get a Players Profile */
+	public Profile getProfile()
+	{
+		return this.profile;
+	}
+	
 	/* Prints the Profile of a user */
 	public String getProfileInformation()
 	{
@@ -53,6 +59,14 @@ public class Player {
 	public BanqiGame getGame(int gameID) {
 		synchronized(games) {
 			return games.get(gameID);
+		}
+	}
+	
+	public void removeGame(int gameID) {
+		synchronized(games) {
+			if(games.containsKey(gameID)) {
+				games.remove(gameID);
+			}
 		}
 	}
 	
