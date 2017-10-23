@@ -45,9 +45,9 @@ public class Player {
 	}
 	
 	/* Prints the Profile of a user */
-	public void getProfileInformation()
+	public String getProfileInformation()
 	{
-		System.out.println(this.profile.toString());
+		return this.profile.toString();
 	}
 	
 	public BanqiGame getGame(int gameID) {

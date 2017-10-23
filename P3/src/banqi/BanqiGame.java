@@ -286,11 +286,56 @@ public class BanqiGame {
 		}
 
 		if(from.getOn() instanceof Cannon){
-
-			//Canon Stuff
-
+			int x = from.getX();
+			int y = from.gety();
+			while (x > 1){
+				x--;
+				Square next = gameBoard.getSquare(x, y);
+				if(!next.isEmpty()){
+					next = gameBoard.getSquare(x-1, y)
+					if(!next.isEmpty()&&canOverTake(from,next)){
+						validMoves.add(next);
+						break;
+					}
+				}
+			}
+			x = from.getX();
+			while (x < 6){
+				x++;
+				Square next = gameBoard.getSquare(x, y);
+				if(!next.isEmpty()){
+					next = gameBoard.getSquare(x+1, y)
+					if(!next.isEmpty()&&canOverTake(from,next)){
+						validMoves.add(next);
+						break;
+					}
+				}
+			}
+			while (y > 1){
+				y--;
+				Square next = gameBoard.getSquare(x, y);
+				if(!next.isEmpty()){
+					next = gameBoard.getSquare(x, y-1)
+					if(!next.isEmpty()&&canOverTake(from,next)){
+						validMoves.add(next);
+						break;
+					}
+				}
+			}
+			y = from.gety();
+			while (y < 2){
+				y++;
+				Square next = gameBoard.getSquare(x, y);
+				if(!next.isEmpty()){
+					next = gameBoard.getSquare(x, y+1)
+					if(!next.isEmpty()&&canOverTake(from,next)){
+						validMoves.add(next);
+						break;
+					}
+				}
+			}
 		}
-		else{
+		//else{
 			if(from.getY()!=0){
 				Square up =gameBoard.getSquare(from.getX(), from.getY()-1);
 				if(up.isEmpty()||canOverTake(from,up)){   //check square above
@@ -322,7 +367,7 @@ public class BanqiGame {
 				}
 			}
 
-		}
+		//}
 
 
 		return validMoves;
@@ -363,8 +408,7 @@ public class BanqiGame {
 			else if(!from.getOn().faceUp){
 				flipPiece(from);
 				System.out.println(gameBoard);
-				return;
-
+				break;
 			}
 			else{
 				System.out.println("to");
@@ -380,7 +424,7 @@ public class BanqiGame {
 
 
 					System.out.println(gameBoard);
-					return;
+					break;
 				}
 				System.out.println("Invalid Move - "+from.getOn().getClass()+" can't move like that");
 				

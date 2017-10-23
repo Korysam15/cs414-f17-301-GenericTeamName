@@ -54,7 +54,6 @@ public final class TaskFactory {
 		int taskCode = din.readInt();
 		switch(taskCode) {
 		case TaskConstents.TASK: 
-			
 			break;
 		case TaskConstents.FORWARD_TASK:
 			t = new ForwardTask(din);
@@ -81,19 +80,17 @@ public final class TaskFactory {
 			break;
 		case TaskConstents.ACCEPT_INVITE_TASK:
 			t = new AcceptInviteTask(din);
-			break;
-			
+			break;			
 		case TaskConstents.REJECTINVITE_TASK:
 			t = new RejectInviteTask(din);
-			break;
-		
+			break;		
 		case TaskConstents.MOVE_TASK:
 			t = new MoveTask(din);
 			break;
 		case TaskConstents.FLIP_PIECE_TASK:
 			t = new FlipPieceTask(din);
 			break;
-		}
+    }
 		
 		return t;
 	}
