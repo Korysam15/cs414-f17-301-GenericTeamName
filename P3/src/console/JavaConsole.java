@@ -142,7 +142,6 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 		try { reader.join(1000);pin.close();   } catch (Exception e){}		
 		try { reader2.join(1000);pin2.close(); } catch (Exception e){}
 		try { pout3.close(); } catch (Exception e){} //DWM 02-07-2012
-		System.exit(0);
 	}		
 		
 	/* (non-Javadoc)
