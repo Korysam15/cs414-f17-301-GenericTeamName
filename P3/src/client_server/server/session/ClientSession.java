@@ -16,6 +16,7 @@ import client_server.server.Server;
 import client_server.server.registry.AbstractRegistry;
 import client_server.server.registry.ActiveRegistry;
 import client_server.transmission.LoginTask;
+import client_server.transmission.MessageTask;
 import client_server.transmission.RegisterTask;
 import client_server.transmission.Task;
 import client_server.transmission.TaskConstents;
@@ -157,8 +158,11 @@ public class ClientSession extends AbstractSession {
 				}
 				break;
 			default:
-				if(isRegisteredWithServer())
+				if(isRegisteredWithServer()) {
 					server.handleTask(t);
+				} else {
+					send(new MessageTask("You are not logged in, will not perform task: " + t.getTaskCode()));
+				}
 			}
 		}
 	}
