@@ -140,7 +140,7 @@ public class User {
 
 	@Override
 	public String toString() {
-		return email+FIELD_SEPERATOR+nickname+FIELD_SEPERATOR+salt+FIELD_SEPERATOR+password;
+		return email+FIELD_SEPERATOR+nickname+FIELD_SEPERATOR+password+FIELD_SEPERATOR+salt;
 	}
 
 }

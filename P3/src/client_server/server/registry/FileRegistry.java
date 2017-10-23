@@ -189,7 +189,11 @@ public class FileRegistry extends AbstractRegistry {
 			copy.setSalt(stored.getSalt());
 			if(copy.getPassword().equals(stored.getPassword())) {
 				return null;
+			} else {
+				//return "Bad password: Salt: " + copy.getSalt() + " Salt: " + stored.getSalt();
 			}
+		} else {
+			//return "Bad email";
 		}
 		return "Invalid login creditials.";
 	}
