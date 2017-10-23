@@ -8,9 +8,11 @@ import java.util.Random;
 import java.util.Scanner;
 
 import client_server.transmission.FlipPieceTask;
+import client_server.transmission.ForfeitTask;
 import client_server.transmission.ForwardTask;
 import client_server.transmission.MoveTask;
 import client_server.transmission.Task;
+import client_server.transmission.UpdateRecordTask;
 import user.Player;
 
 /**
@@ -19,19 +21,19 @@ import user.Player;
  */
 public class BanqiGame {
 
-	
-	
+
+
 	private int gameID;            // unique id
 	private GameBoard gameBoard;   // board that the game is played on
 	private Piece pieces[];        // pieces in game
 	private Player first;		   // first Player
 	private Player second;		   // second Player
 	private boolean test=false;	   // TESTING
-	
+
 
 	public static void main(String []args) throws IOException{
-		 Player first = new Player("Sam","alpha","maycellman","127.0.0.01",8080);
-		 Player second = new Player("Sam","alpha","maycellman","127.0.0.01",8080);
+		Player first = new Player("Sam","alpha","maycellman","127.0.0.01",8080);
+		Player second = new Player("Sam","alpha","maycellman","127.0.0.01",8080);
 		BanqiGame game= new BanqiGame(1,first,second,true);
 		for(Square s: game.gameBoard.getSquaresOnBoard()){
 			System.out.println(s);
@@ -76,11 +78,11 @@ public class BanqiGame {
 		System.out.println(game.gameBoard);
 		game.makeMove(game.getSquare("D1"),game.getSquare("D2"));
 		System.out.println(game.gameBoard);
-		
+
 
 	}
-  
-  	public BanqiGame(int gameID) {
+
+	public BanqiGame(int gameID) {
 		super();
 		this.gameID = gameID;
 		this.gameBoard= new GameBoard();
@@ -88,9 +90,9 @@ public class BanqiGame {
 		getAllPieces();
 
 	}
-  
+
 	public BanqiGame(int gameID,Player first, Player second) {
-		
+
 		this.gameID = gameID;
 		this.gameBoard= new GameBoard();
 		this.pieces= new Piece[32];
@@ -100,14 +102,14 @@ public class BanqiGame {
 
 	}
 	public BanqiGame(int gameID,Player first, Player second, boolean test) {
-		
-		
+
+
 		this.gameID = gameID;
 		this.gameBoard= new GameBoard();
 		this.pieces= new Piece[32];
 		this.test=test;
 		getAllPieces();
-		
+
 
 	}
 
@@ -118,15 +120,15 @@ public class BanqiGame {
 			list.add(i);
 		}
 
-		
+
 		if(test){
-			
+
 			Collections.shuffle(list,new Random(123)); 
 		}
 		else{
 			Collections.shuffle(list,new Random(gameID));                      //randomize list
 		}
-		
+
 
 
 		//red pieces
@@ -232,7 +234,7 @@ public class BanqiGame {
 			System.out.println("This piece must be flipped first");
 			return false;
 		}
-		 if(getValidMoves(from).contains(to)){        //check if the move is valid
+		if(getValidMoves(from).contains(to)){        //check if the move is valid
 
 			to.setOn(from.getOn());
 			from.setOn(null);
@@ -260,7 +262,7 @@ public class BanqiGame {
 			from.getOn().flipPiece();
 			return true;
 		}
-		
+
 		return false;
 
 	}
@@ -382,7 +384,7 @@ public class BanqiGame {
 					break;
 				}
 				System.out.println("Invalid Move - "+from.getOn().getClass()+" can't move like that");
-				
+
 			}
 			//check for the right color 
 
@@ -390,52 +392,84 @@ public class BanqiGame {
 		}
 
 	}
-	
+
 	public void promptTurn(Player p, String otherPlayer){
 		System.out.println("Your Turn!");
 		System.out.println(gameBoard);
-		Task notify;
+		Task notify = null;
 		while(true)
 		{
-
+			System.out.println("Type 'forfeit' to forfeit a match or 'help' to get help.");
 			System.out.println("Make a move!  ex. A1");
 			Scanner scanner = new Scanner(System.in);
 			String in1 = scanner.nextLine();
-			if(in1.length()>2){
-				System.out.println("Invalid Move");
-			}
-			Square from =getSquare(in1);
-
-			if(from.isEmpty()){
-				System.out.println("Invalid Move - No piece at: "+in1);
-			}
-			else if(!from.getOn().faceUp){
-				flipPiece(from);
-				System.out.println(gameBoard);
-				notify = new FlipPieceTask(p.getNickName(),this.gameID,from);
-				break;
-
-			}
-			else{
-				System.out.println("to");
-
-
-				String in2 = scanner.nextLine();
-				if(in2.length()>2){
-					System.out.println("Invalid Move");
-				}
-				Square to =getSquare(in2);
-				if(makeMove(from,to)){
-					System.out.println(gameBoard);
-					notify = new MoveTask(p.getNickName(),this.gameID,from,to);
+			if(in1.toLowerCase().equals("forfeit"))
+			{
+				System.out.print("Are you sure you want to forfiet? Type 'yes' to confirm or 'no' to keep playing: ");
+				String choice = scanner.next();
+				if(choice.toLowerCase().equals("yes"))
+				{
+					System.out.println("FORFEITING");
+					// forfeit game, create forfiet task, update stats for both players
+					ForfeitTask forfeit = new ForfeitTask(this.gameID, new UpdateRecordTask(false,true,false),p.getNickName() + " has forfeited! " + otherPlayer + " is the winner!");
+					forfeit.run();
+					forfeit.getUpdateRecordTask().setWon(true);
+					forfeit.getUpdateRecordTask().setLoss(false);
+					try {
+						p.getClient().sendToServer(new ForwardTask(p.getNickName(),forfeit,otherPlayer));
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					break;
 				}
-				System.out.println("Invalid Move - "+from.getOn().getClass()+" can't move like that");
-				
+				if(choice.toLowerCase().equals("no"))
+				{
+					continue;
+				}
+			}
+			else if(in1.toLowerCase().equals("help"))
+			{
+				System.out.println("Below is a list of each piece with their associated number that represents that piece.");
+				System.out.println("7: General\n6: Advisor\n5: Elephant\n4: Chariot\n3: Cavalry\n2: Soldier\n1: Cannon");
+				System.out.println("Rules:\n Only pieces of equal or lower rank may be captured. However, A Cannon can capture any piece and can be captured by every piece except a Soldier.\n");
+			}
+			else
+			{
+				if(in1.length()>2){
+					System.out.println("Invalid Move");
+				}
+				Square from =getSquare(in1);
+
+				if(from.isEmpty()){
+					System.out.println("Invalid Move - No piece at: "+in1);
+				}
+				else if(!from.getOn().faceUp){
+					flipPiece(from);
+					System.out.println(gameBoard);
+					notify = new FlipPieceTask(p.getNickName(),this.gameID,from);
+					break;
+
+				}
+				else{
+					System.out.println("to");
+
+
+					String in2 = scanner.nextLine();
+					if(in2.length()>2){
+						System.out.println("Invalid Move");
+					}
+					Square to =getSquare(in2);
+					if(makeMove(from,to)){
+						System.out.println(gameBoard);
+						notify = new MoveTask(p.getNickName(),this.gameID,from,to);
+						break;
+					}
+					System.out.println("Invalid Move - "+from.getOn().getClass()+" can't move like that");
+
+				}
 			}
 			//check for the right color 
-
-
 		}
 		if(notify != null) {
 			Task forward = new ForwardTask(p.getNickName(),notify,otherPlayer);
@@ -446,16 +480,16 @@ public class BanqiGame {
 		}
 
 	}
-	
+
 	public Square getSquare(String from){
-		
+
 		from=from.toUpperCase();
 		char letter= from.charAt(0);
 		char num=from.charAt(1);
 
 		int x=(Character.getNumericValue(letter)-10);
 		int y = num-49;
-		
+
 		Square s=gameBoard.getSquare(x, y);
 
 		return s;

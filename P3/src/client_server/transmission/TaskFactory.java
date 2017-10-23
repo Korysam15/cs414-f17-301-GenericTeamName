@@ -90,6 +90,12 @@ public final class TaskFactory {
 		case TaskConstents.FLIP_PIECE_TASK:
 			t = new FlipPieceTask(din);
 			break;
+		case TaskConstents.FORFEIT_TASK:
+			t = new ForfeitTask(din);
+			break;
+		case TaskConstents.UPDATERECORD_TASK:
+			t = new UpdateRecordTask(din);
+			break;
     }
 		
 		return t;

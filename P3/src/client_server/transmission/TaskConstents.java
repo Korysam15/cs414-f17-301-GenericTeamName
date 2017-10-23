@@ -19,9 +19,9 @@ public class TaskConstents {
 	public static final int ACCEPT_INVITE_TASK = 7;
 	public static final int MOVE_TASK = 8;
 	public static final int FLIP_PIECE_TASK = 9;
-/*	public static final int TASK = 10;
-	public static final int TASK = 11;
-	public static final int TASK = 12;
+	public static final int FORFEIT_TASK = 10;
+	public static final int UPDATERECORD_TASK = 11;
+	/*public static final int TASK = 12;
 	public static final int TASK = 13;
 	public static final int TASK = 14;
 	.....
