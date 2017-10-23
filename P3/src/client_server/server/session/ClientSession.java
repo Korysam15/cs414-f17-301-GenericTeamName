@@ -204,7 +204,7 @@ public class ClientSession extends AbstractSession {
 			return isRegistered;
 		}
 	}
-	
+
 	private void setRegistered() {
 		synchronized(isRegistered) {
 			isRegistered = true;
@@ -214,22 +214,40 @@ public class ClientSession extends AbstractSession {
 	@Override
 	public void registerWithServer(RegisterTask t) {
 		AbstractRegistry registry = ActiveRegistry.getInstance();
-		if(registry != null && registry.registerNewUser(t)) {
-			String nickname = t.getNickname();
-			setID(nickname);
-			server.registerClient(this, nickname);
-			setRegistered();
+		if(registry != null) {
+			String msg = registry.registerNewUser(t);
+			if(msg == null) {
+				String nickname = t.getNickname();
+				setID(nickname);
+				server.registerClient(this, nickname);
+				setRegistered();
+			} else {
+				try {
+					send(new MessageTask(msg));
+				} catch (IOException e) {
+
+				}
+			}
 		}
 	}
 
 	@Override
 	public void registerWithServer(LoginTask t) {
 		AbstractRegistry registry = ActiveRegistry.getInstance();
-		if(registry != null && registry.isValidLogin(t)) {
-			String nickname = t.getNickname();
-			setID(nickname);
-			server.registerClient(this, nickname);
-			setRegistered();
+		if(registry != null) {
+			String msg = registry.isValidLogin(t);
+			if(msg == null) {
+				String nickname = t.getNickname();
+				setID(nickname);
+				server.registerClient(this, nickname);
+				setRegistered();
+			} else {
+				try {
+					send(new MessageTask(msg));
+				} catch (IOException e) {
+
+				}
+			}
 		}
 	}
 
