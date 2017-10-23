@@ -15,6 +15,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import client_server.transmission.ForwardTask;
+import client_server.transmission.LoginTask;
+import client_server.transmission.LogoutTask;
 import client_server.transmission.MessageTask;
 import client_server.transmission.RegisterTask;
 import client_server.transmission.Task;
@@ -49,6 +51,7 @@ public class Client extends AbstractClient {
 	private Object writeLock;
 	private Object readLock;
 	private Thread receivingThread;
+	private Boolean isLoggedIn;
 
 	/**
 	 * Creates a new instance of Client.
@@ -65,6 +68,7 @@ public class Client extends AbstractClient {
 		writeLock = new Object();
 		readLock = new Object();
 		receivingThread = null;
+		isLoggedIn = false;
 		initThreadPool();
 	}
 
@@ -114,6 +118,7 @@ public class Client extends AbstractClient {
 				if(isConnected()) {
 					disconnectFromServer();
 				}
+				unsetLoggedIn();
 				channel = SocketChannel.open();
 				channel.configureBlocking(false);
 				channel.connect(serverAddress);
@@ -126,6 +131,24 @@ public class Client extends AbstractClient {
 	@Override
 	public void connectToServer(String address, int port) throws IOException {
 		connectToServer(new InetSocketAddress(address,port));		
+	}
+	
+	public boolean isLoggedIn() {
+		synchronized(isLoggedIn) {
+			return isLoggedIn;
+		}
+	}
+	
+	public void setLoggedIn() {
+		synchronized(isLoggedIn) {
+			isLoggedIn = true;
+		}
+	}
+	
+	public void unsetLoggedIn() {
+		synchronized(isLoggedIn) {
+			isLoggedIn = false;
+		}
 	}
 
 	@Override
@@ -388,6 +411,11 @@ public class Client extends AbstractClient {
 
 	@Override
 	public void handleTask(Task t) {
+		if(t instanceof LoginTask) {
+			this.setLoggedIn();
+		} else if(t instanceof LogoutTask) {
+			this.unsetLoggedIn();
+		}
 		threadPool.execute(t);
 	}
 
