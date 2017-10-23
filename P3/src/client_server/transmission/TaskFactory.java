@@ -63,7 +63,7 @@ public final class TaskFactory {
 			t = new MultiForwardTask(din);
 			break;
 		case TaskConstents.LOGIN_TASK:
-			//t = new LoginTask(din);
+			t = new LoginTask(din);
 			break;
 		case TaskConstents.REGISTER_TASK:
 			t = new RegisterTask(din);
