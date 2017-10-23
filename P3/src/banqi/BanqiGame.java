@@ -288,7 +288,7 @@ public class BanqiGame {
 		if(from.getOn() instanceof Cannon){
 			int x = from.getX();
 			int y = from.gety();
-			while (x > 1){
+			while (x > 2){
 				x--;
 				Square next = gameBoard.getSquare(x, y);
 				if(!next.isEmpty()){
@@ -311,7 +311,7 @@ public class BanqiGame {
 					}
 				}
 			}
-			while (y > 1){
+			while (y > 2){
 				y--;
 				Square next = gameBoard.getSquare(x, y);
 				if(!next.isEmpty()){
@@ -323,7 +323,7 @@ public class BanqiGame {
 				}
 			}
 			y = from.gety();
-			while (y < 2){
+			while (y < 1){
 				y++;
 				Square next = gameBoard.getSquare(x, y);
 				if(!next.isEmpty()){
@@ -334,10 +334,8 @@ public class BanqiGame {
 					}
 				}
 			}
-			//Canon Stuff
-
 		}
-		else{
+		//else{
 			if(from.getY()!=0){
 				Square up =gameBoard.getSquare(from.getX(), from.getY()-1);
 				if(up.isEmpty()||canOverTake(from,up)){   //check square above
@@ -369,7 +367,7 @@ public class BanqiGame {
 				}
 			}
 
-		}
+		//}
 
 
 		return validMoves;
