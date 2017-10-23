@@ -13,6 +13,9 @@ import java.util.Locale;
 
 import client_server.server.AbstractServer;
 import client_server.server.Server;
+import client_server.server.registry.AbstractRegistry;
+import client_server.server.registry.ActiveRegistry;
+import client_server.transmission.LoginTask;
 import client_server.transmission.RegisterTask;
 import client_server.transmission.Task;
 import client_server.transmission.TaskConstents;
@@ -28,7 +31,7 @@ public class ClientSession extends AbstractSession {
 	public static final boolean DEBUG = Server.DEBUG;
 	public static final String DEBUG_TAB = "    ";
 	private static int NUM_TABS = 0;
-	
+
 	private SocketChannel channel;
 
 	// prevents two threads from writing to the same channel at the same time
@@ -90,7 +93,7 @@ public class ClientSession extends AbstractSession {
 		}
 		debugPrintFooter("receive");
 	}
-	
+
 	private void handleOverread(ByteBuffer readBuffer) throws IOException {
 		debugPrintHeader("handleOverread");
 		while(readBuffer.remaining() >= 4) {
@@ -105,11 +108,11 @@ public class ClientSession extends AbstractSession {
 				debugPrintln("returning");
 				return;
 			}
-			
+
 		}
 		debugPrintFooter("handleOverread");
 	}
-	
+
 	private void fillLocal(ByteBuffer local, ByteBuffer readBuffer) {
 		while(local.hasRemaining() && readBuffer.hasRemaining()) {
 			local.put(readBuffer.get());
@@ -118,7 +121,7 @@ public class ClientSession extends AbstractSession {
 
 	private int receiveTask(ByteBuffer local, int size, int currentRead) throws IOException {
 		int temp = 0,read = currentRead;
-		
+
 		if(read < size) {
 			while(local.hasRemaining() && (temp = channel.read(local)) > -1) {
 				read += temp;
@@ -127,15 +130,15 @@ public class ClientSession extends AbstractSession {
 				}
 			}
 		}
-		
+
 		debugPrintln("Done reading the required bytes: " + (read - 4));
-		
+
 		if(temp == -1) {
 			server.clientDisconnected(this, key);
 		} else {
 			createTask(local);
 		}
-		
+
 		return read;
 	}
 
@@ -144,9 +147,9 @@ public class ClientSession extends AbstractSession {
 		if(t != null) {
 			switch(t.getTaskCode()) {
 			case TaskConstents.LOGIN_TASK:
-				// handle login
-				// for now just send to server
-				server.handleTask(t);
+				if(t instanceof LoginTask) {
+					registerWithServer((LoginTask)t);
+				}
 				break;
 			case TaskConstents.REGISTER_TASK:
 				if(t instanceof RegisterTask) {
@@ -154,7 +157,8 @@ public class ClientSession extends AbstractSession {
 				}
 				break;
 			default:
-				server.handleTask(t);
+				if(isRegisteredWithServer())
+					server.handleTask(t);
 			}
 		}
 	}
@@ -192,23 +196,37 @@ public class ClientSession extends AbstractSession {
 
 	@Override
 	public boolean isRegisteredWithServer() {
-		return isRegistered;
+		synchronized(isRegistered) {
+			return isRegistered;
+		}
+	}
+	
+	private void setRegistered() {
+		synchronized(isRegistered) {
+			isRegistered = true;
+		}
 	}
 
 	@Override
 	public void registerWithServer(RegisterTask t) {
-		// String email = t.getEmail();
-		String nickname = t.getNickname();
-		// String password = t.getPassword();
-		
-		// Verify email is unique in DB
-		// enter email in DB
-		// Verify nickname is unique in DB
-		// enter nickname in DB
-		// Verify password meets our conditions????
-		// enter password in DB
-		setID(nickname);
-		server.registerClient(this, nickname);
+		AbstractRegistry registry = ActiveRegistry.getInstance();
+		if(registry != null && registry.registerNewUser(t)) {
+			String nickname = t.getNickname();
+			setID(nickname);
+			server.registerClient(this, nickname);
+			setRegistered();
+		}
+	}
+
+	@Override
+	public void registerWithServer(LoginTask t) {
+		AbstractRegistry registry = ActiveRegistry.getInstance();
+		if(registry != null && registry.isValidLogin(t)) {
+			String nickname = t.getNickname();
+			setID(nickname);
+			server.registerClient(this, nickname);
+			setRegistered();
+		}
 	}
 
 	@Override
@@ -228,12 +246,12 @@ public class ClientSession extends AbstractSession {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
+
 	private String getDate() {
 		Date now = new Date(); // java.util.Date, NOT java.sql.Date or java.sql.Timestamp!
 		return new SimpleDateFormat("HH:mm:ss.S", Locale.ENGLISH).format(now);
 	}
-	
+
 	private synchronized String getTabs() {
 		String ret = "";
 		for(int i=0;i<NUM_TABS;i++) {
@@ -241,21 +259,21 @@ public class ClientSession extends AbstractSession {
 		}
 		return "[" + getDate() + "]" + ret;
 	}
-	
+
 	private synchronized void debugPrint(String msg) {
 		if(DEBUG)
 			System.out.print(getTabs()+msg);
 	}
-	
+
 	private synchronized void debugPrintln(String msg) {
 		debugPrint(msg+System.lineSeparator());
 	}
-	
+
 	private synchronized void debugPrintHeader(String methodName) {
 		debugPrintln("---------------[ " + methodName + " ]---------------");
 		NUM_TABS++;
 	}
-	
+
 	private synchronized void debugPrintFooter(String methodName) {
 		NUM_TABS--;
 		debugPrintln("===============[ " + methodName + " ]===============\n");
