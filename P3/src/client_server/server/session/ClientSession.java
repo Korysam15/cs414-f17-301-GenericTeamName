@@ -16,11 +16,13 @@ import client_server.server.Server;
 import client_server.server.registry.AbstractRegistry;
 import client_server.server.registry.ActiveRegistry;
 import client_server.transmission.LoginTask;
+import client_server.transmission.LogoutTask;
 import client_server.transmission.MessageTask;
 import client_server.transmission.RegisterTask;
 import client_server.transmission.Task;
 import client_server.transmission.TaskConstents;
 import client_server.transmission.TaskFactory;
+import client_server.transmission.UnregisterTask;
 
 /**
  * @author pflagert
@@ -39,6 +41,8 @@ public class ClientSession extends AbstractSession {
 	private Object writeLock;
 	// prevents two from reading from the same channel at the same time
 	private Object readLock;
+	
+	private String email;
 
 	public ClientSession(AbstractServer server, SelectionKey key, String ID) throws IOException {
 		super(server, key, ID);
@@ -159,14 +163,36 @@ public class ClientSession extends AbstractSession {
 				break;
 			default:
 				if(isRegisteredWithServer()) {
-					server.handleTask(t);
+					handleTask(t);
 				} else {
-					send(new MessageTask("You are not logged in, will not perform task: " + t.getTaskCode()));
+
 				}
 			}
 		}
 	}
 
+	private void handleTask(Task t) throws IOException {
+		if(t instanceof UnregisterTask) {
+			unregister((UnregisterTask)t);
+		} else if(t instanceof LogoutTask) {
+			logout();
+		} else {
+			server.handleTask(t);
+		}
+	}
+
+	private void unregister(UnregisterTask t) {
+		AbstractRegistry registry = ActiveRegistry.getInstance();
+		if(registry != null) {
+			registry.unregisterUser(email);
+			logout();
+		}
+	}
+
+	private void logout() {
+		server.unregisterClient(this, this.ID);
+		setUnregistered();
+	}
 	@Override
 	public void send(Task t) throws IOException {
 		debugPrintHeader("send");
@@ -210,6 +236,12 @@ public class ClientSession extends AbstractSession {
 			isRegistered = true;
 		}
 	}
+	
+	private void setUnregistered() {
+		synchronized(isRegistered) {
+			isRegistered = false;
+		}
+	}
 
 	@Override
 	public void registerWithServer(RegisterTask t) {
@@ -219,6 +251,7 @@ public class ClientSession extends AbstractSession {
 			if(msg == null) {
 				String nickname = t.getNickname();
 				setID(nickname);
+				this.email = t.getEmail();
 				server.registerClient(this, nickname);
 				setRegistered();
 			} else {
@@ -239,6 +272,7 @@ public class ClientSession extends AbstractSession {
 			if(msg == null) {
 				String nickname = t.getNickname();
 				setID(nickname);
+				this.email = t.getEmail();
 				server.registerClient(this, nickname);
 				setRegistered();
 			} else {
