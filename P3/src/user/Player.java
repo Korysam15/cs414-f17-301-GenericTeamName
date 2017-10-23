@@ -10,6 +10,7 @@ import java.util.Scanner;
 import banqi.BanqiGame;
 import client_server.client.AbstractClient;
 import client_server.client.Client;
+import client_server.transmission.LoginTask;
 import client_server.transmission.MessageTask;
 import client_server.transmission.RegisterTask;
 
@@ -141,12 +142,11 @@ public class Player {
 						String password = scanner.nextLine();
 						System.out.println("Please enter in a valid Nickname:\n");
 						String nickName = scanner.nextLine();
-						if(checkIfRegistered(email,nickName))
+						if(true)
 						{
-							player = getPlayerAccount(email,nickName);
-//							player.getClient().sendToServer(new LoginTask(email,nickName,password));
+							player = new Player(email,password,nickName,host,port);
+							player.getClient().sendToServer(new LoginTask(email,nickName,password));
 							ActivePlayer.setInstance(player);
-							player.client = new Client(host,port);
 							break;
 						}
 						else
