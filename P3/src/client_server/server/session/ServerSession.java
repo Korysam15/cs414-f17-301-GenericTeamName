@@ -6,6 +6,7 @@ package client_server.server.session;
 import java.nio.channels.SelectionKey;
 
 import client_server.server.AbstractServer;
+import client_server.transmission.LoginTask;
 import client_server.transmission.RegisterTask;
 import client_server.transmission.Task;
 
@@ -76,6 +77,12 @@ public class ServerSession extends AbstractSession{
 	public boolean equals(Object o) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public void registerWithServer(LoginTask t) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

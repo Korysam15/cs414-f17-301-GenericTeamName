@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.channels.SelectionKey;
 
 import client_server.server.AbstractServer;
+import client_server.transmission.LoginTask;
 import client_server.transmission.RegisterTask;
 import client_server.transmission.Task;
 
@@ -21,7 +22,7 @@ public abstract class AbstractSession {
 	
 	protected String ID;
 	
-	protected boolean isRegistered;
+	protected Boolean isRegistered;
 	
 	public AbstractSession(AbstractServer server, SelectionKey key, String ID) {
 		this.server = server;
@@ -89,6 +90,8 @@ public abstract class AbstractSession {
 	public abstract boolean isRegisteredWithServer();
 	
 	public abstract void registerWithServer(RegisterTask t);
+	
+	public abstract void registerWithServer(LoginTask t);
 	
 	public abstract String toString();
 	
