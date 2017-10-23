@@ -18,6 +18,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import client_server.server.events.ReceiveEvent;
+import client_server.server.registry.ActiveRegistry;
+import client_server.server.registry.FileRegistry;
 import client_server.server.session.ClientSession;
 import client_server.transmission.Task;
 
@@ -327,7 +329,6 @@ public class Server extends AbstractServer {
 	@Override
 	public void clientDisconnected(ClientSession client, SelectionKey key) {
 		debugPrintHeader("clientDisconnected");
-		debugPrintln("Client Disconnected: ");
 		if(key != null) {
 			key.cancel();
 		}
@@ -342,7 +343,7 @@ public class Server extends AbstractServer {
 					registeredClients.remove(id);
 			}
 		}
-		debugPrintln((id==null) ? "unkown" : id);
+		System.out.println( (id==null) ? "unkown" : id + ": has disconnected");
 		debugPrintFooter("clientDisconnected");
 	}
 	
@@ -379,12 +380,13 @@ public class Server extends AbstractServer {
 	}
 	
 	public static void main(String[] args) throws IOException {
-		if(args.length != 1) {
-			System.out.println("Expected arguments: <port>");
+		if(args.length != 2) {
+			System.out.println("Expected arguments: <port> <password-filename>");
 			return;
 		}
 		else {
 			int port;
+			String passwordFile;
 			try {
 				port = Integer.parseInt(args[0]);
 				if(port <=0 ) 
@@ -393,11 +395,17 @@ public class Server extends AbstractServer {
 				System.out.println("Invalid port: " + args[0]);
 				return;
 			}
+			
+			passwordFile = args[1];
 
 			InetSocketAddress address = new InetSocketAddress(port);
 			Server server = null;
 			server = new Server(address);
 			ActiveServer.setInstance(server);
+			
+			FileRegistry registry = new FileRegistry(passwordFile);
+			ActiveRegistry.setInstance(registry);
+			
 			server.start();
 			
 		}

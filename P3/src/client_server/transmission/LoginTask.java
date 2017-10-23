@@ -10,18 +10,18 @@ import java.security.NoSuchAlgorithmException;
 import client_server.transmission.util.ReadUtils;
 import client_server.transmission.util.WriteUtils;
 
-public class RegisterTask extends Task {
+public class LoginTask extends Task{
 	private String email;
 	private String nickname;
 	private String password;
 
-	public RegisterTask(String email, String nickname, String password) {
+	public LoginTask(String email, String nickname, String password) {
 		this.email = email;
 		this.nickname = nickname;
 		this.password = password;
 	}
 
-	public RegisterTask(DataInputStream din) throws IOException {
+	public LoginTask(DataInputStream din) throws IOException {
 		this.email = ReadUtils.readString(din);
 		this.nickname = ReadUtils.readString(din);
 		this.password = ReadUtils.readString(din);
@@ -41,7 +41,7 @@ public class RegisterTask extends Task {
 
 	@Override
 	public int getTaskCode() {
-		return TaskConstents.REGISTER_TASK;
+		return TaskConstents.LOGIN_TASK;
 	}
 
 	/* NoSuchAlgorithm exception should never happen.
