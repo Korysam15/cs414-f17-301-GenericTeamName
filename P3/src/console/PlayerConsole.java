@@ -1,40 +1,40 @@
 package console;
 
+import java.io.IOException;
+
 import client_server.client.AbstractClient;
+import client_server.transmission.LoginTask;
+import client_server.transmission.RegisterTask;
+import user.ActivePlayer;
 import user.Player;
 
 public class PlayerConsole extends AbstractConsole {
 	private static final String[] noParamCommands = 
-		{"quit"};
-	
+		{"exit","help","register","login","logout",};
+
 	private static final int noParamCommandsLength = noParamCommands.length;
-	
-	private static final String[] paramCommands = 
-		{"create-game", "connect-to-server","send-message"};
-	
-	private static final int paramCommandsLength = paramCommands.length;
-	
-	private int parameter;
-	
+
 	/**
 	 * We will store this here to simplify {@link ForwardTask}s
 	 */
 	private String playerNickName;
-	
+
 	/**
 	 * Having this instance within the console should simplify sending {@link Task}s
 	 */
 	private AbstractClient client;
-	
+
 	public PlayerConsole(Player player) {
 		if(player == null) {
 			throw new IllegalArgumentException("The PlayerConsole requires a true Player");
 		}
 		this.player = player;
-		outPutBeforeConsole = "\n> ";
+		outPutBeforeConsole = System.lineSeparator()+"> ";
+		playerNickName = player.getNickName();
+		client = player.getClient();
 		nullCommands();
 	}
-	
+
 	/**
 	 * Sets a few instance variables to null
 	 */
@@ -42,9 +42,8 @@ public class PlayerConsole extends AbstractConsole {
 		noParamCommand = null;
 		paramCommand = null;
 		errorMessage = null;
-		parameter = 0;
 	}
-	
+
 	/**
 	 * Handle's commands that do NOT require additional input from the user.
 	 * @param command - The String that may represent a command that does not require arguments.
@@ -57,7 +56,7 @@ public class PlayerConsole extends AbstractConsole {
 		for(i=0;i<noParamCommandsLength;i++) {
 			if(command.startsWith(noParamCommands[i])) {
 				if(commandLength >= (length = noParamCommands[i].length()) && 
-				   !command.substring(length, commandLength).matches(".*\\w.*")) { // white space after command is OK.
+						!command.substring(length, commandLength).matches(".*\\w.*")) { // white space after command is OK.
 					noParamCommand = noParamCommands[i];
 					return true;
 				}
@@ -69,38 +68,14 @@ public class PlayerConsole extends AbstractConsole {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Handle's commands that DO require additional input from the user.
 	 * @param command - The String that may represent a command that does require arguments.
 	 * @return True if and only if the command does represent a "command that requires additional arguments"
 	 * Otherwise returns false.
 	 */
-	private boolean checkCommandsWithParam(String command) {
-		int i, length, 
-		commandLength = command.length();
-		for(i=0;i<paramCommandsLength;i++) {
-			if(command.startsWith(paramCommands[i])) {
-				try {
-					length = paramCommands[i].length()+1;
-					if(commandLength > length) { // used trim to remove white space
-						parameter = Integer.parseInt(command.substring(length, commandLength).trim());
-						paramCommand = paramCommands[i];
-						return true;
-					}
-					// throw exception to enter catch clause... Rather than duplicating code
-					else
-						throw new NumberFormatException();
-				} catch(NumberFormatException e) {
-					errorMessage = "Expected: '" + paramCommands[i] + " <number>" +
-							"'\nReceived: '" + command + "'";
-					return false;
-				}
-			}
-		}
-		return false;
-	}
-	
+
 	/**
 	 * Overrides {@link AbstractConsole#display}.
 	 * Displays messages to a user through System.out.
@@ -121,52 +96,41 @@ public class PlayerConsole extends AbstractConsole {
 	protected boolean acceptCommand(String command) {
 		if(checkCommandsWithoutParam(command))
 			return true;
-		else if(errorMessage == null && checkCommandsWithParam(command))
-			return true;
-		
+
 		if(errorMessage == null)
 			errorMessage = "Unkown Command: " + command;
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Implements desired functionality for commands that do NOT require parameters.
 	 */
 	private void handleCommandWithoutParam() {
 		switch(noParamCommand) {
-		case "quit":
-			// handle quit command
+		case "exit":
+			exit();
 			break;
-		
-			/* case "other-command-1":
-			// handle another command
-			break; */
-		/* case "other-command-2":
-			// handle another command
-			break; */
-		/* case "other-command-3:":
-			// handle another command
-			break; */
-		
-		// default: // ignore
-		
-		}
-	}
-	
-	/**
-	 * Implements desired functionality for commands that DO require parameters.
-	 */
-	private void handleCommandWithParam() {
-		switch(paramCommand) {
+		case "help":
+			help();
+			break;
+		case "register":
+			register();
+			break;
+		case "login":
+			login();
+			break;
+		case "view-profile":
+			viewProfile();
+			break;
 		case "create-game":
-			// handle create-game
+			createGame();
 			break;
-		case "connect-to-server":
-			// handle
+		case "logout":
+			logout();
 			break;
-		case "send-message":
-			// handle
+		case "unregister":
+			unregister();
 			break;
 		}
 	}
@@ -178,9 +142,6 @@ public class PlayerConsole extends AbstractConsole {
 	protected void handleCommand() {
 		if(noParamCommand != null)
 			handleCommandWithoutParam();
-		else if(paramCommand != null) {
-			handleCommandWithParam();
-		}
 		nullCommands();
 	}
 
@@ -203,6 +164,86 @@ public class PlayerConsole extends AbstractConsole {
 
 	@Override
 	public int getParam() {
-		return parameter;
+		return 0;
+	}
+
+	private void help() {
+		String msg = "type 'help' to see this message.\n";
+		if(client.isLoggedIn()) {
+			msg += "type 'logout' to logout.\n" +
+					"type 'unregister' to logout and remove your account.\n" +
+					"type 'create-game' to create a game.\n" +
+					"type 'view-profile' to view a player's profile.\n";
+		} else {
+			msg += "type 'login' to login to your account.\n" +
+					"type 'register' to create a new account.\n";
+		}
+		msg += "type 'exit' to quit this program.";
+		display(msg);
+	}
+
+	private void exit() {
+		logout();
+		try {
+			Thread.sleep(1000);
+			client.disconnectFromServer();
+		} catch(Exception e) {
+
+		}
+		System.exit(0);
+	}
+
+	private void register() {
+		try {
+			String email = promptUser("Please enter in a valid Email:");
+			String nickName = promptUser("Please enter your desired nickname:");
+			String password = promptUser("Please enter your password:");
+			client.sendToServer(new RegisterTask(email,nickName,password));
+			ActivePlayer.setInstance(player);
+			player.setEmail(email);
+			player.setNickName(nickName);
+			player.setPassword(password);
+		} catch (IOException e) {
+			display("Error occured while registering.");
+		}
+	}
+
+	private void login() {
+		try {
+			String email = promptUser("Please enter in a valid Email:");
+			String nickName = promptUser("Please enter your desired nickname:");
+			String password = promptUser("Please enter your password:");
+			client.sendToServer(new LoginTask(email,nickName,password));
+			ActivePlayer.setInstance(player);
+			player.setEmail(email);
+			player.setNickName(nickName);
+			player.setPassword(password);
+		} catch (IOException e) {
+			display("Error occured while logging in.");
+		}
+	}
+
+	private void createGame() {
+
+	}
+
+	private void createGameInvites() {
+
+	}
+
+	private void viewProfile() {
+
+	}
+
+	private void viewProfile(String other) {
+
+	}
+
+	private void unregister() {
+
+	}
+
+	private void logout() {
+
 	}
 }
