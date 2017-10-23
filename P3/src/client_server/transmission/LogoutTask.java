@@ -39,5 +39,9 @@ public class LogoutTask extends Task {
 		// TODO Auto-generated method stub
 
 	}
+	
+	public String getEmail() {
+		return email;
+	}
 
 }
