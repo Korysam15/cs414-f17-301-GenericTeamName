@@ -131,6 +131,12 @@ public abstract class AbstractServer {
 	public abstract void registerClient(ClientSession client, String ID);
 	
 	/**
+	 * The unregisterClient method removes an entry from the registeredClients map.
+	 * Note that unregistering client implies logging off or the deletion of an account. 
+	 */
+	public abstract void unregisterClient(ClientSession client, String ID);
+	
+	/**
 	 * The accept method accepts a client connection request, creates a new ClientSession, 
 	 * then calls clientConnected() on the newly created ClientSession. 
 	 * Note: Although this method has the permissions to be overwritten,
