@@ -1,6 +1,8 @@
 package client_server.server.registry;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import client_server.transmission.LoginTask;
@@ -17,10 +19,9 @@ import client_server.transmission.RegisterTask;
  */
 public abstract class AbstractRegistry {
 	/**
-	 * A set of users who have registered with the system.
-	 * Note that {@link User#hashCode()} hashes with the email associated with a User.
+	 * A map of emails associated with users
 	 */
-	protected Set<User> validUsers;
+	protected Map<String,User> validUsers;
 	
 	/**
 	 * A set of emails that are in use by users
@@ -37,7 +38,7 @@ public abstract class AbstractRegistry {
 	 * However, all the instance variables remain empty.
 	 */
 	protected AbstractRegistry() {
-		validUsers = new HashSet<User>();
+		validUsers = new HashMap<String,User>();
 		takenEmails = new HashSet<String>();
 		takenNicknames = new HashSet<String>();
 	}
@@ -77,4 +78,10 @@ public abstract class AbstractRegistry {
 	 * @return - True if successful
 	 */
 	public abstract boolean unregisterUser(String email);
+	
+	/**
+	 * Returns the User with the associated email
+	 * @param email
+	 */
+	public abstract User getUser(String email);
 }
