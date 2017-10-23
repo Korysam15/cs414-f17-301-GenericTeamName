@@ -286,7 +286,54 @@ public class BanqiGame {
 		}
 
 		if(from.getOn() instanceof Cannon){
-
+			int x = from.getX();
+			int y = from.gety();
+			while (x > 1){
+				x--;
+				Square next = gameBoard.getSquare(x, y);
+				if(!next.isEmpty()){
+					next = gameBoard.getSquare(x-1, y)
+					if(!next.isEmpty()&&canOverTake(from,next)){
+						validMoves.add(next);
+						break;
+					}
+				}
+			}
+			x = from.getX();
+			while (x < 6){
+				x++;
+				Square next = gameBoard.getSquare(x, y);
+				if(!next.isEmpty()){
+					next = gameBoard.getSquare(x+1, y)
+					if(!next.isEmpty()&&canOverTake(from,next)){
+						validMoves.add(next);
+						break;
+					}
+				}
+			}
+			while (y > 1){
+				y--;
+				Square next = gameBoard.getSquare(x, y);
+				if(!next.isEmpty()){
+					next = gameBoard.getSquare(x, y-1)
+					if(!next.isEmpty()&&canOverTake(from,next)){
+						validMoves.add(next);
+						break;
+					}
+				}
+			}
+			y = from.gety();
+			while (y < 2){
+				y++;
+				Square next = gameBoard.getSquare(x, y);
+				if(!next.isEmpty()){
+					next = gameBoard.getSquare(x, y+1)
+					if(!next.isEmpty()&&canOverTake(from,next)){
+						validMoves.add(next);
+						break;
+					}
+				}
+			}
 			//Canon Stuff
 
 		}
