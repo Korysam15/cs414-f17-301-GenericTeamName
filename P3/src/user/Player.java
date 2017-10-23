@@ -65,6 +65,16 @@ public class Player {
 		return this.nickName;
 	}
 	
+	public String getEmail()
+	{
+		return this.email;
+	}
+	
+	public String getPassword()
+	{
+		return this.password;
+	}
+	
 	/* Get a Players Profile */
 	public Profile getProfile()
 	{
