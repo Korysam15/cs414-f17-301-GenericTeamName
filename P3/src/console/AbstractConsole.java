@@ -1,6 +1,7 @@
 package console;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 
 import user.Player;
@@ -13,6 +14,7 @@ public abstract class AbstractConsole implements Runnable {
 	protected String errorMessage;
 	protected String outPutBeforeConsole = "";
 	protected Player player;
+	protected BufferedReader fromConsole;
 	
 	public abstract void display(Object msg);
 	
@@ -22,9 +24,16 @@ public abstract class AbstractConsole implements Runnable {
 	
 	protected abstract void handleCommandError();
 	
+	public String promptUser(String msg) throws IOException {
+		System.out.print(msg + outPutBeforeConsole);
+		if(fromConsole != null) {
+			return fromConsole.readLine();
+		}
+		return "";
+	}
+	
 	public void accept() {
-		BufferedReader fromConsole = 
-				new BufferedReader(new InputStreamReader(System.in));
+		fromConsole = new BufferedReader(new InputStreamReader(System.in));
 		try{
 			String command;
 
