@@ -31,7 +31,7 @@ public class PlayerConsole extends AbstractConsole {
 	 * Having this instance within the console should simplify sending {@link Task}s
 	 */
 	private AbstractClient client;
-	
+
 	private static final String PROMPT_CHARACTOR_SEQUENCE = "> ";
 
 	public PlayerConsole(Player player) {
@@ -302,13 +302,24 @@ public class PlayerConsole extends AbstractConsole {
 	}
 
 	private void unregister() {
-		if(requireLogin()) {
-			try {
-				client.sendToServer(new UnregisterTask(
+		try {
+			if(requireLogin()) {
+				warning("Your account will be deleted if you unregister. Are you sure you want to unregister and remove your account?");
+				String response = promptUser("Type 'yes' if you are sure you want to delete your account, otherwise click enter.");
+				response = response.toLowerCase();
+				if(response.equals("yes")) {
+					client.sendToServer(new UnregisterTask(
 						player.getEmail(),player.getNickName(),player.getPassword()));
-			}  catch (IOException e) {
-				error("Error occured while unregistering");
+					Thread.sleep(1000);
+					warning("Your account has been removed.");
+				} else {
+					notice("Your account will not removed.");
+				}
 			}
+		}  catch (IOException e) {
+			error("Error occured while unregistering");
+		} catch(InterruptedException e) {
+			
 		}
 	}
 
