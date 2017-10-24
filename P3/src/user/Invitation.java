@@ -1,7 +1,6 @@
 package user;
 import java.util.ArrayList;
 
-import client_server.transmission.ForwardTask;
 import client_server.transmission.InviteTask;
 import client_server.transmission.MultiForwardTask;
 import client_server.transmission.Task;
