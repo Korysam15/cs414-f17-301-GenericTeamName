@@ -399,8 +399,9 @@ public class Client extends AbstractClient {
 	@Override
 	public void handleTask(Task t) {
 		int taskcode = t.getTaskCode();
-		if(taskcode == TaskConstents.LOGIN_TASK || taskcode == TaskConstents.LOGOUT_TASK) {
+		if(taskcode == TaskConstents.LOGIN_GREETING_TASK || taskcode == TaskConstents.REGISTER_GREETING_TASK) {
 			this.setLoggedIn();
+			t.run();
 		} else if(taskcode == TaskConstents.LOGOUT_TASK || taskcode == TaskConstents.UNREGISTER_TASK) {
 			this.unsetLoggedIn();
 		} else {
