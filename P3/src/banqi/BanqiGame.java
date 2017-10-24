@@ -28,8 +28,8 @@ public class BanqiGame {
 	private int gameID;            // unique id
 	private GameBoard gameBoard;   // board that the game is played on
 	private Piece pieces[];        // pieces in game
-	private Player first;		   // first Player
-	private Player second;		   // second Player
+	// private Player first;		   // first Player
+	// private Player second;		   // second Player
 	private boolean test=false;	   // TESTING
 
 
@@ -100,8 +100,8 @@ public class BanqiGame {
 		this.gameID = gameID;
 		this.gameBoard= new GameBoard();
 		this.pieces= new Piece[32];
-		this.first=first;             
-		this.second=second;
+		//this.first=first;             
+		//this.second=second;
 		console = new JavaConsole();
 		getAllPieces();
 
@@ -403,6 +403,7 @@ public class BanqiGame {
 		{
 
 			System.out.println("Make a move!  ex. A1");
+			@SuppressWarnings("resource")
 			Scanner scanner = new Scanner(System.in);
 			String in1 = scanner.nextLine();
 			if(in1.length()>2){
@@ -452,6 +453,7 @@ public class BanqiGame {
 		{
 			System.out.println("Type 'forfeit' to forfeit a match or 'help' to get help.");
 			System.out.println("Make a move!  ex. A1");
+			@SuppressWarnings("resource")
 			Scanner scanner = new Scanner(System.in);
 			String in1 = scanner.nextLine();
 			if(in1.toLowerCase().equals("forfeit"))

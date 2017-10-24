@@ -82,7 +82,7 @@ public class PlayerConsole extends AbstractConsole {
 	 * @param msg - The Object that represents a message that we want to be displayed to the user.
 	 */
 	@Override
-	public void display(Object msg) {
+	public synchronized void display(Object msg) {
 		if(msg != null)
 			output.println(msg.toString());
 	}
@@ -139,7 +139,7 @@ public class PlayerConsole extends AbstractConsole {
 	 * Implements desired functionality for commands.
 	 */
 	@Override
-	protected void handleCommand() {
+	protected synchronized void handleCommand() {
 		if(noParamCommand != null)
 			handleCommandWithoutParam();
 		nullCommands();
@@ -171,7 +171,7 @@ public class PlayerConsole extends AbstractConsole {
 		if(client.isLoggedIn()) {
 			return true;
 		} else {
-			display("You must be logged in before you can: " + noParamCommand);
+			error("You must be logged in before you can: " + noParamCommand);
 			return false;
 		}
 	}
@@ -180,7 +180,7 @@ public class PlayerConsole extends AbstractConsole {
 		if(!client.isLoggedIn()) {
 			return true;
 		} else {
-			display("You must be logged off before you can: " + noParamCommand);
+			error("You must be logged off before you can: " + noParamCommand);
 			return false;
 		}
 	}
@@ -225,7 +225,7 @@ public class PlayerConsole extends AbstractConsole {
 				player.setPassword(password);
 				playerNickName = nickName;
 			} catch (IOException e) {
-				display("Error occured while registering.");
+				error("Error occured while registering.");
 			}
 		}
 	}
@@ -243,7 +243,7 @@ public class PlayerConsole extends AbstractConsole {
 				player.setPassword(password);
 				playerNickName = nickName;
 			} catch (IOException e) {
-				display("Error occured while logging in.");
+				error("Error occured while logging in.");
 			}
 		}
 	}
@@ -270,14 +270,14 @@ public class PlayerConsole extends AbstractConsole {
 			} while(true);
 
 			if(toInvite.isEmpty()) {
-				display("You didn't invite anyone.");
+				warning("You didn't invite anyone.");
 			} else {
 				String message = promptUser("Type a message you would like to send with your invitation: ");
 				player.sendInvitation(message, toInvite);
 			}
 
 		} catch(IOException e) {
-			display("Error occured while sending invites.");
+			error("Error occured while sending invites.");
 		}
 	}
 
@@ -294,7 +294,7 @@ public class PlayerConsole extends AbstractConsole {
 				Task forward = new ForwardTask(playerNickName,getProfile,userOther);
 				client.sendToServer(forward);
 			} catch (IOException e) {
-				display("Error occured while trying to receive a player's profile.");
+				error("Error occured while trying to receive a player's profile.");
 			}
 		}
 	}
@@ -305,7 +305,7 @@ public class PlayerConsole extends AbstractConsole {
 				client.sendToServer(new UnregisterTask(
 						player.getEmail(),player.getNickName(),player.getPassword()));
 			}  catch (IOException e) {
-				display("Error occured while unregistering");
+				error("Error occured while unregistering");
 			}
 		}
 	}
@@ -315,7 +315,7 @@ public class PlayerConsole extends AbstractConsole {
 			try {
 				client.sendToServer(new LogoutTask(player.getEmail()));
 			}  catch (IOException e) {
-				display("Error occured while logging out");
+				error("Error occured while logging out");
 			}
 		}
 	}

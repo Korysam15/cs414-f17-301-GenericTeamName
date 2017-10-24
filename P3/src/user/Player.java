@@ -2,17 +2,11 @@ package user;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Scanner;
 
 import banqi.BanqiGame;
 import client_server.client.AbstractClient;
 import client_server.client.Client;
-import client_server.transmission.LoginTask;
-import client_server.transmission.MessageTask;
-import client_server.transmission.RegisterTask;
 import console.AbstractConsole;
 import console.PlayerConsole;
 
