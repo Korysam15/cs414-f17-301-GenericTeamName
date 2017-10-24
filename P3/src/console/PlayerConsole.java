@@ -218,14 +218,17 @@ public class PlayerConsole extends AbstractConsole {
 				String email = promptUser("Please enter in a valid Email:");
 				String nickName = promptUser("Please enter your desired nickname:");
 				String password = promptUser("Please enter your password:");
-				client.sendToServer(new RegisterTask(email,nickName,password));
 				ActivePlayer.setInstance(player);
 				player.setEmail(email);
 				player.setNickName(nickName);
 				player.setPassword(password);
+				client.sendToServer(new RegisterTask(email,nickName,password));
 				playerNickName = nickName;
+				player.wait(5000);
 			} catch (IOException e) {
 				error("Error occured while registering.");
+			} catch (InterruptedException e) {
+				// Thread was interrupted before RegisterGreetingTask was received
 			}
 		}
 	}
@@ -234,16 +237,17 @@ public class PlayerConsole extends AbstractConsole {
 		if(requireLogoff()) {
 			try {
 				String email = promptUser("Please enter in a valid Email:");
-				String nickName = promptUser("Please enter your desired nickname:");
 				String password = promptUser("Please enter your password:");
-				client.sendToServer(new LoginTask(email,nickName,password));
 				ActivePlayer.setInstance(player);
 				player.setEmail(email);
-				player.setNickName(nickName);
 				player.setPassword(password);
-				playerNickName = nickName;
+				client.sendToServer(new LoginTask(email,password));
+				player.wait(5000);
+				playerNickName = player.getNickName();
 			} catch (IOException e) {
 				error("Error occured while logging in.");
+			} catch (InterruptedException e) {
+				// Thread was interrupted before LoginGreetingTask was received
 			}
 		}
 	}
