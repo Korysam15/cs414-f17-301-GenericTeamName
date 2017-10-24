@@ -52,6 +52,12 @@ public abstract class AbstractClient {
 	 */
 	public abstract void connectToServer(String address, int port) throws IOException;
 	
+	public abstract boolean isLoggedIn();
+	
+	public abstract void setLoggedIn();
+	
+	public abstract void unsetLoggedIn();
+	
 	/**
 	 * The isReceiving method returns true if and only if a "client" is connected to a server and 
 	 * is actively listening for incoming messages.

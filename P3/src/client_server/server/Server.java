@@ -272,6 +272,17 @@ public class Server extends AbstractServer {
 	}
 
 	@Override
+	public void unregisterClient(ClientSession client, String ID) {
+		synchronized(registeredClients) {
+			registeredClients.remove(ID);
+		}
+		synchronized(playerNicknames) {
+			playerNicknames.remove(ID);
+		}
+		System.out.println(ID + " has logged off");
+	}
+	
+	@Override
 	protected ClientSession accept(SelectionKey key) {
 		debugPrintHeader("accept");
 		debugPrintln("Accepting connection to new client");
