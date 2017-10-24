@@ -224,11 +224,8 @@ public class PlayerConsole extends AbstractConsole {
 				player.setPassword(password);
 				client.sendToServer(new RegisterTask(email,nickName,password));
 				playerNickName = nickName;
-				player.wait(5000);
 			} catch (IOException e) {
 				error("Error occured while registering.");
-			} catch (InterruptedException e) {
-				// Thread was interrupted before RegisterGreetingTask was received
 			}
 		}
 	}
@@ -242,12 +239,9 @@ public class PlayerConsole extends AbstractConsole {
 				player.setEmail(email);
 				player.setPassword(password);
 				client.sendToServer(new LoginTask(email,password));
-				player.wait(5000);
 				playerNickName = player.getNickName();
 			} catch (IOException e) {
 				error("Error occured while logging in.");
-			} catch (InterruptedException e) {
-				// Thread was interrupted before LoginGreetingTask was received
 			}
 		}
 	}
