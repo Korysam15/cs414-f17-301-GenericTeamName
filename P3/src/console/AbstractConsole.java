@@ -2,7 +2,10 @@ package console;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintStream;
 
 import user.Player;
 
@@ -15,6 +18,13 @@ public abstract class AbstractConsole implements Runnable {
 	protected String outPutBeforeConsole = "";
 	protected Player player;
 	protected BufferedReader fromConsole;
+	protected final InputStream input;
+	protected final PrintStream output;
+	
+	protected AbstractConsole() {
+		this.input = System.in;
+		this.output = System.out;
+	}
 	
 	public abstract void display(Object msg);
 	
@@ -25,20 +35,22 @@ public abstract class AbstractConsole implements Runnable {
 	protected abstract void handleCommandError();
 	
 	public String promptUser(String msg) throws IOException {
-		System.out.print(msg + outPutBeforeConsole);
+		output.print(msg + outPutBeforeConsole);
 		if(fromConsole != null) {
-			return fromConsole.readLine();
+			String ret;
+			while( (ret=fromConsole.readLine()) == null);
+			return ret;
 		}
 		return "";
 	}
 	
 	public void accept() {
-		fromConsole = new BufferedReader(new InputStreamReader(System.in));
+		fromConsole = new BufferedReader(new InputStreamReader(input));
 		try{
 			String command;
 
 			while (true) {
-				System.out.print(outPutBeforeConsole);
+				output.print(outPutBeforeConsole);
 				command = fromConsole.readLine();
 				if(command == null || command.isEmpty())
 					continue;
@@ -53,6 +65,7 @@ public abstract class AbstractConsole implements Runnable {
 		} 
 		catch (Exception ex) {
 			System.out.println("Error reading from console");
+			ex.printStackTrace();
 			this.accept();
 		} 
 	}

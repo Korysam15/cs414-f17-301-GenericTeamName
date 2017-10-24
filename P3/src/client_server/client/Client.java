@@ -20,6 +20,7 @@ import client_server.transmission.LogoutTask;
 import client_server.transmission.MessageTask;
 import client_server.transmission.RegisterTask;
 import client_server.transmission.Task;
+import client_server.transmission.TaskConstents;
 import client_server.transmission.TaskFactory;
 
 /**
@@ -411,12 +412,14 @@ public class Client extends AbstractClient {
 
 	@Override
 	public void handleTask(Task t) {
-		if(t instanceof LoginTask) {
+		int taskcode = t.getTaskCode();
+		if(taskcode == TaskConstents.LOGIN_TASK || taskcode == TaskConstents.LOGOUT_TASK) {
 			this.setLoggedIn();
-		} else if(t instanceof LogoutTask) {
+		} else if(taskcode == TaskConstents.LOGOUT_TASK || taskcode == TaskConstents.UNREGISTER_TASK) {
 			this.unsetLoggedIn();
+		} else {
+			threadPool.execute(t);
 		}
-		threadPool.execute(t);
 	}
 
 	public static void main(String[] args) throws IOException, InterruptedException {

@@ -1,16 +1,22 @@
 package console;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import client_server.client.AbstractClient;
+import client_server.transmission.ForwardTask;
+import client_server.transmission.GetProfileTask;
 import client_server.transmission.LoginTask;
+import client_server.transmission.LogoutTask;
 import client_server.transmission.RegisterTask;
+import client_server.transmission.Task;
+import client_server.transmission.UnregisterTask;
 import user.ActivePlayer;
 import user.Player;
 
 public class PlayerConsole extends AbstractConsole {
 	private static final String[] noParamCommands = 
-		{"exit","help","register","login","logout",};
+		{"exit","help","register","login","logout","unregister","create-game","view-profile",};
 
 	private static final int noParamCommandsLength = noParamCommands.length;
 
@@ -69,12 +75,6 @@ public class PlayerConsole extends AbstractConsole {
 		return false;
 	}
 
-	/**
-	 * Handle's commands that DO require additional input from the user.
-	 * @param command - The String that may represent a command that does require arguments.
-	 * @return True if and only if the command does represent a "command that requires additional arguments"
-	 * Otherwise returns false.
-	 */
 
 	/**
 	 * Overrides {@link AbstractConsole#display}.
@@ -84,7 +84,7 @@ public class PlayerConsole extends AbstractConsole {
 	@Override
 	public void display(Object msg) {
 		if(msg != null)
-			System.out.println(msg.toString());
+			output.println(msg.toString());
 	}
 
 	/**
@@ -167,6 +167,24 @@ public class PlayerConsole extends AbstractConsole {
 		return 0;
 	}
 
+	private boolean requireLogin() {
+		if(client.isLoggedIn()) {
+			return true;
+		} else {
+			display("You must be logged in before you can: " + noParamCommand);
+			return false;
+		}
+	}
+
+	private boolean requireLogoff() {
+		if(!client.isLoggedIn()) {
+			return true;
+		} else {
+			display("You must be logged off before you can: " + noParamCommand);
+			return false;
+		}
+	}
+
 	private void help() {
 		String msg = "type 'help' to see this message.\n";
 		if(client.isLoggedIn()) {
@@ -183,7 +201,8 @@ public class PlayerConsole extends AbstractConsole {
 	}
 
 	private void exit() {
-		logout();
+		if(client.isLoggedIn())
+			logout();
 		try {
 			Thread.sleep(1000);
 			client.disconnectFromServer();
@@ -194,56 +213,110 @@ public class PlayerConsole extends AbstractConsole {
 	}
 
 	private void register() {
-		try {
-			String email = promptUser("Please enter in a valid Email:");
-			String nickName = promptUser("Please enter your desired nickname:");
-			String password = promptUser("Please enter your password:");
-			client.sendToServer(new RegisterTask(email,nickName,password));
-			ActivePlayer.setInstance(player);
-			player.setEmail(email);
-			player.setNickName(nickName);
-			player.setPassword(password);
-		} catch (IOException e) {
-			display("Error occured while registering.");
+		if(requireLogoff()) {
+			try {
+				String email = promptUser("Please enter in a valid Email:");
+				String nickName = promptUser("Please enter your desired nickname:");
+				String password = promptUser("Please enter your password:");
+				client.sendToServer(new RegisterTask(email,nickName,password));
+				ActivePlayer.setInstance(player);
+				player.setEmail(email);
+				player.setNickName(nickName);
+				player.setPassword(password);
+				playerNickName = nickName;
+			} catch (IOException e) {
+				display("Error occured while registering.");
+			}
 		}
 	}
 
 	private void login() {
-		try {
-			String email = promptUser("Please enter in a valid Email:");
-			String nickName = promptUser("Please enter your desired nickname:");
-			String password = promptUser("Please enter your password:");
-			client.sendToServer(new LoginTask(email,nickName,password));
-			ActivePlayer.setInstance(player);
-			player.setEmail(email);
-			player.setNickName(nickName);
-			player.setPassword(password);
-		} catch (IOException e) {
-			display("Error occured while logging in.");
+		if(requireLogoff()) {
+			try {
+				String email = promptUser("Please enter in a valid Email:");
+				String nickName = promptUser("Please enter your desired nickname:");
+				String password = promptUser("Please enter your password:");
+				client.sendToServer(new LoginTask(email,nickName,password));
+				ActivePlayer.setInstance(player);
+				player.setEmail(email);
+				player.setNickName(nickName);
+				player.setPassword(password);
+				playerNickName = nickName;
+			} catch (IOException e) {
+				display("Error occured while logging in.");
+			}
 		}
 	}
 
 	private void createGame() {
-
+		if(requireLogin()) {
+			createGameInvites();
+		}
 	}
 
 	private void createGameInvites() {
+		ArrayList<String> toInvite = new ArrayList<String>();
+		String next = "";
+		try {
+			do {
+				next = promptUser("Enter the nickname name of the player you would like to invite"
+						+ " or click enter to send the invititations: ");
+				next = next.trim();
+				if(!next.isEmpty()) {
+					toInvite.add(next);
+				} else {
+					break;
+				}
+			} while(true);
 
+			if(toInvite.isEmpty()) {
+				display("You didn't invite anyone.");
+			} else {
+				String message = promptUser("Type a message you would like to send with your invitation: ");
+				player.sendInvitation(message, toInvite);
+			}
+
+		} catch(IOException e) {
+			display("Error occured while sending invites.");
+		}
 	}
 
 	private void viewProfile() {
-
-	}
-
-	private void viewProfile(String other) {
-
+		if(requireLogin()) {
+			try {
+				String userOther = promptUser("Enter the nickname of the player's profile you would"
+						+ " like to view or click enter to view your own:");
+				userOther = userOther.trim();
+				if(userOther.isEmpty()) {
+					userOther = playerNickName;
+				}
+				Task getProfile = new GetProfileTask(playerNickName, userOther);
+				Task forward = new ForwardTask(playerNickName,getProfile,userOther);
+				client.sendToServer(forward);
+			} catch (IOException e) {
+				display("Error occured while trying to receive a player's profile.");
+			}
+		}
 	}
 
 	private void unregister() {
-
+		if(requireLogin()) {
+			try {
+				client.sendToServer(new UnregisterTask(
+						player.getEmail(),player.getNickName(),player.getPassword()));
+			}  catch (IOException e) {
+				display("Error occured while unregistering");
+			}
+		}
 	}
 
 	private void logout() {
-
+		if(requireLogin()) {
+			try {
+				client.sendToServer(new LogoutTask(player.getEmail()));
+			}  catch (IOException e) {
+				display("Error occured while logging out");
+			}
+		}
 	}
 }

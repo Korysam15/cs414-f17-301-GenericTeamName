@@ -155,11 +155,13 @@ public class ClientSession extends AbstractSession {
 				if(t instanceof LoginTask) {
 					registerWithServer((LoginTask)t);
 				}
+				send(t);
 				break;
 			case TaskConstents.REGISTER_TASK:
 				if(t instanceof RegisterTask) {
 					registerWithServer((RegisterTask)t);
 				}
+				send(t);
 				break;
 			default:
 				if(isRegisteredWithServer()) {
@@ -174,14 +176,16 @@ public class ClientSession extends AbstractSession {
 	private void handleTask(Task t) throws IOException {
 		if(t instanceof UnregisterTask) {
 			unregister((UnregisterTask)t);
+			send(t);
 		} else if(t instanceof LogoutTask) {
 			logout();
+			send(t);
 		} else {
 			server.handleTask(t);
 		}
 	}
 
-	private void unregister(UnregisterTask t) {
+	private void unregister(UnregisterTask t) throws IOException {
 		AbstractRegistry registry = ActiveRegistry.getInstance();
 		if(registry != null) {
 			registry.unregisterUser(email);
