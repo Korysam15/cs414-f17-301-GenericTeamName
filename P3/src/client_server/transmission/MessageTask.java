@@ -109,6 +109,8 @@ public class MessageTask extends Task {
 			case ERROR:
 				console.error(msg);
 				break;
+			default:
+				console.display(msg);
 			}
 		} else {
 			System.out.println(msg);

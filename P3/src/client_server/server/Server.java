@@ -257,7 +257,7 @@ public class Server extends AbstractServer {
 	public void handleTask(Task t, ClientSession client) {
 		debugPrintHeader("handleTask");
 		debugPrintln("Running TaskCode: " + t.getTaskCode());
-		log("Performing Task: [" + t + "] for " + client.getID() + " [" + client + "].");
+		log("Performing Task: " + t + " for " + client.getID() + " [" + client + "].");
 		t.run();
 		debugPrintFooter("handleTask");
 	}
