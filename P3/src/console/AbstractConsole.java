@@ -76,14 +76,14 @@ public abstract class AbstractConsole implements Runnable {
 				
 			}
 		}
-		catch(InterruptedIOException e) {
+		catch(InterruptedIOException e1) {
 			accept();
 		}
-		catch (Exception ex) {
+		catch (Exception e2) {
 			error("Error reading from console");
-			//ex.printStackTrace();
+			//e2.printStackTrace();
 			this.accept();
-		} 
+		}
 	}
 	
 	public synchronized void error(String msg) {
