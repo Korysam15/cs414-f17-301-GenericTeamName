@@ -51,7 +51,6 @@ public class LoginGreetingTask extends Task {
 		if((player = ActivePlayer.getInstance()) != null) {
 			displayToPlayer(player);
 			player.setNickName(playerNickname);
-			player.notify(); // wake up a thread if it is waiting for the login
 		} else if((server = ActiveServer.getInstance()) !=null ) {
 			displayToServer(server);
 		}
