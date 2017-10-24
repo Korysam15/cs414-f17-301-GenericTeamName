@@ -13,23 +13,21 @@ import console.AbstractConsole;
 import user.ActivePlayer;
 import user.Player;
 
-public class LoginGreetingTask extends Task {
+public class RegisterGreetingTask extends Task {
 
 	private String greeting;
-	private String playerNickname;
 	
-	public LoginGreetingTask(String greeting) {
+	public RegisterGreetingTask(String greeting) {
 		this.greeting = greeting;
 	}
 	
-	public LoginGreetingTask(DataInputStream din) throws IOException {
+	public RegisterGreetingTask(DataInputStream din) throws IOException {
 		this.greeting = ReadUtils.readString(din);
-		this.playerNickname = ReadUtils.readString(din);
 	}
 	
 	@Override
 	public int getTaskCode() {
-		return TaskConstents.LOGIN_GREETING_TASK;
+		return TaskConstents.REGISTER_GREETING_TASK;
 	}
 
 	@Override
@@ -38,7 +36,6 @@ public class LoginGreetingTask extends Task {
 		DataOutputStream dout = WriteUtils.getDataOutputStream(bs);
 		dout.writeInt(getTaskCode());
 		WriteUtils.writeString(greeting,dout);
-		WriteUtils.writeString(playerNickname, dout);
 		return WriteUtils.getBytesAndCloseStreams(bs,dout);
 	}
 
@@ -58,7 +55,6 @@ public class LoginGreetingTask extends Task {
 		AbstractConsole console = player.getConsole();
 		if(console != null) {
 			console.display(greeting);
-			player.setNickName(playerNickname);
 		} else {
 			System.out.println(greeting);
 		}
@@ -67,4 +63,5 @@ public class LoginGreetingTask extends Task {
 	private void displayToServer(AbstractServer server) {
 		System.out.println(greeting);
 	}
+
 }

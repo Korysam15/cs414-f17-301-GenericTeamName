@@ -108,8 +108,11 @@ public final class TaskFactory {
 		case TaskConstents.DISPLAY_PROFILE_TASK:
 			t = new DisplayProfileTask(din);
 			break;
-		case TaskConstents.GREETING_TASK:
-			t = new GreetingTask(din);
+		case TaskConstents.LOGIN_GREETING_TASK:
+			t = new LoginGreetingTask(din);
+			break;
+		case TaskConstents.REGISTER_GREETING_TASK:
+			t = new RegisterGreetingTask(din);
 			break;
     }
 		

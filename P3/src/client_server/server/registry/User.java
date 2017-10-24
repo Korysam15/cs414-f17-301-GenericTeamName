@@ -54,7 +54,7 @@ public class User {
 	}
 
 	public User(LoginTask login) {
-		this(login.getEmail(),login.getNickname(),login.getPassword());
+		this(login.getEmail()," ",login.getPassword());
 	}
 
 	public String getEmail() {
