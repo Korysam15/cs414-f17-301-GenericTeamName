@@ -58,7 +58,7 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 		frame.getContentPane().add(new JScrollPane(textArea),BorderLayout.CENTER);
 		frame.getContentPane().add(button,BorderLayout.SOUTH);
 		frame.setVisible(true);		
-		
+
 		frame.addWindowListener(this);		
 		button.addActionListener(this);
 		
@@ -285,10 +285,27 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 		frame.setTitle(title);
 	}
 	
-	public static void main(String[] args)
+	public void showConsole()
 	{
-		new JavaConsole();
-		System.out.println("\u24F5 + \u24F6 + \u24F7 + \u24F8+ \u24F9 + \u24FA + \u24FB");
-		System.out.println("\u24EB + \u24EC + \u24ED + \u24EF + \u24F0 + \u24F1 + \u24F2");
+		this.frame.setVisible(true);
 	}
+	
+	public void closeConsole()
+	{
+		this.frame.setVisible(false);
+	}
+	
+	
+//	public static void main(String[] args) throws InterruptedException
+//	{
+//		JavaConsole console = new JavaConsole();
+//		console.showConsole();
+//		Thread.sleep(10000);
+//		console.closeConsole();
+//		Thread.sleep(10000);
+//		console.showConsole();
+//		
+//		System.out.println("\u24F5 + \u24F6 + \u24F7 + \u24F8+ \u24F9 + \u24FA + \u24FB");
+//		System.out.println("\u24EB + \u24EC + \u24ED + \u24EF + \u24F0 + \u24F1 + \u24F2");
+//	}
 }
