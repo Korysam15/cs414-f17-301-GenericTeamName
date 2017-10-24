@@ -29,13 +29,15 @@ public class PlayerConsole extends AbstractConsole {
 	 * Having this instance within the console should simplify sending {@link Task}s
 	 */
 	private AbstractClient client;
+	
+	private static final String PROMPT_CHARACTOR_SEQUENCE = "> ";
 
 	public PlayerConsole(Player player) {
 		if(player == null) {
 			throw new IllegalArgumentException("The PlayerConsole requires a true Player");
 		}
 		this.player = player;
-		outPutBeforeConsole = System.lineSeparator()+"> ";
+		outPutBeforeConsole = System.lineSeparator()+PROMPT_CHARACTOR_SEQUENCE;
 		playerNickName = player.getNickName();
 		client = player.getClient();
 		nullCommands();
@@ -84,7 +86,7 @@ public class PlayerConsole extends AbstractConsole {
 	@Override
 	public synchronized void display(Object msg) {
 		if(msg != null)
-			output.println(msg.toString());
+			output.print("\r" + msg.toString() + outPutBeforeConsole);
 	}
 
 	/**
@@ -186,9 +188,9 @@ public class PlayerConsole extends AbstractConsole {
 	}
 
 	private void help() {
-		String msg = "type 'help' to see this message.\n";
+		String msg = "type 'help' to see this message.\n\r";
 		if(client.isLoggedIn()) {
-			msg += "type 'logout' to logout.\n" +
+			msg += "type 'logout' to logout.\n\r" +
 					"type 'unregister' to logout and remove your account.\n" +
 					"type 'create-game' to create a game.\n" +
 					"type 'view-profile' to view a player's profile.\n";

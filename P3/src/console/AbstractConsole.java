@@ -11,12 +11,12 @@ import user.Player;
 
 
 public abstract class AbstractConsole implements Runnable {
-	
+
 	public static final String RED="\033[0;31m";
 	public static final String YELLOW="\033[0;33m";
 	public static final String WHITE="\033[0;37m";
 	public static final String NORM="\033[0m";
-	
+
 	protected String noParamCommand;
 	protected String paramCommand;
 	protected String errorMessage;
@@ -26,25 +26,23 @@ public abstract class AbstractConsole implements Runnable {
 	protected final InputStream input;
 	protected final PrintStream output;
 	protected final PrintStream error;
-	
+
 	protected AbstractConsole() {
 		this.input = System.in;
 		this.output = System.out;
 		this.error = System.err;
 	}
-	
+
 	public abstract void display(Object msg);
-	
+
 	protected abstract boolean acceptCommand(String command);
-	
+
 	protected abstract void handleCommand();
-	
+
 	protected abstract void handleCommandError();
-	
+
 	public synchronized String promptUser(String msg) throws IOException {
-		synchronized(output) {
-			output.print(msg + outPutBeforeConsole);
-		}
+		display(msg);
 		if(fromConsole != null) synchronized(fromConsole) {
 			String ret;
 			while( (ret=fromConsole.readLine()) == null);
@@ -52,7 +50,7 @@ public abstract class AbstractConsole implements Runnable {
 		}
 		return "";
 	}
-	
+
 	public void accept() {
 		fromConsole = new BufferedReader(new InputStreamReader(input));
 		try{
@@ -60,7 +58,7 @@ public abstract class AbstractConsole implements Runnable {
 
 			while (true) {
 				synchronized(output) {
-					output.print(outPutBeforeConsole);
+					display("");
 				}
 				synchronized(fromConsole) {
 					command = fromConsole.readLine();
@@ -73,7 +71,7 @@ public abstract class AbstractConsole implements Runnable {
 				else {
 					handleCommandError();
 				}
-				
+
 			}
 		}
 		catch(InterruptedIOException e1) {
@@ -85,23 +83,21 @@ public abstract class AbstractConsole implements Runnable {
 			this.accept();
 		}
 	}
-	
+
 	public synchronized void error(String msg) {
-		synchronized(error) {
-			error.println(RED+msg+NORM);
-		}
+		display(RED+msg+NORM);
 	}
-	
+
 	public synchronized void warning(String msg) {
 		display(YELLOW+msg+NORM);
 	}
-	
+
 	public synchronized void notice(String msg) {
 		display(WHITE+msg+NORM);
 	}
-	
+
 	public abstract int getParam();
-	
+
 	@Override
 	public abstract void run();
 

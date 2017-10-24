@@ -176,8 +176,10 @@ public class ClientSession extends AbstractSession {
 	private void handleTask(Task t) throws IOException {
 		if(t instanceof UnregisterTask) {
 			unregister((UnregisterTask)t);
+			send(new UnregisterTask("","",""));
 		} else if(t instanceof LogoutTask) {
 			logout();
+			send(new LogoutTask(""));
 		} else {
 			server.handleTask(t);
 		}
