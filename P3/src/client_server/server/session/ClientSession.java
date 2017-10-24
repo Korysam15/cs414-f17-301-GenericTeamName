@@ -287,7 +287,7 @@ public class ClientSession extends AbstractSession {
 				this.email = t.getEmail();
 				server.registerClient(this, nickname);
 				setRegistered();
-				response = new LoginGreetingTask("Welcome " + nickname + "!",nickname);
+				response = new LoginGreetingTask("Welcome Back " + nickname + "!",nickname);
 			} else {
 				response = new MessageTask(msg,MessageTask.ERROR);
 			}

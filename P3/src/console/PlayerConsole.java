@@ -2,6 +2,8 @@ package console;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import client_server.client.AbstractClient;
 import client_server.transmission.ForwardTask;
@@ -255,7 +257,7 @@ public class PlayerConsole extends AbstractConsole {
 	}
 
 	private void createGameInvites() {
-		ArrayList<String> toInvite = new ArrayList<String>();
+		Set<String> toInvite = new HashSet<String>();
 		String next = "";
 		try {
 			do {
@@ -273,7 +275,7 @@ public class PlayerConsole extends AbstractConsole {
 				warning("You didn't invite anyone.");
 			} else {
 				String message = promptUser("Type a message you would like to send with your invitation: ");
-				player.sendInvitation(message, toInvite);
+				player.sendInvitation(message, new ArrayList<String>(toInvite));
 			}
 
 		} catch(IOException e) {
