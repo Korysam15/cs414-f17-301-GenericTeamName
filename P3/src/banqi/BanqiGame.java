@@ -481,14 +481,22 @@ public class BanqiGame {
 			}
 			else if(in1.toLowerCase().equals("help"))
 			{
-				System.out.println("Below is a list of each piece with their associated number that represents that piece.");
-				System.out.println("7: General\n6: Advisor\n5: Elephant\n4: Chariot\n3: Cavalry\n2: Soldier\n1: Cannon");
+				System.out.println("Below is a list of each piece with their associated number that represents that piece.\n");
+				System.out.println("White General: \u2466 \t\t Black General: \u24F1 \n" 
+				+ "White Advisor: \u2465 \t\t Black Advisor: \u24F0 \n" 
+				+ "White Elephant: \u2464 \t\t Black Elephant: \u24EF \n" 
+				+ "White Chariot: \u2463 \t\t Black Chariot: \u24EE \n"
+				+ "White Cavalry: \u2462 \t\t Black Cavalry: \u24ED \n"
+				+ "White Cannon: \u2461 \t\t Black Cannon: \u24EC \n"
+				+ "White Soldier: \u2460 \t\t Black Soldier: \u24EB\n");
+				
 				System.out.println("Rules:\n Only pieces of equal or lower rank may be captured. However, A Cannon can capture any piece and can be captured by every piece except a Soldier.\n");
 			}
 			else
 			{
 				if(in1.length()>2){
 					System.out.println("Invalid Move");
+					continue;
 				}
 				Square from =getSquare(in1);
 

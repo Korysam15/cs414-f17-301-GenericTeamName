@@ -47,10 +47,8 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 		
 		textArea=new JTextArea();
 		textArea.setCaret(new BlockCaret()); //DWM 02-07-2012
-		textArea.setBackground(Color.black); //DWM 02-07-2012
-		textArea.setForeground(Color.white); //DWM 02-07-2012
 		textArea.setCaretColor(textArea.getForeground()); //DWM 02-07-2012
-		textArea.setFont(new Font("Lucida Sans", Font.BOLD, 14)); //DWM 02-07-2012
+		textArea.setFont(new Font("monospaced", Font.PLAIN, 14)); //DWM 02-07-2012
 		textArea.setLineWrap(true); //DWM 02-07-2012
 		textArea.setWrapStyleWord(true); //DWM 02-07-2012
 		textArea.setEditable(true); //DWM 02-07-2012
@@ -60,14 +58,14 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 		frame.getContentPane().add(new JScrollPane(textArea),BorderLayout.CENTER);
 		frame.getContentPane().add(button,BorderLayout.SOUTH);
 		frame.setVisible(true);		
-		
+
 		frame.addWindowListener(this);		
 		button.addActionListener(this);
 		
 		try
 		{
 			PipedOutputStream pout=new PipedOutputStream(this.pin);
-			System.setOut(new PrintStream(pout,true)); 
+			System.setOut(new PrintStream(pout,true));
 		} 
 		catch (java.io.IOException io)
 		{
@@ -144,7 +142,6 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 		try { reader.join(1000);pin.close();   } catch (Exception e){}		
 		try { reader2.join(1000);pin2.close(); } catch (Exception e){}
 		try { pout3.close(); } catch (Exception e){} //DWM 02-07-2012
-		System.exit(0);
 	}		
 		
 	/* (non-Javadoc)
@@ -287,4 +284,28 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 	public void setTitle(String title) { //DWM 02-07-2012
 		frame.setTitle(title);
 	}
+	
+	public void showConsole()
+	{
+		this.frame.setVisible(true);
+	}
+	
+	public void closeConsole()
+	{
+		this.frame.setVisible(false);
+	}
+	
+	
+//	public static void main(String[] args) throws InterruptedException
+//	{
+//		JavaConsole console = new JavaConsole();
+//		console.showConsole();
+//		Thread.sleep(10000);
+//		console.closeConsole();
+//		Thread.sleep(10000);
+//		console.showConsole();
+//		
+//		System.out.println("\u24F5 + \u24F6 + \u24F7 + \u24F8+ \u24F9 + \u24FA + \u24FB");
+//		System.out.println("\u24EB + \u24EC + \u24ED + \u24EF + \u24F0 + \u24F1 + \u24F2");
+//	}
 }

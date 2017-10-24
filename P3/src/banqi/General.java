@@ -10,10 +10,10 @@ public class General extends Piece {
 		super.color=color;
 		super.isOn=isOn;
 		if(color){
-			super.icon="\u001b[1;31m7\u001b[0m";
+			super.icon="\u2466";
 		}
 		else{
-			super.icon="7";
+			super.icon="\u24F1";
 		}
 		
 	}

@@ -10,10 +10,10 @@ public class Soldier extends Piece {
 		super.color=color;
 		super.isOn=isOn;
 		if(color){
-			super.icon="\u001b[1;31m1\u001b[0m";
+			super.icon="\u2460";
 		}
 		else{
-			super.icon="1";
+			super.icon="\u24EB";
 		}
 	}
 

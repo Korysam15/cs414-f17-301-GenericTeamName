@@ -10,10 +10,10 @@ public class Chariot extends Piece {
 		super.color=color;
 		super.isOn=isOn;
 		if(color){
-			super.icon="\u001b[1;31m4\u001b[0m";
+			super.icon="\u2463";
 		}
 		else{
-			super.icon="4";
+			super.icon="\u24EE";
 		}
 	}
 
