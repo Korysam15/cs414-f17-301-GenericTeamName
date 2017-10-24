@@ -15,6 +15,7 @@ import client_server.server.AbstractServer;
 import client_server.server.Server;
 import client_server.server.registry.AbstractRegistry;
 import client_server.server.registry.ActiveRegistry;
+import client_server.transmission.GreetingTask;
 import client_server.transmission.LoginTask;
 import client_server.transmission.LogoutTask;
 import client_server.transmission.MessageTask;
@@ -257,6 +258,7 @@ public class ClientSession extends AbstractSession {
 				this.email = t.getEmail();
 				server.registerClient(this, nickname);
 				setRegistered();
+				response = new GreetingTask("Welcome " + nickname + "!");
 			} else {
 				int type = (msg.contains("in use")) ? MessageTask.WARNING : MessageTask.ERROR;
 				response = new MessageTask(msg,type);
@@ -284,6 +286,7 @@ public class ClientSession extends AbstractSession {
 				this.email = t.getEmail();
 				server.registerClient(this, nickname);
 				setRegistered();
+				response = new GreetingTask("Welcome Back " + nickname + "!");
 			} else {
 				response = new MessageTask(msg,MessageTask.ERROR);
 			}
