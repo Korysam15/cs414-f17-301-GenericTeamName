@@ -311,15 +311,16 @@ public class Client extends AbstractClient {
 		try {
 			send(t);
 			if(t.getTaskCode() == TaskConstents.REGISTER_TASK) {
-			//	waitForLogin();
+				// waitForLogin();
 			} else if(t.getTaskCode() == TaskConstents.LOGIN_TASK) {
-			//	waitForLogin();
+				Thread.sleep(1000);
+				// wait for a little bit
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-		} //catch (InterruptedException e) {
+		} catch (InterruptedException e) {
 			
-		//}
+		}
 	}
 	
 	private void waitForLogin() throws InterruptedException {
