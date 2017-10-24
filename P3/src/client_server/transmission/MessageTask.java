@@ -78,7 +78,8 @@ public class MessageTask extends Task {
 
 	public String toString() 
 	{
-		return "Taskcode: " + TaskConstents.MESSAGE_TASK + " Message: " + msg ;
+		return "MessageTask, Taskcode: " + getTaskCode() +
+		", Contents: " + msg;
 	}
 
 	public void run() 

@@ -49,6 +49,11 @@ public class CreateGameTask extends Task {
 		return WriteUtils.getBytesAndCloseStreams(bs,dout);
 	}
 	
+	public String toString() {
+		return "CreateGameTask, Taskcode: " + getTaskCode() + ", Contents: " 
+				+ gameID + "," + playerOne + "," + playerTwo;
+	}
+	
 	public int getGameID() {
 		return gameID;
 	}

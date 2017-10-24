@@ -33,6 +33,11 @@ public class RejectInviteTask extends Task {
 		return TaskConstents.REJECTINVITE_TASK;
 	}
 	
+	public String toString() {
+		return "RejectInviteTask, Taskcode: " + getTaskCode() +
+		", Contents: " + playerFrom + "," + message;
+	}
+	
 	public byte[] toByteArray() throws IOException 
 	{
 		ByteArrayOutputStream bs = WriteUtils.getByteOutputStream();

@@ -44,6 +44,11 @@ public class InviteTask extends Task {
 	{
 		return TaskConstents.INVITE_TASK;
 	}
+	
+	public String toString() {
+		return "InviteTask, Taskcode: " + getTaskCode() +
+				", Contents: " + message + playerFrom;
+	}
 
 	public byte[] toByteArray() throws IOException 
 	{

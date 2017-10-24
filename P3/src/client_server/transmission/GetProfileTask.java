@@ -30,6 +30,10 @@ public class GetProfileTask extends Task {
 		return TaskConstents.GET_PROFILE_TASK;
 	}
 
+	public String toString() {
+		return "GetProfileTask, Taskcode: " + getTaskCode() +
+				", Contents: " + playerWhoWantsIt + "," + playerWhoHasIt;
+	}
 	@Override
 	public byte[] toByteArray() throws IOException {
 		ByteArrayOutputStream bs = WriteUtils.getByteOutputStream();

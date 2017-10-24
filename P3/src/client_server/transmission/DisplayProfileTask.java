@@ -36,6 +36,10 @@ public class DisplayProfileTask extends Task {
 		WriteUtils.writeString(profile, dout);
 		return WriteUtils.getBytesAndCloseStreams(bs,dout);
 	}
+	
+	public String toString() {
+		return "DisplayProfileTask, Taskcode: " + getTaskCode();
+	}
 
 	@Override
 	public void run() {

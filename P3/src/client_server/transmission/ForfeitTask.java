@@ -43,6 +43,11 @@ public class ForfeitTask extends Task {
 		return WriteUtils.getBytesAndCloseStreams(bs,dout);
 	}
 	
+	public String toString() {
+		return "ForfeitTask, Taskcode: " + getTaskCode() + ", Contents: " +
+				gameID+","+update+","+message;
+	}
+	
 	public UpdateRecordTask getUpdateRecordTask()
 	{
 		return this.update;
