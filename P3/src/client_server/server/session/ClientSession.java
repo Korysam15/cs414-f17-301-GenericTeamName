@@ -15,10 +15,11 @@ import client_server.server.AbstractServer;
 import client_server.server.Server;
 import client_server.server.registry.AbstractRegistry;
 import client_server.server.registry.ActiveRegistry;
-import client_server.transmission.GreetingTask;
+import client_server.transmission.LoginGreetingTask;
 import client_server.transmission.LoginTask;
 import client_server.transmission.LogoutTask;
 import client_server.transmission.MessageTask;
+import client_server.transmission.RegisterGreetingTask;
 import client_server.transmission.RegisterTask;
 import client_server.transmission.Task;
 import client_server.transmission.TaskConstents;
@@ -156,13 +157,11 @@ public class ClientSession extends AbstractSession {
 				if(t instanceof LoginTask) {
 					registerWithServer((LoginTask)t);
 				}
-				send(t);
 				break;
 			case TaskConstents.REGISTER_TASK:
 				if(t instanceof RegisterTask) {
 					registerWithServer((RegisterTask)t);
 				}
-				send(t);
 				break;
 			default:
 				if(isRegisteredWithServer()) {
@@ -258,7 +257,7 @@ public class ClientSession extends AbstractSession {
 				this.email = t.getEmail();
 				server.registerClient(this, nickname);
 				setRegistered();
-				response = new GreetingTask("Welcome " + nickname + "!");
+				response = new RegisterGreetingTask("Welcome " + nickname + "!");
 			} else {
 				int type = (msg.contains("in use")) ? MessageTask.WARNING : MessageTask.ERROR;
 				response = new MessageTask(msg,type);
@@ -281,12 +280,12 @@ public class ClientSession extends AbstractSession {
 		if(registry != null) {
 			String msg = registry.isValidLogin(t);
 			if(msg == null) {
-				String nickname = t.getNickname();
+				String nickname = registry.getUser(t.getEmail()).getNickname();
 				setID(nickname);
 				this.email = t.getEmail();
 				server.registerClient(this, nickname);
 				setRegistered();
-				response = new GreetingTask("Welcome Back " + nickname + "!");
+				response = new LoginGreetingTask("Welcome " + nickname + "!",nickname);
 			} else {
 				response = new MessageTask(msg,MessageTask.ERROR);
 			}
