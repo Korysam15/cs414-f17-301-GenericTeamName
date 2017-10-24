@@ -76,7 +76,7 @@ public class ForwardTask extends Task {
 			
 			if(!success) {
 				try {
-					clientFrom.send(new MessageTask(response));
+					clientFrom.send(new MessageTask(response,MessageTask.ERROR));
 				} catch (IOException e2) {
 					
 				}
