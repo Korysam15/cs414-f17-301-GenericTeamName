@@ -307,8 +307,15 @@ public class Client extends AbstractClient {
 		}
 		try {
 			send(t);
+			if(t.getTaskCode() == TaskConstents.REGISTER_TASK) {
+				this.wait();
+			} else if(t.getTaskCode() == TaskConstents.LOGIN_TASK) {
+				this.wait();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (InterruptedException e) {
+			
 		}
 	}
 
@@ -402,6 +409,7 @@ public class Client extends AbstractClient {
 		if(taskcode == TaskConstents.LOGIN_GREETING_TASK || taskcode == TaskConstents.REGISTER_GREETING_TASK) {
 			this.setLoggedIn();
 			t.run();
+			this.notify();
 		} else if(taskcode == TaskConstents.LOGOUT_TASK || taskcode == TaskConstents.UNREGISTER_TASK) {
 			this.unsetLoggedIn();
 		} else {
