@@ -14,6 +14,7 @@ import client_server.transmission.MoveTask;
 import client_server.transmission.Task;
 import client_server.transmission.UpdateRecordTask;
 import console.JavaConsole;
+import user.ActivePlayer;
 import user.Player;
 
 /**
@@ -89,6 +90,7 @@ public class BanqiGame {
 		this.gameBoard= new GameBoard();
 		this.pieces= new Piece[32];
 		console = new JavaConsole();
+		console.setTitle(ActivePlayer.getInstance().getNickName() + " Game[" + gameID + "]");
 		getAllPieces();
 
 	}

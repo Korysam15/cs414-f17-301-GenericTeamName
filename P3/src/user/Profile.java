@@ -30,7 +30,7 @@ public class Profile {
 	}
 	
 	public String toString(){
-		return this.name + this.history.toString();
+		return this.name + "\n" + this.history.toString();
 	}
 	public String getName(){
 		return this.name;

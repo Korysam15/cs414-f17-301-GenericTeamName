@@ -96,6 +96,18 @@ public final class TaskFactory {
 		case TaskConstents.UPDATERECORD_TASK:
 			t = new UpdateRecordTask(din);
 			break;
+		case TaskConstents.LOGOUT_TASK:
+			t = new LogoutTask(din);
+			break;
+		case TaskConstents.UNREGISTER_TASK:
+			t = new UnregisterTask(din);
+			break;
+		case TaskConstents.GET_PROFILE_TASK:
+			t = new GetProfileTask(din);
+			break;
+		case TaskConstents.DISPLAY_PROFILE_TASK:
+			t = new DisplayProfileTask(din);
+			break;
     }
 		
 		return t;

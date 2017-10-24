@@ -1,40 +1,46 @@
 package console;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
 import client_server.client.AbstractClient;
+import client_server.transmission.ForwardTask;
+import client_server.transmission.GetProfileTask;
+import client_server.transmission.LoginTask;
+import client_server.transmission.LogoutTask;
+import client_server.transmission.RegisterTask;
+import client_server.transmission.Task;
+import client_server.transmission.UnregisterTask;
+import user.ActivePlayer;
 import user.Player;
 
 public class PlayerConsole extends AbstractConsole {
 	private static final String[] noParamCommands = 
-		{"quit"};
-	
+		{"exit","help","register","login","logout","unregister","create-game","view-profile",};
+
 	private static final int noParamCommandsLength = noParamCommands.length;
-	
-	private static final String[] paramCommands = 
-		{"create-game", "connect-to-server","send-message"};
-	
-	private static final int paramCommandsLength = paramCommands.length;
-	
-	private int parameter;
-	
+
 	/**
 	 * We will store this here to simplify {@link ForwardTask}s
 	 */
 	private String playerNickName;
-	
+
 	/**
 	 * Having this instance within the console should simplify sending {@link Task}s
 	 */
 	private AbstractClient client;
-	
+
 	public PlayerConsole(Player player) {
 		if(player == null) {
 			throw new IllegalArgumentException("The PlayerConsole requires a true Player");
 		}
 		this.player = player;
-		outPutBeforeConsole = "\n> ";
+		outPutBeforeConsole = System.lineSeparator()+"> ";
+		playerNickName = player.getNickName();
+		client = player.getClient();
 		nullCommands();
 	}
-	
+
 	/**
 	 * Sets a few instance variables to null
 	 */
@@ -42,9 +48,8 @@ public class PlayerConsole extends AbstractConsole {
 		noParamCommand = null;
 		paramCommand = null;
 		errorMessage = null;
-		parameter = 0;
 	}
-	
+
 	/**
 	 * Handle's commands that do NOT require additional input from the user.
 	 * @param command - The String that may represent a command that does not require arguments.
@@ -57,7 +62,7 @@ public class PlayerConsole extends AbstractConsole {
 		for(i=0;i<noParamCommandsLength;i++) {
 			if(command.startsWith(noParamCommands[i])) {
 				if(commandLength >= (length = noParamCommands[i].length()) && 
-				   !command.substring(length, commandLength).matches(".*\\w.*")) { // white space after command is OK.
+						!command.substring(length, commandLength).matches(".*\\w.*")) { // white space after command is OK.
 					noParamCommand = noParamCommands[i];
 					return true;
 				}
@@ -69,38 +74,8 @@ public class PlayerConsole extends AbstractConsole {
 		}
 		return false;
 	}
-	
-	/**
-	 * Handle's commands that DO require additional input from the user.
-	 * @param command - The String that may represent a command that does require arguments.
-	 * @return True if and only if the command does represent a "command that requires additional arguments"
-	 * Otherwise returns false.
-	 */
-	private boolean checkCommandsWithParam(String command) {
-		int i, length, 
-		commandLength = command.length();
-		for(i=0;i<paramCommandsLength;i++) {
-			if(command.startsWith(paramCommands[i])) {
-				try {
-					length = paramCommands[i].length()+1;
-					if(commandLength > length) { // used trim to remove white space
-						parameter = Integer.parseInt(command.substring(length, commandLength).trim());
-						paramCommand = paramCommands[i];
-						return true;
-					}
-					// throw exception to enter catch clause... Rather than duplicating code
-					else
-						throw new NumberFormatException();
-				} catch(NumberFormatException e) {
-					errorMessage = "Expected: '" + paramCommands[i] + " <number>" +
-							"'\nReceived: '" + command + "'";
-					return false;
-				}
-			}
-		}
-		return false;
-	}
-	
+
+
 	/**
 	 * Overrides {@link AbstractConsole#display}.
 	 * Displays messages to a user through System.out.
@@ -109,7 +84,7 @@ public class PlayerConsole extends AbstractConsole {
 	@Override
 	public void display(Object msg) {
 		if(msg != null)
-			System.out.println(msg.toString());
+			output.println(msg.toString());
 	}
 
 	/**
@@ -121,52 +96,41 @@ public class PlayerConsole extends AbstractConsole {
 	protected boolean acceptCommand(String command) {
 		if(checkCommandsWithoutParam(command))
 			return true;
-		else if(errorMessage == null && checkCommandsWithParam(command))
-			return true;
-		
+
 		if(errorMessage == null)
 			errorMessage = "Unkown Command: " + command;
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * Implements desired functionality for commands that do NOT require parameters.
 	 */
 	private void handleCommandWithoutParam() {
 		switch(noParamCommand) {
-		case "quit":
-			// handle quit command
+		case "exit":
+			exit();
 			break;
-		
-			/* case "other-command-1":
-			// handle another command
-			break; */
-		/* case "other-command-2":
-			// handle another command
-			break; */
-		/* case "other-command-3:":
-			// handle another command
-			break; */
-		
-		// default: // ignore
-		
-		}
-	}
-	
-	/**
-	 * Implements desired functionality for commands that DO require parameters.
-	 */
-	private void handleCommandWithParam() {
-		switch(paramCommand) {
+		case "help":
+			help();
+			break;
+		case "register":
+			register();
+			break;
+		case "login":
+			login();
+			break;
+		case "view-profile":
+			viewProfile();
+			break;
 		case "create-game":
-			// handle create-game
+			createGame();
 			break;
-		case "connect-to-server":
-			// handle
+		case "logout":
+			logout();
 			break;
-		case "send-message":
-			// handle
+		case "unregister":
+			unregister();
 			break;
 		}
 	}
@@ -178,9 +142,6 @@ public class PlayerConsole extends AbstractConsole {
 	protected void handleCommand() {
 		if(noParamCommand != null)
 			handleCommandWithoutParam();
-		else if(paramCommand != null) {
-			handleCommandWithParam();
-		}
 		nullCommands();
 	}
 
@@ -203,6 +164,159 @@ public class PlayerConsole extends AbstractConsole {
 
 	@Override
 	public int getParam() {
-		return parameter;
+		return 0;
+	}
+
+	private boolean requireLogin() {
+		if(client.isLoggedIn()) {
+			return true;
+		} else {
+			display("You must be logged in before you can: " + noParamCommand);
+			return false;
+		}
+	}
+
+	private boolean requireLogoff() {
+		if(!client.isLoggedIn()) {
+			return true;
+		} else {
+			display("You must be logged off before you can: " + noParamCommand);
+			return false;
+		}
+	}
+
+	private void help() {
+		String msg = "type 'help' to see this message.\n";
+		if(client.isLoggedIn()) {
+			msg += "type 'logout' to logout.\n" +
+					"type 'unregister' to logout and remove your account.\n" +
+					"type 'create-game' to create a game.\n" +
+					"type 'view-profile' to view a player's profile.\n";
+		} else {
+			msg += "type 'login' to login to your account.\n" +
+					"type 'register' to create a new account.\n";
+		}
+		msg += "type 'exit' to quit this program.";
+		display(msg);
+	}
+
+	private void exit() {
+		if(client.isLoggedIn())
+			logout();
+		try {
+			Thread.sleep(1000);
+			client.disconnectFromServer();
+		} catch(Exception e) {
+
+		}
+		System.exit(0);
+	}
+
+	private void register() {
+		if(requireLogoff()) {
+			try {
+				String email = promptUser("Please enter in a valid Email:");
+				String nickName = promptUser("Please enter your desired nickname:");
+				String password = promptUser("Please enter your password:");
+				client.sendToServer(new RegisterTask(email,nickName,password));
+				ActivePlayer.setInstance(player);
+				player.setEmail(email);
+				player.setNickName(nickName);
+				player.setPassword(password);
+				playerNickName = nickName;
+			} catch (IOException e) {
+				display("Error occured while registering.");
+			}
+		}
+	}
+
+	private void login() {
+		if(requireLogoff()) {
+			try {
+				String email = promptUser("Please enter in a valid Email:");
+				String nickName = promptUser("Please enter your desired nickname:");
+				String password = promptUser("Please enter your password:");
+				client.sendToServer(new LoginTask(email,nickName,password));
+				ActivePlayer.setInstance(player);
+				player.setEmail(email);
+				player.setNickName(nickName);
+				player.setPassword(password);
+				playerNickName = nickName;
+			} catch (IOException e) {
+				display("Error occured while logging in.");
+			}
+		}
+	}
+
+	private void createGame() {
+		if(requireLogin()) {
+			createGameInvites();
+		}
+	}
+
+	private void createGameInvites() {
+		ArrayList<String> toInvite = new ArrayList<String>();
+		String next = "";
+		try {
+			do {
+				next = promptUser("Enter the nickname name of the player you would like to invite"
+						+ " or click enter to send the invititations: ");
+				next = next.trim();
+				if(!next.isEmpty()) {
+					toInvite.add(next);
+				} else {
+					break;
+				}
+			} while(true);
+
+			if(toInvite.isEmpty()) {
+				display("You didn't invite anyone.");
+			} else {
+				String message = promptUser("Type a message you would like to send with your invitation: ");
+				player.sendInvitation(message, toInvite);
+			}
+
+		} catch(IOException e) {
+			display("Error occured while sending invites.");
+		}
+	}
+
+	private void viewProfile() {
+		if(requireLogin()) {
+			try {
+				String userOther = promptUser("Enter the nickname of the player's profile you would"
+						+ " like to view or click enter to view your own:");
+				userOther = userOther.trim();
+				if(userOther.isEmpty()) {
+					userOther = playerNickName;
+				}
+				Task getProfile = new GetProfileTask(playerNickName, userOther);
+				Task forward = new ForwardTask(playerNickName,getProfile,userOther);
+				client.sendToServer(forward);
+			} catch (IOException e) {
+				display("Error occured while trying to receive a player's profile.");
+			}
+		}
+	}
+
+	private void unregister() {
+		if(requireLogin()) {
+			try {
+				client.sendToServer(new UnregisterTask(
+						player.getEmail(),player.getNickName(),player.getPassword()));
+			}  catch (IOException e) {
+				display("Error occured while unregistering");
+			}
+		}
+	}
+
+	private void logout() {
+		if(requireLogin()) {
+			try {
+				client.sendToServer(new LogoutTask(player.getEmail()));
+			}  catch (IOException e) {
+				display("Error occured while logging out");
+			}
+		}
 	}
 }
