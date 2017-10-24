@@ -9,6 +9,7 @@ public class GameRecord {
 	public GameRecord(Profile player1, Profile player2, EndGameState end){
 		this.player1 = player1;
 		this.player2 = player2;
+		this.end = end;
 	}
 	private String getOutcomeMessage(){
 		String outcome;
@@ -45,6 +46,7 @@ public class GameRecord {
 	public Profile getLoser(){
 		switch(end){
 		case DRAW:
+			System.out.println("default");
 			return null;
 		case PLAYER1ABANDON:
 			return player1;
@@ -55,6 +57,7 @@ public class GameRecord {
 		case PLAYER2WON:
 			return player1;
 		default:
+			System.out.println("default");
 			return null;
 		}
 	}
