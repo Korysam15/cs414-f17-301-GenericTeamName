@@ -45,12 +45,15 @@ public class ClientSession extends AbstractSession {
 	private Object readLock;
 
 	private String email;
+	
+	private String address;
 
 	public ClientSession(AbstractServer server, SelectionKey key, String ID) throws IOException {
 		super(server, key, ID);
 		channel = (SocketChannel) key.channel();
 		writeLock = new Object();
 		readLock = new Object();
+		this.address = channel.socket().getRemoteSocketAddress().toString();
 	}
 
 	public ClientSession(AbstractSession s) throws IOException {
@@ -177,11 +180,13 @@ public class ClientSession extends AbstractSession {
 		if(t instanceof UnregisterTask) {
 			unregister((UnregisterTask)t);
 			send(new UnregisterTask("","",""));
+			setID(null);
 		} else if(t instanceof LogoutTask) {
 			logout();
 			send(new LogoutTask(""));
+			setID(null);
 		} else {
-			server.handleTask(t);
+			server.handleTask(t,this);
 		}
 	}
 
@@ -304,8 +309,7 @@ public class ClientSession extends AbstractSession {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return address;
 	}
 
 	@Override
