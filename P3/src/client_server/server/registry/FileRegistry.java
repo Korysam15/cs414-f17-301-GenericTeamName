@@ -58,6 +58,7 @@ public class FileRegistry extends AbstractRegistry {
 				inputFile.createNewFile();
 				return;
 			} else {
+				boolean corrupted = false;
 				BufferedReader br = new BufferedReader(new FileReader(inputFile));
 				String line = null;
 				while((line = br.readLine()) != null) {
@@ -65,12 +66,17 @@ public class FileRegistry extends AbstractRegistry {
 						User u = User.createUserFromString(line);
 						addUser(u);
 					} catch(NullPointerException e) {
-						// corrupted file
+						corrupted = true;
 					} catch(IllegalArgumentException e) {
-						// outdated file per the specs of User
+						corrupted = true;
+					} catch(Exception ex) {
+						corrupted = true;
 					}
 				}
-				br.close();			
+				br.close();
+				if(corrupted) {
+					updateFile();
+				}
 			}
 		} catch (FileNotFoundException e) {
 			// shouldn't happen because of first if statements
