@@ -102,6 +102,7 @@ public class InviteTask extends Task {
 		JPanel panel = new JPanel();
 		frame.add(panel);
 		panel.add(label);
+		label.setLocation(20,20);
 
 		JButton declineButton = new JButton("Decline");
 		panel.add(declineButton);
