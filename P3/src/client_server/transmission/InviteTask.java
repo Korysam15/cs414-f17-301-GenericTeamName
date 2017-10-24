@@ -93,7 +93,7 @@ public class InviteTask extends Task {
 	}
 
 	private void getResponse() {
-		JFrame frame = new JFrame("Invitation From " + playerFrom);
+		JFrame frame = new JFrame("Game Invitation From " + playerFrom);
 		frame.setVisible(true);
 		frame.setSize(300, 300);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
