@@ -173,6 +173,7 @@ public class PlayerConsole extends AbstractConsole {
 
 	private boolean requireLogin() {
 		if(client.isLoggedIn()) {
+			playerNickName = player.getNickName();
 			return true;
 		} else {
 			error("You must be logged in before you can: " + noParamCommand);
@@ -312,6 +313,7 @@ public class PlayerConsole extends AbstractConsole {
 						player.getEmail(),player.getNickName(),player.getPassword()));
 					Thread.sleep(1000);
 					warning("Your account has been removed.");
+					playerNickName = null;
 				} else {
 					notice("Your account will not removed.");
 				}
@@ -327,6 +329,7 @@ public class PlayerConsole extends AbstractConsole {
 		if(requireLogin()) {
 			try {
 				client.sendToServer(new LogoutTask(player.getEmail()));
+				playerNickName = null;
 			}  catch (IOException e) {
 				error("Error occured while logging out");
 			}

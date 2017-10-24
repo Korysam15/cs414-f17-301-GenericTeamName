@@ -42,7 +42,7 @@ public class Server extends AbstractServer {
 	public static final int SELECT_TIME_OUT = 3000; // Milliseconds
 	
 	/* Used for debugging */
-	public static final boolean DEBUG = true;
+	public static final boolean DEBUG = false;
 	public static final String DEBUG_TAB = "    ";
 	private static int NUM_TABS = 0;
 	
@@ -256,6 +256,7 @@ public class Server extends AbstractServer {
 	public void handleTask(Task t, ClientSession client) {
 		debugPrintHeader("handleTask");
 		debugPrintln("Running TaskCode: " + t.getTaskCode());
+		System.out.println("Performing Task: " + t);
 		t.run();
 		debugPrintFooter("handleTask");
 	}

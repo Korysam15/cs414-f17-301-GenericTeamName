@@ -49,8 +49,8 @@ public class LoginGreetingTask extends Task {
 		Player player;
 		AbstractServer server;
 		if((player = ActivePlayer.getInstance()) != null) {
-			displayToPlayer(player);
 			player.setNickName(playerNickname);
+			displayToPlayer(player);
 		} else if((server = ActiveServer.getInstance()) !=null ) {
 			displayToServer(server);
 		}
@@ -59,7 +59,7 @@ public class LoginGreetingTask extends Task {
 	private void displayToPlayer(Player player) {
 		AbstractConsole console = player.getConsole();
 		if(console != null) {
-			console.display(greeting);
+			console.notice(greeting);
 		} else {
 			System.out.println(greeting);
 		}

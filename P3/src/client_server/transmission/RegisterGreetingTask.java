@@ -54,7 +54,7 @@ public class RegisterGreetingTask extends Task {
 	private void displayToPlayer(Player player) {
 		AbstractConsole console = player.getConsole();
 		if(console != null) {
-			console.display(greeting);
+			console.notice(greeting);
 		} else {
 			System.out.println(greeting);
 		}
