@@ -18,8 +18,9 @@ public class LoginGreetingTask extends Task {
 	private String greeting;
 	private String playerNickname;
 	
-	public LoginGreetingTask(String greeting) {
+	public LoginGreetingTask(String greeting, String playerNickname) {
 		this.greeting = greeting;
+		this.playerNickname = playerNickname;
 	}
 	
 	public LoginGreetingTask(DataInputStream din) throws IOException {
