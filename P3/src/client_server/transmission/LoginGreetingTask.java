@@ -49,6 +49,8 @@ public class LoginGreetingTask extends Task {
 		AbstractServer server;
 		if((player = ActivePlayer.getInstance()) != null) {
 			displayToPlayer(player);
+			player.setNickName(playerNickname);
+			player.notify(); // wake up a thread if it is waiting for the login
 		} else if((server = ActiveServer.getInstance()) !=null ) {
 			displayToServer(server);
 		}
@@ -58,7 +60,6 @@ public class LoginGreetingTask extends Task {
 		AbstractConsole console = player.getConsole();
 		if(console != null) {
 			console.display(greeting);
-			player.setNickName(playerNickname);
 		} else {
 			System.out.println(greeting);
 		}

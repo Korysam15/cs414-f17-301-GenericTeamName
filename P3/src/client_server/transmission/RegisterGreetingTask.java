@@ -46,6 +46,7 @@ public class RegisterGreetingTask extends Task {
 		AbstractServer server;
 		if((player = ActivePlayer.getInstance()) != null) {
 			displayToPlayer(player);
+			player.notify(); // wake up a thread if it waiting on Registration
 		} else if((server = ActiveServer.getInstance()) !=null ) {
 			displayToServer(server);
 		}
