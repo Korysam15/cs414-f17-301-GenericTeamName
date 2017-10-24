@@ -5,6 +5,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import client_server.server.AbstractServer;
+import client_server.server.ActiveServer;
 import client_server.transmission.util.ReadUtils;
 import client_server.transmission.util.WriteUtils;
 import console.AbstractConsole;
@@ -81,28 +83,39 @@ public class MessageTask extends Task {
 
 	public void run() 
 	{
-		Player player = ActivePlayer.getInstance();
-		if(player != null) {
-			AbstractConsole console = player.getConsole();
-			if(console != null) {
-				switch(type) {
-				case DEFAULT:
-					console.display(msg);
-					break;
-				case NOTICE:
-					console.notice(msg);
-					break;
-				case WARNING:
-					console.warning(msg);
-					break;
-				case ERROR:
-					console.error(msg);
-					break;
-				}
-			} else {
-				System.out.println(msg);
-			}
+		Player player;
+		AbstractServer server;
+		if((player = ActivePlayer.getInstance()) != null) {
+			displayToPlayer(player);
+		} else if((server = ActiveServer.getInstance()) !=null ) {
+			displayToServer(server);
 		}
+	}
+	
+	private void displayToPlayer(Player player) {
+		AbstractConsole console = player.getConsole();
+		if(console != null) {
+			switch(type) {
+			case DEFAULT:
+				console.display(msg);
+				break;
+			case NOTICE:
+				console.notice(msg);
+				break;
+			case WARNING:
+				console.warning(msg);
+				break;
+			case ERROR:
+				console.error(msg);
+				break;
+			}
+		} else {
+			System.out.println(msg);
+		}
+	}
+	
+	private void displayToServer(AbstractServer server) {
+		System.out.println(msg);
 	}
 
 }
