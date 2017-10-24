@@ -37,8 +37,8 @@ public class AcceptInviteTask extends Task {
 	}
 
 	public String toString() {
-		return "AcceptInviteTask, Taskcode: " + TaskConstents.ACCEPT_INVITE_TASK+ 
-				", Contents: " + playerWhoAccepted ;
+		return "[AcceptInviteTask, Taskcode: " + getTaskCode() + 
+				", Contents: " + playerWhoAccepted + "]" ;
 	}
 
 	public void run() {

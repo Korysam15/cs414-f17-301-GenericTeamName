@@ -44,8 +44,8 @@ public class ForfeitTask extends Task {
 	}
 	
 	public String toString() {
-		return "ForfeitTask, Taskcode: " + getTaskCode() + ", Contents: " +
-				gameID+","+update+","+message;
+		return "[ForfeitTask, Taskcode: " + getTaskCode() + ", Contents: " +
+				gameID+","+update+","+message+"]";
 	}
 	
 	public UpdateRecordTask getUpdateRecordTask()

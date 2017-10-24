@@ -29,8 +29,8 @@ public class UpdateRecordTask extends Task {
 	}
 	
 	public String toString() {
-		return "UpdateRecordTask, Taskcode: " + getTaskCode() +
-		", Contents: " + won + "," + loss + "," + draw;
+		return "[UpdateRecordTask, Taskcode: " + getTaskCode() +
+		", Contents: " + won + "," + loss + "," + draw +"]";
 	}
 	
 	public void setWon(boolean won)

@@ -59,9 +59,9 @@ public class MoveTask extends Task {
 	}
 
 	public String toString() {
-		return "MoveTask, Taskcode: " + getTaskCode() +
+		return "[MoveTask, Taskcode: " + getTaskCode() +
 				", Contents: " + gameID + "," + fromX + "," +
-				fromY + "," + toX + "," + toY;
+				fromY + "," + toX + "," + toY + "]";
 	}
 
 	public void run() {

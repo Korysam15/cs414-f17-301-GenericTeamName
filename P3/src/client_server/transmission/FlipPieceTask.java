@@ -51,8 +51,8 @@ public class FlipPieceTask extends Task {
 	}
 
 	public String toString() {
-		return "FlipPieceTask, Taskcode: " + getTaskCode() + ", Contents: " + playerWhoMadeMove 
-				+ ", " + fromX + ", " + fromY;
+		return "[FlipPieceTask, Taskcode: " + getTaskCode() + ", Contents: " + playerWhoMadeMove 
+				+ ", " + fromX + ", " + fromY +"]";
 	}
 
 	public void run() {

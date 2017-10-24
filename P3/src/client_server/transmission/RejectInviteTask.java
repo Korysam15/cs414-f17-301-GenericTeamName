@@ -34,8 +34,8 @@ public class RejectInviteTask extends Task {
 	}
 	
 	public String toString() {
-		return "RejectInviteTask, Taskcode: " + getTaskCode() +
-		", Contents: " + playerFrom + "," + message;
+		return "[RejectInviteTask, Taskcode: " + getTaskCode() +
+		", Contents: " + playerFrom + "," + message + "]";
 	}
 	
 	public byte[] toByteArray() throws IOException 

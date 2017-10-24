@@ -38,7 +38,7 @@ public class DisplayProfileTask extends Task {
 	}
 	
 	public String toString() {
-		return "DisplayProfileTask, Taskcode: " + getTaskCode();
+		return "[DisplayProfileTask, Taskcode: " + getTaskCode() + "]";
 	}
 
 	@Override

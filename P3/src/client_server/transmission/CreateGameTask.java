@@ -50,8 +50,8 @@ public class CreateGameTask extends Task {
 	}
 	
 	public String toString() {
-		return "CreateGameTask, Taskcode: " + getTaskCode() + ", Contents: " 
-				+ gameID + "," + playerOne + "," + playerTwo;
+		return "[CreateGameTask, Taskcode: " + getTaskCode() + ", Contents: " 
+				+ gameID + "," + playerOne + "," + playerTwo + "]";
 	}
 	
 	public int getGameID() {

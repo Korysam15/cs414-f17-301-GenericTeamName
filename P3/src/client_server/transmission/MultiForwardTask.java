@@ -45,8 +45,8 @@ public class MultiForwardTask extends Task {
 	}
 
 	public String toString() {
-		return "MultiForwardTask, Taskcode: " + getTaskCode() +
-				", Contents: " + task + ",sent to " + toPlayers.size() + " clients";
+		return "[MultiForwardTask, Taskcode: " + getTaskCode() +
+				", Contents: " + task + ",sent to " + toPlayers.size() + " clients]";
 	}
 
 	public void run() {

@@ -31,8 +31,8 @@ public class GetProfileTask extends Task {
 	}
 
 	public String toString() {
-		return "GetProfileTask, Taskcode: " + getTaskCode() +
-				", Contents: " + playerWhoWantsIt + "," + playerWhoHasIt;
+		return "[GetProfileTask, Taskcode: " + getTaskCode() +
+				", Contents: " + playerWhoWantsIt + "," + playerWhoHasIt + "]";
 	}
 	@Override
 	public byte[] toByteArray() throws IOException {

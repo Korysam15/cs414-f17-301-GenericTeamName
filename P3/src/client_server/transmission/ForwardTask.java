@@ -43,8 +43,8 @@ public class ForwardTask extends Task {
 	}
 
 	public String toString() {
-		return "ForwardTask, Taskcode: " + TaskConstents.MESSAGE_TASK + 
-				", Contents: " + task;
+		return "[ForwardTask, Taskcode: " + TaskConstents.MESSAGE_TASK + 
+				", Contents: " + task + "]";
 	}
 
 	public void run() {

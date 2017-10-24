@@ -78,8 +78,8 @@ public class MessageTask extends Task {
 
 	public String toString() 
 	{
-		return "MessageTask, Taskcode: " + getTaskCode() +
-		", Contents: " + msg;
+		return "[MessageTask, Taskcode: " + getTaskCode() +
+		", Contents: " + msg + "]";
 	}
 
 	public void run() 
