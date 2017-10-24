@@ -7,6 +7,9 @@ import java.io.IOException;
 
 import client_server.transmission.util.ReadUtils;
 import client_server.transmission.util.WriteUtils;
+import console.AbstractConsole;
+import user.ActivePlayer;
+import user.Player;
 
 public class DisplayProfileTask extends Task {
 
@@ -33,10 +36,22 @@ public class DisplayProfileTask extends Task {
 		WriteUtils.writeString(profile, dout);
 		return WriteUtils.getBytesAndCloseStreams(bs,dout);
 	}
+	
+	public String toString() {
+		return "[DisplayProfileTask, Taskcode: " + getTaskCode() + "]";
+	}
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
+		Player player = ActivePlayer.getInstance();
+		if(player != null) {
+			AbstractConsole console = player.getConsole();
+			if(console != null) {
+				console.notice(profile);
+			} else {
+				System.out.println(profile);
+			}
+		}
 
 	}
 

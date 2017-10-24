@@ -42,7 +42,7 @@ public class Server extends AbstractServer {
 	public static final int SELECT_TIME_OUT = 3000; // Milliseconds
 	
 	/* Used for debugging */
-	public static final boolean DEBUG = true;
+	public static final boolean DEBUG = false;
 	public static final String DEBUG_TAB = "    ";
 	private static int NUM_TABS = 0;
 	
@@ -130,8 +130,8 @@ public class Server extends AbstractServer {
 	private void runServer() throws IOException {
 		int eventCount;
 		debugPrintHeader("runServer");
-		System.out.println("Server is listening on: " +
-				this.serverChannel.getLocalAddress().toString());
+		log("Server is listening on: " +
+				this.serverChannel.socket().getLocalPort());
 		while(isRunning()) {
 			eventCount = 0;
 			debugPrintln("Selecting keys");
@@ -248,6 +248,7 @@ public class Server extends AbstractServer {
 	public void handleTask(Task t) {
 		debugPrintHeader("handleTask");
 		debugPrintln("Running TaskCode: " + t.getTaskCode());
+		log("Performing Task: " + t);
 		t.run();
 		debugPrintFooter("handleTask");
 	}
@@ -256,6 +257,7 @@ public class Server extends AbstractServer {
 	public void handleTask(Task t, ClientSession client) {
 		debugPrintHeader("handleTask");
 		debugPrintln("Running TaskCode: " + t.getTaskCode());
+		log("Performing Task: [" + t + "] for " + client.getID() + " [" + client + "].");
 		t.run();
 		debugPrintFooter("handleTask");
 	}
@@ -268,7 +270,7 @@ public class Server extends AbstractServer {
 		synchronized(playerNicknames) {
 			playerNicknames.add(ID);
 		}
-		System.out.println("Registered: " + ID);
+		log(ID + " has logged in from [" + client + "].");
 	}
 
 	@Override
@@ -279,7 +281,7 @@ public class Server extends AbstractServer {
 		synchronized(playerNicknames) {
 			playerNicknames.remove(ID);
 		}
-		System.out.println(ID + " has logged off");
+		log(ID + " has logged off from [" + client + "].");
 	}
 	
 	@Override
@@ -333,7 +335,7 @@ public class Server extends AbstractServer {
 	protected void clientConnected(ClientSession client, SelectionKey key) {
 		synchronized(clientMap) {
 			clientMap.put(key, client);
-			System.out.println("New client connected");
+			log("New client connected from [" + client + "].");
 		}		
 	}
 
@@ -343,24 +345,29 @@ public class Server extends AbstractServer {
 		if(key != null) {
 			key.cancel();
 		}
-		synchronized(clientMap) {
-			if(clientMap.containsKey(key))
-				clientMap.remove(key);
-		}
 		String id = client.getID();
+		synchronized(clientMap) {
+			if(clientMap.containsKey(key)) { 
+				clientMap.remove(key);
+				log("Client [" + client +"] disconnected.");
+			}
+		}
 		if(id != null) {			
 			synchronized(registeredClients) {
 				if(registeredClients.containsKey(id))
 					registeredClients.remove(id);
 			}
 		}
-		System.out.println( (id==null) ? "unkown" : id + ": has disconnected");
-		debugPrintFooter("clientDisconnected");
+		debugPrintFooter("clientDisconnected.");
 	}
 	
 	private String getDate() {
 		Date now = new Date(); // java.util.Date, NOT java.sql.Date or java.sql.Timestamp!
 		return new SimpleDateFormat("HH:mm:ss.S", Locale.ENGLISH).format(now);
+	}
+	
+	private void log(String msg) {
+		System.out.println("["+getDate()+"]: "+msg);
 	}
 	
 	private synchronized String getTabs() {

@@ -7,6 +7,9 @@ import java.io.IOException;
 
 import client_server.transmission.util.ReadUtils;
 import client_server.transmission.util.WriteUtils;
+import console.AbstractConsole;
+import user.ActivePlayer;
+import user.Player;
 
 public class RejectInviteTask extends Task {
 	private String message;
@@ -27,7 +30,12 @@ public class RejectInviteTask extends Task {
 	
 	public int getTaskCode() 
 	{
-		return TaskConstents.INVITE_TASK;
+		return TaskConstents.REJECTINVITE_TASK;
+	}
+	
+	public String toString() {
+		return "[RejectInviteTask, Taskcode: " + getTaskCode() +
+		", Contents: " + playerFrom + "," + message + "]";
 	}
 	
 	public byte[] toByteArray() throws IOException 
@@ -42,6 +50,14 @@ public class RejectInviteTask extends Task {
 	
 	public void run()
 	{
-		System.out.println(this.playerFrom + this.message);
+		Player player = ActivePlayer.getInstance();
+		if(player != null) {
+			AbstractConsole console = player.getConsole();
+			if(console != null) {
+				console.notice(this.playerFrom + this.message);
+			} else {
+				System.out.println(this.playerFrom + this.message);
+			}
+		}
 	}
 }

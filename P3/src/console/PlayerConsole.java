@@ -2,6 +2,8 @@ package console;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import client_server.client.AbstractClient;
 import client_server.transmission.ForwardTask;
@@ -30,12 +32,14 @@ public class PlayerConsole extends AbstractConsole {
 	 */
 	private AbstractClient client;
 
+	private static final String PROMPT_CHARACTOR_SEQUENCE = "> ";
+
 	public PlayerConsole(Player player) {
 		if(player == null) {
 			throw new IllegalArgumentException("The PlayerConsole requires a true Player");
 		}
 		this.player = player;
-		outPutBeforeConsole = System.lineSeparator()+"> ";
+		outPutBeforeConsole = System.lineSeparator()+PROMPT_CHARACTOR_SEQUENCE;
 		playerNickName = player.getNickName();
 		client = player.getClient();
 		nullCommands();
@@ -84,7 +88,7 @@ public class PlayerConsole extends AbstractConsole {
 	@Override
 	public synchronized void display(Object msg) {
 		if(msg != null)
-			output.println(msg.toString());
+			output.print("\r" + msg.toString() + outPutBeforeConsole);
 	}
 
 	/**
@@ -169,6 +173,7 @@ public class PlayerConsole extends AbstractConsole {
 
 	private boolean requireLogin() {
 		if(client.isLoggedIn()) {
+			playerNickName = player.getNickName();
 			return true;
 		} else {
 			error("You must be logged in before you can: " + noParamCommand);
@@ -186,9 +191,9 @@ public class PlayerConsole extends AbstractConsole {
 	}
 
 	private void help() {
-		String msg = "type 'help' to see this message.\n";
+		String msg = "type 'help' to see this message.\n\r";
 		if(client.isLoggedIn()) {
-			msg += "type 'logout' to logout.\n" +
+			msg += "type 'logout' to logout.\n\r" +
 					"type 'unregister' to logout and remove your account.\n" +
 					"type 'create-game' to create a game.\n" +
 					"type 'view-profile' to view a player's profile.\n";
@@ -218,11 +223,11 @@ public class PlayerConsole extends AbstractConsole {
 				String email = promptUser("Please enter in a valid Email:");
 				String nickName = promptUser("Please enter your desired nickname:");
 				String password = promptUser("Please enter your password:");
-				client.sendToServer(new RegisterTask(email,nickName,password));
 				ActivePlayer.setInstance(player);
 				player.setEmail(email);
 				player.setNickName(nickName);
 				player.setPassword(password);
+				client.sendToServer(new RegisterTask(email,nickName,password));
 				playerNickName = nickName;
 			} catch (IOException e) {
 				error("Error occured while registering.");
@@ -234,14 +239,12 @@ public class PlayerConsole extends AbstractConsole {
 		if(requireLogoff()) {
 			try {
 				String email = promptUser("Please enter in a valid Email:");
-				String nickName = promptUser("Please enter your desired nickname:");
 				String password = promptUser("Please enter your password:");
-				client.sendToServer(new LoginTask(email,nickName,password));
 				ActivePlayer.setInstance(player);
 				player.setEmail(email);
-				player.setNickName(nickName);
 				player.setPassword(password);
-				playerNickName = nickName;
+				client.sendToServer(new LoginTask(email,password));
+				playerNickName = player.getNickName();
 			} catch (IOException e) {
 				error("Error occured while logging in.");
 			}
@@ -255,7 +258,7 @@ public class PlayerConsole extends AbstractConsole {
 	}
 
 	private void createGameInvites() {
-		ArrayList<String> toInvite = new ArrayList<String>();
+		Set<String> toInvite = new HashSet<String>();
 		String next = "";
 		try {
 			do {
@@ -273,7 +276,7 @@ public class PlayerConsole extends AbstractConsole {
 				warning("You didn't invite anyone.");
 			} else {
 				String message = promptUser("Type a message you would like to send with your invitation: ");
-				player.sendInvitation(message, toInvite);
+				player.sendInvitation(message, new ArrayList<String>(toInvite));
 			}
 
 		} catch(IOException e) {
@@ -300,13 +303,25 @@ public class PlayerConsole extends AbstractConsole {
 	}
 
 	private void unregister() {
-		if(requireLogin()) {
-			try {
-				client.sendToServer(new UnregisterTask(
+		try {
+			if(requireLogin()) {
+				warning("Your account will be deleted if you unregister. Are you sure you want to unregister and remove your account?");
+				String response = promptUser("Type 'yes' if you are sure you want to delete your account, otherwise click enter.");
+				response = response.toLowerCase();
+				if(response.equals("yes")) {
+					client.sendToServer(new UnregisterTask(
 						player.getEmail(),player.getNickName(),player.getPassword()));
-			}  catch (IOException e) {
-				error("Error occured while unregistering");
+					Thread.sleep(1000);
+					warning("Your account has been removed.");
+					playerNickName = null;
+				} else {
+					notice("Your account will not removed.");
+				}
 			}
+		}  catch (IOException e) {
+			error("Error occured while unregistering");
+		} catch(InterruptedException e) {
+			
 		}
 	}
 
@@ -314,6 +329,7 @@ public class PlayerConsole extends AbstractConsole {
 		if(requireLogin()) {
 			try {
 				client.sendToServer(new LogoutTask(player.getEmail()));
+				playerNickName = null;
 			}  catch (IOException e) {
 				error("Error occured while logging out");
 			}

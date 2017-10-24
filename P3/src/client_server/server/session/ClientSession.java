@@ -15,9 +15,11 @@ import client_server.server.AbstractServer;
 import client_server.server.Server;
 import client_server.server.registry.AbstractRegistry;
 import client_server.server.registry.ActiveRegistry;
+import client_server.transmission.LoginGreetingTask;
 import client_server.transmission.LoginTask;
 import client_server.transmission.LogoutTask;
 import client_server.transmission.MessageTask;
+import client_server.transmission.RegisterGreetingTask;
 import client_server.transmission.RegisterTask;
 import client_server.transmission.Task;
 import client_server.transmission.TaskConstents;
@@ -41,14 +43,17 @@ public class ClientSession extends AbstractSession {
 	private Object writeLock;
 	// prevents two from reading from the same channel at the same time
 	private Object readLock;
-	
+
 	private String email;
+	
+	private String address;
 
 	public ClientSession(AbstractServer server, SelectionKey key, String ID) throws IOException {
 		super(server, key, ID);
 		channel = (SocketChannel) key.channel();
 		writeLock = new Object();
 		readLock = new Object();
+		this.address = channel.socket().getRemoteSocketAddress().toString();
 	}
 
 	public ClientSession(AbstractSession s) throws IOException {
@@ -155,13 +160,11 @@ public class ClientSession extends AbstractSession {
 				if(t instanceof LoginTask) {
 					registerWithServer((LoginTask)t);
 				}
-				send(t);
 				break;
 			case TaskConstents.REGISTER_TASK:
 				if(t instanceof RegisterTask) {
 					registerWithServer((RegisterTask)t);
 				}
-				send(t);
 				break;
 			default:
 				if(isRegisteredWithServer()) {
@@ -176,12 +179,14 @@ public class ClientSession extends AbstractSession {
 	private void handleTask(Task t) throws IOException {
 		if(t instanceof UnregisterTask) {
 			unregister((UnregisterTask)t);
-			send(t);
+			send(new UnregisterTask("","",""));
+			setID(null);
 		} else if(t instanceof LogoutTask) {
 			logout();
-			send(t);
+			send(new LogoutTask(""));
+			setID(null);
 		} else {
-			server.handleTask(t);
+			server.handleTask(t,this);
 		}
 	}
 
@@ -240,7 +245,7 @@ public class ClientSession extends AbstractSession {
 			isRegistered = true;
 		}
 	}
-	
+
 	private void setUnregistered() {
 		synchronized(isRegistered) {
 			isRegistered = false;
@@ -250,6 +255,7 @@ public class ClientSession extends AbstractSession {
 	@Override
 	public void registerWithServer(RegisterTask t) {
 		AbstractRegistry registry = ActiveRegistry.getInstance();
+		Task response = null;
 		if(registry != null) {
 			String msg = registry.registerNewUser(t);
 			if(msg == null) {
@@ -258,41 +264,52 @@ public class ClientSession extends AbstractSession {
 				this.email = t.getEmail();
 				server.registerClient(this, nickname);
 				setRegistered();
+				response = new RegisterGreetingTask("Welcome " + nickname + "!");
 			} else {
-				try {
-					send(new MessageTask(msg));
-				} catch (IOException e) {
-
-				}
+				int type = (msg.contains("in use")) ? MessageTask.WARNING : MessageTask.ERROR;
+				response = new MessageTask(msg,type);
 			}
+		} else {
+			response = new MessageTask("Error occured while logging in.",MessageTask.ERROR);
+		}
+		
+		try {
+			send(response);
+		} catch(IOException e) {
+
 		}
 	}
 
 	@Override
 	public void registerWithServer(LoginTask t) {
 		AbstractRegistry registry = ActiveRegistry.getInstance();
+		Task response = null;
 		if(registry != null) {
 			String msg = registry.isValidLogin(t);
 			if(msg == null) {
-				String nickname = t.getNickname();
+				String nickname = registry.getUser(t.getEmail()).getNickname();
 				setID(nickname);
 				this.email = t.getEmail();
 				server.registerClient(this, nickname);
 				setRegistered();
+				response = new LoginGreetingTask("Welcome Back " + nickname + "!",nickname);
 			} else {
-				try {
-					send(new MessageTask(msg));
-				} catch (IOException e) {
-
-				}
+				response = new MessageTask(msg,MessageTask.ERROR);
 			}
+		} else {
+			response = new MessageTask("Error occured while registering.",MessageTask.ERROR);
+		}
+
+		try {
+			send(response);
+		} catch(IOException e) {
+
 		}
 	}
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return address;
 	}
 
 	@Override

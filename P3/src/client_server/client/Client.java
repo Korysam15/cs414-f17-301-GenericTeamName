@@ -49,6 +49,7 @@ public class Client extends AbstractClient {
 	private Boolean isReceiving;
 	private Object writeLock;
 	private Object readLock;
+	private Object loginLock;
 	private Thread receivingThread;
 	private Boolean isLoggedIn;
 
@@ -66,6 +67,7 @@ public class Client extends AbstractClient {
 		serverChannel = null;
 		writeLock = new Object();
 		readLock = new Object();
+		loginLock = new Object();
 		receivingThread = null;
 		isLoggedIn = false;
 		initThreadPool();
@@ -255,6 +257,7 @@ public class Client extends AbstractClient {
 			System.out.println("Could not connect to server");
 		}
 	}
+	
 
 	@Override
 	public void disconnectFromServer() {
@@ -307,8 +310,28 @@ public class Client extends AbstractClient {
 		}
 		try {
 			send(t);
+			if(t.getTaskCode() == TaskConstents.REGISTER_TASK) {
+				// waitForLogin();
+			} else if(t.getTaskCode() == TaskConstents.LOGIN_TASK) {
+				Thread.sleep(1000);
+				// wait for a little bit
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (InterruptedException e) {
+			
+		}
+	}
+	
+	private void waitForLogin() throws InterruptedException {
+		synchronized(loginLock) {
+			loginLock.wait();
+		}
+	}
+	
+	private void awakeLogin() {
+		synchronized(loginLock) {
+			loginLock.notifyAll();
 		}
 	}
 
@@ -399,8 +422,10 @@ public class Client extends AbstractClient {
 	@Override
 	public void handleTask(Task t) {
 		int taskcode = t.getTaskCode();
-		if(taskcode == TaskConstents.LOGIN_TASK || taskcode == TaskConstents.LOGOUT_TASK) {
+		if(taskcode == TaskConstents.LOGIN_GREETING_TASK || taskcode == TaskConstents.REGISTER_GREETING_TASK) {
 			this.setLoggedIn();
+			t.run();
+			//awakeLogin();
 		} else if(taskcode == TaskConstents.LOGOUT_TASK || taskcode == TaskConstents.UNREGISTER_TASK) {
 			this.unsetLoggedIn();
 		} else {
