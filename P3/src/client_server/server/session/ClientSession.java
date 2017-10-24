@@ -41,7 +41,7 @@ public class ClientSession extends AbstractSession {
 	private Object writeLock;
 	// prevents two from reading from the same channel at the same time
 	private Object readLock;
-	
+
 	private String email;
 
 	public ClientSession(AbstractServer server, SelectionKey key, String ID) throws IOException {
@@ -176,10 +176,8 @@ public class ClientSession extends AbstractSession {
 	private void handleTask(Task t) throws IOException {
 		if(t instanceof UnregisterTask) {
 			unregister((UnregisterTask)t);
-			send(t);
 		} else if(t instanceof LogoutTask) {
 			logout();
-			send(t);
 		} else {
 			server.handleTask(t);
 		}
@@ -240,7 +238,7 @@ public class ClientSession extends AbstractSession {
 			isRegistered = true;
 		}
 	}
-	
+
 	private void setUnregistered() {
 		synchronized(isRegistered) {
 			isRegistered = false;
@@ -250,6 +248,7 @@ public class ClientSession extends AbstractSession {
 	@Override
 	public void registerWithServer(RegisterTask t) {
 		AbstractRegistry registry = ActiveRegistry.getInstance();
+		Task response = null;
 		if(registry != null) {
 			String msg = registry.registerNewUser(t);
 			if(msg == null) {
@@ -259,18 +258,24 @@ public class ClientSession extends AbstractSession {
 				server.registerClient(this, nickname);
 				setRegistered();
 			} else {
-				try {
-					send(new MessageTask(msg));
-				} catch (IOException e) {
-
-				}
+				int type = (msg.contains("in use")) ? MessageTask.WARNING : MessageTask.ERROR;
+				response = new MessageTask(msg,type);
 			}
+		} else {
+			response = new MessageTask("Error occured while logging in.",MessageTask.ERROR);
+		}
+		
+		try {
+			send(response);
+		} catch(IOException e) {
+
 		}
 	}
 
 	@Override
 	public void registerWithServer(LoginTask t) {
 		AbstractRegistry registry = ActiveRegistry.getInstance();
+		Task response = null;
 		if(registry != null) {
 			String msg = registry.isValidLogin(t);
 			if(msg == null) {
@@ -280,12 +285,16 @@ public class ClientSession extends AbstractSession {
 				server.registerClient(this, nickname);
 				setRegistered();
 			} else {
-				try {
-					send(new MessageTask(msg));
-				} catch (IOException e) {
-
-				}
+				response = new MessageTask(msg,MessageTask.ERROR);
 			}
+		} else {
+			response = new MessageTask("Error occured while registering.",MessageTask.ERROR);
+		}
+
+		try {
+			send(response);
+		} catch(IOException e) {
+
 		}
 	}
 
