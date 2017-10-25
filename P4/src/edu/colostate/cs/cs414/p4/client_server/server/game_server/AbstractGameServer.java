@@ -14,5 +14,5 @@ public abstract class AbstractGameServer extends Server {
 	public AbstractGameServer(int port) throws IOException {
 		super(port);
 	}
-
+ 
 }
