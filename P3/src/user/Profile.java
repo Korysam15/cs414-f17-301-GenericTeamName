@@ -11,7 +11,7 @@ public class Profile {
 	
 	
 	public static void main(String[] args) {
-		Profile nick = new Profile("Nick");
+		Profile nick = new Profile("default_");
 		System.out.println(nick.toString());
 	}
 	public Profile(String name){
