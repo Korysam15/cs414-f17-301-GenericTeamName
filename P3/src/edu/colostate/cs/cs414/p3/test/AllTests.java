@@ -1,4 +1,4 @@
-package edu.colostate.cs.cs4141.p3.test;
+package edu.colostate.cs.cs414.p3.test;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
