@@ -8,12 +8,11 @@ public class General extends Piece {
 	public General(boolean color) {
 		super.rank=7;
 		super.color=color;
-		super.isOn=isOn;
 		if(color){
-			super.icon="\u2466";
+			super.icon="R7";
 		}
 		else{
-			super.icon="\u24F1";
+			super.icon="B7";
 		}
 		
 	}

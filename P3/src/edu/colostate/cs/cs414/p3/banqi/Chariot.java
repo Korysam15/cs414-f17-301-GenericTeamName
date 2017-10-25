@@ -8,12 +8,11 @@ public class Chariot extends Piece {
 	public Chariot(boolean color) {
 		super.rank=4;
 		super.color=color;
-		super.isOn=isOn;
 		if(color){
-			super.icon="\u2463";
+			super.icon="R4";
 		}
 		else{
-			super.icon="\u24EE";
+			super.icon="B4";
 		}
 	}
 

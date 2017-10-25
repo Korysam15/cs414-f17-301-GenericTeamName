@@ -5,14 +5,12 @@ package edu.colostate.cs.cs414.p3.banqi;
  */
 public class Square {
 	
+	
 	private int x,y; // x,y coordinates of the square
 	private Piece on;
 	
 	
-	@Override
-	public String toString() {
-		return "Square [x=" + x + ", y=" + y + ", on=" + on + "]";
-	}
+	
 	public Square(int x, int y) {
 		
 		this.x = x;
@@ -39,6 +37,16 @@ public class Square {
 	}
 	public boolean isEmpty(){
 		return on==null;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Square)
+		{
+			Square s=(Square) obj;
+			return s.x==this.x&&s.y==y;
+			
+		}
+		return false ;
 	}
 	
 

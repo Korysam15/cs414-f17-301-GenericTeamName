@@ -41,37 +41,38 @@ public class GameBoard {
 	@Override
 	public String toString() {
 
-		String board = "       A       B       C       D       E       F       G       H  \n";
+		String board = "        A        B        C        D        E        F        G        H  \n";
 		for(int i=0;i<4;i++){
 
-			board+="   # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # \n";
-			board+="   #       #       #       #       #       #       #       #       #\n";
+			board+="    ######## ######## ######## ######## ######## ######## ######## ########\n";
+			board+="   #        #        #        #        #        #        #        #        #\n";
 			board+=i+1+"  ";
 
 			for(int j=0;j<8;j++){
 
 				if(squaresOnBoard[8*i+j].getOn()==null){
 
-					board+="#       ";
+					board+="#        ";
 
 				}
 				else if(!squaresOnBoard[8*i+j].getOn().faceUp){
-					board+="#   "+0+"   ";
+					board+="#   "+"00"+"   ";
 				}
-				else{
+				else {
 
 					board+="#   "+squaresOnBoard[8*i+j].getOn().icon+"   ";
-
+					
 
 				}
+				
 
 			}
-			board+="#\n   #       #       #       #       #       #       #       #       #\n";
+			board+="#\n   #        #        #        #        #        #        #        #        #\n";
 
 
 
 		}
-		board+="   # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # \n";
+		board+="    ######## ######## ######## ######## ######## ######## ######## ########\n";
 		return board;
 	}
 

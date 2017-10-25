@@ -8,12 +8,11 @@ public class Elephant extends Piece {
 	public Elephant(boolean color) {
 		super.rank=5;
 		super.color=color;
-		super.isOn=isOn;
 		if(color){
-			super.icon="\u2464";
+			super.icon="R5";
 		}
 		else{
-			super.icon="\u24EF";
+			super.icon="B5";
 		}
 	}
 

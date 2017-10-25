@@ -8,12 +8,11 @@ public class Cavalry extends Piece {
 	public Cavalry(boolean color) {
 		super.rank=3;
 		super.color=color;
-		super.isOn=isOn;
 		if(color){
-			super.icon="\u2462";
+			super.icon="R3";
 		}
 		else{
-			super.icon="\u24ED";
+			super.icon="B3";
 		}
 	}
 

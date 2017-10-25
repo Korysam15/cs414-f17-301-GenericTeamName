@@ -8,12 +8,11 @@ public class Soldier extends Piece {
 	public Soldier(boolean color) {
 		super.rank=1;
 		super.color=color;
-		super.isOn=isOn;
 		if(color){
-			super.icon="\u2460";
+			super.icon="R1";
 		}
 		else{
-			super.icon="\u24EB";
+			super.icon="B1";
 		}
 	}
 

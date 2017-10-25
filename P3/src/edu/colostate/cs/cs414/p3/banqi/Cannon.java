@@ -8,12 +8,11 @@ public class Cannon extends Piece {
 	public Cannon(boolean color) {
 		super.rank=2;
 		super.color=color;
-		super.isOn=isOn;
 		if(color){
-			super.icon="\u2461";
+			super.icon="R2";
 		}
 		else{
-			super.icon="\u24EC";
+			super.icon="B2";
 		}
 	}
 
