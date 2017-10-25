@@ -323,7 +323,7 @@ public class BanqiGame {
 				}
 			}
 			x = from.getX();
-			while (y > 1){
+			while (y > 2){
 				y--;
 				Square next = gameBoard.getSquare(x, y);
 				if(!next.isEmpty()){
