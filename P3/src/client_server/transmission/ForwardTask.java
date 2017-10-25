@@ -43,8 +43,8 @@ public class ForwardTask extends Task {
 	}
 
 	public String toString() {
-		return "Taskcode: " + TaskConstents.MESSAGE_TASK + 
-				" Forwarded Task code: " + task.getTaskCode();
+		return "[ForwardTask, Taskcode: " + TaskConstents.MESSAGE_TASK + 
+				", Contents: " + task + "]";
 	}
 
 	public void run() {
@@ -76,7 +76,7 @@ public class ForwardTask extends Task {
 			
 			if(!success) {
 				try {
-					clientFrom.send(new MessageTask(response));
+					clientFrom.send(new MessageTask(response,MessageTask.ERROR));
 				} catch (IOException e2) {
 					
 				}

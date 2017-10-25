@@ -58,6 +58,7 @@ public class FileRegistry extends AbstractRegistry {
 				inputFile.createNewFile();
 				return;
 			} else {
+				boolean corrupted = false;
 				BufferedReader br = new BufferedReader(new FileReader(inputFile));
 				String line = null;
 				while((line = br.readLine()) != null) {
@@ -65,12 +66,17 @@ public class FileRegistry extends AbstractRegistry {
 						User u = User.createUserFromString(line);
 						addUser(u);
 					} catch(NullPointerException e) {
-						// corrupted file
+						corrupted = true;
 					} catch(IllegalArgumentException e) {
-						// outdated file per the specs of User
+						corrupted = true;
+					} catch(Exception ex) {
+						corrupted = true;
 					}
 				}
-				br.close();			
+				br.close();
+				if(corrupted) {
+					updateFile();
+				}
 			}
 		} catch (FileNotFoundException e) {
 			// shouldn't happen because of first if statements
@@ -78,6 +84,7 @@ public class FileRegistry extends AbstractRegistry {
 		}
 	}
 
+	// completely overwrites file
 	private synchronized void updateFile() {
 		try {
 			PrintWriter pw = new PrintWriter(new FileWriter(inputFile));
@@ -91,6 +98,7 @@ public class FileRegistry extends AbstractRegistry {
 		}
 	}
 
+	// only appends a new user to the file
 	private synchronized void updateFile(User u) {
 		try {
 			PrintWriter pw = new PrintWriter(new FileWriter(inputFile,true));
@@ -102,28 +110,33 @@ public class FileRegistry extends AbstractRegistry {
 		}
 	}
 
+	// adds users to instance variables
 	private synchronized void addUser(User u) {
 		validUsers.put(u.getEmail(),u);
 		takenEmails.add(u.getEmail());
 		takenNicknames.add(u.getNickname());
 	}
 
+	// adds users to instance variables and updates the password file
 	private synchronized void addUserAndUpdate(User u) {
 		addUser(u);
 		updateFile(u);
 	}
 
+	// removes user from instance variables
 	private synchronized void removeUser(User u) {
 		validUsers.remove(u.getEmail());
 		takenEmails.remove(u.getEmail());
 		takenNicknames.remove(u.getNickname());
 	}
 
+	// removes user from instance variables and rewrites the password file
 	private synchronized void removeUserAndUpdate(User u) {
 		removeUser(u);
 		updateFile();
 	}
 
+	// creates a user from a register task
 	private User createUser(RegisterTask register) {
 		if(register == null) {
 			return null;
@@ -138,6 +151,7 @@ public class FileRegistry extends AbstractRegistry {
 		}
 	}
 
+	// creates a user from a login task
 	private User createUser(LoginTask login) {
 		if(login == null) {
 			return null;
@@ -152,10 +166,12 @@ public class FileRegistry extends AbstractRegistry {
 		}
 	}
 
+	// checks if the email address is already in use.
 	public synchronized boolean isEmailTaken(String email) {
 		return takenEmails.contains(email);
 	}
-
+	
+	// checks if the nickname is already in use.
 	public synchronized boolean isNicknameTaken(String nickname) {
 		return takenNicknames.contains(nickname);
 	}

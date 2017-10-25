@@ -28,6 +28,11 @@ public class UpdateRecordTask extends Task {
 		return TaskConstents.UPDATERECORD_TASK;
 	}
 	
+	public String toString() {
+		return "[UpdateRecordTask, Taskcode: " + getTaskCode() +
+		", Contents: " + won + "," + loss + "," + draw +"]";
+	}
+	
 	public void setWon(boolean won)
 	{
 		this.won = won;

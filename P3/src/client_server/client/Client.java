@@ -15,8 +15,6 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import client_server.transmission.ForwardTask;
-import client_server.transmission.LoginTask;
-import client_server.transmission.LogoutTask;
 import client_server.transmission.MessageTask;
 import client_server.transmission.RegisterTask;
 import client_server.transmission.Task;
@@ -51,6 +49,7 @@ public class Client extends AbstractClient {
 	private Boolean isReceiving;
 	private Object writeLock;
 	private Object readLock;
+	private Object loginLock;
 	private Thread receivingThread;
 	private Boolean isLoggedIn;
 
@@ -68,6 +67,7 @@ public class Client extends AbstractClient {
 		serverChannel = null;
 		writeLock = new Object();
 		readLock = new Object();
+		loginLock = new Object();
 		receivingThread = null;
 		isLoggedIn = false;
 		initThreadPool();
@@ -190,7 +190,6 @@ public class Client extends AbstractClient {
 			} else {
 				isReceiving = true;
 				constructReceivingThread();
-//				System.out.println("Starting Receiver Thread");
 				receivingThread.start();
 			}
 		}
@@ -258,6 +257,7 @@ public class Client extends AbstractClient {
 			System.out.println("Could not connect to server");
 		}
 	}
+	
 
 	@Override
 	public void disconnectFromServer() {
@@ -274,6 +274,7 @@ public class Client extends AbstractClient {
 				} finally {
 					channel = null;
 					serverChannel = null;
+					unsetLoggedIn();
 				}
 			}
 		}
@@ -287,16 +288,13 @@ public class Client extends AbstractClient {
 			synchronized(writeLock) {
 				byte[] data = t.toByteArray();
 				int dataLength = data.length;
-//				System.out.println("Sending: " + dataLength + " bytes for TaskCode: " + t.getTaskCode());
 				ByteBuffer writeBuffer = ByteBuffer.allocate(dataLength+4);
 				writeBuffer.putInt(dataLength);
 				writeBuffer.put(data);
 				writeBuffer.flip();
-				int written = 0;
 				while(writeBuffer.hasRemaining()) {
-					written += serverChannel.write(writeBuffer);
+					serverChannel.write(writeBuffer);
 				}
-//				System.out.println("Done Sending: " + written + " bytes");
 			}
 		}
 	}
@@ -308,15 +306,32 @@ public class Client extends AbstractClient {
 					+ "before receiving from a server");
 		}
 		else if(!isReceiving()) {
-			System.out.println("You must be receiving from a server "
-					+ "before sending to a server");
 			startReceiving();
 		}
 		try {
 			send(t);
+			if(t.getTaskCode() == TaskConstents.REGISTER_TASK) {
+				// waitForLogin();
+			} else if(t.getTaskCode() == TaskConstents.LOGIN_TASK) {
+				Thread.sleep(1000);
+				// wait for a little bit
+			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (InterruptedException e) {
+			
+		}
+	}
+	
+	private void waitForLogin() throws InterruptedException {
+		synchronized(loginLock) {
+			loginLock.wait();
+		}
+	}
+	
+	private void awakeLogin() {
+		synchronized(loginLock) {
+			loginLock.notifyAll();
 		}
 	}
 
@@ -325,7 +340,7 @@ public class Client extends AbstractClient {
 		ByteBuffer localWrite = null;
 
 		ByteBuffer readBuffer = ByteBuffer.allocate(7000);
-		int temp = 0, read = 0, total = 0;
+		int temp = 0, read = 0;
 		int size = -1;
 		synchronized(readLock) {
 			while( (temp = channel.read(readBuffer)) > 0 ) {
@@ -333,18 +348,15 @@ public class Client extends AbstractClient {
 				if(read >= 4) {
 					readBuffer.flip();
 					size = readBuffer.getInt();
-//					System.out.println("READ " + size + " For the amount of required bytes");
 					if(size >= 1) {
 						localWrite = ByteBuffer.allocate(size);
 						if(read > 4) {
 							fillLocal(localWrite,readBuffer);
 						}
-						total += receiveTask(localWrite,size, read);
+						receiveTask(localWrite,size, read);
 						read -= size;
-						//readBuffer.clear();
 					} else {
-//						System.out.println("SIZE: " + size + " is an invalid ammount of bytes.");
-//						System.out.println("returning");
+						// Invalid size, likely received a corrupted or incorrect Task.
 						return;
 					}
 				} else {
@@ -357,7 +369,7 @@ public class Client extends AbstractClient {
 			if(temp == -1 || !isConnected()) {
 				disconnectFromServer();
 			} else {
-//				System.out.println("DONE READING BYTES: READ " + total + " TOTAL BYTES");
+				// Done reading
 			}
 		}
 	}
@@ -394,11 +406,8 @@ public class Client extends AbstractClient {
 			}
 		}
 
-//		System.out.println("Done reading the required bytes: " + (read - 4));
-
 		if(temp == -1) {
 			disconnectFromServer();
-//			System.out.println("Server disconnected");
 		} else {
 			handleTask(createTask(local));
 		}
@@ -413,8 +422,10 @@ public class Client extends AbstractClient {
 	@Override
 	public void handleTask(Task t) {
 		int taskcode = t.getTaskCode();
-		if(taskcode == TaskConstents.LOGIN_TASK || taskcode == TaskConstents.LOGOUT_TASK) {
+		if(taskcode == TaskConstents.LOGIN_GREETING_TASK || taskcode == TaskConstents.REGISTER_GREETING_TASK) {
 			this.setLoggedIn();
+			t.run();
+			//awakeLogin();
 		} else if(taskcode == TaskConstents.LOGOUT_TASK || taskcode == TaskConstents.UNREGISTER_TASK) {
 			this.unsetLoggedIn();
 		} else {
@@ -453,7 +464,6 @@ public class Client extends AbstractClient {
 			c1.sendToServer(new RegisterTask(email,nickname,password));
 			Thread.sleep(2000);
 			
-			//c1.sendToServer(new MessageTask("Hello tanner"));
 			c1.sendToServer(new ForwardTask(nickname,
 					new MessageTask("Hello tanner"),
 					"tanner"));

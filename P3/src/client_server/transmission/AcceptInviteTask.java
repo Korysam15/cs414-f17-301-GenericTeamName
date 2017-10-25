@@ -8,6 +8,7 @@ import java.io.IOException;
 import banqi.BanqiGame;
 import client_server.transmission.util.ReadUtils;
 import client_server.transmission.util.WriteUtils;
+import console.AbstractConsole;
 import user.ActivePlayer;
 import user.Player;
 
@@ -36,13 +37,14 @@ public class AcceptInviteTask extends Task {
 	}
 
 	public String toString() {
-		return "Taskcode: " + TaskConstents.ACCEPT_INVITE_TASK+ " Message: " + playerWhoAccepted ;
+		return "[AcceptInviteTask, Taskcode: " + getTaskCode() + 
+				", Contents: " + playerWhoAccepted + "]" ;
 	}
 
 	public void run() {
-		System.out.println(playerWhoAccepted + " has accepted your Invitiation!");
 		Player player = ActivePlayer.getInstance();
 		if(player != null) {
+			displayMessage(player);
 			Task gameTask = new CreateGameTask(player.getNickName(),playerWhoAccepted);
 			gameTask.run();
 			Task response = new ForwardTask(player.getNickName(),gameTask,playerWhoAccepted);
@@ -52,6 +54,17 @@ public class AcceptInviteTask extends Task {
 			}
 			int gameID = ((CreateGameTask) gameTask).getGameID();
 			startGame(player, gameID);
+		}
+	}
+	
+	private void displayMessage(Player player) {
+		if(player != null) {
+			AbstractConsole console = player.getConsole();
+			if(console != null) {
+				console.notice(playerWhoAccepted + " has accepted your Invitiation!");
+			} else {
+				System.out.println(playerWhoAccepted + " has accepted your Invitiation!");
+			}
 		}
 	}
 	

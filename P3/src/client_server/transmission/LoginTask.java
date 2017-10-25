@@ -12,18 +12,15 @@ import client_server.transmission.util.WriteUtils;
 
 public class LoginTask extends Task{
 	private String email;
-	private String nickname;
 	private String password;
 
-	public LoginTask(String email, String nickname, String password) {
+	public LoginTask(String email, String password) {
 		this.email = email;
-		this.nickname = nickname;
 		this.password = password;
 	}
 
 	public LoginTask(DataInputStream din) throws IOException {
 		this.email = ReadUtils.readString(din);
-		this.nickname = ReadUtils.readString(din);
 		this.password = ReadUtils.readString(din);
 	}
 
@@ -33,7 +30,6 @@ public class LoginTask extends Task{
 		DataOutputStream dout = WriteUtils.getDataOutputStream(bs);
 		dout.writeInt(getTaskCode());
 		WriteUtils.writeString(email,dout);
-		WriteUtils.writeString(nickname,dout);
 		encryptPassword();
 		WriteUtils.writeString(password, dout);
 		return WriteUtils.getBytesAndCloseStreams(bs,dout);
@@ -75,10 +71,6 @@ public class LoginTask extends Task{
 
 	public String getEmail() {
 		return email;
-	}
-
-	public String getNickname() {
-		return nickname;
 	}
 
 	public String getPassword() {
