@@ -1,62 +1,37 @@
 package user;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
-class ProfileTest {
-	/* Global Variables */
-	Profile default_;
+public class ProfileTest {
 
-	@BeforeEach
-	void setUp() throws Exception 
-	{
-		this.default_ = new Profile("default_");
+	
+
+	@Test
+	public void testProfile() {
+		Profile p = new Profile("nick");
 	}
 
 	@Test
-	void testProfileNotNull() 
-	{
-		assertNotNull(this.default_);
+	public void testGetHistory() {
+		Profile p = new Profile("nick");
+		History h = p.getHistory();
 	}
+
 	
+
 	@Test
-	void testGetHistoryDefault_() 
-	{
-		assertNotNull(this.default_.getHistory());
-	}
-	
-	@Test
-	void testToStringDefault_() 
-	{
-		String toString = "default_\nWins: 0		Win Ratio: NaN\nLosses: 0	Loss Ratio: NaN\nDraws: 0\nGames Played: 0";
-		assertTrue(this.default_.toString().equals(toString));
-	}
-	
-	@Test
-	void testGetName() 
-	{
-		assertTrue(this.default_.getName().equals("default_"));
+	public void testGetName() {
+		Profile p = new Profile("nick");
+		assertEquals(p.getName(), "nick");
 	}
 
 	@Test
-	void testEqualsObject() 
-	{
-		assertFalse(this.default_.equals(null));
-	}
-	
-	@Test
-	void testEqualsObjectWithAnotherProfile()
-	{
-		Profile korysProfile = new Profile("Kory");
-		assertFalse(this.default_.equals(korysProfile));
-	}
-	
-	@Test
-	void testEqualsObjectWithItself()
-	{
-		assertTrue(this.default_.equals(this.default_));
+	public void testEqualsObject() {
+		Profile p1 = new Profile("nick");
+		Profile p2 = new Profile("nick");
+		assert(p1.equals(p2));
 	}
 
 }
