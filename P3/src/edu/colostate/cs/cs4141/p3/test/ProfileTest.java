@@ -1,8 +1,11 @@
-package edu.colostate.cs.cs414.p3.user;
+package edu.colostate.cs.cs4141.p3.test;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import edu.colostate.cs.cs414.p3.user.History;
+import edu.colostate.cs.cs414.p3.user.Profile;
 
 public class ProfileTest {
 

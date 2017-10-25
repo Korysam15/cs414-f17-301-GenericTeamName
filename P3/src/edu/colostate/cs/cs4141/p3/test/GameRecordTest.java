@@ -1,10 +1,14 @@
-package edu.colostate.cs.cs414.p3.user;
+package edu.colostate.cs.cs4141.p3.test;
 
 import static org.junit.Assert.*;
 
 import java.io.IOException;
 
 import org.junit.Test;
+
+import edu.colostate.cs.cs414.p3.user.*;
+import edu.colostate.cs.cs414.p3.user.GameRecord;
+import edu.colostate.cs.cs414.p3.user.Profile;
 
 public class GameRecordTest {
 	Profile p1 = new Profile("nick"), p2 = new Profile("james");

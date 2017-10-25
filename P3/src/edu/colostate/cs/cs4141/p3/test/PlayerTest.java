@@ -1,4 +1,4 @@
-package edu.colostate.cs.cs414.p3.user;
+package edu.colostate.cs.cs4141.p3.test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import edu.colostate.cs.cs414.p3.banqi.BanqiGame;
+import edu.colostate.cs.cs414.p3.user.Player;
 
 class PlayerTest {
 	/* GLOBAL VARIABLES */

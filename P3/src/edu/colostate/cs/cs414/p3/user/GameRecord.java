@@ -31,7 +31,7 @@ public class GameRecord {
 		default:
 			outcome = null;
 			break;
-			
+
 		}
 		return outcome;
 	}
@@ -90,7 +90,4 @@ public class GameRecord {
 	public boolean hadProfileInGame(Profile p){
 		return p.equals(player1)||p.equals(player2);
 	}
-}
-enum EndGameState {
-	PLAYER1WON, PLAYER2WON, DRAW, PLAYER1ABANDON, PLAYER2ABANDON;
 }
