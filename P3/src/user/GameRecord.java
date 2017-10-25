@@ -9,6 +9,7 @@ public class GameRecord {
 	public GameRecord(Profile player1, Profile player2, EndGameState end){
 		this.player1 = player1;
 		this.player2 = player2;
+		this.end = end;
 	}
 	private String getOutcomeMessage(){
 		String outcome;
