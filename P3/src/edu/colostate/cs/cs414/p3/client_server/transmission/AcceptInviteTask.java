@@ -61,9 +61,9 @@ public class AcceptInviteTask extends Task {
 		if(player != null) {
 			AbstractConsole console = player.getConsole();
 			if(console != null) {
-				console.notice(playerWhoAccepted + " has accepted your Invitiation!");
+				console.notice(playerWhoAccepted + " has accepted your Invitation!");
 			} else {
-				System.out.println(playerWhoAccepted + " has accepted your Invitiation!");
+				System.out.println(playerWhoAccepted + " has accepted your Invitation!");
 			}
 		}
 	}

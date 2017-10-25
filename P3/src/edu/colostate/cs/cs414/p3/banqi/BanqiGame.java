@@ -481,6 +481,7 @@ public class BanqiGame {
 				Square from =getSquare(in1);
 
 				if(from == null){
+					System.out.println("You entered in: " + '"' + in1 + '"');
 					System.out.println("Invalid Move - No piece at: "+in1);
 					continue;
 				}
