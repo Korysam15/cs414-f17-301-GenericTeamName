@@ -4,8 +4,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-import edu.colostate.cs.cs414.p4.client_server.transmission.LoginTask;
-import edu.colostate.cs.cs414.p4.client_server.transmission.RegisterTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.LoginTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.RegisterTask;
 
 /**
  * The User class provides a simple wrapping of User login data.

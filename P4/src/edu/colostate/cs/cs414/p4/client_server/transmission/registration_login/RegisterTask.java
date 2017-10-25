@@ -1,4 +1,4 @@
-package edu.colostate.cs.cs414.p4.client_server.transmission;
+package edu.colostate.cs.cs414.p4.client_server.transmission.registration_login;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
+import edu.colostate.cs.cs414.p4.client_server.transmission.TaskConstents;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.ReadUtils;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.WriteUtils;
 

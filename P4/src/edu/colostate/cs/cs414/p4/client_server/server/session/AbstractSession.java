@@ -7,9 +7,9 @@ import java.io.IOException;
 import java.nio.channels.SelectionKey;
 
 import edu.colostate.cs.cs414.p4.client_server.server.AbstractServer;
-import edu.colostate.cs.cs414.p4.client_server.transmission.LoginTask;
-import edu.colostate.cs.cs414.p4.client_server.transmission.RegisterTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
+import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.LoginTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.RegisterTask;
 
 /**
  * @author pflagert

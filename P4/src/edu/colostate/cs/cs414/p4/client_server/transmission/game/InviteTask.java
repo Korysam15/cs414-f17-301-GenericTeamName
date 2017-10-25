@@ -1,4 +1,4 @@
-package edu.colostate.cs.cs414.p4.client_server.transmission;
+package edu.colostate.cs.cs414.p4.client_server.transmission.game;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +15,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import edu.colostate.cs.cs414.p4.client_server.transmission.ForwardTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
+import edu.colostate.cs.cs414.p4.client_server.transmission.TaskConstents;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.ReadUtils;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.WriteUtils;
 import edu.colostate.cs.cs414.p4.user.ActivePlayer;

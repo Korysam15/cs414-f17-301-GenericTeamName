@@ -8,8 +8,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import edu.colostate.cs.cs414.p4.client_server.transmission.LoginTask;
-import edu.colostate.cs.cs414.p4.client_server.transmission.RegisterTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.LoginTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.RegisterTask;
 
 public class FileRegistry extends AbstractRegistry {
 

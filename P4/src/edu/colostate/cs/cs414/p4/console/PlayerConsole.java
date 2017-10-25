@@ -7,12 +7,12 @@ import java.util.Set;
 
 import edu.colostate.cs.cs414.p4.client_server.client.AbstractClient;
 import edu.colostate.cs.cs414.p4.client_server.transmission.ForwardTask;
-import edu.colostate.cs.cs414.p4.client_server.transmission.GetProfileTask;
-import edu.colostate.cs.cs414.p4.client_server.transmission.LoginTask;
-import edu.colostate.cs.cs414.p4.client_server.transmission.LogoutTask;
-import edu.colostate.cs.cs414.p4.client_server.transmission.RegisterTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
-import edu.colostate.cs.cs414.p4.client_server.transmission.UnregisterTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.profile.GetProfileTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.LoginTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.LogoutTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.RegisterTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.UnregisterTask;
 import edu.colostate.cs.cs414.p4.user.ActivePlayer;
 import edu.colostate.cs.cs414.p4.user.Player;
 

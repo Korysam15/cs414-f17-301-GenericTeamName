@@ -7,12 +7,12 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-import edu.colostate.cs.cs414.p4.client_server.transmission.FlipPieceTask;
-import edu.colostate.cs.cs414.p4.client_server.transmission.ForfeitTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.ForwardTask;
-import edu.colostate.cs.cs414.p4.client_server.transmission.MoveTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
-import edu.colostate.cs.cs414.p4.client_server.transmission.UpdateRecordTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.game.FlipPieceTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.game.ForfeitTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.game.MoveTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.game.UpdateRecordTask;
 import edu.colostate.cs.cs414.p4.console.JavaConsole;
 import edu.colostate.cs.cs414.p4.user.ActivePlayer;
 import edu.colostate.cs.cs414.p4.user.Player;

@@ -16,10 +16,10 @@ import java.util.concurrent.TimeUnit;
 
 import edu.colostate.cs.cs414.p4.client_server.transmission.ForwardTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.MessageTask;
-import edu.colostate.cs.cs414.p4.client_server.transmission.RegisterTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p4.client_server.transmission.TaskConstents;
 import edu.colostate.cs.cs414.p4.client_server.transmission.TaskFactory;
+import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.RegisterTask;
 
 /**
  * @author pflagert

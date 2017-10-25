@@ -15,16 +15,16 @@ import edu.colostate.cs.cs414.p4.client_server.server.AbstractServer;
 import edu.colostate.cs.cs414.p4.client_server.server.Server;
 import edu.colostate.cs.cs414.p4.client_server.server.registry.AbstractRegistry;
 import edu.colostate.cs.cs414.p4.client_server.server.registry.ActiveRegistry;
-import edu.colostate.cs.cs414.p4.client_server.transmission.LoginGreetingTask;
-import edu.colostate.cs.cs414.p4.client_server.transmission.LoginTask;
-import edu.colostate.cs.cs414.p4.client_server.transmission.LogoutTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.MessageTask;
-import edu.colostate.cs.cs414.p4.client_server.transmission.RegisterGreetingTask;
-import edu.colostate.cs.cs414.p4.client_server.transmission.RegisterTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p4.client_server.transmission.TaskConstents;
 import edu.colostate.cs.cs414.p4.client_server.transmission.TaskFactory;
-import edu.colostate.cs.cs414.p4.client_server.transmission.UnregisterTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.LoginGreetingTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.LoginTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.LogoutTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.RegisterGreetingTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.RegisterTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.UnregisterTask;
 
 /**
  * @author pflagert

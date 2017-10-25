@@ -1,4 +1,4 @@
-package edu.colostate.cs.cs414.p4.client_server.transmission;
+package edu.colostate.cs.cs414.p4.client_server.transmission.registration_login;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -7,20 +7,26 @@ import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
+import edu.colostate.cs.cs414.p4.client_server.transmission.TaskConstents;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.ReadUtils;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.WriteUtils;
 
-public class LoginTask extends Task{
+public class UnregisterTask extends Task {
+
 	private String email;
+	private String nickname;
 	private String password;
 
-	public LoginTask(String email, String password) {
+	public UnregisterTask(String email, String nickname, String password) {
 		this.email = email;
+		this.nickname = nickname;
 		this.password = password;
 	}
 
-	public LoginTask(DataInputStream din) throws IOException {
+	public UnregisterTask(DataInputStream din) throws IOException {
 		this.email = ReadUtils.readString(din);
+		this.nickname = ReadUtils.readString(din);
 		this.password = ReadUtils.readString(din);
 	}
 
@@ -30,16 +36,17 @@ public class LoginTask extends Task{
 		DataOutputStream dout = WriteUtils.getDataOutputStream(bs);
 		dout.writeInt(getTaskCode());
 		WriteUtils.writeString(email,dout);
+		WriteUtils.writeString(nickname,dout);
 		encryptPassword();
 		WriteUtils.writeString(password, dout);
 		return WriteUtils.getBytesAndCloseStreams(bs,dout);
 	}
-
+	
 	@Override
 	public int getTaskCode() {
-		return TaskConstents.LOGIN_TASK;
+		return TaskConstents.UNREGISTER_TASK;
 	}
-
+	
 	/* NoSuchAlgorithm exception should never happen.
 	 * That is, unless the target machine is using a none standard version of Java.
 	 * As Every implementation of the Java platform is required to support the 
@@ -63,17 +70,20 @@ public class LoginTask extends Task{
 
 	@Override
 	public void run() {
-		// No need for a run method.
-		// Registration and Login require direct integration
-		// run method will not be called
-		return;
+		// TODO Auto-generated method stub
+		
 	}
-
+	
 	public String getEmail() {
 		return email;
+	}
+
+	public String getNickname() {
+		return nickname;
 	}
 
 	public String getPassword() {
 		return password;
 	}
+
 }

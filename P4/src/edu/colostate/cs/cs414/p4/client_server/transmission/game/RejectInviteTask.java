@@ -1,10 +1,12 @@
-package edu.colostate.cs.cs414.p4.client_server.transmission;
+package edu.colostate.cs.cs414.p4.client_server.transmission.game;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
+import edu.colostate.cs.cs414.p4.client_server.transmission.TaskConstents;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.ReadUtils;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.WriteUtils;
 import edu.colostate.cs.cs414.p4.console.AbstractConsole;
