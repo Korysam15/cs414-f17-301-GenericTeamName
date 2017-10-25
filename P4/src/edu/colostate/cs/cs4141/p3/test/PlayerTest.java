@@ -9,8 +9,8 @@ import java.util.Arrays;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import edu.colostate.cs.cs414.p3.banqi.BanqiGame;
-import edu.colostate.cs.cs414.p3.user.Player;
+import edu.colostate.cs.cs414.p4.banqi.BanqiGame;
+import edu.colostate.cs.cs414.p4.user.Player;
 
 class PlayerTest {
 	/* GLOBAL VARIABLES */

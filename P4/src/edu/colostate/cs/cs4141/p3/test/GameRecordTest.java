@@ -6,9 +6,7 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import edu.colostate.cs.cs414.p3.user.*;
-import edu.colostate.cs.cs414.p3.user.GameRecord;
-import edu.colostate.cs.cs414.p3.user.Profile;
+import edu.colostate.cs.cs414.p4.user.*;
 
 public class GameRecordTest {
 	Profile p1 = new Profile("nick"), p2 = new Profile("james");

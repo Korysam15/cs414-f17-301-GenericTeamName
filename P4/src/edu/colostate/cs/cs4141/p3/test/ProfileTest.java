@@ -4,8 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import edu.colostate.cs.cs414.p3.user.History;
-import edu.colostate.cs.cs414.p3.user.Profile;
+import edu.colostate.cs.cs414.p4.user.History;
+import edu.colostate.cs.cs414.p4.user.Profile;
 
 public class ProfileTest {
 
