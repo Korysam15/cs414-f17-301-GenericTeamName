@@ -211,7 +211,7 @@ public class FileRegistry extends AbstractRegistry {
 		} else {
 			//return "Bad email";
 		}
-		return "Invalid login creditials.";
+		return "Invalid login credentials.";
 	}
 
 	@Override

@@ -90,7 +90,10 @@ public class BanqiGame {
 		this.gameBoard= new GameBoard();
 		this.pieces= new Piece[32];
 		console = new JavaConsole();
-		console.setTitle(ActivePlayer.getInstance().getNickName() + " Game[" + gameID + "]");
+		if(ActivePlayer.getInstance() != null)
+		{
+			console.setTitle(ActivePlayer.getInstance().getNickName() + " Game[" + gameID + "]");
+		}
 		getAllPieces();
 
 	}

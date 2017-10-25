@@ -45,6 +45,11 @@ public class Player {
 		this.console = console;
 	}
 	
+	public HashMap<Integer,BanqiGame> getGames()
+	{
+		return this.games;
+	}
+	
 	public void setEmail(String email)
 	{
 		this.email = email;
@@ -131,11 +136,6 @@ public class Player {
 	public AbstractClient getClient() 
 	{
 		return this.client;
-	}
-
-	public String toString()
-	{
-		return "Email: " + this.email + "\nNickname: " + this.nickName + "\nPassword: " + this.password + "\nProfile: " + this.profile.toString();
 	}
 	
 	public static void main(String[] args) throws IOException, InterruptedException {
