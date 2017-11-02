@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 import edu.colostate.cs.cs414.p4.client_server.transmission.MultiForwardTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
-import edu.colostate.cs.cs414.p4.client_server.transmission.game.InviteTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.game.invite.InviteTask;
 
 public class Invitation {
 	/* GLOBAL VARIABLES */

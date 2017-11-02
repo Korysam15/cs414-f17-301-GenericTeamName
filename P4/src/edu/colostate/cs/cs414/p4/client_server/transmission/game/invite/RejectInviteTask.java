@@ -1,4 +1,4 @@
-package edu.colostate.cs.cs414.p4.client_server.transmission.game;
+package edu.colostate.cs.cs414.p4.client_server.transmission.game.invite;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;

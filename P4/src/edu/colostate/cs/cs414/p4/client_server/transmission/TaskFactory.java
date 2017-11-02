@@ -7,14 +7,14 @@ import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 
-import edu.colostate.cs.cs414.p4.client_server.transmission.game.AcceptInviteTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.game.CreateGameTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.game.FlipPieceTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.game.ForfeitTask;
-import edu.colostate.cs.cs414.p4.client_server.transmission.game.InviteTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.game.MoveTask;
-import edu.colostate.cs.cs414.p4.client_server.transmission.game.RejectInviteTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.game.UpdateRecordTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.game.invite.AcceptInviteTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.game.invite.InviteTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.game.invite.RejectInviteTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.profile.DisplayProfileTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.profile.GetProfileTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.LoginGreetingTask;

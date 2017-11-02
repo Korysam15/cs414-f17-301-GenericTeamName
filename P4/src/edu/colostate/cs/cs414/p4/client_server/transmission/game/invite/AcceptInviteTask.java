@@ -1,4 +1,4 @@
-package edu.colostate.cs.cs414.p4.client_server.transmission.game;
+package edu.colostate.cs.cs414.p4.client_server.transmission.game.invite;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -9,6 +9,7 @@ import edu.colostate.cs.cs414.p4.banqi.BanqiGame;
 import edu.colostate.cs.cs414.p4.client_server.transmission.ForwardTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p4.client_server.transmission.TaskConstents;
+import edu.colostate.cs.cs414.p4.client_server.transmission.game.CreateGameTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.ReadUtils;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.WriteUtils;
 import edu.colostate.cs.cs414.p4.console.AbstractConsole;
