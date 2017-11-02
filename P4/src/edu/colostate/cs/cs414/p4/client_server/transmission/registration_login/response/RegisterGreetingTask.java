@@ -1,16 +1,14 @@
 package edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.response;
 
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p4.client_server.transmission.TaskConstents;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.ReadUtils;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.WriteUtils;
 
-public class RegisterGreetingTask extends Task implements EntryResponse {
+public class RegisterGreetingTask extends EntryResponseTask {
 
 	private String greeting;
 	
@@ -28,12 +26,8 @@ public class RegisterGreetingTask extends Task implements EntryResponse {
 	}
 
 	@Override
-	public byte[] toByteArray() throws IOException {
-		ByteArrayOutputStream bs = WriteUtils.getByteOutputStream();
-		DataOutputStream dout = WriteUtils.getDataOutputStream(bs);
-		dout.writeInt(getTaskCode());
+	public void writeBytes(DataOutputStream dout) throws IOException {
 		WriteUtils.writeString(greeting,dout);
-		return WriteUtils.getBytesAndCloseStreams(bs,dout);
 	}
 
 	@Override

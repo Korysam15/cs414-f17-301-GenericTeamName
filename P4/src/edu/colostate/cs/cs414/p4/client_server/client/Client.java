@@ -14,12 +14,12 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import edu.colostate.cs.cs414.p4.client_server.transmission.ForwardTask;
-import edu.colostate.cs.cs414.p4.client_server.transmission.MessageTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p4.client_server.transmission.TaskConstents;
 import edu.colostate.cs.cs414.p4.client_server.transmission.TaskFactory;
 import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.RegisterTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.util.ForwardTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.util.MessageTask;
 
 /**
  * @author pflagert

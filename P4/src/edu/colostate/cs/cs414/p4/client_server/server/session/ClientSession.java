@@ -15,7 +15,6 @@ import edu.colostate.cs.cs414.p4.client_server.server.AbstractServer;
 import edu.colostate.cs.cs414.p4.client_server.server.Server;
 import edu.colostate.cs.cs414.p4.client_server.server.registry.AbstractRegistry;
 import edu.colostate.cs.cs414.p4.client_server.server.registry.ActiveRegistry;
-import edu.colostate.cs.cs414.p4.client_server.transmission.MessageTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p4.client_server.transmission.TaskConstents;
 import edu.colostate.cs.cs414.p4.client_server.transmission.TaskFactory;
@@ -25,6 +24,7 @@ import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.R
 import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.UnregisterTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.response.LoginGreetingTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.response.RegisterGreetingTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.util.MessageTask;
 
 /**
  * @author pflagert

@@ -1,24 +1,26 @@
 package edu.colostate.cs.cs414.p4.client_server.transmission.registration_login;
 
+import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
+
 /**
  * 
  * @author pflagert
  * A simple interface to distinguish {@link LoginTask} and {@link RegisterTask} from,
  * other types of {@link Task}s.
  */
-public interface EntryAble {
+public abstract class EntryTask extends Task {
 	
 	/**
 	 * This method should always return an email address that is NOT null
 	 * @return an email address in the form of a {@link String}.
 	 */
-	public String getEmail();
+	public abstract String getEmail();
 	
 	/**
 	 * This method should always return a password that is NOT null.
 	 * @return a password in the form of a {@link String}
 	 */
-	public String getPassword();
+	public abstract String getPassword();
 	
 	/**
 	 * This method should return a nickname that is NOT null in the case
@@ -26,5 +28,5 @@ public interface EntryAble {
 	 * an error should be thrown. 
 	 * @return a {@link String} representing a player's/user's nickname.
 	 */
-	public String getNickname();
+	public abstract String getNickname();
 }

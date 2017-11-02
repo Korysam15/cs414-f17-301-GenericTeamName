@@ -3,6 +3,7 @@
  */
 package edu.colostate.cs.cs414.p4.client_server.transmission.game;
 
+import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p4.client_server.transmission.game.invite.AcceptInviteTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.game.invite.InviteTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.game.invite.RejectInviteTask;
@@ -12,7 +13,7 @@ import edu.colostate.cs.cs414.p4.client_server.transmission.game.invite.RejectIn
  * A simple interface to allow {@link Task}s related to game play / creation to
  * distinguish themselves from other Tasks. 
  */
-public interface GameTask {
+public abstract class GameTask extends Task {
 	
 	/**
 	 * The value in which a Game's ID should be in the following tasks:
@@ -27,5 +28,5 @@ public interface GameTask {
 	 * @return Either the unique identifier assigned to the game, 
 	 * or {@link #UNASSIGNED_GAME_ID}
 	 */
-	public int getGameID();
+	public abstract int getGameID();
 }

@@ -1,17 +1,14 @@
 package edu.colostate.cs.cs414.p4.client_server.transmission.game;
 
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p4.client_server.transmission.TaskConstents;
-import edu.colostate.cs.cs414.p4.client_server.transmission.util.WriteUtils;
 import edu.colostate.cs.cs414.p4.user.ActivePlayer;
 import edu.colostate.cs.cs414.p4.user.Player;
 
-public class UpdateRecordTask extends Task implements GameTask{
+public class UpdateRecordTask extends GameTask {
 	private int gameID;
 	private boolean won, loss, draw;
 	
@@ -33,6 +30,14 @@ public class UpdateRecordTask extends Task implements GameTask{
 		return TaskConstents.UPDATERECORD_TASK;
 	}
 	
+	@Override
+	public void writeBytes(DataOutputStream dout) throws IOException {
+		dout.writeBoolean(won);
+		dout.writeBoolean(loss);
+		dout.writeBoolean(draw);
+		dout.writeInt(gameID);
+	}
+	
 	public String toString() {
 		return "[UpdateRecordTask, Taskcode: " + getTaskCode() +
 		", Contents: " + won + "," + loss + "," + draw +"]";
@@ -51,17 +56,6 @@ public class UpdateRecordTask extends Task implements GameTask{
 	public void setDraw(boolean draw)
 	{
 		this.draw = draw;
-	}
-
-	public byte[] toByteArray() throws IOException {
-		ByteArrayOutputStream bs = WriteUtils.getByteOutputStream();
-		DataOutputStream dout = WriteUtils.getDataOutputStream(bs);
-		dout.writeInt(getTaskCode());
-		dout.writeBoolean(won);
-		dout.writeBoolean(loss);
-		dout.writeBoolean(draw);
-		dout.writeInt(gameID);
-		return WriteUtils.getBytesAndCloseStreams(bs,dout);
 	}
 	
 	@Override

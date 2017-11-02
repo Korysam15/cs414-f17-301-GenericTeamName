@@ -1,20 +1,18 @@
 package edu.colostate.cs.cs414.p4.client_server.transmission.game;
 
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
 import edu.colostate.cs.cs414.p4.banqi.BanqiGame;
 import edu.colostate.cs.cs414.p4.banqi.Square;
-import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p4.client_server.transmission.TaskConstents;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.ReadUtils;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.WriteUtils;
 import edu.colostate.cs.cs414.p4.user.ActivePlayer;
 import edu.colostate.cs.cs414.p4.user.Player;
 
-public class FlipPieceTask extends Task implements GameTask {
+public class FlipPieceTask extends GameTask {
 	private String playerWhoMadeMove;
 	private int gameID;
 	private int fromX, fromY;
@@ -40,16 +38,13 @@ public class FlipPieceTask extends Task implements GameTask {
 	public int getTaskCode() {
 		return TaskConstents.FLIP_PIECE_TASK;
 	}
-
-	public byte[] toByteArray() throws IOException {
-		ByteArrayOutputStream bs = WriteUtils.getByteOutputStream();
-		DataOutputStream dout = WriteUtils.getDataOutputStream(bs);
-		dout.writeInt(getTaskCode());
+	
+	@Override
+	public void writeBytes(DataOutputStream dout) throws IOException {
 		WriteUtils.writeString(playerWhoMadeMove, dout);
 		dout.writeInt(gameID);
 		dout.writeInt(fromX);
 		dout.writeInt(fromY);
-		return WriteUtils.getBytesAndCloseStreams(bs,dout);
 	}
 	
 	@Override

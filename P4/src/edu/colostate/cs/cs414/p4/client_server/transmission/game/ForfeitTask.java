@@ -1,16 +1,14 @@
 package edu.colostate.cs.cs414.p4.client_server.transmission.game;
 
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p4.client_server.transmission.TaskConstents;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.ReadUtils;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.WriteUtils;
 
-public class ForfeitTask extends Task implements GameTask {
+public class ForfeitTask extends GameTask {
 	private int gameID;
 	private UpdateRecordTask update;
 	private String message;
@@ -34,16 +32,12 @@ public class ForfeitTask extends Task implements GameTask {
 	{
 		return TaskConstents.FORFEIT_TASK;
 	}
-
-	public byte[] toByteArray() throws IOException 
-	{
-		ByteArrayOutputStream bs = WriteUtils.getByteOutputStream();
-		DataOutputStream dout = WriteUtils.getDataOutputStream(bs);
-		dout.writeInt(getTaskCode());
+	
+	@Override
+	public void writeBytes(DataOutputStream dout) throws IOException {
 		dout.writeInt(this.gameID);
 		WriteUtils.writeTask(this.update, dout);
 		WriteUtils.writeString(this.message, dout);
-		return WriteUtils.getBytesAndCloseStreams(bs,dout);
 	}
 	
 	@Override

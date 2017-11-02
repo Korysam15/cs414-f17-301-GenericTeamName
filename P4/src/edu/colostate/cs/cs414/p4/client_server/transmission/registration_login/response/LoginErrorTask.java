@@ -1,10 +1,9 @@
 package edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.response;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 
-import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
-
-public class LoginErrorTask extends Task implements EntryResponse{
+public class LoginErrorTask extends EntryResponseTask{
 
 	@Override
 	public int getTaskCode() {
@@ -13,9 +12,9 @@ public class LoginErrorTask extends Task implements EntryResponse{
 	}
 
 	@Override
-	public byte[] toByteArray() throws IOException {
+	public void writeBytes(DataOutputStream dout) throws IOException {
 		// TODO Auto-generated method stub
-		return null;
+		
 	}
 
 	@Override

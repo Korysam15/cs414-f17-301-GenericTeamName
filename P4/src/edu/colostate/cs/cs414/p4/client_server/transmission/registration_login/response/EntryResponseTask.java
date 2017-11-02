@@ -1,5 +1,6 @@
 package edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.response;
 
+import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p4.console.AbstractConsole;
 import edu.colostate.cs.cs414.p4.user.ActivePlayer;
 import edu.colostate.cs.cs414.p4.user.Player;
@@ -9,28 +10,28 @@ import edu.colostate.cs.cs414.p4.user.Player;
  * @author pflagert
  * A simple Interface to distinguish 
  */
-public interface EntryResponse {
+public abstract class EntryResponseTask extends Task {
 	
 	/**
-	 * Returns true if the player's/user's {@link EntryAble} {@link Task} was successful.
+	 * Returns true if the player's/user's {@link EntryTask} {@link Task} was successful.
 	 * @return true if the player was logged in, otherwise false.
 	 */
-	public boolean wasSuccessful();
+	public abstract boolean wasSuccessful();
 	
 	/**
 	 * Retrieves the response message from the server.
 	 * @return A {@link String} response from the server.
 	 */
-	public String getResponseMessage();
+	public abstract String getResponseMessage();
 	
-	public default void displayMessage() {
+	protected void displayMessage() {
 		Player player;
 		if((player = ActivePlayer.getInstance()) != null) {
 			displayMessageToPlayer(player);
 		}
 	}
 	
-	public default void displayMessageToPlayer(Player player) {
+	protected void displayMessageToPlayer(Player player) {
 		AbstractConsole console = player.getConsole();
 		if(console != null) {
 			if(wasSuccessful()) {

@@ -1,18 +1,16 @@
 package edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.response;
 
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p4.client_server.transmission.TaskConstents;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.ReadUtils;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.WriteUtils;
 import edu.colostate.cs.cs414.p4.user.ActivePlayer;
 import edu.colostate.cs.cs414.p4.user.Player;
 
-public class LoginGreetingTask extends Task implements EntryResponse {
+public class LoginGreetingTask extends EntryResponseTask {
 
 	private String greeting;
 	private String playerNickname;
@@ -31,15 +29,11 @@ public class LoginGreetingTask extends Task implements EntryResponse {
 	public int getTaskCode() {
 		return TaskConstents.LOGIN_GREETING_TASK;
 	}
-
+	
 	@Override
-	public byte[] toByteArray() throws IOException {
-		ByteArrayOutputStream bs = WriteUtils.getByteOutputStream();
-		DataOutputStream dout = WriteUtils.getDataOutputStream(bs);
-		dout.writeInt(getTaskCode());
+	public void writeBytes(DataOutputStream dout) throws IOException {
 		WriteUtils.writeString(greeting,dout);
-		WriteUtils.writeString(playerNickname, dout);
-		return WriteUtils.getBytesAndCloseStreams(bs,dout);
+		WriteUtils.writeString(playerNickname, dout);		
 	}
 
 	@Override

@@ -1,6 +1,5 @@
 package edu.colostate.cs.cs414.p4.client_server.transmission.profile;
 
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -29,14 +28,10 @@ public class DisplayProfileTask extends Task {
 	public int getTaskCode() {
 		return TaskConstents.DISPLAY_PROFILE_TASK;
 	}
-
+	
 	@Override
-	public byte[] toByteArray() throws IOException {
-		ByteArrayOutputStream bs = WriteUtils.getByteOutputStream();
-		DataOutputStream dout = WriteUtils.getDataOutputStream(bs);
-		dout.writeInt(getTaskCode());
-		WriteUtils.writeString(profile, dout);
-		return WriteUtils.getBytesAndCloseStreams(bs,dout);
+	public void writeBytes(DataOutputStream dout) throws IOException {
+		WriteUtils.writeString(profile, dout);		
 	}
 	
 	public String toString() {

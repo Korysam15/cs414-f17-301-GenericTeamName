@@ -1,18 +1,16 @@
 package edu.colostate.cs.cs414.p4.client_server.transmission.registration_login;
 
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p4.client_server.transmission.TaskConstents;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.ReadUtils;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.WriteUtils;
 
-public class LoginTask extends Task implements EntryAble {
+public class LoginTask extends EntryTask {
 	private String email;
 	private String password;
 
@@ -27,19 +25,15 @@ public class LoginTask extends Task implements EntryAble {
 	}
 
 	@Override
-	public byte[] toByteArray() throws IOException {
-		ByteArrayOutputStream bs = WriteUtils.getByteOutputStream();
-		DataOutputStream dout = WriteUtils.getDataOutputStream(bs);
-		dout.writeInt(getTaskCode());
-		WriteUtils.writeString(email,dout);
-		encryptPassword();
-		WriteUtils.writeString(password, dout);
-		return WriteUtils.getBytesAndCloseStreams(bs,dout);
-	}
-
-	@Override
 	public int getTaskCode() {
 		return TaskConstents.LOGIN_TASK;
+	}
+	
+	@Override
+	public void writeBytes(DataOutputStream dout) throws IOException {
+		WriteUtils.writeString(email,dout);
+		encryptPassword();
+		WriteUtils.writeString(password, dout);		
 	}
 
 	/* NoSuchAlgorithm exception should never happen.
