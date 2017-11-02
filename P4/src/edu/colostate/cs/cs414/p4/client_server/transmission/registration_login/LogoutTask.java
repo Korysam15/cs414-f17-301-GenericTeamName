@@ -1,6 +1,5 @@
 package edu.colostate.cs.cs414.p4.client_server.transmission.registration_login;
 
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -26,14 +25,10 @@ public class LogoutTask extends Task {
 	public int getTaskCode() {
 		return TaskConstents.LOGOUT_TASK;
 	}
-
+	
 	@Override
-	public byte[] toByteArray() throws IOException {
-		ByteArrayOutputStream bs = WriteUtils.getByteOutputStream();
-		DataOutputStream dout = WriteUtils.getDataOutputStream(bs);
-		dout.writeInt(getTaskCode());
-		WriteUtils.writeString(email, dout);
-		return WriteUtils.getBytesAndCloseStreams(bs,dout);
+	public void writeBytes(DataOutputStream dout) throws IOException {
+		WriteUtils.writeString(email, dout);		
 	}
 
 	@Override

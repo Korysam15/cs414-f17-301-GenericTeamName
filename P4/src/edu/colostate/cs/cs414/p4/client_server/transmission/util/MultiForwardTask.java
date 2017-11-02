@@ -1,60 +1,59 @@
-package edu.colostate.cs.cs414.p4.client_server.transmission;
+package edu.colostate.cs.cs414.p4.client_server.transmission.util;
 
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import edu.colostate.cs.cs414.p4.client_server.server.AbstractServer;
 import edu.colostate.cs.cs414.p4.client_server.server.ActiveServer;
 import edu.colostate.cs.cs414.p4.client_server.server.session.ClientSession;
-import edu.colostate.cs.cs414.p4.client_server.transmission.util.ReadUtils;
-import edu.colostate.cs.cs414.p4.client_server.transmission.util.WriteUtils;
+import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
+import edu.colostate.cs.cs414.p4.client_server.transmission.TaskConstents;
 
-public class ForwardTask extends Task {
+public class MultiForwardTask extends UtilityTask {
 	private String fromPlayer;
-	private String toPlayer;
+	private List<String> toPlayers;
 	private Task task;
 
-	public ForwardTask(String fromPlayer, Task task, String toPlayer) {
+	public MultiForwardTask(String fromPlayer, Task task, List<String> toPlayer) {
 		this.fromPlayer = fromPlayer;
 		this.task = task;
-		this.toPlayer = toPlayer;
+		this.toPlayers = new ArrayList<String>(toPlayer);
 	}
 
-	public ForwardTask(DataInputStream din) throws IOException {
+	public MultiForwardTask(DataInputStream din) throws IOException {
 		this.fromPlayer = ReadUtils.readString(din);
-		this.toPlayer = ReadUtils.readString(din);
+		this.toPlayers = ReadUtils.readStringList(din);
 		task = ReadUtils.readTask(din);
 	}
 
 	public int getTaskCode() {
-		return TaskConstents.FORWARD_TASK;
+		return TaskConstents.MULTI_FORWARD_TASK;
 	}
-
-	public byte[] toByteArray() throws IOException {
-		ByteArrayOutputStream bs = WriteUtils.getByteOutputStream();
-		DataOutputStream dout = WriteUtils.getDataOutputStream(bs);
-		dout.writeInt(getTaskCode());
+	
+	@Override
+	public void writeBytes(DataOutputStream dout) throws IOException {
 		WriteUtils.writeString(fromPlayer,dout);
-		WriteUtils.writeString(toPlayer,dout);
-		WriteUtils.writeTask(task, dout);
-		return WriteUtils.getBytesAndCloseStreams(bs,dout);
+		WriteUtils.writeStringList(toPlayers,dout);
+		WriteUtils.writeTask(task, dout);		
 	}
 
 	public String toString() {
-		return "[ForwardTask, Taskcode: " + TaskConstents.MESSAGE_TASK + 
-				", Contents: " + task + "]";
+		return "[MultiForwardTask, Taskcode: " + getTaskCode() +
+				", Contents: " + task + ",sent to " + toPlayers.size() + " clients]";
 	}
 
 	public void run() {
 		AbstractServer server = ActiveServer.getInstance();	
 		if(server != null) {
-			forwardTheTask(server);
+			for(String toPlayer: toPlayers)
+				forwardTheTask(server,toPlayer);
 		}
 	}
 	
-	private void forwardTheTask(AbstractServer server) {
+	private void forwardTheTask(AbstractServer server, String toPlayer) {
 		boolean success = false;
 		String response = "";
 		ClientSession clientFrom = server.getRegisteredClient(fromPlayer);
@@ -76,7 +75,7 @@ public class ForwardTask extends Task {
 			
 			if(!success) {
 				try {
-					clientFrom.send(new MessageTask(response,MessageTask.ERROR));
+					clientFrom.send(new MessageTask(response));
 				} catch (IOException e2) {
 					
 				}

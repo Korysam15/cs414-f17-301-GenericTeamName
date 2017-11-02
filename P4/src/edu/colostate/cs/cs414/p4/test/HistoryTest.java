@@ -10,6 +10,7 @@ public class HistoryTest {
 
 	@Test
 	public void testHistory() {
+		@SuppressWarnings("unused")
 		History h = new History();
 	}
 
@@ -57,7 +58,7 @@ public class HistoryTest {
 		assertEquals(h.getLosses(), 1);
 	}
 
-	@SuppressWarnings("deprecation")
+//	@SuppressWarnings("deprecation")
 	@Test
 	public void testGetWinRatio() {
 		History h = new History();
@@ -68,7 +69,7 @@ public class HistoryTest {
 		assert(h.getWinRatio()==0.75);
 	}
 
-	@SuppressWarnings("deprecation")
+//	@SuppressWarnings("deprecation")
 	@Test
 	public void testGetLossRatio() {
 		History h = new History();

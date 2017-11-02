@@ -1,11 +1,9 @@
-package edu.colostate.cs.cs414.p4.client_server.transmission.game;
+package edu.colostate.cs.cs414.p4.client_server.transmission.game.invite;
 
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p4.client_server.transmission.TaskConstents;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.ReadUtils;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.WriteUtils;
@@ -13,7 +11,7 @@ import edu.colostate.cs.cs414.p4.console.AbstractConsole;
 import edu.colostate.cs.cs414.p4.user.ActivePlayer;
 import edu.colostate.cs.cs414.p4.user.Player;
 
-public class RejectInviteTask extends Task {
+public class RejectInviteTask extends InviteGameTask {
 	private String message;
 	private String playerFrom;
 	
@@ -35,19 +33,15 @@ public class RejectInviteTask extends Task {
 		return TaskConstents.REJECTINVITE_TASK;
 	}
 	
+	@Override
+	public void writeBytes(DataOutputStream dout) throws IOException {
+		WriteUtils.writeString(message, dout);
+		WriteUtils.writeString(playerFrom, dout);		
+	}
+	
 	public String toString() {
 		return "[RejectInviteTask, Taskcode: " + getTaskCode() +
 		", Contents: " + playerFrom + "," + message + "]";
-	}
-	
-	public byte[] toByteArray() throws IOException 
-	{
-		ByteArrayOutputStream bs = WriteUtils.getByteOutputStream();
-		DataOutputStream dout = WriteUtils.getDataOutputStream(bs);
-		dout.writeInt(getTaskCode());
-		WriteUtils.writeString(message, dout);
-		WriteUtils.writeString(playerFrom, dout);
-		return WriteUtils.getBytesAndCloseStreams(bs,dout);
 	}
 	
 	public void run()

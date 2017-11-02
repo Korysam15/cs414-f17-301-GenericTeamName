@@ -1,21 +1,21 @@
-package edu.colostate.cs.cs414.p4.client_server.transmission.game;
+package edu.colostate.cs.cs414.p4.client_server.transmission.game.invite;
 
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
 import edu.colostate.cs.cs414.p4.banqi.BanqiGame;
-import edu.colostate.cs.cs414.p4.client_server.transmission.ForwardTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p4.client_server.transmission.TaskConstents;
+import edu.colostate.cs.cs414.p4.client_server.transmission.game.CreateGameTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.util.ForwardTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.ReadUtils;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.WriteUtils;
 import edu.colostate.cs.cs414.p4.console.AbstractConsole;
 import edu.colostate.cs.cs414.p4.user.ActivePlayer;
 import edu.colostate.cs.cs414.p4.user.Player;
 
-public class AcceptInviteTask extends Task {
+public class AcceptInviteTask extends InviteGameTask {
 	private String playerWhoAccepted;
 
 	public AcceptInviteTask(String playerWhoAccepted) {
@@ -30,13 +30,10 @@ public class AcceptInviteTask extends Task {
 	public int getTaskCode() {
 		return TaskConstents.ACCEPT_INVITE_TASK;
 	}
-
-	public byte[] toByteArray() throws IOException {
-		ByteArrayOutputStream bs = WriteUtils.getByteOutputStream();
-		DataOutputStream dout = WriteUtils.getDataOutputStream(bs);
-		dout.writeInt(getTaskCode());
-		WriteUtils.writeString(playerWhoAccepted,dout);
-		return WriteUtils.getBytesAndCloseStreams(bs,dout);
+	
+	@Override
+	public void writeBytes(DataOutputStream dout) throws IOException {
+		WriteUtils.writeString(playerWhoAccepted,dout);		
 	}
 
 	public String toString() {

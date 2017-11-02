@@ -1,20 +1,18 @@
 package edu.colostate.cs.cs414.p4.client_server.transmission.game;
 
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Random;
 
 import edu.colostate.cs.cs414.p4.banqi.BanqiGame;
-import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p4.client_server.transmission.TaskConstents;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.ReadUtils;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.WriteUtils;
 import edu.colostate.cs.cs414.p4.user.ActivePlayer;
 import edu.colostate.cs.cs414.p4.user.Player;
 
-public class CreateGameTask extends Task {
+public class CreateGameTask extends GameTask {
 	private int gameID;
 	private String playerOne;
 	private String playerTwo;
@@ -39,16 +37,12 @@ public class CreateGameTask extends Task {
 	{
 		return TaskConstents.CREATGAME_TASK;
 	}
-	
-	public byte[] toByteArray() throws IOException 
-	{
-		ByteArrayOutputStream bs = WriteUtils.getByteOutputStream();
-		DataOutputStream dout = WriteUtils.getDataOutputStream(bs);
-		dout.writeInt(getTaskCode());
+
+	@Override
+	public void writeBytes(DataOutputStream dout) throws IOException {
 		dout.writeInt(gameID);
 		WriteUtils.writeString(playerOne, dout);
-		WriteUtils.writeString(playerTwo, dout);
-		return WriteUtils.getBytesAndCloseStreams(bs,dout);
+		WriteUtils.writeString(playerTwo, dout);		
 	}
 	
 	public String toString() {

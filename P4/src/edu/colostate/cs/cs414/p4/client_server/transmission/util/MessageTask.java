@@ -1,14 +1,12 @@
-package edu.colostate.cs.cs414.p4.client_server.transmission;
+package edu.colostate.cs.cs414.p4.client_server.transmission.util;
 
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
 import edu.colostate.cs.cs414.p4.client_server.server.AbstractServer;
 import edu.colostate.cs.cs414.p4.client_server.server.ActiveServer;
-import edu.colostate.cs.cs414.p4.client_server.transmission.util.ReadUtils;
-import edu.colostate.cs.cs414.p4.client_server.transmission.util.WriteUtils;
+import edu.colostate.cs.cs414.p4.client_server.transmission.TaskConstents;
 import edu.colostate.cs.cs414.p4.console.AbstractConsole;
 import edu.colostate.cs.cs414.p4.user.ActivePlayer;
 import edu.colostate.cs.cs414.p4.user.Player;
@@ -17,7 +15,7 @@ import edu.colostate.cs.cs414.p4.user.Player;
  * @author pflagert
  * Just a Test for the server / client
  */
-public class MessageTask extends Task {
+public class MessageTask extends UtilityTask {
 
 	public static final int DEFAULT=4;
 	public static final int NOTICE=3;
@@ -65,15 +63,11 @@ public class MessageTask extends Task {
 	{
 		return TaskConstents.MESSAGE_TASK;
 	}
-
-	public byte[] toByteArray() throws IOException 
-	{
-		ByteArrayOutputStream bs = WriteUtils.getByteOutputStream();
-		DataOutputStream dout = WriteUtils.getDataOutputStream(bs);
-		dout.writeInt(getTaskCode());
+	
+	@Override
+	public void writeBytes(DataOutputStream dout) throws IOException {
 		WriteUtils.writeString(msg,dout);
 		dout.writeInt(type);
-		return WriteUtils.getBytesAndCloseStreams(bs,dout);
 	}
 
 	public String toString() 

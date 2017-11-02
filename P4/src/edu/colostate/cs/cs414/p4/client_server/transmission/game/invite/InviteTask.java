@@ -1,4 +1,4 @@
-package edu.colostate.cs.cs414.p4.client_server.transmission.game;
+package edu.colostate.cs.cs414.p4.client_server.transmission.game.invite;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,17 +13,15 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
-import edu.colostate.cs.cs414.p4.client_server.transmission.ForwardTask;
-import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p4.client_server.transmission.TaskConstents;
+import edu.colostate.cs.cs414.p4.client_server.transmission.util.ForwardTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.ReadUtils;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.WriteUtils;
 import edu.colostate.cs.cs414.p4.user.ActivePlayer;
 import edu.colostate.cs.cs414.p4.user.Player;
 
-public class InviteTask extends Task {
+public class InviteTask extends InviteGameTask {
 	private String message;
 	private String playerFrom;
 	//private String playerTo;
@@ -46,6 +44,12 @@ public class InviteTask extends Task {
 	public int getTaskCode() 
 	{
 		return TaskConstents.INVITE_TASK;
+	}
+	
+	@Override
+	public void writeBytes(DataOutputStream dout) throws IOException {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	public String toString() {

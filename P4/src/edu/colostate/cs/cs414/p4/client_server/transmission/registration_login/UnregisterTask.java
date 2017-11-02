@@ -1,6 +1,5 @@
 package edu.colostate.cs.cs414.p4.client_server.transmission.registration_login;
 
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -29,22 +28,18 @@ public class UnregisterTask extends Task {
 		this.nickname = ReadUtils.readString(din);
 		this.password = ReadUtils.readString(din);
 	}
-
-	@Override
-	public byte[] toByteArray() throws IOException {
-		ByteArrayOutputStream bs = WriteUtils.getByteOutputStream();
-		DataOutputStream dout = WriteUtils.getDataOutputStream(bs);
-		dout.writeInt(getTaskCode());
-		WriteUtils.writeString(email,dout);
-		WriteUtils.writeString(nickname,dout);
-		encryptPassword();
-		WriteUtils.writeString(password, dout);
-		return WriteUtils.getBytesAndCloseStreams(bs,dout);
-	}
 	
 	@Override
 	public int getTaskCode() {
 		return TaskConstents.UNREGISTER_TASK;
+	}
+	
+	@Override
+	public void writeBytes(DataOutputStream dout) throws IOException {
+		WriteUtils.writeString(email,dout);
+		WriteUtils.writeString(nickname,dout);
+		encryptPassword();
+		WriteUtils.writeString(password, dout);		
 	}
 	
 	/* NoSuchAlgorithm exception should never happen.

@@ -7,12 +7,12 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-import edu.colostate.cs.cs414.p4.client_server.transmission.ForwardTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p4.client_server.transmission.game.FlipPieceTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.game.ForfeitTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.game.MoveTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.game.UpdateRecordTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.util.ForwardTask;
 import edu.colostate.cs.cs414.p4.console.JavaConsole;
 import edu.colostate.cs.cs414.p4.user.ActivePlayer;
 import edu.colostate.cs.cs414.p4.user.Player;
@@ -441,7 +441,8 @@ public class BanqiGame {
 				{
 					System.out.println("FORFEITING");
 					// forfeit game, create forfiet task, update stats for both players
-					ForfeitTask forfeit = new ForfeitTask(this.gameID, new UpdateRecordTask(false,true,false),p.getNickName() + " has forfeited! " + otherPlayer + " is the winner!");
+					UpdateRecordTask updateTask = new UpdateRecordTask(false,true,false,this.gameID);
+					ForfeitTask forfeit = new ForfeitTask(this.gameID, updateTask, p.getNickName() + " has forfeited! " + otherPlayer + " is the winner!");
 					forfeit.run();
 					forfeit.getUpdateRecordTask().setWon(true);
 					forfeit.getUpdateRecordTask().setLoss(false);

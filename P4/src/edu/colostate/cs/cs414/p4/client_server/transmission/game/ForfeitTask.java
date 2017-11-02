@@ -1,19 +1,18 @@
 package edu.colostate.cs.cs414.p4.client_server.transmission.game;
 
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p4.client_server.transmission.TaskConstents;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.ReadUtils;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.WriteUtils;
 
-public class ForfeitTask extends Task {
+public class ForfeitTask extends GameTask {
 	private int gameID;
 	private UpdateRecordTask update;
 	private String message;
+	
 	public ForfeitTask(int gameID, UpdateRecordTask update, String message)
 	{
 		this.gameID = gameID;
@@ -33,16 +32,17 @@ public class ForfeitTask extends Task {
 	{
 		return TaskConstents.FORFEIT_TASK;
 	}
-
-	public byte[] toByteArray() throws IOException 
-	{
-		ByteArrayOutputStream bs = WriteUtils.getByteOutputStream();
-		DataOutputStream dout = WriteUtils.getDataOutputStream(bs);
-		dout.writeInt(getTaskCode());
+	
+	@Override
+	public void writeBytes(DataOutputStream dout) throws IOException {
 		dout.writeInt(this.gameID);
 		WriteUtils.writeTask(this.update, dout);
 		WriteUtils.writeString(this.message, dout);
-		return WriteUtils.getBytesAndCloseStreams(bs,dout);
+	}
+	
+	@Override
+	public int getGameID() {
+		return gameID;
 	}
 	
 	public String toString() {
@@ -60,5 +60,6 @@ public class ForfeitTask extends Task {
 		this.update.run();
 		System.out.println(this.message);
 	}
+
 
 }
