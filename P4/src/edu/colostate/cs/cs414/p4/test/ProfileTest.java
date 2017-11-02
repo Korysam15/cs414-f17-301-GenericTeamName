@@ -11,11 +11,13 @@ public class ProfileTest {
 
 	
 
+	@SuppressWarnings("unused")
 	@Test
 	public void testProfile() {
 		Profile p = new Profile("nick");
 	}
 
+	@SuppressWarnings("unused")
 	@Test
 	public void testGetHistory() {
 		Profile p = new Profile("nick");

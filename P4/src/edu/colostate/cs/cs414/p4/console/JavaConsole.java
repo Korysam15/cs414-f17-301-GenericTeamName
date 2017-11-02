@@ -302,7 +302,8 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 	
 	public void append(Color c, String s) {
 	    StyleContext sc = StyleContext.getDefaultStyleContext();
-	    AttributeSet aset = (AttributeSet) sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
+	    @SuppressWarnings("unused")
+		AttributeSet aset = (AttributeSet) sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
 	}
 	
 	

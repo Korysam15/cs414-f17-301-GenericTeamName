@@ -2,8 +2,6 @@ package edu.colostate.cs.cs414.p4.test;
 
 import static org.junit.Assert.*;
 
-import java.io.IOException;
-
 import org.junit.Test;
 
 import edu.colostate.cs.cs414.p4.user.*;
@@ -14,6 +12,7 @@ public class GameRecordTest {
 	@Test
 	public void testGameRecord() {
 		
+		@SuppressWarnings("unused")
 		GameRecord g = new GameRecord(p1, p2, EndGameState.PLAYER1WON);
 
 	}

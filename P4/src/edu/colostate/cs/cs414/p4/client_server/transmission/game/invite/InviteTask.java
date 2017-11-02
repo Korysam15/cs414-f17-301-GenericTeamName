@@ -13,7 +13,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import edu.colostate.cs.cs414.p4.client_server.transmission.ForwardTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
