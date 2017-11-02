@@ -23,7 +23,7 @@ import edu.colostate.cs.cs414.p4.client_server.transmission.util.WriteUtils;
 import edu.colostate.cs.cs414.p4.user.ActivePlayer;
 import edu.colostate.cs.cs414.p4.user.Player;
 
-public class InviteTask extends Task {
+public class InviteTask extends Task implements InviteGameTask {
 	private String message;
 	private String playerFrom;
 	//private String playerTo;

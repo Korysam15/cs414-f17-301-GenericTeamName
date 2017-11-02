@@ -13,7 +13,7 @@ import edu.colostate.cs.cs414.p4.console.AbstractConsole;
 import edu.colostate.cs.cs414.p4.user.ActivePlayer;
 import edu.colostate.cs.cs414.p4.user.Player;
 
-public class RejectInviteTask extends Task {
+public class RejectInviteTask extends Task implements InviteGameTask{
 	private String message;
 	private String playerFrom;
 	

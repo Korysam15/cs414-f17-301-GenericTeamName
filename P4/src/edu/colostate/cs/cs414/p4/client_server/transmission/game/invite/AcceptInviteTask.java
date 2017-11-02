@@ -16,7 +16,7 @@ import edu.colostate.cs.cs414.p4.console.AbstractConsole;
 import edu.colostate.cs.cs414.p4.user.ActivePlayer;
 import edu.colostate.cs.cs414.p4.user.Player;
 
-public class AcceptInviteTask extends Task {
+public class AcceptInviteTask extends Task implements InviteGameTask {
 	private String playerWhoAccepted;
 
 	public AcceptInviteTask(String playerWhoAccepted) {
