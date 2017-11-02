@@ -12,7 +12,7 @@ import edu.colostate.cs.cs414.p4.client_server.transmission.TaskConstents;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.ReadUtils;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.WriteUtils;
 
-public class RegisterTask extends Task {
+public class RegisterTask extends Task implements EntryAble {
 	private String email;
 	private String nickname;
 	private String password;

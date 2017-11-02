@@ -12,7 +12,7 @@ import edu.colostate.cs.cs414.p4.client_server.transmission.TaskConstents;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.ReadUtils;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.WriteUtils;
 
-public class LoginTask extends Task{
+public class LoginTask extends Task implements EntryAble {
 	private String email;
 	private String password;
 
@@ -77,5 +77,11 @@ public class LoginTask extends Task{
 
 	public String getPassword() {
 		return password;
+	}
+
+	@Override
+	public String getNickname() {
+		throw new UnsupportedOperationException(
+				"Logging in does not support the use of nicknames");
 	}
 }
