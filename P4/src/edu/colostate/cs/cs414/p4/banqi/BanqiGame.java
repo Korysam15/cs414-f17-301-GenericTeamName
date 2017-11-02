@@ -441,7 +441,8 @@ public class BanqiGame {
 				{
 					System.out.println("FORFEITING");
 					// forfeit game, create forfiet task, update stats for both players
-					ForfeitTask forfeit = new ForfeitTask(this.gameID, new UpdateRecordTask(false,true,false),p.getNickName() + " has forfeited! " + otherPlayer + " is the winner!");
+					UpdateRecordTask updateTask = new UpdateRecordTask(false,true,false,this.gameID);
+					ForfeitTask forfeit = new ForfeitTask(this.gameID, updateTask, p.getNickName() + " has forfeited! " + otherPlayer + " is the winner!");
 					forfeit.run();
 					forfeit.getUpdateRecordTask().setWon(true);
 					forfeit.getUpdateRecordTask().setLoss(false);
