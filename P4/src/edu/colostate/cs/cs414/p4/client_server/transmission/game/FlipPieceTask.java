@@ -14,7 +14,7 @@ import edu.colostate.cs.cs414.p4.client_server.transmission.util.WriteUtils;
 import edu.colostate.cs.cs414.p4.user.ActivePlayer;
 import edu.colostate.cs.cs414.p4.user.Player;
 
-public class FlipPieceTask extends Task {
+public class FlipPieceTask extends Task implements GameTask {
 	private String playerWhoMadeMove;
 	private int gameID;
 	private int fromX, fromY;
@@ -51,6 +51,11 @@ public class FlipPieceTask extends Task {
 		dout.writeInt(fromY);
 		return WriteUtils.getBytesAndCloseStreams(bs,dout);
 	}
+	
+	@Override
+	public int getGameID() {
+		return gameID;
+	}
 
 	public String toString() {
 		return "[FlipPieceTask, Taskcode: " + getTaskCode() + ", Contents: " + playerWhoMadeMove 
@@ -72,4 +77,5 @@ public class FlipPieceTask extends Task {
 		Square from = game.getSquare(fromX, fromY);
 		game.flipPiece(from);
 	}
+
 }

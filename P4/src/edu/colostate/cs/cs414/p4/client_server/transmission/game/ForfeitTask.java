@@ -10,10 +10,11 @@ import edu.colostate.cs.cs414.p4.client_server.transmission.TaskConstents;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.ReadUtils;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.WriteUtils;
 
-public class ForfeitTask extends Task {
+public class ForfeitTask extends Task implements GameTask {
 	private int gameID;
 	private UpdateRecordTask update;
 	private String message;
+	
 	public ForfeitTask(int gameID, UpdateRecordTask update, String message)
 	{
 		this.gameID = gameID;
@@ -45,6 +46,11 @@ public class ForfeitTask extends Task {
 		return WriteUtils.getBytesAndCloseStreams(bs,dout);
 	}
 	
+	@Override
+	public int getGameID() {
+		return gameID;
+	}
+	
 	public String toString() {
 		return "[ForfeitTask, Taskcode: " + getTaskCode() + ", Contents: " +
 				gameID+","+update+","+message+"]";
@@ -60,5 +66,6 @@ public class ForfeitTask extends Task {
 		this.update.run();
 		System.out.println(this.message);
 	}
+
 
 }

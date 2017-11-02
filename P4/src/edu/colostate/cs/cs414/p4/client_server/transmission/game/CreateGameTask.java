@@ -14,7 +14,7 @@ import edu.colostate.cs.cs414.p4.client_server.transmission.util.WriteUtils;
 import edu.colostate.cs.cs414.p4.user.ActivePlayer;
 import edu.colostate.cs.cs414.p4.user.Player;
 
-public class CreateGameTask extends Task {
+public class CreateGameTask extends Task implements GameTask {
 	private int gameID;
 	private String playerOne;
 	private String playerTwo;

@@ -14,7 +14,7 @@ import edu.colostate.cs.cs414.p4.client_server.transmission.util.WriteUtils;
 import edu.colostate.cs.cs414.p4.user.ActivePlayer;
 import edu.colostate.cs.cs414.p4.user.Player;
 
-public class MoveTask extends Task {
+public class MoveTask extends Task implements GameTask{
 	
 	private String playerWhoMadeMove;
 	private int gameID;
@@ -58,6 +58,11 @@ public class MoveTask extends Task {
 		dout.writeInt(toX);
 		dout.writeInt(toY);
 		return WriteUtils.getBytesAndCloseStreams(bs,dout);
+	}
+	
+	@Override
+	public int getGameID() {
+		return gameID;
 	}
 
 	public String toString() {
