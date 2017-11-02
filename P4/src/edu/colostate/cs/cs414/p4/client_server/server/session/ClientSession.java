@@ -19,12 +19,12 @@ import edu.colostate.cs.cs414.p4.client_server.transmission.MessageTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p4.client_server.transmission.TaskConstents;
 import edu.colostate.cs.cs414.p4.client_server.transmission.TaskFactory;
-import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.LoginGreetingTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.LoginTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.LogoutTask;
-import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.RegisterGreetingTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.RegisterTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.UnregisterTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.response.LoginGreetingTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.response.RegisterGreetingTask;
 
 /**
  * @author pflagert

@@ -1,4 +1,4 @@
-package edu.colostate.cs.cs414.p4.client_server.transmission.registration_login;
+package edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.response;
 
 import java.io.IOException;
 

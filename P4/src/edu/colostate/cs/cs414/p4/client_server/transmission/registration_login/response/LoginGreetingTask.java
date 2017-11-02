@@ -1,4 +1,4 @@
-package edu.colostate.cs.cs414.p4.client_server.transmission.registration_login;
+package edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.response;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -15,21 +15,24 @@ import edu.colostate.cs.cs414.p4.console.AbstractConsole;
 import edu.colostate.cs.cs414.p4.user.ActivePlayer;
 import edu.colostate.cs.cs414.p4.user.Player;
 
-public class RegisterGreetingTask extends Task {
+public class LoginGreetingTask extends Task {
 
 	private String greeting;
+	private String playerNickname;
 	
-	public RegisterGreetingTask(String greeting) {
+	public LoginGreetingTask(String greeting, String playerNickname) {
 		this.greeting = greeting;
+		this.playerNickname = playerNickname;
 	}
 	
-	public RegisterGreetingTask(DataInputStream din) throws IOException {
+	public LoginGreetingTask(DataInputStream din) throws IOException {
 		this.greeting = ReadUtils.readString(din);
+		this.playerNickname = ReadUtils.readString(din);
 	}
 	
 	@Override
 	public int getTaskCode() {
-		return TaskConstents.REGISTER_GREETING_TASK;
+		return TaskConstents.LOGIN_GREETING_TASK;
 	}
 
 	@Override
@@ -38,6 +41,7 @@ public class RegisterGreetingTask extends Task {
 		DataOutputStream dout = WriteUtils.getDataOutputStream(bs);
 		dout.writeInt(getTaskCode());
 		WriteUtils.writeString(greeting,dout);
+		WriteUtils.writeString(playerNickname, dout);
 		return WriteUtils.getBytesAndCloseStreams(bs,dout);
 	}
 
@@ -47,6 +51,7 @@ public class RegisterGreetingTask extends Task {
 		Player player;
 		AbstractServer server;
 		if((player = ActivePlayer.getInstance()) != null) {
+			player.setNickName(playerNickname);
 			displayToPlayer(player);
 		} else if((server = ActiveServer.getInstance()) !=null ) {
 			displayToServer(server);
@@ -65,5 +70,4 @@ public class RegisterGreetingTask extends Task {
 	private void displayToServer(AbstractServer server) {
 		System.out.println(greeting);
 	}
-
 }
