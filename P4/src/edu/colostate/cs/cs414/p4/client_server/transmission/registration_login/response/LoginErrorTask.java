@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
 
-public class LoginErrorTask extends Task{
+public class LoginErrorTask extends Task implements EntryResponse{
 
 	@Override
 	public int getTaskCode() {
@@ -20,8 +20,18 @@ public class LoginErrorTask extends Task{
 
 	@Override
 	public void run() {
+		displayMessage();
+	}
+
+	@Override
+	public boolean wasSuccessful() {
+		return false;
+	}
+
+	@Override
+	public String getResponseMessage() {
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 
 }

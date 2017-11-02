@@ -5,17 +5,14 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import edu.colostate.cs.cs414.p4.client_server.server.AbstractServer;
-import edu.colostate.cs.cs414.p4.client_server.server.ActiveServer;
 import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p4.client_server.transmission.TaskConstents;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.ReadUtils;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.WriteUtils;
-import edu.colostate.cs.cs414.p4.console.AbstractConsole;
 import edu.colostate.cs.cs414.p4.user.ActivePlayer;
 import edu.colostate.cs.cs414.p4.user.Player;
 
-public class LoginGreetingTask extends Task {
+public class LoginGreetingTask extends Task implements EntryResponse {
 
 	private String greeting;
 	private String playerNickname;
@@ -49,25 +46,19 @@ public class LoginGreetingTask extends Task {
 	public void run() 
 	{
 		Player player;
-		AbstractServer server;
 		if((player = ActivePlayer.getInstance()) != null) {
 			player.setNickName(playerNickname);
-			displayToPlayer(player);
-		} else if((server = ActiveServer.getInstance()) !=null ) {
-			displayToServer(server);
+			displayMessageToPlayer(player);
 		}
 	}
-	
-	private void displayToPlayer(Player player) {
-		AbstractConsole console = player.getConsole();
-		if(console != null) {
-			console.notice(greeting);
-		} else {
-			System.out.println(greeting);
-		}
+
+	@Override
+	public boolean wasSuccessful() {
+		return true;
 	}
-	
-	private void displayToServer(AbstractServer server) {
-		System.out.println(greeting);
+
+	@Override
+	public String getResponseMessage() {
+		return greeting;
 	}
 }
