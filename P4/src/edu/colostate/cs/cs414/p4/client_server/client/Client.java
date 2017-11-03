@@ -201,29 +201,7 @@ public class Client extends AbstractClient {
 	}
 
 	private void constructReceivingThread() {
-		receivingThread = new Thread(){
-			public void run() {
-				try{
-					while(isReceiving()) {
-						selector.select(SELECT_TIMEOUT);
-						Iterator<SelectionKey> selectedKeys = selector.selectedKeys().iterator();
-						while(selectedKeys.hasNext()) {
-							SelectionKey key = (SelectionKey) selectedKeys.next();
-							selectedKeys.remove();
-							if(!key.isValid())
-								continue;
-							else if(key.isReadable()) {
-								receive();
-							}
-						}
-					}
-				} catch (IOException e) {
-
-				} finally {
-					stopReceiving();
-				}
-			}
-		};
+		receivingThread = new Receiver();
 	}
 
 	private void connect() {
@@ -481,6 +459,30 @@ public class Client extends AbstractClient {
 					"tanner"));
 			while(true) {
 				Thread.sleep(1000);
+			}
+		}
+	}
+	
+	private class Receiver extends Thread {
+		public void run() {
+			try{
+				while(isReceiving()) {
+					selector.select(SELECT_TIMEOUT);
+					Iterator<SelectionKey> selectedKeys = selector.selectedKeys().iterator();
+					while(selectedKeys.hasNext()) {
+						SelectionKey key = (SelectionKey) selectedKeys.next();
+						selectedKeys.remove();
+						if(!key.isValid())
+							continue;
+						else if(key.isReadable()) {
+							receive();
+						}
+					}
+				}
+			} catch (IOException e) {
+
+			} finally {
+				stopReceiving();
 			}
 		}
 	}
