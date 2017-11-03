@@ -29,8 +29,8 @@ public class TaskConstents {
 	public static final int LOGIN_ERROR_TASK = 17;
 	public static final int REGISTER_GREETING_TASK = 18;
 	public static final int REGISTRATION_ERROR_TASK = 19;
-	/*public static final int TASK = 20;
-	public static final int TASK = 21;
+	public static final int EXIT_RESPONSE_TASK = 20;
+	/*public static final int TASK = 21;
 	.....
 	.....
 	.....

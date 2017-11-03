@@ -22,9 +22,11 @@ import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.L
 import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.LogoutTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.RegisterTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.UnregisterTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.response.ExitResponseTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.response.LoginErrorTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.response.LoginGreetingTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.response.RegisterGreetingTask;
-import edu.colostate.cs.cs414.p4.client_server.transmission.util.MessageTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.response.RegistrationErrorTask;
 
 /**
  * @author pflagert
@@ -179,12 +181,8 @@ public class ClientSession extends AbstractSession {
 	private void handleTask(Task t) throws IOException {
 		if(t instanceof UnregisterTask) {
 			unregister((UnregisterTask)t);
-			send(new UnregisterTask("","",""));
-			setID(null);
 		} else if(t instanceof LogoutTask) {
 			logout();
-			send(new LogoutTask(""));
-			setID(null);
 		} else {
 			server.handleTask(t,this);
 		}
@@ -192,15 +190,40 @@ public class ClientSession extends AbstractSession {
 
 	private void unregister(UnregisterTask t) throws IOException {
 		AbstractRegistry registry = ActiveRegistry.getInstance();
+		boolean success;
+		
 		if(registry != null) {
-			registry.unregisterUser(email);
-			logout();
+			success = registry.unregisterUser(email);
+		} else {
+			success = false;
+		}
+
+		String responseMessage = (success) ? "Successfully unregistered '"+this.ID+"'" :
+			"An error occurred unregistering '" + this.ID +"'";
+		ExitResponseTask response = new ExitResponseTask(responseMessage);
+		
+		try {
+			send(response);
+		} catch (Exception e) {
+			
+		} finally {
+			server.unregisterClient(this, this.ID);
+			setUnregistered();
+			setID(null);
 		}
 	}
 
 	private void logout() {
-		server.unregisterClient(this, this.ID);
-		setUnregistered();
+		ExitResponseTask response = new ExitResponseTask("Good Bye " + this.ID + "!");
+		try {
+			send(response);
+		} catch(Exception e) {
+			
+		} finally {
+			server.unregisterClient(this, this.ID);
+			setUnregistered();
+			setID(null);
+		}
 	}
 	@Override
 	public void send(Task t) throws IOException {
@@ -266,11 +289,10 @@ public class ClientSession extends AbstractSession {
 				setRegistered();
 				response = new RegisterGreetingTask("Welcome " + nickname + "!");
 			} else {
-				int type = (msg.contains("in use")) ? MessageTask.WARNING : MessageTask.ERROR;
-				response = new MessageTask(msg,type);
+				response = new RegistrationErrorTask(msg);
 			}
 		} else {
-			response = new MessageTask("Error occured while logging in.",MessageTask.ERROR);
+			response = new RegistrationErrorTask("Error occured while logging in.");
 		}
 		
 		try {
@@ -294,10 +316,10 @@ public class ClientSession extends AbstractSession {
 				setRegistered();
 				response = new LoginGreetingTask("Welcome Back " + nickname + "!",nickname);
 			} else {
-				response = new MessageTask(msg,MessageTask.ERROR);
+				response = new LoginErrorTask(msg);
 			}
 		} else {
-			response = new MessageTask("Error occured while registering.",MessageTask.ERROR);
+			response = new LoginErrorTask("Error occured while registering.");
 		}
 
 		try {

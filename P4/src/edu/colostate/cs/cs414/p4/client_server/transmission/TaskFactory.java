@@ -21,6 +21,7 @@ import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.L
 import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.LogoutTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.RegisterTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.UnregisterTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.response.ExitResponseTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.response.LoginErrorTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.response.LoginGreetingTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.response.RegisterGreetingTask;
@@ -140,6 +141,9 @@ public final class TaskFactory {
 			break;
 		case TaskConstents.REGISTRATION_ERROR_TASK:
 			t = new RegistrationErrorTask(din);
+			break;
+		case TaskConstents.EXIT_RESPONSE_TASK:
+			t = new ExitResponseTask(din);
 			break;
     }
 		

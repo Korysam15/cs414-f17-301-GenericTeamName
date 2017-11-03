@@ -311,8 +311,7 @@ public class PlayerConsole extends AbstractConsole {
 				if(response.equals("yes")) {
 					client.sendToServer(new UnregisterTask(
 						player.getEmail(),player.getNickName(),player.getPassword()));
-					Thread.sleep(1000);
-					warning("Your account has been removed.");
+					warning("Your account will be removed.");
 					playerNickName = null;
 				} else {
 					notice("Your account will not removed.");
@@ -320,8 +319,6 @@ public class PlayerConsole extends AbstractConsole {
 			}
 		}  catch (IOException e) {
 			error("Error occured while unregistering");
-		} catch(InterruptedException e) {
-			
 		}
 	}
 

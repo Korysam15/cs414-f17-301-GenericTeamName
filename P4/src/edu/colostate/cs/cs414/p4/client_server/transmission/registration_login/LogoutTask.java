@@ -4,12 +4,11 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p4.client_server.transmission.TaskConstents;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.ReadUtils;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.WriteUtils;
 
-public class LogoutTask extends Task {
+public class LogoutTask extends ExitTask {
 
 	private String email;
 	
@@ -40,5 +39,4 @@ public class LogoutTask extends Task {
 	public String getEmail() {
 		return email;
 	}
-
 }
