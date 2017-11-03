@@ -1,11 +1,10 @@
 package edu.colostate.cs.cs414.p4.client_server.server.registry;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.LoginTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.RegisterTask;
+import edu.colostate.cs.cs414.p4.util.Encryptor;
 
 /**
  * The User class provides a simple wrapping of User login data.
@@ -87,26 +86,9 @@ public class User {
 		}
 	}
 
-	/* NoSuchAlgorithm exception should never happen.
-	 * That is, unless the target machine is using a none standard version of Java.
-	 * As Every implementation of the Java platform is required to support the 
-	 * following standard MessageDigest algorithms:
-	 * MD5
-	 * SHA-1
-	 * SHA-256 
-	 */
 	private String encrypt(String salt, String password) {
-		String ret = (salt+password);
-		byte[] toEncrypt = ret.getBytes();
-		MessageDigest encryptor;
-		try {
-			encryptor = MessageDigest.getInstance("SHA-256");
-			byte[] encrypted = encryptor.digest(toEncrypt);
-			ret = new String(encrypted);
-		} catch (NoSuchAlgorithmException e) {
-			// Read comments above
-		}
-		return ret;
+		String saltyPassword = (salt+password);
+		return Encryptor.encryptPassword(saltyPassword);
 	}
 
 	public void setSalt(String salt) {
