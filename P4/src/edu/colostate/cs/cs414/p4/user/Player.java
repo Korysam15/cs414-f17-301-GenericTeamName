@@ -9,6 +9,7 @@ import edu.colostate.cs.cs414.p4.client_server.client.AbstractClient;
 import edu.colostate.cs.cs414.p4.client_server.client.Client;
 import edu.colostate.cs.cs414.p4.console.AbstractConsole;
 import edu.colostate.cs.cs414.p4.console.PlayerConsole;
+import edu.colostate.cs.cs414.p4.util.Encryptor;
 
 public class Player {
 	public static InputStream SCANNER; 
@@ -64,7 +65,7 @@ public class Player {
 	
 	public void setPassword(String password) 
 	{
-		this.password = password;
+		this.password = Encryptor.encryptPassword(password);
 	}
 	
 	public AbstractConsole getConsole()

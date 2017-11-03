@@ -3,8 +3,6 @@ package edu.colostate.cs.cs414.p4.client_server.transmission.registration_login;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 import edu.colostate.cs.cs414.p4.client_server.transmission.TaskConstents;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.ReadUtils;
@@ -32,29 +30,7 @@ public class LoginTask extends EntryTask {
 	@Override
 	public void writeBytes(DataOutputStream dout) throws IOException {
 		WriteUtils.writeString(email,dout);
-		encryptPassword();
 		WriteUtils.writeString(password, dout);		
-	}
-
-	/* NoSuchAlgorithm exception should never happen.
-	 * That is, unless the target machine is using a none standard version of Java.
-	 * As Every implementation of the Java platform is required to support the 
-	 * following standard MessageDigest algorithms:
-	 * MD5
-	 * SHA-1
-	 * SHA-256 
-	 */
-	private void encryptPassword() {
-		byte[] toEncrypt = password.getBytes();
-		MessageDigest encryptor;
-
-		try {
-			encryptor = MessageDigest.getInstance("SHA-256");
-			byte[] encrypted = encryptor.digest(toEncrypt);
-			password = new String(encrypted);
-		} catch (NoSuchAlgorithmException e) {
-			// Read comments above
-		}
 	}
 
 	@Override

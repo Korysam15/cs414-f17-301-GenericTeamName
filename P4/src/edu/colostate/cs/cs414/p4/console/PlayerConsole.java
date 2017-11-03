@@ -226,8 +226,8 @@ public class PlayerConsole extends AbstractConsole {
 				ActivePlayer.setInstance(player);
 				player.setEmail(email);
 				player.setNickName(nickName);
-				player.setPassword(password);
-				client.sendToServer(new RegisterTask(email,nickName,password));
+				player.setPassword(password); // encrypts password
+				client.sendToServer(new RegisterTask(email,nickName,player.getPassword()));
 				playerNickName = nickName;
 			} catch (IOException e) {
 				error("Error occured while registering.");
@@ -242,8 +242,8 @@ public class PlayerConsole extends AbstractConsole {
 				String password = promptUser("Please enter your password:");
 				ActivePlayer.setInstance(player);
 				player.setEmail(email);
-				player.setPassword(password);
-				client.sendToServer(new LoginTask(email,password));
+				player.setPassword(password); // encrypts password
+				client.sendToServer(new LoginTask(email,player.getPassword()));
 				playerNickName = player.getNickName();
 			} catch (IOException e) {
 				error("Error occured while logging in.");
@@ -311,8 +311,7 @@ public class PlayerConsole extends AbstractConsole {
 				if(response.equals("yes")) {
 					client.sendToServer(new UnregisterTask(
 						player.getEmail(),player.getNickName(),player.getPassword()));
-					Thread.sleep(1000);
-					warning("Your account has been removed.");
+					warning("Your account will be removed.");
 					playerNickName = null;
 				} else {
 					notice("Your account will not removed.");
@@ -320,8 +319,6 @@ public class PlayerConsole extends AbstractConsole {
 			}
 		}  catch (IOException e) {
 			error("Error occured while unregistering");
-		} catch(InterruptedException e) {
-			
 		}
 	}
 

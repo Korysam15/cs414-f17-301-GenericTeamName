@@ -15,9 +15,12 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
-import edu.colostate.cs.cs414.p4.client_server.transmission.TaskConstents;
 import edu.colostate.cs.cs414.p4.client_server.transmission.TaskFactory;
+import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.EntryTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.ExitTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.RegisterTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.response.EntryResponseTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.response.ExitResponseTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.ForwardTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.MessageTask;
 
@@ -38,12 +41,12 @@ public class Client extends AbstractClient {
 	public static final int MAX_THREAD_POOL_SIZE = 8;
 	public static final int THREAD_KEEP_ALIVE_TIME = 10;
 	public static final TimeUnit ALIVE_TIME_UNIT = TimeUnit.MINUTES;
-	
+
 	/**
 	 * A thread pool to manage tasks
 	 */
 	private ThreadPoolExecutor threadPool;
-	
+
 	private SocketChannel serverChannel;
 
 	private Boolean isReceiving;
@@ -52,6 +55,7 @@ public class Client extends AbstractClient {
 	private Object loginLock;
 	private Thread receivingThread;
 	private Boolean isLoggedIn;
+	private volatile boolean responseReceived;
 
 	/**
 	 * Creates a new instance of Client.
@@ -70,6 +74,7 @@ public class Client extends AbstractClient {
 		loginLock = new Object();
 		receivingThread = null;
 		isLoggedIn = false;
+		responseReceived = false;
 		initThreadPool();
 	}
 
@@ -101,7 +106,7 @@ public class Client extends AbstractClient {
 	public Client(String address, int port) throws IOException {
 		this(new InetSocketAddress(address,port));
 	}
-	
+
 	private void initThreadPool() {
 		threadPool = new ThreadPoolExecutor(CORE_THREAD_POOL_SIZE,
 				MAX_THREAD_POOL_SIZE,
@@ -133,19 +138,19 @@ public class Client extends AbstractClient {
 	public void connectToServer(String address, int port) throws IOException {
 		connectToServer(new InetSocketAddress(address,port));		
 	}
-	
+
 	public boolean isLoggedIn() {
 		synchronized(isLoggedIn) {
 			return isLoggedIn;
 		}
 	}
-	
+
 	public void setLoggedIn() {
 		synchronized(isLoggedIn) {
 			isLoggedIn = true;
 		}
 	}
-	
+
 	public void unsetLoggedIn() {
 		synchronized(isLoggedIn) {
 			isLoggedIn = false;
@@ -171,7 +176,7 @@ public class Client extends AbstractClient {
 	private boolean isChannelConnected(SocketChannel c) {
 		return c != null && c.isConnected() && c.isOpen();
 	}
-	
+
 	@Override
 	public void stopReceiving() {
 		synchronized(isReceiving) {
@@ -196,29 +201,7 @@ public class Client extends AbstractClient {
 	}
 
 	private void constructReceivingThread() {
-		receivingThread = new Thread(){
-			public void run() {
-				try{
-					while(isReceiving()) {
-						selector.select(SELECT_TIMEOUT);
-						Iterator<SelectionKey> selectedKeys = selector.selectedKeys().iterator();
-						while(selectedKeys.hasNext()) {
-							SelectionKey key = (SelectionKey) selectedKeys.next();
-							selectedKeys.remove();
-							if(!key.isValid())
-								continue;
-							else if(key.isReadable()) {
-								receive();
-							}
-						}
-					}
-				} catch (IOException e) {
-					
-				} finally {
-					stopReceiving();
-				}
-			}
-		};
+		receivingThread = new Receiver();
 	}
 
 	private void connect() {
@@ -257,7 +240,7 @@ public class Client extends AbstractClient {
 			System.out.println("Could not connect to server");
 		}
 	}
-	
+
 
 	@Override
 	public void disconnectFromServer() {
@@ -309,29 +292,32 @@ public class Client extends AbstractClient {
 			startReceiving();
 		}
 		try {
-			send(t);
-			if(t.getTaskCode() == TaskConstents.REGISTER_TASK) {
-				// waitForLogin();
-			} else if(t.getTaskCode() == TaskConstents.LOGIN_TASK) {
-				Thread.sleep(1000);
-				// wait for a little bit
+			if(t instanceof EntryTask || t instanceof ExitTask) {
+				this.threadPool.execute(new NotifySender(t));
+				waitForResponse();
+			} else {
+				send(t);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (InterruptedException e) {
-			
+
 		}
 	}
-	
-	private void waitForLogin() throws InterruptedException {
-		synchronized(loginLock) {
-			loginLock.wait();
+
+	private void waitForResponse() throws InterruptedException {
+		synchronized(this.loginLock) {
+			while(!responseReceived) {
+				this.loginLock.wait();
+			}
+			responseReceived = false;
 		}
 	}
-	
-	private void awakeLogin() {
-		synchronized(loginLock) {
-			loginLock.notifyAll();
+
+	private void notifyResponse() {
+		synchronized(this.loginLock) {
+			responseReceived = true;
+			this.loginLock.notifyAll();
 		}
 	}
 
@@ -373,7 +359,7 @@ public class Client extends AbstractClient {
 			}
 		}
 	}
-	
+
 	private void handleOverread(ByteBuffer readBuffer) throws IOException {
 		while(readBuffer.remaining() >= 4) {
 			int size = readBuffer.getInt();
@@ -384,10 +370,10 @@ public class Client extends AbstractClient {
 			} else {
 				return;
 			}
-			
+
 		}
 	}
-	
+
 	private void fillLocal(ByteBuffer local, ByteBuffer readBuffer) {
 		while(local.hasRemaining() && readBuffer.hasRemaining()) {
 			local.put(readBuffer.get());
@@ -421,13 +407,17 @@ public class Client extends AbstractClient {
 
 	@Override
 	public void handleTask(Task t) {
-		int taskcode = t.getTaskCode();
-		if(taskcode == TaskConstents.LOGIN_GREETING_TASK || taskcode == TaskConstents.REGISTER_GREETING_TASK) {
-			this.setLoggedIn();
-			t.run();
-			//awakeLogin();
-		} else if(taskcode == TaskConstents.LOGOUT_TASK || taskcode == TaskConstents.UNREGISTER_TASK) {
+		if(t instanceof EntryResponseTask) {
+			EntryResponseTask response = (EntryResponseTask) t;
+			if(response.wasSuccessful()) {
+				this.setLoggedIn();
+			}
+			threadPool.execute(t);
+			notifyResponse();
+		} else if(t instanceof ExitResponseTask) {
 			this.unsetLoggedIn();
+			threadPool.execute(t);
+			notifyResponse();			
 		} else {
 			threadPool.execute(t);
 		}
@@ -453,7 +443,7 @@ public class Client extends AbstractClient {
 				System.out.println("Invalid port: " + args[1]);
 				return;
 			}
-			
+
 			email = args[2];
 			nickname = args[3];
 			password = args[4];
@@ -463,16 +453,54 @@ public class Client extends AbstractClient {
 			Client c1 = new Client(address);
 			c1.sendToServer(new RegisterTask(email,nickname,password));
 			Thread.sleep(2000);
-			
+
 			c1.sendToServer(new ForwardTask(nickname,
 					new MessageTask("Hello tanner"),
 					"tanner"));
 			while(true) {
 				Thread.sleep(1000);
 			}
-			
+		}
+	}
+	
+	private class Receiver extends Thread {
+		public void run() {
+			try{
+				while(isReceiving()) {
+					selector.select(SELECT_TIMEOUT);
+					Iterator<SelectionKey> selectedKeys = selector.selectedKeys().iterator();
+					while(selectedKeys.hasNext()) {
+						SelectionKey key = (SelectionKey) selectedKeys.next();
+						selectedKeys.remove();
+						if(!key.isValid())
+							continue;
+						else if(key.isReadable()) {
+							receive();
+						}
+					}
+				}
+			} catch (IOException e) {
 
+			} finally {
+				stopReceiving();
+			}
 		}
 	}
 
+	private class NotifySender implements Runnable {
+		private final Task toSend;
+		
+		NotifySender(Task toSend) {
+			this.toSend = toSend;
+		}
+
+		@Override
+		public void run() {
+			try {
+				send(toSend);
+			} catch (IOException e) {
+				notifyResponse();
+			}			
+		}
+	}
 }
