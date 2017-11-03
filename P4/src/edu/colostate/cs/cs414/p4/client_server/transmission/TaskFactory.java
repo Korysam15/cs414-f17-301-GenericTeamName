@@ -21,8 +21,10 @@ import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.L
 import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.LogoutTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.RegisterTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.UnregisterTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.response.LoginErrorTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.response.LoginGreetingTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.response.RegisterGreetingTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.response.RegistrationErrorTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.ForwardTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.MessageTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.MultiForwardTask;
@@ -130,8 +132,14 @@ public final class TaskFactory {
 		case TaskConstents.LOGIN_GREETING_TASK:
 			t = new LoginGreetingTask(din);
 			break;
+		case TaskConstents.LOGIN_ERROR_TASK:
+			t = new LoginErrorTask(din);
+			break;
 		case TaskConstents.REGISTER_GREETING_TASK:
 			t = new RegisterGreetingTask(din);
+			break;
+		case TaskConstents.REGISTRATION_ERROR_TASK:
+			t = new RegistrationErrorTask(din);
 			break;
     }
 		

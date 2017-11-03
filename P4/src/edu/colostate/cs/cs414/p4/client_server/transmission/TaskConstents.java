@@ -26,10 +26,11 @@ public class TaskConstents {
 	public static final int GET_PROFILE_TASK = 14;
 	public static final int DISPLAY_PROFILE_TASK = 15;
 	public static final int LOGIN_GREETING_TASK = 16;
-	public static final int REGISTER_GREETING_TASK = 17;
-	/*public static final int TASK = 18;
-	public static final int TASK = 19;
-	public static final int TASK = 20;
+	public static final int LOGIN_ERROR_TASK = 17;
+	public static final int REGISTER_GREETING_TASK = 18;
+	public static final int REGISTRATION_ERROR_TASK = 19;
+	/*public static final int TASK = 20;
+	public static final int TASK = 21;
 	.....
 	.....
 	.....
