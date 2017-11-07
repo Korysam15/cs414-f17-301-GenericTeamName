@@ -30,7 +30,7 @@ public class BanqiGame {
 	private Piece pieces[];        // pieces in game
 	// private Player first;		   // first Player
 	// private Player second;		   // second Player
-	private boolean test=false;	   // TESTING
+	private boolean test=true;	   // TESTING
 
 
 	
