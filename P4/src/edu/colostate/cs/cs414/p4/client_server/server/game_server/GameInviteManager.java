@@ -38,8 +38,9 @@ public class GameInviteManager {
 		return ret;
 	}
 	
-	public synchronized void addInvitation(InviteTask t, String toUser) {
+	public synchronized void addInvitation(InviteTask t) {
 		String fromUser = t.getPlayerFrom();
+		String toUser = t.getPlayerTo();
 		addInvitation(fromUserInvites,t,fromUser);
 		addInvitation(toUserInvites,t,toUser);
 	}
