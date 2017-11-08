@@ -30,7 +30,12 @@ public class TaskConstents {
 	public static final int REGISTER_GREETING_TASK = 18;
 	public static final int REGISTRATION_ERROR_TASK = 19;
 	public static final int EXIT_RESPONSE_TASK = 20;
-	/*public static final int TASK = 21;
+	public static final int INVALID_GAME_TASK = 21;
+	/* public static final int TASK = 22;
+	 public static final int TASK = 23;
+	 public static final int TASK = 24;
+	 public static final int TASK = 25;
+	 public static final int TASK = 26;
 	.....
 	.....
 	.....
