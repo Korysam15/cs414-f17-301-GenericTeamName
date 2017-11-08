@@ -44,6 +44,20 @@ public abstract class AbstractRegistry {
 	}
 	
 	/**
+	 * Checks if a nickname is already used in the system.
+	 * @param nickname - The nickname to check.
+	 * @return True if the nickname is already taken.
+	 */
+	public abstract boolean isNicknameTaken(String nickname);
+	
+	/**
+	 * Checks if an email address is already used in the system.
+	 * @param email - The email to check.
+	 * @return True if the email is already taken.
+	 */
+	public abstract boolean isEmailTaken(String email);
+	
+	/**
 	 * Returns an error message if the registration is INVALID otherwise returns null. 
 	 * @param register - A {@link RegisterTask} that represents the users Registration info.
 	 * @return - An error message or null
