@@ -366,7 +366,7 @@ public class Server extends AbstractServer {
 		return new SimpleDateFormat("HH:mm:ss.S", Locale.ENGLISH).format(now);
 	}
 	
-	private void log(String msg) {
+	protected void log(String msg) {
 		System.out.println("["+getDate()+"]: "+msg);
 	}
 	
