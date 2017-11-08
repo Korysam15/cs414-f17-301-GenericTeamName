@@ -3,58 +3,151 @@ package edu.colostate.cs.cs414.p4.client_server.server.game_server;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
+import edu.colostate.cs.cs414.p4.client_server.server.registry.AbstractRegistry;
+import edu.colostate.cs.cs414.p4.client_server.server.registry.ActiveRegistry;
 import edu.colostate.cs.cs414.p4.client_server.server.session.ClientSession;
 import edu.colostate.cs.cs414.p4.client_server.transmission.game.FlipPieceTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.game.ForfeitTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.game.GameTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.game.InvalidGameTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.game.MoveTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.game.invite.AcceptInviteTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.game.invite.InviteTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.game.invite.RejectInviteTask;
 
 public class GameServer extends AbstractGameServer {
-
+	
+	private final GameInviteManager inviteManager;
+	
 	public GameServer(InetSocketAddress address) throws IOException {
 		super(address);
-		// TODO Auto-generated constructor stub
+		this.inviteManager = new GameInviteManager();
+		
 	}
 	
 	public GameServer(int port) throws IOException {
 		super(port);
+		this.inviteManager = new GameInviteManager();
+	}
+	
+	private boolean isPlayerOnline(String playerID) {
+		return this.getRegisteredClient(playerID) != null;
+	}
+	
+	private boolean playerExists(String playerID) {
+		AbstractRegistry registry = ActiveRegistry.getInstance();
+		// if a registry exists
+		// then the player exists if and only if the playerID (nickname) is taken
+		if(registry != null) {
+			return registry.isNicknameTaken(playerID);
+		} else { // if a registry does not exist then the player only exists if they are logged in.
+			return isPlayerOnline(playerID);
+		}
+	}
+	
+	private void sendGameTask(GameTask t, ClientSession client) {
+		if(client != null) {
+			try {
+				client.send(t);
+			} catch (IOException e) {
+				log("Error occured while sending: " + t + " to " + client);
+			}
+		}
+	}
+	
+	private void sendGameTask(GameTask t, String userID) {
+		sendGameTask(t,getRegisteredClient(userID));
+	}
+	
+	private void sendGameTaskIfOnline(GameTask t, String player) {
+		if(isPlayerOnline(player)) {
+			sendGameTask(t,player);
+		}
+	}
+	
+	private boolean checkAndSend(GameTask t, String toPlayer, ClientSession fromClient) {
+		if(playerExists(toPlayer)) {
+			sendGameTaskIfOnline(t,toPlayer);
+			return true;
+		} else {
+			GameTask response = new InvalidGameTask(toPlayer+" has removed their account",t.getGameID());
+			try {
+				fromClient.send(response);
+			} catch(IOException e) {
+				log("Failed to notify: " + fromClient + " that " + toPlayer + " no longer has an account");
+			}
+			return false;
+		}
 	}
 
 	@Override
 	public void handleGameTask(FlipPieceTask t, ClientSession client) {
-		// TODO Auto-generated method stub
-
+		// TODO validate FlipPieceTask
+		
+		// update game state
+		// send FlipPieceTask to playerTwo (if online)
+		String playerTwo = t.getPlayerTwo();
+		checkAndSend(t,playerTwo,client);
 	}
 
 	@Override
 	public void handleGameTask(MoveTask t, ClientSession client) {
-		// TODO Auto-generated method stub
+		// TODO validate MoveTask
+		// update game state
+		
+		// send MoveTask to playerTwo (if online)
+		String playerTwo = t.getPlayerTwo();
+		checkAndSend(t,playerTwo,client);
 
 	}
 
 	@Override
 	public void handleGameTask(ForfeitTask t, ClientSession client) {
-		// TODO Auto-generated method stub
-
+		// TODO validate ForfeitTask?
+		// update playerOne's record to show an additional loss
+		// update playerTwo's record to show an additional win
+		
+		// send playerTwo a notification about the forfeit (if online)
+		String playerTwo = t.getPlayerTwo();
+		checkAndSend(t,playerTwo,client);
 	}
 
 	@Override
 	public void handleInviteGameTask(InviteTask t, ClientSession client) {
-		// TODO Auto-generated method stub
-
+		// Send InviteTask to playerTwo (if online)
+		String playerTwo = t.getPlayerTwo();
+		if(checkAndSend(t,playerTwo,client)) {		
+			// add invitation
+			inviteManager.addInvitation(t);
+		}
 	}
 
 	@Override
 	public void handleInviteGameTask(AcceptInviteTask t, ClientSession client) {
-		// TODO Auto-generated method stub
+		// Remove / Check if their was invitation from PlayerTwo
+		if(inviteManager.removeInvitation(t.getPlayerTwo(), t.getPlayerOne())) {
+			// create a game
+			// send AcceptInviteTask to playerTwo (if online)
+		} else {
+			GameTask response = new InvalidGameTask("It appears that '"
+					+ t.getPlayerTwo() + 
+					"' never sent you an invitation.",t.getGameID());
+			this.sendGameTaskResponse(response, client);
+		}
+		
 
 	}
 
 	@Override
 	public void handleInviteGameTask(RejectInviteTask t, ClientSession client) {
-		// TODO Auto-generated method stub
+		// Remove / Check if their was invitation from PlayerTwo
+		if(inviteManager.removeInvitation(t.getPlayerTwo(), t.getPlayerOne())) {
+			// create a game
+			// send RejectInviteTask to playerTwo (if online)
+		} else {
+			// ignore the fact that there wasn't an invitation, they rejected it anyway.
+		}
+		
 
 	}
 
