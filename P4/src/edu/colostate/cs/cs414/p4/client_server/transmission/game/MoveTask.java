@@ -7,20 +7,17 @@ import java.io.IOException;
 import edu.colostate.cs.cs414.p4.banqi.BanqiGame;
 import edu.colostate.cs.cs414.p4.banqi.Square;
 import edu.colostate.cs.cs414.p4.client_server.transmission.TaskConstents;
-import edu.colostate.cs.cs414.p4.client_server.transmission.util.ReadUtils;
-import edu.colostate.cs.cs414.p4.client_server.transmission.util.WriteUtils;
 import edu.colostate.cs.cs414.p4.user.ActivePlayer;
 import edu.colostate.cs.cs414.p4.user.Player;
 
 public class MoveTask extends GameTask{
 	
-	private String playerWhoMadeMove;
 	private int gameID;
 	private int fromX, fromY;
 	private int toX, toY;
 	
 	public MoveTask(String playerWhoMadeMove,int gameID, int fromX, int fromY, int toX, int toY) {
-		this.playerWhoMadeMove = playerWhoMadeMove;
+		super(playerWhoMadeMove);
 		this.gameID = gameID;
 		this.fromX = fromX;
 		this.fromY = fromY;
@@ -33,7 +30,7 @@ public class MoveTask extends GameTask{
 	}
 	
 	public MoveTask(DataInputStream din) throws IOException {
-		this.playerWhoMadeMove = ReadUtils.readString(din);
+		super(din);
 		this.gameID = din.readInt();
 		this.fromX = din.readInt();
 		this.fromY = din.readInt();
@@ -47,7 +44,7 @@ public class MoveTask extends GameTask{
 	
 	@Override
 	public void writeBytes(DataOutputStream dout) throws IOException {
-		WriteUtils.writeString(playerWhoMadeMove, dout);
+		super.writeBytes(dout);
 		dout.writeInt(gameID);
 		dout.writeInt(fromX);
 		dout.writeInt(fromY);
@@ -72,7 +69,7 @@ public class MoveTask extends GameTask{
 			BanqiGame game = player.getGame(gameID);
 			if(game != null) {
 				makeMove(game);
-				game.promptTurn(player, playerWhoMadeMove);
+				game.promptTurn(player, getPlayerOne());
 			}
 		}
 	}

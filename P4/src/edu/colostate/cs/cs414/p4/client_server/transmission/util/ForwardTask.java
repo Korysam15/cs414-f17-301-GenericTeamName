@@ -37,6 +37,14 @@ public class ForwardTask extends UtilityTask {
 		WriteUtils.writeString(toPlayer,dout);
 		WriteUtils.writeTask(task, dout);		
 	}
+	
+	public String getPlayerFrom() {
+		return fromPlayer;
+	}
+	
+	public String getPlayerTo() {
+		return toPlayer;
+	}
 
 	public String toString() {
 		return "[ForwardTask, Taskcode: " + TaskConstents.MESSAGE_TASK + 
@@ -48,6 +56,10 @@ public class ForwardTask extends UtilityTask {
 		if(server != null) {
 			forwardTheTask(server);
 		}
+	}
+	
+	public Task getTask() {
+		return task;
 	}
 	
 	private void forwardTheTask(AbstractServer server) {

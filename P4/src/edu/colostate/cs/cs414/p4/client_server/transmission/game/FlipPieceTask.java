@@ -7,18 +7,15 @@ import java.io.IOException;
 import edu.colostate.cs.cs414.p4.banqi.BanqiGame;
 import edu.colostate.cs.cs414.p4.banqi.Square;
 import edu.colostate.cs.cs414.p4.client_server.transmission.TaskConstents;
-import edu.colostate.cs.cs414.p4.client_server.transmission.util.ReadUtils;
-import edu.colostate.cs.cs414.p4.client_server.transmission.util.WriteUtils;
 import edu.colostate.cs.cs414.p4.user.ActivePlayer;
 import edu.colostate.cs.cs414.p4.user.Player;
 
 public class FlipPieceTask extends GameTask {
-	private String playerWhoMadeMove;
 	private int gameID;
 	private int fromX, fromY;
 	
 	public FlipPieceTask(String playerWhoMadeMove,int gameID, int fromX, int fromY) {
-		this.playerWhoMadeMove = playerWhoMadeMove;
+		super(playerWhoMadeMove);
 		this.gameID = gameID;
 		this.fromX = fromX;
 		this.fromY = fromY;
@@ -29,7 +26,7 @@ public class FlipPieceTask extends GameTask {
 	}
 	
 	public FlipPieceTask(DataInputStream din) throws IOException {
-		this.playerWhoMadeMove = ReadUtils.readString(din);
+		super(din);
 		this.gameID = din.readInt();
 		this.fromX = din.readInt();
 		this.fromY = din.readInt();
@@ -41,7 +38,7 @@ public class FlipPieceTask extends GameTask {
 	
 	@Override
 	public void writeBytes(DataOutputStream dout) throws IOException {
-		WriteUtils.writeString(playerWhoMadeMove, dout);
+		super.writeBytes(dout);
 		dout.writeInt(gameID);
 		dout.writeInt(fromX);
 		dout.writeInt(fromY);
@@ -53,7 +50,7 @@ public class FlipPieceTask extends GameTask {
 	}
 
 	public String toString() {
-		return "[FlipPieceTask, Taskcode: " + getTaskCode() + ", Contents: " + playerWhoMadeMove 
+		return "[FlipPieceTask, Taskcode: " + getTaskCode() + ", Contents: " + getPlayerOne() 
 				+ ", " + fromX + ", " + fromY +"]";
 	}
 
@@ -63,7 +60,7 @@ public class FlipPieceTask extends GameTask {
 			BanqiGame game = player.getGame(gameID);
 			if(game != null) {
 				makeMove(game);
-				game.promptTurn(player, playerWhoMadeMove);
+				game.promptTurn(player, getPlayerOne());
 			}
 		}
 	}

@@ -23,6 +23,7 @@ public class ForfeitTask extends GameTask {
 	
 	public ForfeitTask(DataInputStream din) throws IOException 
 	{
+		super(din);
 		this.gameID = din.readInt();
 		this.update = (UpdateRecordTask) ReadUtils.readTask(din);
 		this.message = ReadUtils.readString(din);
@@ -35,6 +36,7 @@ public class ForfeitTask extends GameTask {
 	
 	@Override
 	public void writeBytes(DataOutputStream dout) throws IOException {
+		super.writeBytes(dout);
 		dout.writeInt(this.gameID);
 		WriteUtils.writeTask(this.update, dout);
 		WriteUtils.writeString(this.message, dout);

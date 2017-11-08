@@ -44,6 +44,14 @@ public class MultiForwardTask extends UtilityTask {
 		return "[MultiForwardTask, Taskcode: " + getTaskCode() +
 				", Contents: " + task + ",sent to " + toPlayers.size() + " clients]";
 	}
+	
+	public List<String> getPlayersTo() {
+		return new ArrayList<String>(toPlayers);
+	}
+	
+	public Task getTask() {
+		return task;
+	}
 
 	public void run() {
 		AbstractServer server = ActiveServer.getInstance();	
