@@ -399,6 +399,7 @@ public class Server extends AbstractServer {
 		}
 	}
 	
+	@Deprecated
 	private void runTaskIfValid(Task t) {
 		if(taskIsValid(t)) {
 			debugPrintln("Running TaskCode: " + t.getTaskCode());

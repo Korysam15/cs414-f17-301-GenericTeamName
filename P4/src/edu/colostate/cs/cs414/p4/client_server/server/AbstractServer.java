@@ -150,6 +150,7 @@ public abstract class AbstractServer {
 	 * can be overwritten
 	 * @param t - The {@link Task} to be handled.
 	 */
+	@Deprecated
 	public abstract void handleTask(Task t);
 	
 	/**
