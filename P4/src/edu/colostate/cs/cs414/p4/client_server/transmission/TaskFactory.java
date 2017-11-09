@@ -27,6 +27,7 @@ import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.r
 import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.response.LoginGreetingTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.response.RegisterGreetingTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.response.RegistrationErrorTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.response.ServerDisconnectedTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.ForwardTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.MessageTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.MultiForwardTask;
@@ -148,6 +149,9 @@ public final class TaskFactory {
 			break;
 		case TaskConstents.INVALID_GAME_TASK:
 			t = new InvalidGameTask(din);
+			break;
+		case TaskConstents.SERVER_DISCONNECTED_TASK:
+			t = new ServerDisconnectedTask(din);
 			break;
     }
 		
