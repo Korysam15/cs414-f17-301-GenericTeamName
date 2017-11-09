@@ -1,8 +1,8 @@
 BIN="bin/"
 
-PACKAGE="edu.colostate.cs.cs414.p4.user"
+PACKAGE="edu.colostate.cs.cs414.p4.main"
 
-MAIN_CLASS="Player"
+MAIN_CLASS="PlayerMain"
 
 ADDR="localhost"
 

@@ -127,7 +127,11 @@ public class GameServer extends AbstractGameServer {
 		// Remove / Check if their was invitation from PlayerTwo
 		if(inviteManager.removeInvitation(t.getPlayerTwo(), t.getPlayerOne())) {
 			// create a game
+
+
 			// send AcceptInviteTask to playerTwo (if online)
+			String playerTwo = t.getPlayerTwo();
+			checkAndSend(t,playerTwo,client);
 		} else {
 			GameTask response = new InvalidGameTask("It appears that '"
 					+ t.getPlayerTwo() + 
@@ -144,6 +148,8 @@ public class GameServer extends AbstractGameServer {
 		if(inviteManager.removeInvitation(t.getPlayerTwo(), t.getPlayerOne())) {
 			// create a game
 			// send RejectInviteTask to playerTwo (if online)
+			String playerTwo = t.getPlayerTwo();
+			checkAndSend(t,playerTwo,client);
 		} else {
 			// ignore the fact that there wasn't an invitation, they rejected it anyway.
 		}
