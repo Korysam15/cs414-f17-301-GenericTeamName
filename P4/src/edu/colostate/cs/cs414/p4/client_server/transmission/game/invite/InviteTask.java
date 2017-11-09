@@ -81,7 +81,7 @@ public class InviteTask extends InviteGameTask {
 		return "[InviteTask, Taskcode: " + getTaskCode() +
 				", Contents: " + message + getPlayerFrom() + "]";
 	}
-
+ 
 	@Deprecated
 	public void oldrun()
 	{
