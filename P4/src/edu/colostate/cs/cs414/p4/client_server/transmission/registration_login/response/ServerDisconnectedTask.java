@@ -3,6 +3,8 @@ package edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.
 import java.io.DataInputStream;
 import java.io.IOException;
 
+import edu.colostate.cs.cs414.p4.client_server.transmission.TaskConstents;
+
 public class ServerDisconnectedTask extends ExitResponseTask {
 
 	public ServerDisconnectedTask(String message) {
@@ -14,10 +16,15 @@ public class ServerDisconnectedTask extends ExitResponseTask {
 	}
 	
 	@Override
+	public int getTaskCode() {
+		return TaskConstents.SERVER_DISCONNECTED_TASK;
+	}
+	
+	@Override
 	public void run() {
 		super.run();
 		try { // grace before shutting down a client.
-			Thread.sleep(3000);
+			Thread.sleep(1000);
 		} catch (InterruptedException e) {}
 		
 		System.exit(0);

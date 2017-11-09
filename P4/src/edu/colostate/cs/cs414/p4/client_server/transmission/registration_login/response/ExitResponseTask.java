@@ -47,6 +47,8 @@ public class ExitResponseTask extends Task {
 		Player player;
 		if((player = ActivePlayer.getInstance()) != null) {
 			displayMessageToPlayer(player);
+		} else {
+			System.out.println(getResponseMessage());
 		}
 	}
 

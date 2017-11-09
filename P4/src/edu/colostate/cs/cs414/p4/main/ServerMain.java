@@ -10,7 +10,8 @@ import edu.colostate.cs.cs414.p4.client_server.server.registry.ActiveRegistry;
 import edu.colostate.cs.cs414.p4.client_server.server.registry.FileRegistry;
 
 public class ServerMain {
-	public static void main(String args[]) throws IOException {
+	
+	public static void main(String args[]) throws IOException, InterruptedException {
 		if(args.length != 2) {
 			System.out.println("Expected arguments: <port> <password-filename>");
 			return;

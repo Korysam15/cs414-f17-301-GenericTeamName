@@ -230,6 +230,7 @@ public class Server extends AbstractServer {
 	@Override
 	public void stop() {
 		stopListening();
+		threadPool.purge();
 		synchronized(isRunning) {
 			if(isRunning()) { 
 				isRunning = false;
@@ -247,7 +248,7 @@ public class Server extends AbstractServer {
 	public void disconnectAllClients() {
 		stop();
 		ServerDisconnectedTask shutDown = 
-				new ServerDisconnectedTask("The server is shutting down. Please try again later");
+				new ServerDisconnectedTask("The server is shutting down. Please try again later.");
 		broadcast(shutDown);
 		List<ClientSession> sessions = getClients();
 		for(ClientSession client: sessions) {
@@ -288,7 +289,7 @@ public class Server extends AbstractServer {
 		synchronized(isListening) {
 			if(isListening) {
 				isListening = false;
-				log("Server is not longer listening for incoming connections");
+				log("Server is no longer listening for incoming connections");
 			}
 		}
 	}
@@ -303,8 +304,10 @@ public class Server extends AbstractServer {
 	@Override
 	public void broadcast(Task t) {
 		List<ClientSession> sessions = getClients();
+		log("broadcasting: " + t + " to: ");
 		for(ClientSession session: sessions) {
 			threadPool.execute(new SendEvent(session,t));
+			log("\t"+session);
 		}
 		try {
 			threadPool.awaitTermination(BROADCAST_TIME_OUT, BROADCAST_TIME_OUT_UNIT);
@@ -571,6 +574,7 @@ public class Server extends AbstractServer {
 				// for catching interrupt
 			} finally {
 				Server.this.stop();
+				log("ServerThread has stopped");
 			}
 		}
 	}
