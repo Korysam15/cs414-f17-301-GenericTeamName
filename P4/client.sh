@@ -10,5 +10,5 @@ PORT=5491
 
 
 cd $BIN
-
+clear
 java -cp . $PACKAGE.$MAIN_CLASS $ADDR $PORT
