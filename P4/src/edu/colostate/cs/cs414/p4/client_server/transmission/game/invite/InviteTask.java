@@ -82,6 +82,7 @@ public class InviteTask extends InviteGameTask {
 				", Contents: " + message + getPlayerFrom() + "]";
 	}
 
+	@Deprecated
 	public void oldrun()
 	{
 		System.out.print(getPlayerFrom() + " wants to play a game of Banqi! Do you wish to accept or reject?\n");
