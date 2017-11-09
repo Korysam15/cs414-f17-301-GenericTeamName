@@ -54,6 +54,10 @@ public class MultiForwardTask extends UtilityTask {
 	public Task getTask() {
 		return task;
 	}
+	
+	public String getPlayerFrom() {
+		return fromPlayer;
+	}
 
 	public void run() {
 		AbstractServer server = ActiveServer.getInstance();	
