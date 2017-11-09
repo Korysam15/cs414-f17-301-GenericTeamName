@@ -375,6 +375,30 @@ public class Server extends AbstractServer {
 		}
 	}
 	
+	// Differs from taskIsValid(Task t) by insuring forwarded Tasks "fromPlayer" are not spoofed.
+	private boolean taskIsValid(Task t, ClientSession client) {
+		if(t instanceof ForwardTask) { 
+			ForwardTask forward = (ForwardTask) t;
+			String clientNickname = client.getID();
+			String submittedNickname = forward.getPlayerFrom();
+			
+			// a forward task is invalid if the "getPlayerFrom" doesn't match the ID of the session
+			return submittedNickname.equals(clientNickname) &&
+					taskIsValid(forward.getTask(),client); // A forward task is valid if it's "forwarded task" is valid.
+			
+		} else if(t instanceof MultiForwardTask) {
+			MultiForwardTask forward = (MultiForwardTask) t;
+			String clientNickname = client.getID();
+			String submittedNickname = forward.getPlayerFrom();
+			
+			// a forward task is invalid if the "getPlayerFrom" doesn't match the ID of the session
+			return submittedNickname.equals(clientNickname) &&
+						taskIsValid(forward.getTask(),client); // A forward task is valid if it's "forwarded task" is valid.
+		} else {
+			return taskIsValid(t);
+		}
+	}
+	
 	private void runTaskIfValid(Task t) {
 		if(taskIsValid(t)) {
 			debugPrintln("Running TaskCode: " + t.getTaskCode());
@@ -386,7 +410,7 @@ public class Server extends AbstractServer {
 	}
 	
 	private void runTaskIfValid(Task t, ClientSession client) {
-		if(taskIsValid(t)) {
+		if(taskIsValid(t,client)) {
 			debugPrintln("Running TaskCode: " + t.getTaskCode());
 			log("Performing Task: " + t + " for " + client.getID() + " [" + client + "].");
 			t.run();
