@@ -29,13 +29,11 @@ public class BanqiGame {
 	private GameBoard gameBoard;   // board that the game is played on
 	private Piece pieces[];        // pieces in game
 	// private Player first;		   // first Player
-	// private Player second;		   // second Player
+	// private Player second;	   // second Player
 	private boolean test=false;	   // TESTING
 
-
-	
-
-	public BanqiGame(int gameID) {
+	public BanqiGame(int gameID) 
+	{
 		super();
 		this.gameID = gameID;
 		this.gameBoard= new GameBoard();
@@ -49,8 +47,8 @@ public class BanqiGame {
 
 	}
 
-	public BanqiGame(int gameID,Player first, Player second) {
-
+	public BanqiGame(int gameID,Player first, Player second) 
+	{
 		this.gameID = gameID;
 		this.gameBoard= new GameBoard();
 		this.pieces= new Piece[32];
@@ -60,56 +58,51 @@ public class BanqiGame {
 		getAllPieces();
 
 	}
-	public BanqiGame(int gameID,Player first, Player second, boolean test) {
-
-
+	public BanqiGame(int gameID,Player first, Player second, boolean test) 
+	{
 		this.gameID = gameID;
 		this.gameBoard= new GameBoard();
 		this.pieces= new Piece[32];
 		this.test=test;
 		console = new JavaConsole();
 		getAllPieces();
-
-
 	}
-	public BanqiGame(int gameID, boolean test) {
-
-
+	
+	public BanqiGame(int gameID, boolean test) 
+	{
 		this.gameID = gameID;
 		this.gameBoard= new GameBoard();
 		this.pieces= new Piece[32];
 		this.test=test;
-		
 		getAllPieces();
-
-
 	}
-	public GameBoard getGameBoard() {
+	
+	public GameBoard getGameBoard() 
+	{
 		return gameBoard;
 	}
 
-	public void setGameBoard(GameBoard gameBoard) {
+	public void setGameBoard(GameBoard gameBoard) 
+	{
 		this.gameBoard = gameBoard;
 	}
 
-	private  void getAllPieces() {
+	private  void getAllPieces() 
+	{
 
 		List<Integer> list = new ArrayList<Integer>();  // create list of 0-31
-		for(int i=0;i<32;i++){
+		for(int i=0;i<32;i++)
+		{
 			list.add(i);
 		}
-
-
-		if(test){
-
+		if(test)
+		{
 			Collections.shuffle(list,new Random(123)); 
 		}
-		else{
+		else
+		{
 			Collections.shuffle(list,new Random(gameID));                      //randomize list
 		}
-
-
-
 		//red pieces
 		pieces[0]=new General(true);									// x1 General
 		gameBoard.getSquaresOnBoard()[list.get(0)].setOn(pieces[0]);    
@@ -191,15 +184,11 @@ public class BanqiGame {
 		gameBoard.getSquaresOnBoard()[list.get(30)].setOn(pieces[30]);
 		pieces[31]=new Soldier(false);
 		gameBoard.getSquaresOnBoard()[list.get(31)].setOn(pieces[31]);
-
-
-
-
-
 	}
 
 
-	public  boolean makeMove(Square from, Square to){
+	public  boolean makeMove(Square from, Square to)
+	{
 		if(from==null||to==null)
 		{
 			System.out.println("Not a valid move");
@@ -213,20 +202,18 @@ public class BanqiGame {
 			System.out.println("This piece must be flipped first");
 			return false;
 		}
-		if(getValidMoves(from).contains(to)){        //check if the move is valid
-
+		if(getValidMoves(from).contains(to)) //check if the move is valid
+		{       
 			to.setOn(from.getOn());
 			from.setOn(null);
 			return true;
 		}
 		System.out.println("Not a valid move");
 		return false;
-
-
-
-
 	}
-	public boolean makeMove(Square from){
+	
+	public boolean makeMove(Square from)
+	{
 		if (from==null)
 		{
 			System.out.println("Not a valid move");
@@ -241,35 +228,32 @@ public class BanqiGame {
 			from.getOn().flipPiece();
 			return true;
 		}
-
 		return false;
-
 	}
-	public boolean flipPiece(Square from){
-
+	
+	public boolean flipPiece(Square from)
+	{
 		if(from.getOn().faceUp==false)
 		{
 			from.getOn().flipPiece();
 			return true;
 		}
 		return false;
-
 	}
 
-	public ArrayList<Square> getValidMoves(Square from){
-
-
+	public ArrayList<Square> getValidMoves(Square from)
+	{
 		ArrayList<Square> validMoves= new ArrayList<Square>();
-
-
-		if(from.isEmpty()){
+		if(from.isEmpty())
+		{
 			return validMoves;
 		}
-
-		if(from.getOn() instanceof Cannon){
+		if(from.getOn() instanceof Cannon)
+		{
 			int x = from.getX();
 			int y = from.getY();
-			while (x > 1){
+			while (x > 1)
+			{
 				x--;
 				Square next = gameBoard.getSquare(x, y);
 				if(!next.isEmpty()){
@@ -318,40 +302,36 @@ public class BanqiGame {
 			}
 		}
 		//else{
-			if(from.getY()!=0){
-				Square up =gameBoard.getSquare(from.getX(), from.getY()-1);
-				if(up.isEmpty()||canOverTake(from,up)){   //check square above
+		if(from.getY()!=0){
+			Square up =gameBoard.getSquare(from.getX(), from.getY()-1);
+			if(up.isEmpty()||canOverTake(from,up)){   //check square above
 
-					validMoves.add(up);
-				}
+				validMoves.add(up);
 			}
-			if(from.getY()!=3){
-				Square down =gameBoard.getSquare(from.getX(), from.getY()+1);
-				if(down.isEmpty()||canOverTake(from,down)){  //check square below
+		}
+		if(from.getY()!=3){
+			Square down =gameBoard.getSquare(from.getX(), from.getY()+1);
+			if(down.isEmpty()||canOverTake(from,down)){  //check square below
 
-					validMoves.add(down);
-				}
-
-			}
-			if(from.getX()!=0){
-				Square left =gameBoard.getSquare(from.getX()-1, from.getY());
-				if(left.isEmpty()||canOverTake(from,left)){  //check square to the left
-
-					validMoves.add(left);
-				}
-
-			}
-			if(from.getX()!=7){
-				Square right =gameBoard.getSquare(from.getX()+1, from.getY());
-				if(right.isEmpty()||canOverTake(from,right)){  //check square to the right
-
-					validMoves.add(right);
-				}
+				validMoves.add(down);
 			}
 
-		//}
+		}
+		if(from.getX()!=0){
+			Square left =gameBoard.getSquare(from.getX()-1, from.getY());
+			if(left.isEmpty()||canOverTake(from,left)){  //check square to the left
 
+				validMoves.add(left);
+			}
 
+		}
+		if(from.getX()!=7){
+			Square right =gameBoard.getSquare(from.getX()+1, from.getY());
+			if(right.isEmpty()||canOverTake(from,right)){  //check square to the right
+
+				validMoves.add(right);
+			}
+		}
 		return validMoves;
 	}
 
@@ -359,70 +339,22 @@ public class BanqiGame {
 	{
 		if(from.getOn().faceUp&&to.getOn().faceUp){     //make sure both pieces are face up
 			if(from.getOn().color!=to.getOn().color) {
-			if(from.getOn() instanceof Soldier && to.getOn() instanceof General){ //soldier can overTake general
-				return true;
-			}
-			if(from.getOn() instanceof Cannon) {
-				return true;
-			}
+				if(from.getOn() instanceof Soldier && to.getOn() instanceof General){ //soldier can overTake general
+					return true;
+				}
+				if(from.getOn() instanceof Cannon) {
+					return true;
+				}
 
 
-			return from.getOn().rank>=to.getOn().rank;
-		}}
+				return from.getOn().rank>=to.getOn().rank;
+			}}
 		return false;
 
 	}
 
-	public void promptTurn(Player p){
-		System.out.println("Your Turn!");
-		System.out.println(gameBoard);
-		while(true)
-		{
-
-			System.out.println("Make a move!  ex. A1");
-			@SuppressWarnings("resource")
-			Scanner scanner = new Scanner(System.in);
-			String in1 = scanner.nextLine();
-			if(in1.length()>2){
-				System.out.println("Invalid Move");
-			}
-			Square from =getSquare(in1);
-
-			if(from.isEmpty()){
-				System.out.println("Invalid Move - No piece at: "+in1);
-			}
-			else if(!from.getOn().faceUp){
-				flipPiece(from);
-				System.out.println(gameBoard);
-				break;
-			}
-			else{
-				System.out.println("to");
-
-
-				String in2 = scanner.nextLine();
-				if(in2.length()>2){
-					System.out.println("Invalid Move");
-				}
-				Square to =getSquare(in2);
-				if(makeMove(from,to)){
-
-
-
-					System.out.println(gameBoard);
-					break;
-				}
-				System.out.println("Invalid Move - "+from.getOn().getClass()+" can't move like that");
-
-			}
-			//check for the right color 
-
-
-		}
-
-	}
-
-	public void promptTurn(Player p, String otherPlayer){
+	public void promptTurn(Player p, String otherPlayer)
+	{
 		System.out.println("Your Turn!");
 		System.out.println(gameBoard);
 		Task notify = null;
@@ -439,19 +371,7 @@ public class BanqiGame {
 				String choice = scanner.next();
 				if(choice.toLowerCase().equals("yes"))
 				{
-					System.out.println("FORFEITING");
-					// forfeit game, create forfiet task, update stats for both players
-					UpdateRecordTask updateTask = new UpdateRecordTask(false,true,false,this.gameID);
-					ForfeitTask forfeit = new ForfeitTask(this.gameID, updateTask, p.getNickName() + " has forfeited! " + otherPlayer + " is the winner!");
-					forfeit.run();
-					forfeit.getUpdateRecordTask().setWon(true);
-					forfeit.getUpdateRecordTask().setLoss(false);
-					try {
-						p.getClient().sendToServer(new ForwardTask(p.getNickName(),forfeit,otherPlayer));
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					forfeit(p,otherPlayer);
 					break;
 				}
 				if(choice.toLowerCase().equals("no"))
@@ -461,16 +381,7 @@ public class BanqiGame {
 			}
 			else if(in1.toLowerCase().equals("help"))
 			{
-				System.out.println("Below is a list of each piece with their associated number that represents that piece.\n");
-				System.out.println("Red General: R7 \t\t Black General: B7 \n" 
-				+ "Red Advisor: R6 \t\t Black Advisor: B6 \n" 
-				+ "Red Elephant: R5 \t\t Black Elephant: B5 \n" 
-				+ "Red Chariot: R4 \t\t Black Chariot: B4 \n"
-				+ "Red Cavalry: R3 \t\t Black Cavalry: B3 \n"
-				+ "Red Cannon: R2 \t\t Black Cannon: B2 \n"
-				+ "Red Soldier: R1 \t\t Black Soldier: B1\n");
-				
-				System.out.println("Rules:\n Only pieces of equal or lower rank may be captured. However, A Cannon can capture any piece by jumping and a Soldier can capture a general.\n");
+				printHelpInformation();
 			}
 			else
 			{
@@ -529,8 +440,8 @@ public class BanqiGame {
 
 	}
 
-	public Square getSquare(String from){
-
+	public Square getSquare(String from)
+	{
 		from=from.toUpperCase();
 		char letter= from.charAt(0);
 		char num=from.charAt(1);
@@ -541,20 +452,42 @@ public class BanqiGame {
 		Square s=gameBoard.getSquare(x, y);
 
 		return s;
-
-
-
-
-
-
-
 	}
-	public Square getSquare(int x, int y) {
+	
+	
+	public Square getSquare(int x, int y) 
+	{
 		return gameBoard.getSquare(x, y);
 	}
+	
+	public void forfeit(Player p, String otherPlayer)
+	{
+		System.out.println("FORFEITING");
+		// forfeit game, create forfiet task, update stats for both players
+		UpdateRecordTask updateTask = new UpdateRecordTask(false,true,false,this.gameID);
+		ForfeitTask forfeit = new ForfeitTask(this.gameID, updateTask, p.getNickName() + " has forfeited! " + otherPlayer + " is the winner!");
+		forfeit.run();
+		forfeit.getUpdateRecordTask().setWon(true);
+		forfeit.getUpdateRecordTask().setLoss(false);
+		try {
+			p.getClient().sendToServer(new ForwardTask(p.getNickName(),forfeit,otherPlayer));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void printHelpInformation()
+	{
+		System.out.println("Below is a list of each piece with their associated number that represents that piece.\n");
+		System.out.println("Red General: R7 \t\t Black General: B7 \n" 
+				+ "Red Advisor: R6 \t\t Black Advisor: B6 \n" 
+				+ "Red Elephant: R5 \t\t Black Elephant: B5 \n" 
+				+ "Red Chariot: R4 \t\t Black Chariot: B4 \n"
+				+ "Red Cavalry: R3 \t\t Black Cavalry: B3 \n"
+				+ "Red Cannon: R2 \t\t Black Cannon: B2 \n"
+				+ "Red Soldier: R1 \t\t Black Soldier: B1\n");
 
-
-
-
-
+		System.out.println("Rules:\n Only pieces of equal or lower rank may be captured. However, A Cannon can capture any piece by jumping and a Soldier can capture a general.\n");
+	}
 }
