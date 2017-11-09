@@ -145,9 +145,7 @@ public class Server extends AbstractServer {
 			} catch (IOException e) {
 				debugPrintln("IOException.");
 			} finally {
-				synchronized(isRunning) {
-					isRunning = false;
-				}
+				stop();
 			}
 		}
 	}
