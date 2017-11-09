@@ -52,32 +52,67 @@ public abstract class AbstractServer {
 	}
 	
 	/**
-	 * The start method starts the server.
+	 * The start method starts the server.  And the calling {@link Thread} will be the listener.
+	 * Thus, instructions called after this method will only be executed when the server stops.
 	 * Once the server is started, the server will connect/send/receive messages/requests
 	 * to or from clients.
+	 * @see #startWithNewThread()
 	 */
 	public abstract void start();
 	
 	/**
-	 * The stop method stops the server. 
-	 * Once the server is stopped, the server will no longer connect to clients. 
-	 * However, the server will continue to send/receive messages to and from clients that 
-	 * are already connected.
+	 * The startWithNewThread method starts the server, but the method returns.
+	 * Once the server is started, the server will connect/send/receive messages/requests
+	 * to or from clients.
+	 * @see #start()
+	 */
+	public abstract void startWithNewThread();
+	
+	/**
+	 * Allows the server to start listening for new connections.
+	 * Note that this method only works if {@link #isRunning()} returns true.
+	 * Another way to consider the use of this method is to first, {@link #start()}
+	 * then {@link #stopListening()}, then and only then you can startListening.
+	 * If the server is not started, and this method is called an IllegalStateException is thrown.
+	 */
+	public abstract void startListening();
+	
+	/**
+	 * Stops the server from accepting new connections.
+	 */
+	public abstract void stopListening();
+	
+	/**
+	 * The stop method stops the server.  However, clients will remain connected.
+	 * Implies {@link #stopListening()}.
 	 */
 	public abstract void stop();
 	
 	/**
 	 * The disconnectAllClients method implies stop()
-	 * but the server will no longer send/messages to and from any clients.
+	 * but the server will force a disconnection to all of the clients.
 	 */
 	public abstract void disconnectAllClients();
 	
 	/**
 	 * The isRunning method returns the current status of the server.
-	 * @return true if the server was successfully started.
-	 * Returns false if the server hasn’t been started or was successfully stopped.
+	 * @return true if the server is currently excepting messages from clients.
+	 * Returns false if the is not excepting messages from client.
 	 */
 	public abstract boolean isRunning();
+
+	/**
+	 * The isListening method returns whether the server is listening for incoming connections.
+	 * @return True if the server is listening for incoming connections.
+	 * Returns false if the server is not listening for incoming connections.
+	 */
+	public abstract boolean isListening();
+	
+	/**
+	 * Sends the {@link Task} to all connected clients.
+	 * @param t - The task to send to all clients.
+	 */
+	public abstract void broadcast(Task t);
 	
 	/**
 	 * The getRegisteredClient method returns a ClientSession associated with param ID.
@@ -93,6 +128,7 @@ public abstract class AbstractServer {
 	 * @return A list of player nicknames
 	 */
 	public abstract List<String> getClientNicknames();
+	
 	
 	/**
 	 * The getClients method returns a List of ClientSessions. 
@@ -114,6 +150,7 @@ public abstract class AbstractServer {
 	 * can be overwritten
 	 * @param t - The {@link Task} to be handled.
 	 */
+	@Deprecated
 	public abstract void handleTask(Task t);
 	
 	/**

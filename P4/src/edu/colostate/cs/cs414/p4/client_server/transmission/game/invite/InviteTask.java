@@ -3,7 +3,6 @@ package edu.colostate.cs.cs414.p4.client_server.transmission.game.invite;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -23,22 +22,22 @@ import edu.colostate.cs.cs414.p4.user.Player;
 
 public class InviteTask extends InviteGameTask {
 	private String message;
-	private String playerFrom;
-	//private String playerTo;
-
-	public InviteTask(String playerFrom,String message/*, String playerTo*/)
-	{
-		super();
+	
+	public InviteTask(String playerFrom, String message, String playerTo) {
+		super(playerFrom,playerTo);
 		this.message = message;
-		this.playerFrom = playerFrom;
-		//this.playerTo = playerTo;
+	}
+
+	public InviteTask(String playerFrom,String message)
+	{
+		super(playerFrom);
+		this.message = message;
 	}
 
 	public InviteTask(DataInputStream din) throws IOException
 	{
+		super(din);
 		this.message = ReadUtils.readString(din);
-		this.playerFrom = ReadUtils.readString(din);
-		//this.playerTo = ReadUtils.readString(din);
 	}
 
 	public int getTaskCode() 
@@ -46,31 +45,47 @@ public class InviteTask extends InviteGameTask {
 		return TaskConstents.INVITE_TASK;
 	}
 	
+	public String getPlayerFrom() {
+		return getPlayerOne();
+	}
+	
+	public void setPlayerTo(String playerTo) {
+		setPlayerTwo(playerTo);
+	}
+	
+	public String getPlayerTo() {
+		return getPlayerTwo();
+	}
+	
+	@Override
+	public int hashCode() {
+		return (getPlayerOne()+getPlayerTwo()+message).hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object other) {
+		if(other == null || !(other instanceof InviteTask)) {
+			return false;
+		} else {
+			return this.hashCode() == other.hashCode();
+		}
+	}
+	
 	@Override
 	public void writeBytes(DataOutputStream dout) throws IOException {
-		// TODO Auto-generated method stub
-		
+		super.writeBytes(dout);
+		WriteUtils.writeString(message, dout);
 	}
 	
 	public String toString() {
 		return "[InviteTask, Taskcode: " + getTaskCode() +
-				", Contents: " + message + playerFrom + "]";
+				", Contents: " + message + getPlayerFrom() + "]";
 	}
 
-	public byte[] toByteArray() throws IOException 
-	{
-		ByteArrayOutputStream bs = WriteUtils.getByteOutputStream();
-		DataOutputStream dout = WriteUtils.getDataOutputStream(bs);
-		dout.writeInt(getTaskCode());
-		WriteUtils.writeString(message, dout);
-		WriteUtils.writeString(playerFrom, dout);
-		//WriteUtils.writeString(playerTo, dout);
-		return WriteUtils.getBytesAndCloseStreams(bs,dout);
-	}
-
+	@Deprecated
 	public void oldrun()
 	{
-		System.out.print(this.playerFrom + " wants to play a game of Banqi! Do you wish to accept or reject?\n");
+		System.out.print(getPlayerFrom() + " wants to play a game of Banqi! Do you wish to accept or reject?\n");
 		System.out.print("Type 'accept' to accept and 'reject' to reject: ");
 		BufferedReader fromConsole = new BufferedReader(new InputStreamReader(System.in));
 		String choice = "reject";
@@ -85,7 +100,7 @@ public class InviteTask extends InviteGameTask {
 			System.out.println("You entered in yes!");
 			Player player = ActivePlayer.getInstance();
 			try {
-				player.getClient().sendToServer(new ForwardTask(player.getNickName(),new AcceptInviteTask(player.getNickName()),playerFrom));
+				player.getClient().sendToServer(new ForwardTask(player.getNickName(),new AcceptInviteTask(player.getNickName()),getPlayerFrom()));
 			} catch (Exception e) {
 			}
 		}
@@ -94,7 +109,7 @@ public class InviteTask extends InviteGameTask {
 			System.out.println("You entered in no!");
 			Player player = ActivePlayer.getInstance();
 			try {
-				player.getClient().sendToServer(new ForwardTask(player.getNickName(),new RejectInviteTask(player.getNickName()," has rejected your invitation!"),playerFrom));
+				player.getClient().sendToServer(new ForwardTask(player.getNickName(),new RejectInviteTask(player.getNickName()," has rejected your invitation!"),getPlayerFrom()));
 			} catch (Exception e) {
 			}
 		}
@@ -105,7 +120,7 @@ public class InviteTask extends InviteGameTask {
 	}
 
 	private void getResponse() {
-		JFrame frame = new JFrame("Game Invitation From " + playerFrom);
+		JFrame frame = new JFrame("Game Invitation From " + getPlayerFrom());
 		frame.setVisible(true);
 		frame.setSize(300, 300);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -127,7 +142,7 @@ public class InviteTask extends InviteGameTask {
 			public void actionPerformed(ActionEvent e) {
 				Player player = ActivePlayer.getInstance();
 				try {
-					player.getClient().sendToServer(new ForwardTask(player.getNickName(),new RejectInviteTask(player.getNickName()," has rejected your invitation!"),playerFrom));
+					player.getClient().sendToServer(new ForwardTask(player.getNickName(),new RejectInviteTask(player.getNickName()," has rejected your invitation!"),getPlayerFrom()));
 				} catch (Exception ex) {
 				}
 				frame.dispose();
@@ -138,7 +153,7 @@ public class InviteTask extends InviteGameTask {
 			public void actionPerformed(ActionEvent e) {
 				Player player = ActivePlayer.getInstance();
 				try {
-					player.getClient().sendToServer(new ForwardTask(player.getNickName(),new AcceptInviteTask(player.getNickName()),playerFrom));
+					player.getClient().sendToServer(new ForwardTask(player.getNickName(),new AcceptInviteTask(player.getNickName()),getPlayerFrom()));
 				} catch (Exception ex) {
 				}
 				frame.dispose();

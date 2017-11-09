@@ -13,19 +13,17 @@ import edu.colostate.cs.cs414.p4.user.Player;
 
 public class RejectInviteTask extends InviteGameTask {
 	private String message;
-	private String playerFrom;
 	
 	public RejectInviteTask(String playerFrom,String message)
 	{
-		super();
+		super(playerFrom);
 		this.message = message;
-		this.playerFrom = playerFrom;
 	}
 	
 	public RejectInviteTask(DataInputStream din) throws IOException
 	{
+		super(din);
 		this.message = ReadUtils.readString(din);
-		this.playerFrom = ReadUtils.readString(din);
 	}
 	
 	public int getTaskCode() 
@@ -35,13 +33,13 @@ public class RejectInviteTask extends InviteGameTask {
 	
 	@Override
 	public void writeBytes(DataOutputStream dout) throws IOException {
-		WriteUtils.writeString(message, dout);
-		WriteUtils.writeString(playerFrom, dout);		
+		super.writeBytes(dout);
+		WriteUtils.writeString(message, dout);		
 	}
 	
 	public String toString() {
 		return "[RejectInviteTask, Taskcode: " + getTaskCode() +
-		", Contents: " + playerFrom + "," + message + "]";
+		", Contents: " + getPlayerOne() + "," + message + "]";
 	}
 	
 	public void run()
@@ -50,9 +48,9 @@ public class RejectInviteTask extends InviteGameTask {
 		if(player != null) {
 			AbstractConsole console = player.getConsole();
 			if(console != null) {
-				console.notice(this.playerFrom + this.message);
+				console.notice(getPlayerOne() + this.message);
 			} else {
-				System.out.println(this.playerFrom + this.message);
+				System.out.println(getPlayerOne() + this.message);
 			}
 		}
 	}

@@ -248,6 +248,17 @@ public class ClientSession extends AbstractSession {
 	@Override
 	public void disconnect() {
 		server.clientDisconnected(this, key);
+		try {
+			if(channel != null && channel.isOpen()) {
+				channel.close();
+			}
+		} catch(Exception e) {
+			
+		} finally {
+			channel = null;
+			email = null;
+			setID(null);
+		}
 	}
 
 	@Override

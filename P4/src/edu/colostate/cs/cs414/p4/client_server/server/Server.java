@@ -18,10 +18,18 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import edu.colostate.cs.cs414.p4.client_server.server.events.ReceiveEvent;
+import edu.colostate.cs.cs414.p4.client_server.server.events.SendEvent;
 import edu.colostate.cs.cs414.p4.client_server.server.registry.ActiveRegistry;
 import edu.colostate.cs.cs414.p4.client_server.server.registry.FileRegistry;
 import edu.colostate.cs.cs414.p4.client_server.server.session.ClientSession;
 import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
+import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.EntryTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.ExitTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.response.EntryResponseTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.response.ExitResponseTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.response.ServerDisconnectedTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.util.ForwardTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.util.MultiForwardTask;
 
 /**
  * @author pflagert
@@ -40,6 +48,8 @@ public class Server extends AbstractServer {
 	public static final int EVENT_TIME_OUT = 30;
 	public static final TimeUnit TIME_OUT_UNIT = TimeUnit.SECONDS;
 	public static final int SELECT_TIME_OUT = 3000; // Milliseconds
+	public static final int BROADCAST_TIME_OUT = 3;
+	public static final TimeUnit BROADCAST_TIME_OUT_UNIT = TimeUnit.SECONDS;
 	
 	/* Used for debugging */
 	public static final boolean DEBUG = false;
@@ -57,9 +67,19 @@ public class Server extends AbstractServer {
 	private Boolean isRunning;
 	
 	/**
+	 * Keeps track of whether or not the server is listening for new connections.
+	 */
+	private Boolean isListening;
+	
+	/**
 	 * A thread pool to manage client sessions
 	 */
 	private ThreadPoolExecutor threadPool;
+	
+	/**
+	 * A thread that may be used to start the server.
+	 */
+	private ServerThread listener;
 
 	/**
 	 * Creates a new Server that will listen for incoming connections/messages on the
@@ -79,6 +99,7 @@ public class Server extends AbstractServer {
 			serverChannel.register(selector, SelectionKey.OP_ACCEPT);
 			playerNicknames = new LinkedList<String>();
 			isRunning = false;
+			isListening = false;
 			initThreadPool();
 		}		
 	}
@@ -111,19 +132,40 @@ public class Server extends AbstractServer {
 		if(isRunning()) {
 			debugPrintln("Server is already running.");
 			return;
-		} else synchronized(isRunning) {
+		} else {
 			debugPrintln("Starting server.");
-			isRunning = true;
-		}
-
-		try {
-			runServer();
-		} catch (IOException e) {
-			debugPrintln("IOException.");
-		} finally {
 			synchronized(isRunning) {
-				isRunning = false;
+				isRunning = true;
 			}
+			synchronized(isListening) {
+				isListening = true;
+			}
+			try {
+				runServer();
+			} catch (IOException e) {
+				debugPrintln("IOException.");
+			} finally {
+				stop();
+			}
+		}
+	}
+	
+	@Override
+	public void startWithNewThread() {
+		debugPrintHeader("startWithNewThread");
+		if(isRunning()) {
+			debugPrintln("Server is already running.");
+			return;
+		} else {
+			debugPrintln("Starting server.");
+			synchronized(isRunning) {
+				isRunning = true;
+			}
+			synchronized(isListening) {
+				isListening = true;
+			}
+			listener = new ServerThread();
+			listener.start();
 		}
 	}
 	
@@ -151,7 +193,7 @@ public class Server extends AbstractServer {
 	private int handleKey(SelectionKey key) {
 		if(!key.isValid()) {
 			debugPrintln("key is Invalid");
-		} else if(key.isAcceptable()) {
+		} else if(key.isAcceptable() && isListening()) {
 			debugPrintln("key is Acceptable");
 			ClientSession client = accept(key);
 			if(client != null) {
@@ -185,16 +227,27 @@ public class Server extends AbstractServer {
 
 	@Override
 	public void stop() {
-		if(isRunning()) { 
-			synchronized(isRunning) {
+		stopListening();
+		threadPool.purge();
+		synchronized(isRunning) {
+			if(isRunning()) { 
 				isRunning = false;
+				log("Server is stopping");
 			}
-		}		
+		}
+		if(Thread.currentThread().equals(listener)) {
+			return;
+		} else if(listener != null && listener.isAlive()) {
+			listener.interrupt();
+		}
 	}
 
 	@Override
 	public void disconnectAllClients() {
 		stop();
+		ServerDisconnectedTask shutDown = 
+				new ServerDisconnectedTask("The server is shutting down. Please try again later.");
+		broadcast(shutDown);
 		List<ClientSession> sessions = getClients();
 		for(ClientSession client: sessions) {
 			client.disconnect();
@@ -212,6 +265,52 @@ public class Server extends AbstractServer {
 	public boolean isRunning() {
 		synchronized(isRunning) {
 			return isRunning;
+		}
+	}
+	
+	@Override
+	public void startListening() {
+		synchronized (isRunning) {
+			synchronized (isListening) {
+				if(isRunning) {
+					isListening = true;
+					log("Server is now listening for incoming connections");
+				} else {
+					throw new IllegalStateException("Server has to be running, to start listening");
+				}
+			}
+		}
+	}
+
+	@Override
+	public void stopListening() {
+		synchronized(isListening) {
+			if(isListening) {
+				isListening = false;
+				log("Server is no longer listening for incoming connections");
+			}
+		}
+	}
+
+	@Override
+	public boolean isListening() {
+		synchronized(isListening) {
+			return isListening;
+		}
+	}
+	
+	@Override
+	public void broadcast(Task t) {
+		List<ClientSession> sessions = getClients();
+		log("broadcasting: " + t + " to: ");
+		for(ClientSession session: sessions) {
+			threadPool.execute(new SendEvent(session,t));
+			log("\t"+session);
+		}
+		try {
+			threadPool.awaitTermination(BROADCAST_TIME_OUT, BROADCAST_TIME_OUT_UNIT);
+		} catch (InterruptedException e) {
+			log("Interrupted while broadcasting task: " + t);
 		}
 	}
 
@@ -247,19 +346,78 @@ public class Server extends AbstractServer {
 	@Override
 	public void handleTask(Task t) {
 		debugPrintHeader("handleTask");
-		debugPrintln("Running TaskCode: " + t.getTaskCode());
-		log("Performing Task: " + t);
-		t.run();
+		runTaskIfValid(t);
 		debugPrintFooter("handleTask");
 	}
 	
 	@Override
 	public void handleTask(Task t, ClientSession client) {
 		debugPrintHeader("handleTask");
-		debugPrintln("Running TaskCode: " + t.getTaskCode());
-		log("Performing Task: " + t + " for " + client.getID() + " [" + client + "].");
-		t.run();
+		runTaskIfValid(t,client);
 		debugPrintFooter("handleTask");
+	}
+	
+	private boolean taskIsValid(Task t) {
+		if(t instanceof EntryTask) { // should be handled by session
+			return false;
+		} else if(t instanceof EntryResponseTask) { // clients should not send EntryResponses
+			return false;
+		} else if(t instanceof ExitTask) { // should be handled by session
+			return false;
+		} else if(t instanceof ExitResponseTask) { // clients definitely should NOT send these
+			return false;
+		} else if(t instanceof ForwardTask) { // A forward task is valid if it's "forwarded task" is valid.
+			return taskIsValid(((ForwardTask)t).getTask());
+		} else if(t instanceof MultiForwardTask) { // same as forward task
+			return taskIsValid(((MultiForwardTask)t).getTask());
+		} else { // all is good
+			return true;
+		}
+	}
+	
+	// Differs from taskIsValid(Task t) by insuring forwarded Tasks "fromPlayer" are not spoofed.
+	private boolean taskIsValid(Task t, ClientSession client) {
+		if(t instanceof ForwardTask) { 
+			ForwardTask forward = (ForwardTask) t;
+			String clientNickname = client.getID();
+			String submittedNickname = forward.getPlayerFrom();
+			
+			// a forward task is invalid if the "getPlayerFrom" doesn't match the ID of the session
+			return submittedNickname.equals(clientNickname) &&
+					taskIsValid(forward.getTask(),client); // A forward task is valid if it's "forwarded task" is valid.
+			
+		} else if(t instanceof MultiForwardTask) {
+			MultiForwardTask forward = (MultiForwardTask) t;
+			String clientNickname = client.getID();
+			String submittedNickname = forward.getPlayerFrom();
+			
+			// a forward task is invalid if the "getPlayerFrom" doesn't match the ID of the session
+			return submittedNickname.equals(clientNickname) &&
+						taskIsValid(forward.getTask(),client); // A forward task is valid if it's "forwarded task" is valid.
+		} else {
+			return taskIsValid(t);
+		}
+	}
+	
+	@Deprecated
+	private void runTaskIfValid(Task t) {
+		if(taskIsValid(t)) {
+			debugPrintln("Running TaskCode: " + t.getTaskCode());
+			log("Performing Task: " + t);
+			t.run();
+		} else {
+			log("A client submitted miliscious task: " + t);
+		}
+	}
+	
+	private void runTaskIfValid(Task t, ClientSession client) {
+		if(taskIsValid(t,client)) {
+			debugPrintln("Running TaskCode: " + t.getTaskCode());
+			log("Performing Task: " + t + " for " + client.getID() + " [" + client + "].");
+			t.run();
+		} else {
+			log(client.getID() + " [" + client + "] submitted miliscious task: " + t);
+		}
 	}
 	
 	@Override
@@ -366,7 +524,7 @@ public class Server extends AbstractServer {
 		return new SimpleDateFormat("HH:mm:ss.S", Locale.ENGLISH).format(now);
 	}
 	
-	private void log(String msg) {
+	protected void log(String msg) {
 		System.out.println("["+getDate()+"]: "+msg);
 	}
 	
@@ -429,4 +587,18 @@ public class Server extends AbstractServer {
 		}
 	}
 	
+	private class ServerThread extends Thread {
+		public void run() {
+			try {
+				runServer();
+			} catch (IOException e) {
+				debugPrintln("IOException.");
+			} catch (Exception e) {
+				// for catching interrupt
+			} finally {
+				Server.this.stop();
+				log("ServerThread has stopped");
+			}
+		}
+	}
 }

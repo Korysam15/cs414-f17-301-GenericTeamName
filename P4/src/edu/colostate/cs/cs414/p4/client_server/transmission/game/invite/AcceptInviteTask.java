@@ -9,22 +9,18 @@ import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p4.client_server.transmission.TaskConstents;
 import edu.colostate.cs.cs414.p4.client_server.transmission.game.CreateGameTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.ForwardTask;
-import edu.colostate.cs.cs414.p4.client_server.transmission.util.ReadUtils;
-import edu.colostate.cs.cs414.p4.client_server.transmission.util.WriteUtils;
 import edu.colostate.cs.cs414.p4.console.AbstractConsole;
 import edu.colostate.cs.cs414.p4.user.ActivePlayer;
 import edu.colostate.cs.cs414.p4.user.Player;
 
 public class AcceptInviteTask extends InviteGameTask {
-	private String playerWhoAccepted;
 
 	public AcceptInviteTask(String playerWhoAccepted) {
-		super();
-		this.playerWhoAccepted = playerWhoAccepted;
+		super(playerWhoAccepted);
 	}
 
 	public AcceptInviteTask(DataInputStream din) throws IOException {
-		this.playerWhoAccepted = ReadUtils.readString(din);
+		super(din);
 	}
 
 	public int getTaskCode() {
@@ -33,21 +29,21 @@ public class AcceptInviteTask extends InviteGameTask {
 	
 	@Override
 	public void writeBytes(DataOutputStream dout) throws IOException {
-		WriteUtils.writeString(playerWhoAccepted,dout);		
+		super.writeBytes(dout);		
 	}
 
 	public String toString() {
 		return "[AcceptInviteTask, Taskcode: " + getTaskCode() + 
-				", Contents: " + playerWhoAccepted + "]" ;
+				", Contents: " + getPlayerOne() + "]" ;
 	}
 
 	public void run() {
 		Player player = ActivePlayer.getInstance();
 		if(player != null) {
 			displayMessage(player);
-			Task gameTask = new CreateGameTask(player.getNickName(),playerWhoAccepted);
+			Task gameTask = new CreateGameTask(player.getNickName(),getPlayerOne());
 			gameTask.run();
-			Task response = new ForwardTask(player.getNickName(),gameTask,playerWhoAccepted);
+			Task response = new ForwardTask(player.getNickName(),gameTask,getPlayerOne());
 			try {
 				player.getClient().sendToServer(response);
 			} catch (IOException e) {
@@ -61,9 +57,9 @@ public class AcceptInviteTask extends InviteGameTask {
 		if(player != null) {
 			AbstractConsole console = player.getConsole();
 			if(console != null) {
-				console.notice(playerWhoAccepted + " has accepted your Invitation!");
+				console.notice(getPlayerOne() + " has accepted your Invitation!");
 			} else {
-				System.out.println(playerWhoAccepted + " has accepted your Invitation!");
+				System.out.println(getPlayerOne() + " has accepted your Invitation!");
 			}
 		}
 	}
@@ -71,7 +67,7 @@ public class AcceptInviteTask extends InviteGameTask {
 	public void startGame(Player player, int gameID) {
 		BanqiGame game = player.getGame(gameID);
 		if(game != null) {
-			game.promptTurn(player, playerWhoAccepted);
+			game.promptTurn(player, getPlayerOne());
 		}
 	}
 }

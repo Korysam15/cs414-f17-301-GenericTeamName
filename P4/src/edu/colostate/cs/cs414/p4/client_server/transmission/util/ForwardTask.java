@@ -6,6 +6,8 @@ import java.io.IOException;
 
 import edu.colostate.cs.cs414.p4.client_server.server.AbstractServer;
 import edu.colostate.cs.cs414.p4.client_server.server.ActiveServer;
+import edu.colostate.cs.cs414.p4.client_server.server.registry.AbstractRegistry;
+import edu.colostate.cs.cs414.p4.client_server.server.registry.ActiveRegistry;
 import edu.colostate.cs.cs414.p4.client_server.server.session.ClientSession;
 import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p4.client_server.transmission.TaskConstents;
@@ -37,6 +39,14 @@ public class ForwardTask extends UtilityTask {
 		WriteUtils.writeString(toPlayer,dout);
 		WriteUtils.writeTask(task, dout);		
 	}
+	
+	public String getPlayerFrom() {
+		return fromPlayer;
+	}
+	
+	public String getPlayerTo() {
+		return toPlayer;
+	}
 
 	public String toString() {
 		return "[ForwardTask, Taskcode: " + TaskConstents.MESSAGE_TASK + 
@@ -48,6 +58,10 @@ public class ForwardTask extends UtilityTask {
 		if(server != null) {
 			forwardTheTask(server);
 		}
+	}
+	
+	public Task getTask() {
+		return task;
 	}
 	
 	private void forwardTheTask(AbstractServer server) {
@@ -63,11 +77,11 @@ public class ForwardTask extends UtilityTask {
 					success = true;
 				} catch (IOException e) {
 					success = false;
-					response = "Your message to: " + "'" + toPlayer + "' did not send";
+					response = "Your message to: " + "'" + toPlayer + "' did not send.";
 				}
 			} else {
 				success = false;
-				response = "No such user: " + "'" + toPlayer + "'";
+				response = getPlayerToStatus();
 			}
 			
 			if(!success) {
@@ -77,6 +91,18 @@ public class ForwardTask extends UtilityTask {
 					
 				}
 			}
+		}
+	}
+	
+	// 
+	// returns either "No such user: " + "'" + toPlayer + "'"
+	// or "'" + toPlayer + "' is not online."
+	private String getPlayerToStatus() {
+		AbstractRegistry registry = ActiveRegistry.getInstance();
+		if(registry != null && registry.isNicknameTaken(toPlayer)) {
+			return "'" + toPlayer + "' is not online.";
+		} else {
+			return "No such user: " + "'" + toPlayer + "'";
 		}
 	}
 }
