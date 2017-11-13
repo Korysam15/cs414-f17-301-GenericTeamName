@@ -198,6 +198,7 @@ public class ClientSession extends AbstractSession {
 		} else {
 			success = false;
 		}
+		GameInviteManager.getInstance().removeAllInvitationsFromAndToUser(this.ID);
 
 		String responseMessage = (success) ? "Successfully unregistered '"+this.ID+"'" :
 			"An error occurred unregistering '" + this.ID +"'";

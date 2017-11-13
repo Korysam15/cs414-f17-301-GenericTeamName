@@ -53,8 +53,8 @@ public class GetSentInvitesTask extends Task {
 	private String buildInviteListAsString(GameInviteManager inviteManager) {
 		List<InviteTask> actualInvites = inviteManager.getInvitationsFromUser(fromPlayer);
 		StringBuilder invites = new StringBuilder();
-		if(actualInvites != null) {
-			int size = actualInvites.size();
+		int size;
+		if(actualInvites != null && (size=actualInvites.size()) > 0) {
 			for(int i=0; i<size; i++) {
 				InviteTask invite = actualInvites.get(i);
 				invites.append("Invitation["+i+"]: " + invite.getPlayerTo() +
