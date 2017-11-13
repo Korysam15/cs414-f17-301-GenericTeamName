@@ -7,6 +7,9 @@ import java.io.IOException;
 import edu.colostate.cs.cs414.p4.client_server.transmission.TaskConstents;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.ReadUtils;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.WriteUtils;
+import edu.colostate.cs.cs414.p4.console.AbstractConsole;
+import edu.colostate.cs.cs414.p4.user.ActivePlayer;
+import edu.colostate.cs.cs414.p4.user.Player;
 
 public class InvalidGameTask extends GameTask {
 
@@ -41,7 +44,19 @@ public class InvalidGameTask extends GameTask {
 
 	@Override
 	public void run() {
-		System.out.println("Need to implement run method in: " + this.getClass());
+		Player player;
+		if((player = ActivePlayer.getInstance()) != null) {
+			displayToPlayer(player);
+		}
+	}
+	
+	private void displayToPlayer(Player player) {
+		AbstractConsole console = player.getConsole();
+		if(console != null) {
+			console.error(message);
+		} else {
+			System.out.println(message);
+		}
 	}
 
 }
