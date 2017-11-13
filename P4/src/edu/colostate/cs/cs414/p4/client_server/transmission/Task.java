@@ -29,7 +29,7 @@ public abstract class Task implements Runnable {
 	public abstract void writeBytes(DataOutputStream dout) throws IOException;
 	
 	public String toString() {
-		return "Task Code: " + this.getTaskCode();
+		return getClass().getSimpleName() + ": Task Code: " + this.getTaskCode();
 	}
 	
 	public abstract void run();

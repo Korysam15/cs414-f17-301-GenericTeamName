@@ -55,7 +55,7 @@ public class ReadUtils {
 		return TaskFactory.getInstance().createTaskFromBytes(data);
 	}
 	
-	public static List<Task> readTaskList(DataInputStream din) throws IOException {
+	public static List<? extends Task> readTaskList(DataInputStream din) throws IOException {
 		int length = din.readInt();
 		List<Task> ret = new ArrayList<Task>(length);
 		for(int i=0;i<length;i++) {
