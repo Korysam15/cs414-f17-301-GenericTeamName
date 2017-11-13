@@ -13,6 +13,7 @@ import java.util.Locale;
 
 import edu.colostate.cs.cs414.p4.client_server.server.AbstractServer;
 import edu.colostate.cs.cs414.p4.client_server.server.Server;
+import edu.colostate.cs.cs414.p4.client_server.server.game_server.GameInviteManager;
 import edu.colostate.cs.cs414.p4.client_server.server.registry.AbstractRegistry;
 import edu.colostate.cs.cs414.p4.client_server.server.registry.ActiveRegistry;
 import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
@@ -325,7 +326,8 @@ public class ClientSession extends AbstractSession {
 				this.email = t.getEmail();
 				server.registerClient(this, nickname);
 				setRegistered();
-				response = new LoginGreetingTask("Welcome Back " + nickname + "!",nickname);
+				String greeting = createGreetingMessage(nickname);
+				response = new LoginGreetingTask(greeting,nickname);
 			} else {
 				response = new LoginErrorTask(msg);
 			}
@@ -337,6 +339,16 @@ public class ClientSession extends AbstractSession {
 			send(response);
 		} catch(IOException e) {
 
+		}
+	}
+	
+	private String createGreetingMessage(String nickname) {
+		int pendingInvitations = GameInviteManager.getInstance().getInvitationsToUser(nickname).size();
+		String greeting = "Welcome Back " + nickname + "!";
+		if(pendingInvitations > 0) {
+			return greeting + " You have " + pendingInvitations + " pending game invitations.";
+		} else {
+			return greeting;
 		}
 	}
 
