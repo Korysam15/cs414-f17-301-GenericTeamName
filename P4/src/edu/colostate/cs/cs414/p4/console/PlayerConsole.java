@@ -7,6 +7,7 @@ import java.util.Set;
 
 import edu.colostate.cs.cs414.p4.client_server.client.AbstractClient;
 import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
+import edu.colostate.cs.cs414.p4.client_server.transmission.game.invite.GetInvitesTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.profile.GetProfileTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.LoginTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.LogoutTask;
@@ -18,7 +19,9 @@ import edu.colostate.cs.cs414.p4.user.Player;
 
 public class PlayerConsole extends AbstractConsole {
 	private static final String[] noParamCommands = 
-		{"exit","help","register","login","logout","unregister","create-game","view-profile",};
+		{"exit","help","register","login",
+		"logout","unregister","create-game","view-profile",
+		"view-invites"};
 
 	private static final int noParamCommandsLength = noParamCommands.length;
 
@@ -136,6 +139,9 @@ public class PlayerConsole extends AbstractConsole {
 		case "unregister":
 			unregister();
 			break;
+		case "view-invites":
+			viewInvites();
+			break;
 		}
 	}
 
@@ -196,7 +202,8 @@ public class PlayerConsole extends AbstractConsole {
 			msg += "type 'logout' to logout.\n\r" +
 					"type 'unregister' to logout and remove your account.\n" +
 					"type 'create-game' to create a game.\n" +
-					"type 'view-profile' to view a player's profile.\n";
+					"type 'view-profile' to view a player's profile.\n" +
+					"type 'view-invites' to accept or reject pending invitations.\n";
 		} else {
 			msg += "type 'login' to login to your account.\n" +
 					"type 'register' to create a new account.\n";
@@ -329,6 +336,16 @@ public class PlayerConsole extends AbstractConsole {
 				playerNickName = null;
 			}  catch (IOException e) {
 				error("Error occured while logging out");
+			}
+		}
+	}
+	
+	private void viewInvites() {
+		if(requireLogin()) {
+			try {
+				client.sendToServer(new GetInvitesTask(playerNickName));
+			} catch(IOException e) {
+				error("Error occured while retrieving invitations");
 			}
 		}
 	}

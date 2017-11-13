@@ -3,6 +3,8 @@ package edu.colostate.cs.cs414.p4.client_server.transmission.game.invite;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 import edu.colostate.cs.cs414.p4.client_server.server.AbstractServer;
 import edu.colostate.cs.cs414.p4.client_server.server.ActiveServer;
@@ -44,7 +46,9 @@ public class GetInvitesTask extends Task {
 		if(inviteManager == null) {
 			response = new MessageTask("Failed to retrieve invitations from the server.",MessageTask.ERROR);
 		} else {
-			response = new DisplayInvitesTask(inviteManager.getInvitationsToUser(fromPlayer));
+			List<InviteTask> invites = inviteManager.getInvitationsToUser(fromPlayer);
+			invites = (invites == null) ? new LinkedList<InviteTask>() : invites;
+			response = new DisplayInvitesTask(invites);
 		}
 		sendResponse(response);
 		

@@ -10,6 +10,9 @@ import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p4.client_server.transmission.TaskConstents;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.ReadUtils;
 import edu.colostate.cs.cs414.p4.client_server.transmission.util.WriteUtils;
+import edu.colostate.cs.cs414.p4.console.AbstractConsole;
+import edu.colostate.cs.cs414.p4.user.ActivePlayer;
+import edu.colostate.cs.cs414.p4.user.Player;
 
 public class DisplayInvitesTask extends Task {
 
@@ -42,8 +45,29 @@ public class DisplayInvitesTask extends Task {
 
 	@Override
 	public void run() {
-		for(InviteTask invite: invites) {
-			invite.run();
+		if(invites.size() > 0) {
+			for(InviteTask invite: invites) {
+				invite.run();
+			}
+		} else {
+			displayNoInvites();
+		}
+	}
+	
+	private void displayNoInvites() {
+		Player player;
+		if((player = ActivePlayer.getInstance()) != null) {
+			displayToPlayer(player);
+		} 
+	}
+	
+	private void displayToPlayer(Player player) {
+		AbstractConsole console = player.getConsole();
+		String msg = "You do not have any pending invitations.";
+		if(console != null) {
+			console.notice(msg);
+		} else {
+			System.out.println(msg);
 		}
 	}
 
