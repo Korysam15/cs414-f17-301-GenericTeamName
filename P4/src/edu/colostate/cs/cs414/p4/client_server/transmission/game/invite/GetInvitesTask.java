@@ -60,7 +60,7 @@ public class GetInvitesTask extends Task {
 			ClientSession toClient = server.getRegisteredClient(fromPlayer);
 			try {
 				toClient.send(response);
-			} catch (IOException e) {
+			} catch (Exception e) {
 				// ignored
 			}
 		}
