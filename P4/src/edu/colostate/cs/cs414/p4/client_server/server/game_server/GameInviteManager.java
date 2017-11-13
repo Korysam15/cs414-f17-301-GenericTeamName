@@ -14,7 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
+ 
 import edu.colostate.cs.cs414.p4.client_server.transmission.game.invite.*;
 
 public class GameInviteManager {
