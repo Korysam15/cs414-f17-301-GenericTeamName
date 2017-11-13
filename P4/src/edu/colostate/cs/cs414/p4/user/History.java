@@ -69,14 +69,30 @@ public class History {
 	 * @return the ratio of wins to games played
 	 */
 	public double getWinRatio(){
-		return (double)this.wins / (double)this.gamesPlayed;
+		Double winRatio = new Double((double)this.wins / (double)this.gamesPlayed);
+		if(winRatio.isNaN())
+		{
+			return 0;
+		}
+		else
+		{
+			return winRatio;
+		}		
 	}
 	/**
 	 * needs formatting to two decimals somehow
 	 * @return the ratio of losses to games played
 	 */
 	public double getLossRatio(){
-		return (double)this.losses / (double)this.gamesPlayed;
+		Double lossRatio = new Double((double)this.losses / (double)this.gamesPlayed);
+		if(lossRatio.isNaN())
+		{
+			return 0;
+		}
+		else
+		{
+			return lossRatio;
+		}
 	}
 	/**
 	 * @return the number of games recorded for this History object
