@@ -57,7 +57,8 @@ public class GetSentInvitesTask extends Task {
 			int size = actualInvites.size();
 			for(int i=0; i<size; i++) {
 				InviteTask invite = actualInvites.get(i);
-				invites.append("Invitation["+i+"]: " + invite.getPlayerTo() + "\n");
+				invites.append("Invitation["+i+"]: " + invite.getPlayerTo() +
+						" \"" + invite.getMessage() + "\"\n");
 			}
 		} else {
 			invites.append("You have not sent any invitations.");
