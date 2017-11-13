@@ -15,7 +15,9 @@ import edu.colostate.cs.cs414.p4.client_server.transmission.game.MoveTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.game.UpdateRecordTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.game.invite.AcceptInviteTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.game.invite.DisplayInvitesTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.game.invite.DisplaySentInvitesTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.game.invite.GetInvitesTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.game.invite.GetSentInvitesTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.game.invite.InviteTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.game.invite.RejectInviteTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.profile.DisplayProfileTask;
@@ -160,6 +162,12 @@ public final class TaskFactory {
 			break;
 		case TaskConstents.DISPLAY_INVITES_TASK:
 			t = new DisplayInvitesTask(din);
+			break;
+		case TaskConstents.GET_SENT_INVITES_TASK:
+			t = new GetSentInvitesTask(din);
+			break;
+		case TaskConstents.DISPLAY_SENT_INVITES_TASK:
+			t = new DisplaySentInvitesTask(din);
 			break;
     }
 		

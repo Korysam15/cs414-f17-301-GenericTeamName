@@ -34,8 +34,12 @@ public class TaskConstents {
 	public static final int SERVER_DISCONNECTED_TASK = 22;
 	public static final int GET_INVITES_TASK = 23;
 	public static final int DISPLAY_INVITES_TASK = 24;
-	/* public static final int TASK = 25;
-	 public static final int TASK = 26;
+	public static final int GET_SENT_INVITES_TASK = 25;
+	public static final int DISPLAY_SENT_INVITES_TASK = 26;
+	/* public static final int TASK = 27;
+	 public static final int TASK = 28;
+	 public static final int TASK = 29;
+	 public static final int TASK = 30;
 	.....
 	.....
 	.....
