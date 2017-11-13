@@ -11,12 +11,17 @@ import java.util.Set;
 import edu.colostate.cs.cs414.p4.client_server.transmission.game.invite.*;
 
 public class GameInviteManager {
+	private static final GameInviteManager instance = new GameInviteManager();
 	private final Map<String,Set<InviteTask>> fromUserInvites;
 	private final Map<String,Set<InviteTask>> toUserInvites;
 	
-	public GameInviteManager() {
+	private GameInviteManager() {
 		this.fromUserInvites = new HashMap<String,Set<InviteTask>>();
 		this.toUserInvites = new HashMap<String,Set<InviteTask>>();
+	}
+	
+	public static GameInviteManager getInstance() {
+		return instance;
 	}
 	
 	public synchronized List<InviteTask> getInvitationsFromUser(String userID) {

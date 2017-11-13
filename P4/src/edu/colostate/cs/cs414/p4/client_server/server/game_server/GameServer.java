@@ -22,13 +22,13 @@ public class GameServer extends AbstractGameServer {
 	
 	public GameServer(InetSocketAddress address) throws IOException {
 		super(address);
-		this.inviteManager = new GameInviteManager();
+		this.inviteManager = GameInviteManager.getInstance();
 		
 	}
 	
 	public GameServer(int port) throws IOException {
 		super(port);
-		this.inviteManager = new GameInviteManager();
+		this.inviteManager = GameInviteManager.getInstance();
 	}
 	
 	private boolean isPlayerOnline(String playerID) {
