@@ -6,6 +6,7 @@ import java.net.InetSocketAddress;
 import edu.colostate.cs.cs414.p4.client_server.server.registry.AbstractRegistry;
 import edu.colostate.cs.cs414.p4.client_server.server.registry.ActiveRegistry;
 import edu.colostate.cs.cs414.p4.client_server.server.session.ClientSession;
+import edu.colostate.cs.cs414.p4.client_server.transmission.game.CreateGameTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.game.FlipPieceTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.game.ForfeitTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.game.GameTask;
@@ -50,7 +51,7 @@ public class GameServer extends AbstractGameServer {
 			try {
 				client.send(t);
 			} catch (IOException e) {
-				log("Error occured while sending: " + t + " to " + client);
+				log("Error occured while sending: " + t + " to [" + client + "]");
 			}
 		}
 	}
@@ -70,14 +71,24 @@ public class GameServer extends AbstractGameServer {
 			sendGameTaskIfOnline(t,toPlayer);
 			return true;
 		} else {
-			GameTask response = new InvalidGameTask(toPlayer+" has removed their account",t.getGameID());
+			String message = toPlayer+" has removed their account";
+			GameTask response = new InvalidGameTask(message,t.getGameID());
+			log(fromClient.getID() + " on [" + fromClient + "] tried to send GameTask: "
+					+ t + " but " + message);
 			try {
 				fromClient.send(response);
 			} catch(IOException e) {
-				log("Failed to notify: " + fromClient + " that " + toPlayer + " no longer has an account");
+				log("Failed to notify: " + fromClient + " that " + message);
 			}
 			return false;
 		}
+	}
+	
+	@Override
+	public void handleGameTask(CreateGameTask t, ClientSession client) {
+		// This shouldn't have to be here
+		String playerTwo = t.getPlayerTwo();
+		checkAndSend(t,playerTwo,client);
 	}
 
 	@Override
@@ -137,6 +148,8 @@ public class GameServer extends AbstractGameServer {
 					+ t.getPlayerTwo() + 
 					"' never sent you an invitation.",t.getGameID());
 			this.sendGameTaskResponse(response, client);
+			log(client.getID() + " on [" + client + "] "
+					+ "never received an invitation, but they accepted it.");
 		}
 		
 
@@ -152,6 +165,8 @@ public class GameServer extends AbstractGameServer {
 			checkAndSend(t,playerTwo,client);
 		} else {
 			// ignore the fact that there wasn't an invitation, they rejected it anyway.
+			log(client.getID() + " on [" + client + "] "
+					+ "never received an invitation, but they rejected it.");
 		}
 		
 
