@@ -57,6 +57,10 @@ public class InviteTask extends InviteGameTask {
 		return getPlayerTwo();
 	}
 	
+	public String getMessage() {
+		return message;
+	}
+	
 	@Override
 	public int hashCode() {
 		return (getPlayerOne()+getPlayerTwo()+message).hashCode();
