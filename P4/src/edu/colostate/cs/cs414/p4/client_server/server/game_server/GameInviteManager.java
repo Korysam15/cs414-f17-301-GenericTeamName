@@ -38,8 +38,12 @@ public class GameInviteManager {
 			Set<InviteTask> toCopy = invites.get(userID);
 			if(toCopy != null) {
 				ret = new ArrayList<InviteTask>(toCopy);
+			} else {
+				ret = new ArrayList<InviteTask>();
 			}
-		}			
+		} else {
+			ret = new ArrayList<InviteTask>();
+		}
 		return ret;
 	}
 	
