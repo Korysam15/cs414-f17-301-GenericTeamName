@@ -8,6 +8,7 @@ import java.util.Set;
 import edu.colostate.cs.cs414.p4.client_server.client.AbstractClient;
 import edu.colostate.cs.cs414.p4.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p4.client_server.transmission.game.invite.GetInvitesTask;
+import edu.colostate.cs.cs414.p4.client_server.transmission.game.invite.GetSentInvitesTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.profile.GetProfileTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.LoginTask;
 import edu.colostate.cs.cs414.p4.client_server.transmission.registration_login.LogoutTask;
@@ -21,7 +22,7 @@ public class PlayerConsole extends AbstractConsole {
 	private static final String[] noParamCommands = 
 		{"exit","help","register","login",
 		"logout","unregister","create-game","view-profile",
-		"view-invites"};
+		"view-invites", "view-sent-invites"};
 
 	private static final int noParamCommandsLength = noParamCommands.length;
 
@@ -142,6 +143,9 @@ public class PlayerConsole extends AbstractConsole {
 		case "view-invites":
 			viewInvites();
 			break;
+		case "view-sent-invites":
+			viewSentInvites();
+			break;
 		}
 	}
 
@@ -203,7 +207,8 @@ public class PlayerConsole extends AbstractConsole {
 					"type 'unregister' to logout and remove your account.\n" +
 					"type 'create-game' to create a game.\n" +
 					"type 'view-profile' to view a player's profile.\n" +
-					"type 'view-invites' to accept or reject pending invitations.\n";
+					"type 'view-invites' to accept or reject pending invitations.\n" +
+					"type 'view-sent-invites' to view pending invitations that you sent.\n";
 		} else {
 			msg += "type 'login' to login to your account.\n" +
 					"type 'register' to create a new account.\n";
@@ -325,7 +330,7 @@ public class PlayerConsole extends AbstractConsole {
 				}
 			}
 		}  catch (IOException e) {
-			error("Error occured while unregistering");
+			error("Error occured while unregistering.");
 		}
 	}
 
@@ -335,7 +340,7 @@ public class PlayerConsole extends AbstractConsole {
 				client.sendToServer(new LogoutTask(player.getEmail()));
 				playerNickName = null;
 			}  catch (IOException e) {
-				error("Error occured while logging out");
+				error("Error occured while logging out.");
 			}
 		}
 	}
@@ -345,7 +350,17 @@ public class PlayerConsole extends AbstractConsole {
 			try {
 				client.sendToServer(new GetInvitesTask(playerNickName));
 			} catch(IOException e) {
-				error("Error occured while retrieving invitations");
+				error("Error occured while retrieving invitations.");
+			}
+		}
+	}
+	
+	private void viewSentInvites() {
+		if(requireLogin()) {
+			try {
+				client.sendToServer(new GetSentInvitesTask(playerNickName));
+			} catch(IOException e) {
+				error("Error occured while retrieving invitations that you have sent.");
 			}
 		}
 	}
