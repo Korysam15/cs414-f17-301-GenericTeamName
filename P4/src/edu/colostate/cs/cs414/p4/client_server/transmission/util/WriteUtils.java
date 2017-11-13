@@ -48,7 +48,7 @@ public class WriteUtils {
 		writeByteArray(t.toByteArray(),dout);
 	}
 	
-	public static void writeTaskList(List<Task> tasks, DataOutputStream dout) throws IOException {
+	public static void writeTaskList(List<? extends Task> tasks, DataOutputStream dout) throws IOException {
 		dout.writeInt(tasks.size());
 		for(Task t: tasks) {
 			writeTask(t, dout);
