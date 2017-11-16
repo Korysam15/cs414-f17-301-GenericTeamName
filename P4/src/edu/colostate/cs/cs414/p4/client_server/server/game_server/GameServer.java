@@ -17,24 +17,22 @@ import edu.colostate.cs.cs414.p4.client_server.transmission.game.invite.InviteTa
 import edu.colostate.cs.cs414.p4.client_server.transmission.game.invite.RejectInviteTask;
 
 public class GameServer extends AbstractGameServer {
-	
+
 	private final GameInviteManager inviteManager;
-	
+
 	public GameServer(InetSocketAddress address) throws IOException {
 		super(address);
-		this.inviteManager = GameInviteManager.getInstance();
-		
+		this.inviteManager = GameInviteManager.getInstance();	
 	}
-	
+
 	public GameServer(int port) throws IOException {
-		super(port);
-		this.inviteManager = GameInviteManager.getInstance();
+		this(new InetSocketAddress(port));
 	}
-	
+
 	private boolean isPlayerOnline(String playerID) {
 		return this.getRegisteredClient(playerID) != null;
 	}
-	
+
 	private boolean playerExists(String playerID) {
 		AbstractRegistry registry = ActiveRegistry.getInstance();
 		// if a registry exists
@@ -45,7 +43,7 @@ public class GameServer extends AbstractGameServer {
 			return isPlayerOnline(playerID);
 		}
 	}
-	
+
 	private void sendGameTask(GameTask t, ClientSession client) {
 		if(client != null) {
 			try {
@@ -55,17 +53,17 @@ public class GameServer extends AbstractGameServer {
 			}
 		}
 	}
-	
+
 	private void sendGameTask(GameTask t, String userID) {
 		sendGameTask(t,getRegisteredClient(userID));
 	}
-	
+
 	private void sendGameTaskIfOnline(GameTask t, String player) {
 		if(isPlayerOnline(player)) {
 			sendGameTask(t,player);
 		}
 	}
-	
+
 	private boolean checkAndSend(GameTask t, String toPlayer, ClientSession fromClient) {
 		if(playerExists(toPlayer)) {
 			sendGameTaskIfOnline(t,toPlayer);
@@ -83,7 +81,7 @@ public class GameServer extends AbstractGameServer {
 			return false;
 		}
 	}
-	
+
 	@Override
 	public void handleGameTask(CreateGameTask t, ClientSession client) {
 		// This shouldn't have to be here
@@ -94,7 +92,7 @@ public class GameServer extends AbstractGameServer {
 	@Override
 	public void handleGameTask(FlipPieceTask t, ClientSession client) {
 		// TODO validate FlipPieceTask
-		
+
 		// update game state
 		// send FlipPieceTask to playerTwo (if online)
 		String playerTwo = t.getPlayerTwo();
@@ -105,7 +103,7 @@ public class GameServer extends AbstractGameServer {
 	public void handleGameTask(MoveTask t, ClientSession client) {
 		// TODO validate MoveTask
 		// update game state
-		
+
 		// send MoveTask to playerTwo (if online)
 		String playerTwo = t.getPlayerTwo();
 		checkAndSend(t,playerTwo,client);
@@ -117,7 +115,7 @@ public class GameServer extends AbstractGameServer {
 		// TODO validate ForfeitTask?
 		// update playerOne's record to show an additional loss
 		// update playerTwo's record to show an additional win
-		
+
 		// send playerTwo a notification about the forfeit (if online)
 		String playerTwo = t.getPlayerTwo();
 		checkAndSend(t,playerTwo,client);
@@ -151,7 +149,7 @@ public class GameServer extends AbstractGameServer {
 			log(client.getID() + " on [" + client + "] "
 					+ "never received an invitation, but they accepted it.");
 		}
-		
+
 
 	}
 
@@ -168,7 +166,7 @@ public class GameServer extends AbstractGameServer {
 			log(client.getID() + " on [" + client + "] "
 					+ "never received an invitation, but they rejected it.");
 		}
-		
+
 
 	}
 
