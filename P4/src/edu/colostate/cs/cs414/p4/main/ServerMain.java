@@ -5,6 +5,7 @@ import java.net.InetSocketAddress;
 
 import edu.colostate.cs.cs414.p4.client_server.server.AbstractServer;
 import edu.colostate.cs.cs414.p4.client_server.server.ActiveServer;
+import edu.colostate.cs.cs414.p4.client_server.server.game_server.GameInviteManager;
 import edu.colostate.cs.cs414.p4.client_server.server.game_server.GameServer;
 import edu.colostate.cs.cs414.p4.client_server.server.registry.ActiveRegistry;
 import edu.colostate.cs.cs414.p4.client_server.server.registry.FileRegistry;
@@ -32,6 +33,7 @@ public class ServerMain {
 
 			InetSocketAddress address = new InetSocketAddress(port);
 			AbstractServer server = null;
+			GameInviteManager.setInstanceType(GameInviteManager.DB_INVITE_MANAGER);
 			server = new GameServer(address);
 			ActiveServer.setInstance(server);
 
