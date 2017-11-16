@@ -133,9 +133,10 @@ public class GameInviteManager {
 	public synchronized void addInvitation(InviteTask t) {
 		String fromUser = t.getPlayerFrom();
 		String toUser = t.getPlayerTo();
-		addInvitation(fromUserInvites,t,fromUser);
-		addInvitation(toUserInvites,t,toUser);
-		updateFile(t);
+		InviteTask copy = new InviteTask(t.getPlayerFrom(),t.getMessage(),t.getPlayerTo());
+		addInvitation(fromUserInvites,copy,fromUser);
+		addInvitation(toUserInvites,copy,toUser);
+		updateFile(copy);
 	}
 
 	private void addInvitation(Map<String,Set<InviteTask>> invites, InviteTask t, String userID) {
