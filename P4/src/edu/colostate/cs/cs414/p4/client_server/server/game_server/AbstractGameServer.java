@@ -72,6 +72,7 @@ public abstract class AbstractGameServer extends Server {
 	private void handleMultiForwardTask(MultiForwardTask t, ClientSession client) {
 		Task forwarded = t.getTask();
 		if(forwarded instanceof GameTask) {
+			log("Performing Task: " + t + " for " + client.getID() + " [" + client + "].");
 			GameTask gameTask = (GameTask) forwarded;
 			gameTask.setPlayerOne(client.getID());
 			List<String> toPlayers = t.getPlayersTo();
