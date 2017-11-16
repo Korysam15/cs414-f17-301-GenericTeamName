@@ -83,7 +83,7 @@ public class InviteTask extends InviteGameTask {
 	
 	public String toString() {
 		return "[InviteTask, Taskcode: " + getTaskCode() +
-				", Contents: " + message + getPlayerFrom() + "]";
+				", Contents: " + message + " from " + getPlayerFrom() + " to " + getPlayerTo() + " ]";
 	}
  
 	@Deprecated
