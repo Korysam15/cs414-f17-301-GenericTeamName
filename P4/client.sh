@@ -4,9 +4,9 @@ PACKAGE="edu.colostate.cs.cs414.p4.main"
 
 MAIN_CLASS="PlayerMain"
 
-ADDR="localhost"
+ADDR="76.120.120.62"
 
-PORT=5491
+PORT=54350
 
 
 cd $BIN

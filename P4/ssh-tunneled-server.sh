@@ -9,6 +9,7 @@ ADDR="localhost"
 USER="pflagert"
 
 PORT_A=54350
+
 PORT_B=5491
 
 ERRORS=0
@@ -61,23 +62,23 @@ inc_error() {
 }
 
 print_settings() {
-	echo -e "Address is: $ADDR\nPort is: $PORT\nUser is: $USER"
+	echo -e "Address is: $ADDR\nPort is: $PORT_A\nUser is: $USER"
 }
 
 main() {
 	print_settings
 	PID=-1
 	if [[ "$ADDR" != "localhost" ]]; then
-		echo -n "Tunneling $PORT_A to $USER@$ADDR: PID=";
-		ssh -nNT -C -L "$PORT_B:$USER@$ADDR:$PORT_A" "localhost" &
+		echo -n "Tunneling $PORT_A on $ADDR to $PORT_B on localhost: PID=";
+		ssh  -nNT -C -R "$ADDR:$PORT_A:localhost:$PORT_B" "$USER@$ADDR" &
 		PID=$!
 		echo $PID
 		sleep 3
 	fi
-	./client.sh
+	./server.sh
 	if [[ "$PID" != "-1" ]]; then
-		if ps aux | grep ssh | tr -s ' ' ' ' | cut -d ' ' -f2 | grep $PID &>/dev/null; then
-			echo -n "Would you like to kill the tunneled connection?(Y/n)";
+		if ps aux | grep ssh | tr -s ' ' ' ' | cut -d ' ' -f2 | grep $PID &>/dev/null; then			
+			echo -ne "\nWould you like to kill the tunneled connection?(Y/n): ";
 			read response
 			response=$(echo $response | tr '/a-z/' '/A-Z/')
 			if [[ "$response" == "Y" ]] || [[ "$response" == "YES" ]]; then
