@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.InterruptedIOException;
 import java.io.PrintStream;
+import java.util.List;
 
 import edu.colostate.cs.cs414.p5.user.Player;
 
@@ -17,8 +18,8 @@ public abstract class AbstractConsole implements Runnable {
 	public static final String WHITE="\033[0;37m";
 	public static final String NORM="\033[0m";
 
-	protected String noParamCommand;
-	protected String paramCommand;
+	protected String acceptedCommand;
+	protected List<String> params;
 	protected String errorMessage;
 	protected String outPutBeforeConsole = "";
 	protected Player player;
