@@ -10,7 +10,7 @@ public final class ConsoleConstants {
 	public static final String[] noParamCommands = 
 		{"exit","help","register","login",
 				"logout","unregister","create-game","view-profile",
-				"view-invites", "view-sent-invites", "clear"};
+				"view-invites", "view-sent-invites", "clear", "show-players"};
 
 	public static final String[] paramCommands =
 		{"login", "register", "create-game","view-profile", "help"};
@@ -72,6 +72,10 @@ public final class ConsoleConstants {
 			{"view-sent-invites", "view-sent-invites: to view invitations that you have sent\n" +
 								  "                   (and haven't been accepted/rejected).\n" +
 								  "  Usage: view-sent-invites\n"
+			},
+			{"show-players","show-players: shows a list of players and their status\n" +
+							"  Usage: what-players\n" +
+							"  Note: that a player's status is online, offline, or unkown.\n"
 			},
 			{"login", "login: to login to your account.\n" +
 					"  Usage: login <email> <password>\n" +
@@ -145,6 +149,7 @@ public final class ConsoleConstants {
 					WHITE+"view-profile"+NORM+": allows you to view a player's profile.\n" +
 					WHITE+"view-invites"+NORM+": allows you to accept or reject pending invitations.\n" +
 					WHITE+"view-sent-invites"+NORM+": allows you to view pending invitations that you sent.\n" +
+					WHITE+"show-players"+NORM+": shows a list of player's and their status\n"+
 					HELP_FOOTER;
 	public static final String NOT_LOGGED_IN_HELP =
 			HELP_HEADER + "login, register ]\n\r" +

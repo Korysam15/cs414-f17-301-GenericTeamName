@@ -10,6 +10,7 @@ import edu.colostate.cs.cs414.p5.client_server.client.AbstractClient;
 import edu.colostate.cs.cs414.p5.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.invite.GetInvitesTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.invite.GetSentInvitesTask;
+import edu.colostate.cs.cs414.p5.client_server.transmission.profile.GetAllPlayersTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.profile.GetProfileTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.LoginTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.LogoutTask;
@@ -161,6 +162,9 @@ public class PlayerConsole extends AbstractConsole {
 			break;
 		case "clear":
 			clear();
+			break;
+		case "show-players":
+			showPlayers();
 			break;
 		}
 	}
@@ -414,5 +418,15 @@ public class PlayerConsole extends AbstractConsole {
 	private void clear() {
 		output.print("\033[H\033[2J");
 		output.flush();
+	}
+	
+	private void showPlayers() {
+		if(requireLogin()) {
+			try {
+				client.sendToServer(new GetAllPlayersTask(playerNickName));
+			} catch(IOException e) {
+				error("Error occured while retrieving players.");
+			}
+		}
 	}
 }
