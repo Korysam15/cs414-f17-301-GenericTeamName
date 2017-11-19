@@ -2,6 +2,8 @@ package edu.colostate.cs.cs414.p5.client_server.server.registry;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -41,6 +43,14 @@ public abstract class AbstractRegistry {
 		validUsers = new HashMap<String,User>();
 		takenEmails = new HashSet<String>();
 		takenNicknames = new HashSet<String>();
+	}
+	
+	public List<String> getAllUserNicknames() {
+		List<String> ret = new LinkedList<String>();
+		for(String nickname: takenNicknames) {
+			ret.add(nickname);
+		}
+		return ret;
 	}
 	
 	/**

@@ -20,7 +20,9 @@ import edu.colostate.cs.cs414.p5.client_server.transmission.game.invite.GetInvit
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.invite.GetSentInvitesTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.invite.InviteTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.invite.RejectInviteTask;
+import edu.colostate.cs.cs414.p5.client_server.transmission.profile.DisplayPlayersTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.profile.DisplayProfileTask;
+import edu.colostate.cs.cs414.p5.client_server.transmission.profile.GetAllPlayersTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.profile.GetProfileTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.LoginTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.LogoutTask;
@@ -168,6 +170,12 @@ public final class TaskFactory {
 			break;
 		case TaskConstents.DISPLAY_SENT_INVITES_TASK:
 			t = new DisplaySentInvitesTask(din);
+			break;
+		case TaskConstents.GET_ALL_PLAYERS_TASK:
+			t = new GetAllPlayersTask(din);
+			break;
+		case TaskConstents.DISPLAY_PLAYERS_TASK:
+			t = new DisplayPlayersTask(din);
 			break;
     }
 		
