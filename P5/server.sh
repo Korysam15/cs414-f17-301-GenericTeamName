@@ -1,6 +1,6 @@
 BIN="bin/"
 
-PACKAGE="edu.colostate.cs.cs414.p4.main"
+PACKAGE="edu.colostate.cs.cs414.p5.main"
 
 MAIN_CLASS="ServerMain"
 

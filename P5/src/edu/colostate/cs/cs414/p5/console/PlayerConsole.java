@@ -3,6 +3,7 @@ package edu.colostate.cs.cs414.p5.console;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Set;
 
 import edu.colostate.cs.cs414.p5.client_server.client.AbstractClient;
@@ -17,14 +18,9 @@ import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.U
 import edu.colostate.cs.cs414.p5.client_server.transmission.util.ForwardTask;
 import edu.colostate.cs.cs414.p5.user.ActivePlayer;
 import edu.colostate.cs.cs414.p5.user.Player;
+import static edu.colostate.cs.cs414.p5.console.ConsoleConstants.*;
 
 public class PlayerConsole extends AbstractConsole {
-	private static final String[] noParamCommands = 
-		{"exit","help","register","login",
-		"logout","unregister","create-game","view-profile",
-		"view-invites", "view-sent-invites"};
-
-	private static final int noParamCommandsLength = noParamCommands.length;
 
 	/**
 	 * We will store this here to simplify {@link ForwardTask}s
@@ -53,9 +49,9 @@ public class PlayerConsole extends AbstractConsole {
 	 * Sets a few instance variables to null
 	 */
 	private void nullCommands() {
-		noParamCommand = null;
-		paramCommand = null;
+		acceptedCommand = null;
 		errorMessage = null;
+		params = new LinkedList<String>();
 	}
 
 	/**
@@ -71,14 +67,32 @@ public class PlayerConsole extends AbstractConsole {
 			if(command.startsWith(noParamCommands[i])) {
 				if(commandLength >= (length = noParamCommands[i].length()) && 
 						!command.substring(length, commandLength).matches(".*\\w.*")) { // white space after command is OK.
-					noParamCommand = noParamCommands[i];
+					acceptedCommand = noParamCommands[i];
 					return true;
 				}
 				else {
-					errorMessage = "Expected: '" + noParamCommands[i] + "'\nReceived: '" + command + "'"; 
+					errorMessage = "Expected '" + noParamCommands[i] + "' which does not support additional arguments.\nReceived: '" + command + "'"; 
 					return false;
 				}
 			}
+		}
+		return false;
+	}
+
+	private boolean checkCommandsWithParam(String command) {
+		int i=0;
+		for(;i<paramCommandsLength;i++) {
+			if(command.startsWith(paramCommands[i]+" ")) {
+				acceptedCommand = paramCommands[i];
+				String[] splitArgs = command.split(" ");
+				for(int j=1;j<splitArgs.length;j++) {
+					String param = splitArgs[j];
+					param = param.trim();
+					if(!param.isEmpty())
+						params.add(param);
+				}
+				return true;
+			} 
 		}
 		return false;
 	}
@@ -102,9 +116,8 @@ public class PlayerConsole extends AbstractConsole {
 	 */
 	@Override
 	protected boolean acceptCommand(String command) {
-		if(checkCommandsWithoutParam(command))
+		if(checkCommandsWithoutParam(command) || checkCommandsWithParam(command))
 			return true;
-
 		if(errorMessage == null)
 			errorMessage = "Unkown Command: " + command;
 
@@ -115,7 +128,7 @@ public class PlayerConsole extends AbstractConsole {
 	 * Implements desired functionality for commands that do NOT require parameters.
 	 */
 	private void handleCommandWithoutParam() {
-		switch(noParamCommand) {
+		switch(acceptedCommand) {
 		case "exit":
 			exit();
 			break;
@@ -146,6 +159,9 @@ public class PlayerConsole extends AbstractConsole {
 		case "view-sent-invites":
 			viewSentInvites();
 			break;
+		case "clear":
+			clear();
+			break;
 		}
 	}
 
@@ -154,7 +170,7 @@ public class PlayerConsole extends AbstractConsole {
 	 */
 	@Override
 	protected synchronized void handleCommand() {
-		if(noParamCommand != null)
+		if(acceptedCommand != null)
 			handleCommandWithoutParam();
 		nullCommands();
 	}
@@ -186,7 +202,7 @@ public class PlayerConsole extends AbstractConsole {
 			playerNickName = player.getNickName();
 			return true;
 		} else {
-			error("You must be logged in before you can: " + noParamCommand);
+			error("You must be logged in before you can: " + acceptedCommand);
 			return false;
 		}
 	}
@@ -195,26 +211,26 @@ public class PlayerConsole extends AbstractConsole {
 		if(!client.isLoggedIn()) {
 			return true;
 		} else {
-			error("You must be logged off before you can: " + noParamCommand);
+			error("You must be logged off before you can: " + acceptedCommand);
 			return false;
 		}
 	}
 
 	private void help() {
-		String msg = "type 'help' to see this message.\n\r";
-		if(client.isLoggedIn()) {
-			msg += "type 'logout' to logout.\n\r" +
-					"type 'unregister' to logout and remove your account.\n" +
-					"type 'create-game' to create a game.\n" +
-					"type 'view-profile' to view a player's profile.\n" +
-					"type 'view-invites' to accept or reject pending invitations.\n" +
-					"type 'view-sent-invites' to view pending invitations that you sent.\n";
+		if(params.size() <= 0) {
+			if(client.isLoggedIn()) {
+				output.println(LOGGED_IN_HELP);
+			} else {
+				output.println(NOT_LOGGED_IN_HELP);
+			}
 		} else {
-			msg += "type 'login' to login to your account.\n" +
-					"type 'register' to create a new account.\n";
+			String commandToGiveHelp = params.get(0);
+			String helpMSG = COMMAND_HELP_MAP.get(commandToGiveHelp);
+			if(helpMSG == null) {
+				helpMSG = "Unkown command: '" + commandToGiveHelp + "' type help to see the list of available commands.\n";
+			}
+			output.println(helpMSG);
 		}
-		msg += "type 'exit' to quit this program.";
-		display(msg);
 	}
 
 	private void exit() {
@@ -250,8 +266,21 @@ public class PlayerConsole extends AbstractConsole {
 	private void login() {
 		if(requireLogoff()) {
 			try {
-				String email = promptUser("Please enter in a valid Email:");
-				String password = promptUser("Please enter your password:");
+				String email;
+				String password;
+				if(params.size() <= 0 || params.size() > 2) {
+					if(params.size() > 2) {
+						error("Command 'login' only allows 2 aditional arguments <email> <password>");
+					}
+					email = promptUser("Please enter in a valid Email:");
+					password = promptUser("Please enter your password:");
+				} else if(params.size() == 1) {
+					email = params.get(0);
+					password = promptUser("Please enter your password:");
+				} else {
+					email = params.get(0);
+					password = params.get(1);
+				}
 				ActivePlayer.setInstance(player);
 				player.setEmail(email);
 				player.setPassword(password); // encrypts password
@@ -271,18 +300,27 @@ public class PlayerConsole extends AbstractConsole {
 
 	private void createGameInvites() {
 		Set<String> toInvite = new HashSet<String>();
-		String next = "";
 		try {
-			do {
-				next = promptUser("Enter the nickname name of the player you would like to invite"
-						+ " or click enter to send the invititations: ");
-				next = next.trim();
-				if(!next.isEmpty()) {
-					toInvite.add(next);
-				} else {
-					break;
+			if(params.size() <= 0) {
+				String next = "";
+				do {
+					next = promptUser("Enter the nickname name of the player you would like to invite"
+							+ " or click enter to send the invititations: ");
+					next = next.trim();
+					if(!next.isEmpty()) {
+						toInvite.add(next);
+					} else {
+						break;
+					}
+				} while(true);
+			} else {
+				for(String next: params) {
+					next = next.trim();
+					if(!next.isEmpty()) {
+						toInvite.add(next);
+					}
 				}
-			} while(true);
+			}
 
 			if(toInvite.isEmpty()) {
 				warning("You didn't invite anyone.");
@@ -299,8 +337,16 @@ public class PlayerConsole extends AbstractConsole {
 	private void viewProfile() {
 		if(requireLogin()) {
 			try {
-				String userOther = promptUser("Enter the nickname of the player's profile you would"
-						+ " like to view or click enter to view your own:");
+				String userOther;
+				if(params.size() <= 0 || params.size() > 1) {
+					if(params.size() > 1) {
+						error("Command 'view-profile' only allows 1 additional argument.");
+					}
+					userOther = promptUser("Enter the nickname of the player's profile you would"
+							+ " like to view or click enter to view your own:");
+				} else {
+					userOther = params.get(0);
+				}
 				userOther = userOther.trim();
 				if(userOther.isEmpty()) {
 					userOther = playerNickName;
@@ -322,7 +368,7 @@ public class PlayerConsole extends AbstractConsole {
 				response = response.toLowerCase();
 				if(response.equals("yes")) {
 					client.sendToServer(new UnregisterTask(
-						player.getEmail(),player.getNickName(),player.getPassword()));
+							player.getEmail(),player.getNickName(),player.getPassword()));
 					warning("Your account will be removed.");
 					playerNickName = null;
 				} else {
@@ -344,7 +390,7 @@ public class PlayerConsole extends AbstractConsole {
 			}
 		}
 	}
-	
+
 	private void viewInvites() {
 		if(requireLogin()) {
 			try {
@@ -354,7 +400,7 @@ public class PlayerConsole extends AbstractConsole {
 			}
 		}
 	}
-	
+
 	private void viewSentInvites() {
 		if(requireLogin()) {
 			try {
@@ -363,5 +409,10 @@ public class PlayerConsole extends AbstractConsole {
 				error("Error occured while retrieving invitations that you have sent.");
 			}
 		}
+	}
+
+	private void clear() {
+		output.print("\033[H\033[2J");
+		output.flush();
 	}
 }
