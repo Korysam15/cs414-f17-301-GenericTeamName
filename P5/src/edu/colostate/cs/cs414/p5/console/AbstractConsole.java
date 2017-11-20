@@ -35,6 +35,10 @@ public abstract class AbstractConsole implements Runnable {
 	}
 
 	public abstract void display(Object msg);
+	
+	public abstract void displayNoPrompt(Object msg);
+	
+	public abstract void clear();
 
 	protected abstract boolean acceptCommand(String command);
 

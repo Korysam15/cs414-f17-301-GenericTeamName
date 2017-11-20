@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class ConsoleConstants {
+public final class CommandConstants {
 	public static final String WHITE="\033[0;37m";
 	public static final String NORM="\033[0m";
 	public static final String[] noParamCommands = 

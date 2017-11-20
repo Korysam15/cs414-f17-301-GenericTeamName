@@ -19,7 +19,7 @@ import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.U
 import edu.colostate.cs.cs414.p5.client_server.transmission.util.ForwardTask;
 import edu.colostate.cs.cs414.p5.user.ActivePlayer;
 import edu.colostate.cs.cs414.p5.user.Player;
-import static edu.colostate.cs.cs414.p5.console.ConsoleConstants.*;
+import static edu.colostate.cs.cs414.p5.console.CommandConstants.*;
 
 public class PlayerConsole extends AbstractConsole {
 
@@ -108,6 +108,12 @@ public class PlayerConsole extends AbstractConsole {
 	public synchronized void display(Object msg) {
 		if(msg != null)
 			output.print("\r" + msg.toString() + outPutBeforeConsole);
+	}
+	
+	@Override
+	public synchronized void displayNoPrompt(Object msg) {
+		if(msg != null)
+			output.println(msg);
 	}
 
 	/**
@@ -415,7 +421,7 @@ public class PlayerConsole extends AbstractConsole {
 		}
 	}
 
-	private void clear() {
+	public void clear() {
 		output.print("\033[H\033[2J");
 		output.flush();
 	}
