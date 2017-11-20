@@ -360,14 +360,19 @@ public class ClientSession extends AbstractSession {
 
 	@Override
 	public int hashCode() {
-		// TODO Auto-generated method stub
-		return 0;
+		synchronized(isRegistered) {
+			return (address+email+"ID"+isRegistered).hashCode();
+		}
 	}
 
 	@Override
 	public boolean equals(Object o) {
-		// TODO Auto-generated method stub
-		return false;
+		if(o == null || !(o instanceof ClientSession)) {
+			return false;
+		} else {
+			// no need to cast o to ClientSession, hashCode is overwritten in ClientSession
+			return this.hashCode()==o.hashCode();
+		}
 	}
 
 	private String getDate() {
