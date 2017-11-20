@@ -6,10 +6,9 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
-import edu.colostate.cs.cs414.p5.client_server.server.AbstractServer;
-import edu.colostate.cs.cs414.p5.client_server.server.ActiveServer;
 import edu.colostate.cs.cs414.p5.client_server.server.registry.AbstractRegistry;
 import edu.colostate.cs.cs414.p5.client_server.server.registry.ActiveRegistry;
+import edu.colostate.cs.cs414.p5.client_server.server.session.SessionManager;
 import edu.colostate.cs.cs414.p5.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p5.client_server.transmission.TaskConstents;
 import edu.colostate.cs.cs414.p5.client_server.transmission.util.MessageTask;
@@ -45,7 +44,7 @@ public class GetAllPlayersTask extends Task {
 	@Override
 	public void run() {
 		AbstractRegistry registry = ActiveRegistry.getInstance();
-		AbstractServer server = ActiveServer.getInstance();
+		SessionManager server = SessionManager.getInstance();
 		Task response;
 		if(registry != null) {
 			List<String> allPlayers = registry.getAllUserNicknames();
@@ -60,18 +59,18 @@ public class GetAllPlayersTask extends Task {
 		}
 		
 		try {
-			server.getRegisteredClient(playerWhoWantsToSee).send(response);
+			server.sendToClient(response, playerWhoWantsToSee);
 		} catch(Exception e) {
 			
 		}
 
 	}
 	
-	private String getPlayerStatus(AbstractServer server, String nickname) {
+	private String getPlayerStatus(SessionManager server, String nickname) {
 		String status;
 		if(server == null) {
 			status = RED + " unkown";
-		} else if(server.getRegisteredClient(nickname) != null) {
+		} else if(server.getLoggedInClient(nickname) != null) {
 			status = WHITE + " online";
 		} else {
 			status = YELLOW +" offline";

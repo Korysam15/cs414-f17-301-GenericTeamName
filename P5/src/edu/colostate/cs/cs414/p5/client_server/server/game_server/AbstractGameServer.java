@@ -27,7 +27,7 @@ public abstract class AbstractGameServer extends Server {
 			try {
 				client.send(t);
 			} catch(IOException e) {
-				log("Failed to send response to: " + client);
+				LOG.info("Failed to send response to: " + client);
 			}
 		}
 	}
@@ -44,7 +44,7 @@ public abstract class AbstractGameServer extends Server {
 	@Override
 	public void handleTask(Task t, ClientSession client) {
 		if(t instanceof GameTask) {
-			log("Performing Game Task: " + t + " for " + client.getID() + " [" + client + "].");
+			LOG.info("Performing Game Task: " + t + " for " + client.getID() + " [" + client + "].");
 			handleGameTask((GameTask)t, client);
 		} else if(t instanceof ForwardTask) {
 			handleForwardTask((ForwardTask) t, client);
@@ -72,7 +72,7 @@ public abstract class AbstractGameServer extends Server {
 	private void handleMultiForwardTask(MultiForwardTask t, ClientSession client) {
 		Task forwarded = t.getTask();
 		if(forwarded instanceof GameTask) {
-			log("Performing Task: " + t + " for " + client.getID() + " [" + client + "].");
+			LOG.info("Performing Task: " + t + " for " + client.getID() + " [" + client + "].");
 			GameTask gameTask = (GameTask) forwarded;
 			gameTask.setPlayerOne(client.getID());
 			List<String> toPlayers = t.getPlayersTo();
@@ -95,7 +95,7 @@ public abstract class AbstractGameServer extends Server {
 							" doesn't include both playerOne and playerTwo.\n"+
 							"Either wrap in a ForwardTask, or update constructors.",t.getGameID())
 					,client);
-			log(" Received outdated GameTask: " + t + " from: " + client.getID() + "["+ client + "]");
+			LOG.info(" Received outdated GameTask: " + t + " from: " + client.getID() + "["+ client + "]");
 		} else if(t instanceof InviteGameTask) {
 			handleInviteGameTask((InviteGameTask)t, client);
 		} else if(t instanceof CreateGameTask) { 
@@ -109,7 +109,7 @@ public abstract class AbstractGameServer extends Server {
 		} else {
 			String message = "Usupported GameTask: " + t;
 			sendGameTaskResponse(new InvalidGameTask(message, t.getGameID()),client);
-			log(message + " from: " + client.getID() + "["+ client + "]");
+			LOG.info(message + " from: " + client.getID() + "["+ client + "]");
 		}
 	}
 	
@@ -123,7 +123,7 @@ public abstract class AbstractGameServer extends Server {
 		} else {
 			String message = "Usupported InviteGameTask: " + t;
 			sendGameTaskResponse(new InvalidGameTask(message, t.getGameID()),client);
-			log(message + " from: " + client.getID() + "["+ client + "]");
+			LOG.info(message + " from: " + client.getID() + "["+ client + "]");
 		}
 	}
 	

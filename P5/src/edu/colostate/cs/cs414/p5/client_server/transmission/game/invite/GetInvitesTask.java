@@ -6,10 +6,9 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-import edu.colostate.cs.cs414.p5.client_server.server.AbstractServer;
-import edu.colostate.cs.cs414.p5.client_server.server.ActiveServer;
 import edu.colostate.cs.cs414.p5.client_server.server.game_server.GameInviteManager;
 import edu.colostate.cs.cs414.p5.client_server.server.session.ClientSession;
+import edu.colostate.cs.cs414.p5.client_server.server.session.SessionManager;
 import edu.colostate.cs.cs414.p5.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p5.client_server.transmission.TaskConstents;
 import edu.colostate.cs.cs414.p5.client_server.transmission.util.MessageTask;
@@ -26,8 +25,7 @@ public class GetInvitesTask extends Task {
 	
 	public GetInvitesTask(DataInputStream din) throws IOException {
 		this.fromPlayer = ReadUtils.readString(din);
-	}
-	
+	}	
 	
 	@Override
 	public int getTaskCode() {
@@ -55,9 +53,10 @@ public class GetInvitesTask extends Task {
 	}
 	
 	private void sendResponse(Task response) {
-		AbstractServer server = ActiveServer.getInstance();
-		if(server != null) {
-			ClientSession toClient = server.getRegisteredClient(fromPlayer);
+		SessionManager manager = SessionManager.getInstance();
+		if(manager != null) {
+			
+			ClientSession toClient = manager.getLoggedInClient(fromPlayer);
 			try {
 				toClient.send(response);
 			} catch (Exception e) {

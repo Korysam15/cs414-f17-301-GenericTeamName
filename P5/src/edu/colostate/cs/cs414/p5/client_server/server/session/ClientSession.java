@@ -7,38 +7,17 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
-import edu.colostate.cs.cs414.p5.client_server.server.AbstractServer;
-import edu.colostate.cs.cs414.p5.client_server.server.Server;
-import edu.colostate.cs.cs414.p5.client_server.server.game_server.GameInviteManager;
-import edu.colostate.cs.cs414.p5.client_server.server.registry.AbstractRegistry;
-import edu.colostate.cs.cs414.p5.client_server.server.registry.ActiveRegistry;
+import edu.colostate.cs.cs414.p5.client_server.logger.Logger;
 import edu.colostate.cs.cs414.p5.client_server.transmission.Task;
-import edu.colostate.cs.cs414.p5.client_server.transmission.TaskConstents;
 import edu.colostate.cs.cs414.p5.client_server.transmission.TaskFactory;
-import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.LoginTask;
-import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.LogoutTask;
-import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.RegisterTask;
-import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.UnregisterTask;
-import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.response.ExitResponseTask;
-import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.response.LoginErrorTask;
-import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.response.LoginGreetingTask;
-import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.response.RegisterGreetingTask;
-import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.response.RegistrationErrorTask;
 
 /**
  * @author pflagert
  *
  */
 public class ClientSession extends AbstractSession {
-
-	/* Used for debugging */
-	public static final boolean DEBUG = Server.DEBUG;
-	public static final String DEBUG_TAB = "    ";
-	private static int NUM_TABS = 0;
+	private static final Logger LOG = Logger.getInstance();
 
 	private SocketChannel channel;
 
@@ -51,21 +30,29 @@ public class ClientSession extends AbstractSession {
 	
 	private String address;
 
-	public ClientSession(AbstractServer server, SelectionKey key, String ID) throws IOException {
-		super(server, key, ID);
+	public ClientSession(SelectionKey key, String ID) throws IOException {
+		super(key, ID);
 		channel = (SocketChannel) key.channel();
 		writeLock = new Object();
 		readLock = new Object();
 		this.address = channel.socket().getRemoteSocketAddress().toString();
 	}
-
-	public ClientSession(AbstractSession s) throws IOException {
-		this(s.server,s.key,s.ID);
+	
+	public String getEmail() {
+		synchronized(address) {
+			return email;
+		}
+	}
+	
+	public void setEmail(String email) {
+		synchronized(address) {
+			this.email = email;
+		}
 	}
 
 	@Override
 	public void receive() throws IOException {
-		debugPrintHeader("receive");
+		LOG.debug("Trying to read bytes to create task");
 		ByteBuffer localWrite = null;
 
 		ByteBuffer readBuffer = ByteBuffer.allocate(7000);
@@ -77,7 +64,7 @@ public class ClientSession extends AbstractSession {
 				if(read >= 4) {
 					readBuffer.flip();
 					size = readBuffer.getInt();
-					debugPrintln("READ " + size + " For the amount of required bytes");
+					LOG.debug("READ " + size + " For the amount of required bytes");
 					if(size >= 1) {
 						localWrite = ByteBuffer.allocate(size);
 						if(read > 4) {
@@ -87,8 +74,8 @@ public class ClientSession extends AbstractSession {
 						read -= size;
 						//readBuffer.clear();
 					} else {
-						debugPrintln("SIZE: " + size + " is an invalid ammount of bytes.");
-						debugPrintln("returning");
+						LOG.error("SIZE: " + size + " is an invalid ammount of bytes to read.");
+						LOG.debug("returning");
 						return;
 					}
 				} else {
@@ -99,31 +86,30 @@ public class ClientSession extends AbstractSession {
 				handleOverread(readBuffer);
 			}
 			if(temp == -1 || !channel.isConnected()) {
-				server.clientDisconnected(this, key);
+				manager.clientDisconnected(this, key);
 			} else {
-				debugPrintln("DONE READING BYTES: READ " + total + " TOTAL BYTES");
+				LOG.debug("DONE READING BYTES: READ " + total + " TOTAL BYTES");
 			}
 		}
-		debugPrintFooter("receive");
 	}
 
 	private void handleOverread(ByteBuffer readBuffer) throws IOException {
-		debugPrintHeader("handleOverread");
+		LOG.debug("Handling additional read bytes");
 		while(readBuffer.remaining() >= 4) {
 			int size = readBuffer.getInt();
-			debugPrintln("READ " + size + " For the amount of required bytes");
+			LOG.debug("READ " + size + " For the amount of required bytes");
 			if(size >= 1) {
 				ByteBuffer localWrite = ByteBuffer.allocate(size);
 				fillLocal(localWrite,readBuffer);
 				receiveTask(localWrite,size, 0);
 			} else {
-				debugPrintln("SIZE: " + size + " is an invalid ammount of bytes.");
-				debugPrintln("returning");
+				LOG.error("SIZE: " + size + " is an invalid ammount of bytes.");
+				LOG.debug("returning");
 				return;
 			}
 
 		}
-		debugPrintFooter("handleOverread");
+		//debugPrintFooter("handleOverread");
 	}
 
 	private void fillLocal(ByteBuffer local, ByteBuffer readBuffer) {
@@ -144,10 +130,10 @@ public class ClientSession extends AbstractSession {
 			}
 		}
 
-		debugPrintln("Done reading the required bytes: " + (read - 4));
+		LOG.debug("Done reading the required bytes: " + (read - 4));
 
 		if(temp == -1) {
-			server.clientDisconnected(this, key);
+			manager.clientDisconnected(this, key);
 		} else {
 			createTask(local);
 		}
@@ -157,83 +143,16 @@ public class ClientSession extends AbstractSession {
 
 	private void createTask(ByteBuffer local) throws IOException {
 		Task t = TaskFactory.getInstance().createTaskFromBytes(local.array());
-		if(t != null) {
-			switch(t.getTaskCode()) {
-			case TaskConstents.LOGIN_TASK:
-				if(t instanceof LoginTask) {
-					registerWithServer((LoginTask)t);
-				}
-				break;
-			case TaskConstents.REGISTER_TASK:
-				if(t instanceof RegisterTask) {
-					registerWithServer((RegisterTask)t);
-				}
-				break;
-			default:
-				if(isRegisteredWithServer()) {
-					handleTask(t);
-				} else {
-
-				}
-			}
-		}
+		manager.handleTask(t,this);
 	}
 
-	private void handleTask(Task t) throws IOException {
-		if(t instanceof UnregisterTask) {
-			unregister((UnregisterTask)t);
-		} else if(t instanceof LogoutTask) {
-			logout();
-		} else {
-			server.handleTask(t,this);
-		}
-	}
-
-	private void unregister(UnregisterTask t) throws IOException {
-		AbstractRegistry registry = ActiveRegistry.getInstance();
-		boolean success;
-		
-		if(registry != null) {
-			success = registry.unregisterUser(email);
-		} else {
-			success = false;
-		}
-		GameInviteManager.getInstance().removeAllInvitationsFromAndToUser(this.ID);
-
-		String responseMessage = (success) ? "Successfully unregistered '"+this.ID+"'" :
-			"An error occurred unregistering '" + this.ID +"'";
-		ExitResponseTask response = new ExitResponseTask(responseMessage);
-		
-		try {
-			send(response);
-		} catch (Exception e) {
-			
-		} finally {
-			server.unregisterClient(this, this.ID);
-			setUnregistered();
-			setID(null);
-		}
-	}
-
-	private void logout() {
-		ExitResponseTask response = new ExitResponseTask("Good Bye " + this.ID + "!");
-		try {
-			send(response);
-		} catch(Exception e) {
-			
-		} finally {
-			server.unregisterClient(this, this.ID);
-			setUnregistered();
-			setID(null);
-		}
-	}
 	@Override
 	public void send(Task t) throws IOException {
-		debugPrintHeader("send");
+		//debugPrintHeader("send");
 		synchronized(writeLock) {
 			byte[] data = t.toByteArray();
 			int dataLength = data.length;
-			debugPrintln("Sending: " + dataLength + " bytes for TaskCode: " + t.getTaskCode());
+			LOG.debug("Sending: " + dataLength + " bytes for TaskCode: " + t);
 			ByteBuffer writeBuffer = ByteBuffer.allocate(dataLength+4);
 			writeBuffer.putInt(dataLength);
 			writeBuffer.put(data);
@@ -242,14 +161,13 @@ public class ClientSession extends AbstractSession {
 			while(writeBuffer.hasRemaining()) {
 				written += channel.write(writeBuffer);
 			}
-			debugPrintln("Sent: " + written + " total bytes");
+			LOG.debug("Sent: " + written + " total bytes");
 		}
-		debugPrintFooter("send");
 	}
 
 	@Override
 	public void disconnect() {
-		server.clientDisconnected(this, key);
+		manager.clientDisconnected(this, key);
 		try {
 			if(channel != null && channel.isOpen()) {
 				channel.close();
@@ -264,105 +182,13 @@ public class ClientSession extends AbstractSession {
 	}
 
 	@Override
-	public boolean isConnected() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isRegisteredWithServer() {
-		synchronized(isRegistered) {
-			return isRegistered;
-		}
-	}
-
-	private void setRegistered() {
-		synchronized(isRegistered) {
-			isRegistered = true;
-		}
-	}
-
-	private void setUnregistered() {
-		synchronized(isRegistered) {
-			isRegistered = false;
-		}
-	}
-
-	@Override
-	public void registerWithServer(RegisterTask t) {
-		AbstractRegistry registry = ActiveRegistry.getInstance();
-		Task response = null;
-		if(registry != null) {
-			String msg = registry.registerNewUser(t);
-			if(msg == null) {
-				String nickname = t.getNickname();
-				setID(nickname);
-				this.email = t.getEmail();
-				server.registerClient(this, nickname);
-				setRegistered();
-				response = new RegisterGreetingTask("Welcome " + nickname + "!");
-			} else {
-				response = new RegistrationErrorTask(msg);
-			}
-		} else {
-			response = new RegistrationErrorTask("Error occured while logging in.");
-		}
-		
-		try {
-			send(response);
-		} catch(IOException e) {
-
-		}
-	}
-
-	@Override
-	public void registerWithServer(LoginTask t) {
-		AbstractRegistry registry = ActiveRegistry.getInstance();
-		Task response = null;
-		if(registry != null) {
-			String msg = registry.isValidLogin(t);
-			if(msg == null) {
-				String nickname = registry.getUser(t.getEmail()).getNickname();
-				setID(nickname);
-				this.email = t.getEmail();
-				server.registerClient(this, nickname);
-				setRegistered();
-				String greeting = createGreetingMessage(nickname);
-				response = new LoginGreetingTask(greeting,nickname);
-			} else {
-				response = new LoginErrorTask(msg);
-			}
-		} else {
-			response = new LoginErrorTask("Error occured while registering.");
-		}
-
-		try {
-			send(response);
-		} catch(IOException e) {
-
-		}
-	}
-	
-	private String createGreetingMessage(String nickname) {
-		int pendingInvitations = GameInviteManager.getInstance().getInvitationsToUser(nickname).size();
-		String greeting = "Welcome Back " + nickname + "!";
-		if(pendingInvitations > 0) {
-			return greeting + " You have " + pendingInvitations + " pending game invitations.";
-		} else {
-			return greeting;
-		}
-	}
-
-	@Override
 	public String toString() {
 		return address;
 	}
 
 	@Override
 	public int hashCode() {
-		synchronized(isRegistered) {
-			return (address+email+"ID"+isRegistered).hashCode();
-		}
+		return (address+email+"ID").hashCode();
 	}
 
 	@Override
@@ -374,37 +200,4 @@ public class ClientSession extends AbstractSession {
 			return this.hashCode()==o.hashCode();
 		}
 	}
-
-	private String getDate() {
-		Date now = new Date(); // java.util.Date, NOT java.sql.Date or java.sql.Timestamp!
-		return new SimpleDateFormat("HH:mm:ss.S", Locale.ENGLISH).format(now);
-	}
-
-	private synchronized String getTabs() {
-		String ret = "";
-		for(int i=0;i<NUM_TABS;i++) {
-			ret+=DEBUG_TAB;
-		}
-		return "[" + getDate() + "]" + ret;
-	}
-
-	private synchronized void debugPrint(String msg) {
-		if(DEBUG)
-			System.out.print(getTabs()+msg);
-	}
-
-	private synchronized void debugPrintln(String msg) {
-		debugPrint(msg+System.lineSeparator());
-	}
-
-	private synchronized void debugPrintHeader(String methodName) {
-		debugPrintln("---------------[ " + methodName + " ]---------------");
-		NUM_TABS++;
-	}
-
-	private synchronized void debugPrintFooter(String methodName) {
-		NUM_TABS--;
-		debugPrintln("===============[ " + methodName + " ]===============\n");
-	}
-
 }
