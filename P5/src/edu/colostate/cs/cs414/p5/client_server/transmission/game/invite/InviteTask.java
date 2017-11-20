@@ -2,11 +2,9 @@ package edu.colostate.cs.cs414.p5.client_server.transmission.game.invite;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -84,39 +82,6 @@ public class InviteTask extends InviteGameTask {
 	public String toString() {
 		return "[InviteTask, Taskcode: " + getTaskCode() +
 				", Contents: " + message + " from " + getPlayerFrom() + " to " + getPlayerTo() + " ]";
-	}
- 
-	@Deprecated
-	public void oldrun()
-	{
-		System.out.print(getPlayerFrom() + " wants to play a game of Banqi! Do you wish to accept or reject?\n");
-		System.out.print("Type 'accept' to accept and 'reject' to reject: ");
-		BufferedReader fromConsole = new BufferedReader(new InputStreamReader(System.in));
-		String choice = "reject";
-		try {
-			choice = fromConsole.readLine();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		if(choice.toLowerCase().equals("accept"))
-		{
-			System.out.println("You entered in yes!");
-			Player player = ActivePlayer.getInstance();
-			try {
-				player.getClient().sendToServer(new ForwardTask(player.getNickName(),new AcceptInviteTask(player.getNickName()),getPlayerFrom()));
-			} catch (Exception e) {
-			}
-		}
-		else
-		{
-			System.out.println("You entered in no!");
-			Player player = ActivePlayer.getInstance();
-			try {
-				player.getClient().sendToServer(new ForwardTask(player.getNickName(),new RejectInviteTask(player.getNickName()," has rejected your invitation!"),getPlayerFrom()));
-			} catch (Exception e) {
-			}
-		}
 	}
 
 	public void run() {
