@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import edu.colostate.cs.cs414.p5.client_server.logger.Logger;
+import edu.colostate.cs.cs414.p5.client_server.server.AbstractServer;
+import edu.colostate.cs.cs414.p5.client_server.server.ActiveServer;
 import edu.colostate.cs.cs414.p5.client_server.server.game_server.GameInviteManager;
 import edu.colostate.cs.cs414.p5.client_server.server.registry.AbstractRegistry;
 import edu.colostate.cs.cs414.p5.client_server.server.registry.ActiveRegistry;
@@ -141,7 +143,8 @@ public class SessionManager implements SessionTaskManager {
 		} else {
 			String id;
 			if( (id = client.getID()) != null && clientIsLoggedIn(id)) {
-				// have the server handle it
+				AbstractServer server = ActiveServer.getInstance();
+				server.handleTask(t, client);
 			} else {
 				LOG.info("Client on [" + client + "] submitted Task: " + t + " before loggin in." );
 			}
