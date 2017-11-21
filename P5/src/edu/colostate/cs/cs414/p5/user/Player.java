@@ -7,11 +7,12 @@ import java.util.HashMap;
 import edu.colostate.cs.cs414.p5.banqi.BanqiGame;
 import edu.colostate.cs.cs414.p5.client_server.client.AbstractClient;
 import edu.colostate.cs.cs414.p5.client_server.client.Client;
+import edu.colostate.cs.cs414.p5.client_server.logger.Logger;
 import edu.colostate.cs.cs414.p5.console.AbstractConsole;
 import edu.colostate.cs.cs414.p5.console.PlayerConsole;
-import edu.colostate.cs.cs414.p5.util.Encryptor;
 
 public class Player {
+	private static final Logger LOG = Logger.getInstance();
 	public static InputStream SCANNER; 
 	
 	/* GLOBAL VARIABLES */
@@ -24,24 +25,32 @@ public class Player {
 	private AbstractClient client;
 	private AbstractConsole console;
 	
+	public Player() {
+		LOG.debug("NEW PLAYER CONSTRUCTED");
+		this.email = "";
+		this.password = "";
+		this.nickName = "";
+		games = new HashMap<Integer,BanqiGame>();
+	}
 	
 	public Player(String host, int port) throws IOException
 	{
+		this();
 		this.client = new Client(host,port);
 	}
 
 	/* Constructor */
 	public Player(String email,String password,String nickName,String host,int port) throws IOException
 	{
+		this();
 		this.email = email;
 		this.password = password;
 		this.nickName = nickName;
-		games = new HashMap<Integer,BanqiGame>();
 		this.profile = new Profile(nickName);
 		this.client = new Client(host,port);
 	}
 	
-	public void setConsole(AbstractConsole console) 
+	public synchronized void setConsole(AbstractConsole console) 
 	{
 		this.console = console;
 	}
@@ -51,42 +60,64 @@ public class Player {
 		return this.games;
 	}
 	
-	public void setEmail(String email)
+	public synchronized void setEmail(String email)
 	{
-		this.email = email;
+		LOG.debug("Setting email to: " + email);
+		this.email = (email != null) ? email : "";
 	}
 	
-	public void setNickName(String nickName)
+	public synchronized void setNickName(String nickName)
 	{
-		games = new HashMap<Integer,BanqiGame>();
-		this.profile = new Profile(nickName);
-		this.nickName = nickName;
+		if(this.nickName.equals(nickName)) {
+			LOG.debug("New nickname and old nickname match");
+			return;
+		} else {
+			if(nickName != null && !nickName.isEmpty()) {
+				this.profile = new Profile(nickName);
+				synchronized(this.games) {
+					this.games.clear();
+				}
+			}
+			LOG.debug("Setting nickname to: " + nickName);
+			this.nickName = (nickName != null) ? nickName : "";
+		}
 	}
 	
-	public void setPassword(String password) 
+	public synchronized void setPassword(String password) 
 	{
-		this.password = Encryptor.encryptPassword(password);
+		LOG.debug("Setting password");
+		this.password = (password != null) ? password : "";
 	}
 	
-	public AbstractConsole getConsole()
+	public synchronized AbstractConsole getConsole()
 	{
 		return console;
 	}
 	
 	/* Gets a Players nickName */
-	public String getNickName()
+	public synchronized String getNickName()
 	{
+		LOG.debug("Returning Players nickName: " + nickName);
 		return this.nickName;
 	}
 	
-	public String getEmail()
+	public synchronized String getEmail()
 	{
+		LOG.debug("Returning Players email: " + email);
 		return this.email;
 	}
 	
-	public String getPassword()
+	public synchronized String getPassword()
 	{
+		LOG.debug("Returning players password");
 		return this.password;
+	}
+	
+	public synchronized void setClient(AbstractClient client) {
+		this.client = client;
+		if(!this.client.isReceiving()) {
+			this.client.startReceiving();
+		}
 	}
 	
 	/* Get a Players Profile */
@@ -134,7 +165,7 @@ public class Player {
 	}
 	
 	/* Returns an instance of the Players Client */
-	public AbstractClient getClient() 
+	public synchronized AbstractClient getClient() 
 	{
 		return this.client;
 	}
@@ -162,7 +193,7 @@ public class Player {
 			}
 			Player p = new Player(host,port);
 			p.getClient().startReceiving();
-			AbstractConsole console = new PlayerConsole(p);
+			AbstractConsole console = new PlayerConsole(p.getClient(),p);
 			p.setConsole(console);
 			console.accept();
 		}

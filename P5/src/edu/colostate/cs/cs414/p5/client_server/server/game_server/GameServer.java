@@ -110,8 +110,16 @@ public class GameServer extends AbstractGameServer {
 	@Override
 	public void handleInviteGameTask(InviteTask t, ClientSession client) {
 		// Send InviteTask to playerTwo (if online)
+		String playerOne = t.getPlayerOne();
 		String playerTwo = t.getPlayerTwo();
-		if(checkAndSend(t,playerTwo,client)) {		
+		if(playerOne.equals(playerTwo)) {
+			LOG.info(playerOne + " on [" + client + "] attempted to invite himself to a game.");
+			try {
+				client.send(new InvalidGameTask("You can not invite your self to a game...",t.getGameID()));
+			} catch (IOException e) {
+				LOG.error("Failed to send message to: " + playerOne + " that they invited them selves to a game");
+			}
+		} else if(checkAndSend(t,playerTwo,client)) {		
 			// add invitation
 			inviteManager.addInvitation(t);
 		}

@@ -1,5 +1,6 @@
 package edu.colostate.cs.cs414.p5.user;
 import java.util.ArrayList;
+import java.util.List;
 
 import edu.colostate.cs.cs414.p5.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.invite.InviteTask;
@@ -9,11 +10,11 @@ public class Invitation {
 	/* GLOBAL VARIABLES */
 	private String fromPlayer;
 	private String message;
-	private ArrayList<String> playersToInvite;
+	private List<String> playersToInvite;
 	
 	
 	/* Constructor */
-	public Invitation(String fromPlayer,String message, ArrayList<String> playersToInvite)
+	public Invitation(String fromPlayer,String message, List<String> playersToInvite)
 	{
 		this.fromPlayer = fromPlayer;
 		this.message = message;
