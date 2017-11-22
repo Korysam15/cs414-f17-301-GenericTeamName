@@ -48,6 +48,14 @@ public class FlipPieceTask extends GameTask {
 	public int getGameID() {
 		return gameID;
 	}
+	
+	public int getX() {
+		return fromX;
+	}
+	
+	public int getY() {
+		return fromY;
+	}
 
 	public String toString() {
 		return "[FlipPieceTask, Taskcode: " + getTaskCode() + ", Contents: " + getPlayerOne() 

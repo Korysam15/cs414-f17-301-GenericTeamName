@@ -56,6 +56,22 @@ public class MoveTask extends GameTask{
 	public int getGameID() {
 		return gameID;
 	}
+	
+	public int getFromX() {
+		return fromX;
+	}
+	
+	public int getFromY() {
+		return fromY;
+	}
+	
+	public int getToX() {
+		return toX;
+	}
+	
+	public int getToY() {
+		return toY;
+	}
 
 	public String toString() {
 		return "[MoveTask, Taskcode: " + getTaskCode() +
