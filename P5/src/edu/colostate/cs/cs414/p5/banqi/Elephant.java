@@ -4,9 +4,9 @@ package edu.colostate.cs.cs414.p5.banqi;
  *
  */
 public class Elephant extends Piece {
-
+	public static final int RANK=5;
 	public Elephant(boolean color) {
-		super.rank=5;
+		super.rank=RANK;
 		super.color=color;
 		if(color){
 			super.icon="R5";

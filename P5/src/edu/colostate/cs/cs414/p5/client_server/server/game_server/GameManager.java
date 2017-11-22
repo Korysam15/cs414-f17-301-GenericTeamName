@@ -1,7 +1,9 @@
 package edu.colostate.cs.cs414.p5.client_server.server.game_server;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.Map;
 
@@ -11,10 +13,17 @@ import edu.colostate.cs.cs414.p5.client_server.transmission.game.FlipPieceTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.MoveTask;
 
 public abstract class GameManager {
-	private static final Logger LOG = Logger.getInstance();
+	protected static final Logger LOG = Logger.getInstance();
 	protected final Map<Integer,BanqiGame> gameMap;
 	protected final Map<String,Set<BanqiGame>> playerGameMap;
 
+	private static final GameManager instance = new FileGameManager();
+	
+	public static GameManager getInstance() {
+		return instance;
+	}
+	
+	
 	public GameManager() {
 		gameMap = new HashMap<Integer,BanqiGame>();
 		playerGameMap = new HashMap<String,Set<BanqiGame>>();
@@ -43,6 +52,7 @@ public abstract class GameManager {
 
 		synchronized(gameMap) {
 			gameMap.put(gameID, game);
+			addRecord(game);
 		}
 		synchronized(playerGameMap) {
 			addGameToPlayerGameMap(playerOne,game);
@@ -66,6 +76,18 @@ public abstract class GameManager {
 				playersGameSet.add(game);
 			}
 		}
+	}
+	
+	public List<BanqiGame> getPlayersGames(String player) {
+		List<BanqiGame> ret = null;
+		synchronized(playerGameMap) {
+			if(playerGameMap.containsKey(player)) {
+				ret = new ArrayList<BanqiGame>(playerGameMap.get(player));
+			} else {
+				ret = new ArrayList<BanqiGame>();
+			}
+		}
+		return ret;
 	}
 
 	public BanqiGame getGame(int gameID) {

@@ -4,9 +4,9 @@ package edu.colostate.cs.cs414.p5.banqi;
  *
  */
 public class Cannon extends Piece {
-
+	public static final int RANK=2;
 	public Cannon(boolean color) {
-		super.rank=2;
+		super.rank=RANK;
 		super.color=color;
 		if(color){
 			super.icon="R2";

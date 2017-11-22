@@ -20,6 +20,11 @@ public class CreateGameTask extends GameTask {
 		this.gameID = rand.nextInt();
 	}
 	
+	public CreateGameTask(int gameID, String playerOne, String playerTwo) {
+		super(playerOne,playerTwo);
+		this.gameID = gameID;
+	}
+	
 	public CreateGameTask(DataInputStream din) throws IOException
 	{
 		super(din);

@@ -4,9 +4,9 @@ package edu.colostate.cs.cs414.p5.banqi;
  *
  */
 public class Cavalry extends Piece {
-
+	public static final int RANK=3;
 	public Cavalry(boolean color) {
-		super.rank=3;
+		super.rank=RANK;
 		super.color=color;
 		if(color){
 			super.icon="R3";

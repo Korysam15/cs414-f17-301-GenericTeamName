@@ -37,12 +37,23 @@ public class BanqiGame {
 	public BanqiGame(int gameID, String playerOne, String playerTwo, boolean openConsole) {
 		super();
 		this.gameID = gameID;
+		gameBoard = new GameBoard();
 		this.playerOne = playerOne;
 		this.playerTwo = playerTwo;
+		this.pieces= new Piece[32];
 		if(openConsole) {
 			openConsole();
 		}
 		getAllPieces();
+	}
+	
+	public BanqiGame(int gameID, String playerOne, String playerTwo, GameBoard gameBoard) {
+		super();
+		this.gameID = gameID;
+		this.playerOne = playerOne;
+		this.playerTwo = playerTwo;
+		this.gameBoard = gameBoard;
+		this.pieces= new Piece[32];
 	}
 	
 	public BanqiGame(int gameID) 
