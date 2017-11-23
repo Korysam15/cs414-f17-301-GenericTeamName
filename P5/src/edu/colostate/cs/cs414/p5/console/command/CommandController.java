@@ -90,6 +90,9 @@ public class CommandController {
 			case "show-players":
 				showPlayers();
 				break;
+			case "open-games":
+				openGames();
+				break;
 			case "set-log-level":
 				setLogLevel(params);
 				break;
@@ -285,6 +288,10 @@ public class CommandController {
 
 	private void showPlayers() throws NotLoggedInException, IOException {
 		playerController.showPlayers();
+	}
+	
+	private void openGames() throws NotLoggedInException, IOException {
+		playerController.openGames();
 	}
 
 	private void viewSentInvites() throws IOException, NotLoggedInException {

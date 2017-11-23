@@ -101,7 +101,7 @@ public class BanqiGame {
 		getAllPieces();
 	}
 	
-	private void openConsole() {
+	public void openConsole() {
 		console = new JavaConsole();
 		if(ActivePlayer.getInstance() != null) {
 			console.setTitle(ActivePlayer.getInstance().getNickName() + " Game[" + gameID + "]");

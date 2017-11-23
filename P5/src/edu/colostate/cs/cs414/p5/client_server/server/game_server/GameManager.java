@@ -146,6 +146,46 @@ public abstract class GameManager {
 		}
 	}
 	
+	public void removePlayersGames(String player) {
+		synchronized(gameMap) {
+			synchronized(playerGameMap) {
+				Set<BanqiGame> playersGameSet = playerGameMap.get(player);
+				if(playersGameSet == null) {
+					return;
+				} else if(playersGameSet.isEmpty()) {
+					return;
+				} else {
+					removeGames(playersGameSet);					
+				}
+			}
+		}
+	}
+	
+	private void removeGames(Set<BanqiGame> games) {
+		synchronized(gameMap) {
+			synchronized(playerGameMap) {
+				if(games == null) {
+					return;
+				} else if(games.isEmpty()) {
+					return;
+				} else {
+					int gameID;
+					String playerOne;
+					String playerTwo;
+					for(BanqiGame game: games) {
+						gameID = game.getGameID();
+						playerOne = game.getPlayerOne();
+						playerTwo = game.getPlayerTwo();
+						removeGameFromPlayerGameMap(playerOne,game);
+						removeGameFromPlayerGameMap(playerTwo,game);
+						gameMap.remove(gameID);
+					}
+					removeRecords(games);
+				}
+			}
+		}
+	}
+	
 	private void removeGame(BanqiGame game) {
 		synchronized(gameMap) {
 			int gameID = game.getGameID();
@@ -184,6 +224,8 @@ public abstract class GameManager {
 	protected abstract void updateRecord(BanqiGame game);
 	
 	protected abstract void removeRecord(BanqiGame game);
+	
+	protected abstract void removeRecords(Set<BanqiGame> games);
 
 	protected abstract void buildGameMaps();
 

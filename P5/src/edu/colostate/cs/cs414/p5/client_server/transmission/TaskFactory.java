@@ -12,6 +12,8 @@ import edu.colostate.cs.cs414.p5.client_server.transmission.game.FlipPieceTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.ForfeitTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.InvalidGameTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.MoveTask;
+import edu.colostate.cs.cs414.p5.client_server.transmission.game.OpenAllGamesTask;
+import edu.colostate.cs.cs414.p5.client_server.transmission.game.OpenGameTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.UpdateRecordTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.invite.AcceptInviteTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.invite.DisplayInvitesTask;
@@ -23,6 +25,7 @@ import edu.colostate.cs.cs414.p5.client_server.transmission.game.invite.RejectIn
 import edu.colostate.cs.cs414.p5.client_server.transmission.profile.DisplayPlayersTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.profile.DisplayProfileTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.profile.GetAllPlayersTask;
+import edu.colostate.cs.cs414.p5.client_server.transmission.profile.GetGamesTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.profile.GetProfileTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.LoginTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.LogoutTask;
@@ -176,6 +179,15 @@ public final class TaskFactory {
 			break;
 		case TaskConstents.DISPLAY_PLAYERS_TASK:
 			t = new DisplayPlayersTask(din);
+			break;
+		case TaskConstents.GET_GAMES_TASK:
+			t = new GetGamesTask(din);
+			break;
+		case TaskConstents.OPEN_GAME_TASK:
+			t = new OpenGameTask(din);
+			break;
+		case TaskConstents.OPEN_ALL_GAMES_TASK:
+			t = new OpenAllGamesTask(din);
 			break;
     }
 		

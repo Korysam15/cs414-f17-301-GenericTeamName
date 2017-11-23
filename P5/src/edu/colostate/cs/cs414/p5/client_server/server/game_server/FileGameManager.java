@@ -50,6 +50,12 @@ public class FileGameManager extends GameManager {
 		savedGames.remove(game);
 		updateFile();
 	}
+	
+	@Override
+	protected synchronized void removeRecords(Set<BanqiGame> games) {
+		savedGames.removeAll(games);
+		updateFile();
+	}
 
 	@Override
 	protected synchronized void buildGameMaps() {

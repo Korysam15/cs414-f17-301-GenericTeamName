@@ -9,7 +9,7 @@ public final class CommandConstants {
 	public static final String NORM="\033[0m";
 	public static final String[] noParamCommands = 
 		{"exit","help","register","login",
-				"logout","unregister","create-game","view-profile",
+				"logout","unregister","create-game","open-games","view-profile",
 				"view-invites", "view-sent-invites", "clear", "show-players",
 				"set-log-level"};
 

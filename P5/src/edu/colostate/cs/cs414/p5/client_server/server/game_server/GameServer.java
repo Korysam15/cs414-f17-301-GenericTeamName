@@ -24,7 +24,7 @@ public class GameServer extends AbstractGameServer {
 	public GameServer(InetSocketAddress address) throws IOException {
 		super(address);
 		this.inviteManager = GameInviteManager.getInstance();
-		gameManager = new FileGameManager();
+		gameManager = GameManager.getInstance();
 	}
 
 	public GameServer(int port) throws IOException {

@@ -38,8 +38,12 @@ public class TaskConstents {
 	public static final int DISPLAY_SENT_INVITES_TASK = 26;
 	public static final int GET_ALL_PLAYERS_TASK = 27;
 	public static final int DISPLAY_PLAYERS_TASK = 28;
-	/* public static final int TASK = 29;
-	 public static final int TASK = 30;
+	public static final int GET_GAMES_TASK = 29;
+	public static final int OPEN_GAME_TASK = 30;
+	public static final int OPEN_ALL_GAMES_TASK = 31;
+	/* public static final int TASK = 32;
+	 public static final int TASK = 33;
+	 public static final int TASK = 34;
 	.....
 	.....
 	.....
