@@ -1,4 +1,6 @@
 package edu.colostate.cs.cs414.p5.console;
+import java.io.IOException;
+
 import edu.colostate.cs.cs414.p5.client_server.client.AbstractClient;
 import edu.colostate.cs.cs414.p5.console.command.CommandController;
 import edu.colostate.cs.cs414.p5.user.Player;
@@ -48,6 +50,23 @@ public class PlayerConsole extends AbstractConsole {
 			controller.handleCommand(command);
 		}			
 	}
+	
+	@Override
+	public synchronized String securePrompt(String prompt) throws IOException {
+		String ret = null;
+		ConsoleEraser eraser = new ConsoleEraser();
+		display(prompt);
+		eraser.start();
+		if(fromConsole != null) synchronized(fromConsole) {
+			while( (ret=fromConsole.readLine()) == null);
+		} else {
+			ret = "";
+		}
+		
+		eraser.halt();
+		
+		return ret;
+	}
 
 
 	public void clear() {
@@ -63,4 +82,28 @@ public class PlayerConsole extends AbstractConsole {
 	public void run() {
 		super.accept();		
 	}
+	
+
+    private class ConsoleEraser extends Thread {
+        private volatile boolean running = true;
+        public void run() {
+            while (running) {
+            	synchronized(output) {
+            		output.print("\b ");
+            	}
+                try {
+					Thread.sleep(1);
+                }
+                catch(InterruptedException e) {
+                    break;
+                }
+            }
+        }
+        public synchronized void halt() {
+            running = false;
+            synchronized(output) {
+        		output.print("\b ");
+        	}
+        }
+    }
 }

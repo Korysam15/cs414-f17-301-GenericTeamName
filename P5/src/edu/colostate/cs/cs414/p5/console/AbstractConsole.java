@@ -33,6 +33,8 @@ public abstract class AbstractConsole implements Runnable {
 	public abstract void displayNoPrompt(Object msg);
 	
 	public abstract void clear();
+	
+	public abstract String securePrompt(String prompt) throws IOException;
 
 	protected abstract void handleCommand(String command);
 
