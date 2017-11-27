@@ -14,6 +14,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import edu.colostate.cs.cs414.p5.client_server.logger.Logger;
 import edu.colostate.cs.cs414.p5.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p5.client_server.transmission.TaskFactory;
 import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.EntryTask;
@@ -42,6 +43,7 @@ public class Client extends AbstractClient {
 	public static final int THREAD_KEEP_ALIVE_TIME = 10;
 	public static final TimeUnit ALIVE_TIME_UNIT = TimeUnit.MINUTES;
 
+	private static final Logger LOG = Logger.getInstance();
 	/**
 	 * A thread pool to manage tasks
 	 */
@@ -118,6 +120,7 @@ public class Client extends AbstractClient {
 
 	@Override
 	public void connectToServer(InetSocketAddress serverAddress) throws IOException {
+		LOG.debug("Connecting to: " + serverAddress);
 		synchronized(writeLock) {
 			synchronized(readLock) {
 
@@ -221,23 +224,22 @@ public class Client extends AbstractClient {
 				}
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("IOException occurred when attempting to establish a connection...\n"+e.getMessage());
 		}
 	}
 
 	private void connect(SelectionKey key) {
 		try {
-			System.out.println("Attempting to connect...");
+			LOG.info("Attempting to connect...");
 			while(!((SocketChannel) key.channel()).finishConnect());
 
 			if(((SocketChannel) key.channel()).isConnected()) {
-				System.out.println("Connected!");
+				LOG.info("Connected!");
 				key.interestOps(SelectionKey.OP_READ);
 				serverChannel = ((SocketChannel)key.channel());
 			}
 		} catch (IOException e) {
-			System.out.println("Could not connect to server");
+			LOG.error("Could not connect to server.");
 		}
 	}
 
@@ -263,9 +265,9 @@ public class Client extends AbstractClient {
 		}
 	}
 
-	public void send(Task t) throws IOException {
+	private void send(Task t) throws IOException {
 		if(!isConnected()) {
-			System.out.println("no longer connected");
+			LOG.error("no longer connected");
 			return;
 		} else {
 			synchronized(writeLock) {
@@ -285,8 +287,8 @@ public class Client extends AbstractClient {
 	@Override
 	public void sendToServer(Task t) throws IOException {
 		if(!isConnected()) {
-			throw new IllegalStateException("You must be connected to a server "
-					+ "before receiving from a server");
+			LOG.error("Tried to send Task: " + t + " but a connection hasn't been established");
+			return;
 		}
 		else if(!isReceiving()) {
 			startReceiving();
@@ -299,23 +301,26 @@ public class Client extends AbstractClient {
 				send(t);
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOG.error("IOException occurred while trying to send Task: " + t + "\n" + e.getMessage());
 		} catch (InterruptedException e) {
-
+			LOG.error(e.getMessage());
 		}
 	}
 
 	private void waitForResponse() throws InterruptedException {
 		synchronized(this.loginLock) {
+			LOG.debug("Waiting for a response...");
 			while(!responseReceived) {
 				this.loginLock.wait();
 			}
+			LOG.debug("Done waiting!");
 			responseReceived = false;
 		}
 	}
 
 	private void notifyResponse() {
 		synchronized(this.loginLock) {
+			LOG.debug("Response received...");
 			responseReceived = true;
 			this.loginLock.notifyAll();
 		}
@@ -342,7 +347,7 @@ public class Client extends AbstractClient {
 						receiveTask(localWrite,size, read);
 						read -= size;
 					} else {
-						// Invalid size, likely received a corrupted or incorrect Task.
+						LOG.error("Received a corrupted task (the size of the task is invalid)");
 						return;
 					}
 				} else {
@@ -355,7 +360,7 @@ public class Client extends AbstractClient {
 			if(temp == -1 || !isConnected()) {
 				disconnectFromServer();
 			} else {
-				// Done reading
+				LOG.debug("Finished reading");
 			}
 		}
 	}
@@ -480,7 +485,7 @@ public class Client extends AbstractClient {
 					}
 				}
 			} catch (IOException e) {
-
+				LOG.error("IOException occurred in Receiver thread...\n" + e.getMessage());
 			} finally {
 				stopReceiving();
 			}
@@ -500,6 +505,7 @@ public class Client extends AbstractClient {
 				send(toSend);
 			} catch (IOException e) {
 				notifyResponse();
+				LOG.error("IOException occurred in NotifySender thread...\n" + e.getMessage());
 			}			
 		}
 	}
