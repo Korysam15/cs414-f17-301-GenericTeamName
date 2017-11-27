@@ -8,9 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import edu.colostate.cs.cs414.p5.client_server.logger.Logger;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.invite.*;
 
 public abstract class GameInviteManager {	
+	protected static final Logger LOG = Logger.getInstance();
 // START INSTANCE VARIABLES / METHODS
 	protected final Map<String,Set<InviteTask>> fromUserInvites;
 	protected final Map<String,Set<InviteTask>> toUserInvites;

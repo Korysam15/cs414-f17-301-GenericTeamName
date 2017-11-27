@@ -12,20 +12,22 @@ import java.util.List;
 import java.util.Set;
 
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.invite.*;
+import edu.colostate.cs.cs414.p5.util.FileUtils;
 
 public class FileGameInviteManager extends GameInviteManager {
 	private static final File inputFile = new File("invitations");
 	private static final Set<InviteTask> savedTasks = new HashSet<InviteTask>();
 
-	public FileGameInviteManager() {
+	protected FileGameInviteManager() {
 		super();
 	}
-	
+
 	@Override
 	protected synchronized void buildSavedInvitations() {
 		try {
 			if(!inputFile.exists()) {
 				inputFile.createNewFile();
+				LOG.info("Created new file to store invites: " + inputFile.getAbsolutePath());
 				return;
 			} else {
 				boolean corrupted = false;
@@ -42,13 +44,27 @@ public class FileGameInviteManager extends GameInviteManager {
 				}
 				br.close();
 				if(corrupted) {
+					LOG.info(inputFile.getAbsolutePath() + " may be corrupted. ");
+					backupFile();
 					updateFile();
 				}
 			}
 		} catch (FileNotFoundException e) {
-			// shouldn't happen because of first if statement
+			LOG.error("Could not find file: " + inputFile.getAbsolutePath());
 		} catch (IOException e) {
+			LOG.error("IOException occurred when trying read: " + inputFile.getAbsolutePath());
 		}		
+	}
+
+	private synchronized void backupFile() {
+		int i = 0;
+		File backup = new File(inputFile.getName()+i);
+
+		while(backup.exists()) 
+			backup = new File(inputFile.getName() + (++i));
+		
+		LOG.info("Backing up: " + inputFile.getAbsolutePath() + " to " + backup.getAbsolutePath());
+		FileUtils.copyFileUsingStream(inputFile,backup);
 	}
 
 	@Override
@@ -59,9 +75,9 @@ public class FileGameInviteManager extends GameInviteManager {
 			pw.flush();
 			pw.close();
 		} catch (IOException e) {
-			System.out.println("Error when updating invitation file");
+			LOG.error("Error when updating invitation file");
 		}
-		
+
 	}
 
 	@Override
@@ -87,7 +103,7 @@ public class FileGameInviteManager extends GameInviteManager {
 			}
 			pw.close();
 		} catch (IOException e) {
-			System.out.println("Error when updating invitation file");
+			LOG.error("Error when updating invitation file");
 		}
 	}
 }

@@ -12,18 +12,17 @@ import java.util.Set;
 
 import edu.colostate.cs.cs414.p5.banqi.BanqiGame;
 import edu.colostate.cs.cs414.p5.banqi.GameBuilder;
+import edu.colostate.cs.cs414.p5.util.FileUtils;
 
 public class FileGameManager extends GameManager {
-	private static final File inputFile = new File("games");
 	protected static final String SEPERATOR=",";
 	
-	private final Set<BanqiGame> savedGames;
-	private final GameBuilder builder;
+	private static final File inputFile = new File("games");
+	private static final Set<BanqiGame> savedGames = new HashSet<BanqiGame>();
+	private static final GameBuilder builder = new GameBuilder(SEPERATOR);
 	
-	public FileGameManager() {
+	protected FileGameManager() {
 		super();
-		savedGames = new HashSet<BanqiGame>();
-		builder = new GameBuilder(SEPERATOR);
 	}
 
 	@Override
@@ -62,6 +61,7 @@ public class FileGameManager extends GameManager {
 		try {
 			if(!inputFile.exists()) {
 				inputFile.createNewFile();
+				LOG.info("Created new file to store games: " + inputFile.getAbsolutePath());
 				return;
 			} else {
 				boolean corrupted = false;
@@ -77,6 +77,8 @@ public class FileGameManager extends GameManager {
 					}
 					if(temp == null) {
 						corrupted = true;
+					} else if(savedGames.contains(temp)) {
+						corrupted = true;
 					} else {
 						super.addGameRestoredFromRecords(temp);
 						savedGames.add(temp);
@@ -84,13 +86,27 @@ public class FileGameManager extends GameManager {
 				}
 				br.close();
 				if(corrupted) {
+					LOG.info(inputFile.getAbsolutePath() + " may be corrupted. ");
+					backupFile();
 					updateFile();
 				}
 			}
 		} catch (FileNotFoundException e) {
-			// shouldn't happen because of first if statement
+			LOG.error("Could not find file: " + inputFile.getAbsolutePath());
 		} catch (IOException e) {
+			LOG.error("IOException occurred when trying read: " + inputFile.getAbsolutePath());
 		}
+	}
+	
+	private synchronized void backupFile() {
+		int i = 0;
+		File backup = new File(inputFile.getName()+i);
+
+		while(backup.exists()) 
+			backup = new File(inputFile.getName() + (++i));
+		
+		LOG.info("Backing up: " + inputFile.getAbsolutePath() + " to " + backup.getAbsolutePath());
+		FileUtils.copyFileUsingStream(inputFile,backup);
 	}
 	
 	private synchronized void updateFile() {

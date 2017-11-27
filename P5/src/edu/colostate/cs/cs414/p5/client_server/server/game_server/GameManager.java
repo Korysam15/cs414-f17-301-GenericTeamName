@@ -24,7 +24,7 @@ public abstract class GameManager {
 	}
 	
 	
-	public GameManager() {
+	protected GameManager() {
 		gameMap = new HashMap<Integer,BanqiGame>();
 		playerGameMap = new HashMap<String,Set<BanqiGame>>();
 		buildGameMaps();
@@ -42,7 +42,17 @@ public abstract class GameManager {
 	}
 	
 	protected void addGameRestoredFromRecords(BanqiGame game) {
-		addGame(game);
+		int gameID = game.getGameID();
+		String playerOne = game.getPlayerOne();
+		String playerTwo = game.getPlayerTwo();
+
+		synchronized(gameMap) {
+			gameMap.put(gameID, game);
+		}
+		synchronized(playerGameMap) {
+			addGameToPlayerGameMap(playerOne,game);
+			addGameToPlayerGameMap(playerTwo,game);
+		}
 	}
 
 	private void addGame(BanqiGame game) {
