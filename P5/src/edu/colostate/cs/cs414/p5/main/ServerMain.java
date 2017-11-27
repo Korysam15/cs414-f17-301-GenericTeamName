@@ -33,7 +33,7 @@ public class ServerMain {
 
 			InetSocketAddress address = new InetSocketAddress(port);
 			AbstractServer server = null;
-			GameInviteManager.setInstanceType(GameInviteManager.DB_INVITE_MANAGER);
+			GameInviteManager.setInstanceType(GameInviteManager.FILE_INVITE_MANAGER);
 			server = new GameServer(address);
 			ActiveServer.setInstance(server);
 
