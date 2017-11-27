@@ -20,12 +20,14 @@ public abstract class AbstractConsole implements Runnable {
 	protected final InputStream input;
 	protected final PrintStream output;
 	protected final PrintStream error;
+	protected int messageCount;
 
 	protected AbstractConsole() {
 		needsPrompt = true;
 		this.input = System.in;
 		this.output = System.out;
 		this.error = System.err;
+		messageCount = 0;
 	}
 
 	public abstract void display(Object msg);
@@ -51,9 +53,11 @@ public abstract class AbstractConsole implements Runnable {
 
 	public void accept() {
 		fromConsole = new BufferedReader(new InputStreamReader(input));
+		int count;
 		try{
 			String command;
 			while (true) {
+				count = messageCount;
 				synchronized(output) {
 					if(needsPrompt)
 						display("");
@@ -61,10 +65,13 @@ public abstract class AbstractConsole implements Runnable {
 				synchronized(fromConsole) {
 					command = fromConsole.readLine();
 				}
+				
 				if(command == null || command.isEmpty()) {
+					needsPrompt = true;
 					continue;
 				} else {
 					handleCommand(command);
+					needsPrompt = (count == messageCount);
 				}
 
 			}

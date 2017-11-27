@@ -26,6 +26,7 @@ public class PlayerConsole extends AbstractConsole {
 	@Override
 	public synchronized void display(Object msg) {
 		synchronized(output) {
+			messageCount++;
 			if(msg != null)
 				output.print("\r" + msg.toString() + outPutBeforeConsole);
 			needsPrompt = false;
