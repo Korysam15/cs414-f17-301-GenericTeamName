@@ -412,6 +412,7 @@ public class Client extends AbstractClient {
 
 	@Override
 	public void handleTask(Task t) {
+		LOG.info("Performing Task: " + t);
 		if(t instanceof EntryResponseTask) {
 			EntryResponseTask response = (EntryResponseTask) t;
 			if(response.wasSuccessful()) {
@@ -425,46 +426,6 @@ public class Client extends AbstractClient {
 			notifyResponse();			
 		} else {
 			threadPool.execute(t);
-		}
-	}
-
-	public static void main(String[] args) throws IOException, InterruptedException {
-		if(args.length != 5) {
-			System.out.println(
-					"Expected 5 arguments: <server-host> <server-port> <email> <nickname> <password>"
-					);
-			return;
-		}
-		else {
-			String host = args[0];
-			String email, nickname, password;
-			int port;
-
-			try {
-				port = Integer.parseInt(args[1]);
-				if(port <=0 ) 
-					throw new NumberFormatException();
-			} catch (NumberFormatException ex) { 
-				System.out.println("Invalid port: " + args[1]);
-				return;
-			}
-
-			email = args[2];
-			nickname = args[3];
-			password = args[4];
-
-			InetSocketAddress address = new InetSocketAddress(host,port);
-
-			Client c1 = new Client(address);
-			c1.sendToServer(new RegisterTask(email,nickname,password));
-			Thread.sleep(2000);
-
-			c1.sendToServer(new ForwardTask(nickname,
-					new MessageTask("Hello tanner"),
-					"tanner"));
-			while(true) {
-				Thread.sleep(1000);
-			}
 		}
 	}
 	
