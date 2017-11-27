@@ -339,6 +339,7 @@ public class CommandController {
 				console.error("Invalid number of arguments");
 			}
 			StringBuilder builder = new StringBuilder();
+			builder.append("Log Level is currently set to: " + LOG.getLogLevel() + "\n");
 			builder.append("Valid Log Levels Are: \n");
 			for(LOG_LEVEL level: Logger.LOG_LEVEL.values()) {
 				builder.append(level+"\n");

@@ -37,6 +37,10 @@ public class Logger {
 		this.output = output;
 	}
 	
+	public LOG_LEVEL getLogLevel() {
+		return this.logLevel;
+	}
+	
 	public void setLogLevel(LOG_LEVEL logLevel) {
 		this.logLevel = logLevel;
 	}
