@@ -56,6 +56,9 @@ public final class CommandConstants {
 					"    in a single call to create-game,\n" + 
 					"    only one invite to that player will be sent.\n"
 			},
+			{"open-games", "open-games: opens all of your games.\n" +
+					"  Usage: open-games"
+			},
 			{"view-profile", "view-profile: allows you to view another players profile.\n" +
 					"  Usage: view-profile <nickname>\n" +
 					"\n" +
@@ -147,6 +150,7 @@ public final class CommandConstants {
 					WHITE+"logout"+NORM+": allows you to logout of your current session.\n\r" +
 					WHITE+"unregister"+NORM+": implys logout, but your account will also be removed.\n" +
 					WHITE+"create-game"+NORM+": to create a game and invite players to the game.\n" +
+					WHITE+"open-games"+NORM+": allows you to open all of your games.\n" +
 					WHITE+"view-profile"+NORM+": allows you to view a player's profile.\n" +
 					WHITE+"view-invites"+NORM+": allows you to accept or reject pending invitations.\n" +
 					WHITE+"view-sent-invites"+NORM+": allows you to view pending invitations that you sent.\n" +

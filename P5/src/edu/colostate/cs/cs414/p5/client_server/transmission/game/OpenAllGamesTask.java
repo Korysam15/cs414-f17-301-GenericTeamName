@@ -10,6 +10,9 @@ import edu.colostate.cs.cs414.p5.banqi.BanqiGame;
 import edu.colostate.cs.cs414.p5.client_server.transmission.TaskConstents;
 import edu.colostate.cs.cs414.p5.client_server.transmission.util.ReadUtils;
 import edu.colostate.cs.cs414.p5.client_server.transmission.util.WriteUtils;
+import edu.colostate.cs.cs414.p5.console.AbstractConsole;
+import edu.colostate.cs.cs414.p5.user.ActivePlayer;
+import edu.colostate.cs.cs414.p5.user.Player;
 
 public class OpenAllGamesTask extends GameTask {
 
@@ -47,8 +50,25 @@ public class OpenAllGamesTask extends GameTask {
 
 	@Override
 	public void run() {
-		for(OpenGameTask task: openGameTasks) {
-			task.run();
+		if(openGameTasks.size() > 0) {
+			for(OpenGameTask task: openGameTasks) {
+				task.run();
+			}
+		} else {
+			displayNoOpenGames();
+		}
+	}
+	
+	private void displayNoOpenGames() {
+		Player player = ActivePlayer.getInstance();
+		if(player != null) {
+			AbstractConsole console = player.getConsole();
+			String message = "You do not have any games to open.";
+			if(console != null) {
+				console.notice(message);
+			} else {
+				System.out.println(message);
+			}
 		}
 	}
 

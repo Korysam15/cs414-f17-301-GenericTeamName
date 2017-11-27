@@ -43,6 +43,7 @@ public abstract class AbstractConsole implements Runnable {
 		if(fromConsole != null) synchronized(fromConsole) {
 			String ret;
 			while( (ret=fromConsole.readLine()) == null);
+			needsPrompt = true;
 			return ret;
 		}
 		return "";
