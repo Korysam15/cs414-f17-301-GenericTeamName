@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+import edu.colostate.cs.cs414.p5.client_server.client.AbstractClient;
 import edu.colostate.cs.cs414.p5.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p5.client_server.transmission.TaskConstents;
 import edu.colostate.cs.cs414.p5.client_server.transmission.util.ReadUtils;
@@ -47,6 +48,7 @@ public class ExitResponseTask extends Task {
 		Player player;
 		if((player = ActivePlayer.getInstance()) != null) {
 			displayMessageToPlayer(player);
+			logoffClient(player);
 		} else {
 			System.out.println(getResponseMessage());
 		}
@@ -58,6 +60,13 @@ public class ExitResponseTask extends Task {
 			console.notice(getResponseMessage());
 		} else {
 			System.out.println(getResponseMessage());
+		}
+	}
+	
+	protected void logoffClient(Player player) {
+		AbstractClient client = player.getClient();
+		if(client != null) {
+			client.unsetLoggedIn();
 		}
 	}
 
