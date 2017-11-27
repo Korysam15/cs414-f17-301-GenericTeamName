@@ -106,6 +106,7 @@ public class BanqiGame {
 		if(ActivePlayer.getInstance() != null) {
 			console.setTitle(ActivePlayer.getInstance().getNickName() + " Game[" + gameID + "]");
 		}
+		System.out.println(gameBoard);
 	}
 	
 	public String getPlayerOne() {

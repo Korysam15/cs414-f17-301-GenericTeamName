@@ -33,7 +33,7 @@ public abstract class GameManager {
 	public int createGame(String playerOne, String playerTwo) {
 		int gameID;
 		synchronized(gameMap) {
-			gameID = Integer.MIN_VALUE + gameMap.size();
+			gameID = (Integer.MIN_VALUE+1) + gameMap.size();
 			while(gameMap.containsKey(gameID)) gameID++;
 			BanqiGame game = new BanqiGame(gameID,playerOne,playerTwo,false);
 			addGame(game);

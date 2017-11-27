@@ -12,6 +12,7 @@ import edu.colostate.cs.cs414.p5.client_server.transmission.game.ForfeitTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.GameTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.InvalidGameTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.MoveTask;
+import edu.colostate.cs.cs414.p5.client_server.transmission.game.OpenGameTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.invite.AcceptInviteTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.invite.InviteTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.invite.RejectInviteTask;
@@ -92,7 +93,14 @@ public class GameServer extends AbstractGameServer {
 			String playerTwo = t.getPlayerTwo();
 			checkAndSend(t,playerTwo,client);
 		} else {
-			InvalidGameTask response = new InvalidGameTask("That move is not valid",t.getGameID());
+			InvalidGameTask response;
+			if(gameManager.getGame(t.getGameID()) == null) {
+				response = new InvalidGameTask("That move is not valid",t.getGameID());
+			} else {
+				response = new InvalidGameTask("That move is not valid",t.getGameID(),true);
+				GameTask attachment = new OpenGameTask(gameManager.getGame(t.getGameID()));
+				response.attach(attachment);
+			}
 			this.sendInvalidGameTaskResponse(response, client);
 		}
 	}
@@ -103,7 +111,14 @@ public class GameServer extends AbstractGameServer {
 			String playerTwo = t.getPlayerTwo();
 			checkAndSend(t,playerTwo,client);
 		} else {
-			InvalidGameTask response = new InvalidGameTask("That move is not valid",t.getGameID());
+			InvalidGameTask response;
+			if(gameManager.getGame(t.getGameID()) == null) {
+				response = new InvalidGameTask("That move is not valid",t.getGameID());
+			} else {
+				response = new InvalidGameTask("That move is not valid",t.getGameID(),true);
+				GameTask attachment = new OpenGameTask(gameManager.getGame(t.getGameID()));
+				response.attach(attachment);
+			}
 			this.sendInvalidGameTaskResponse(response, client);
 		}
 
