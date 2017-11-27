@@ -63,7 +63,7 @@ public class PlayerConsole extends AbstractConsole {
 			ret = "";
 		}
 		eraser.halt();
-
+		needsPrompt = true;
 		return ret;
 	}
 
