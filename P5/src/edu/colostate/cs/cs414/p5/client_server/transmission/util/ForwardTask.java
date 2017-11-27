@@ -4,11 +4,10 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import edu.colostate.cs.cs414.p5.client_server.server.AbstractServer;
-import edu.colostate.cs.cs414.p5.client_server.server.ActiveServer;
 import edu.colostate.cs.cs414.p5.client_server.server.registry.AbstractRegistry;
 import edu.colostate.cs.cs414.p5.client_server.server.registry.ActiveRegistry;
 import edu.colostate.cs.cs414.p5.client_server.server.session.ClientSession;
+import edu.colostate.cs.cs414.p5.client_server.server.session.SessionManager;
 import edu.colostate.cs.cs414.p5.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p5.client_server.transmission.TaskConstents;
 
@@ -54,7 +53,7 @@ public class ForwardTask extends UtilityTask {
 	}
 
 	public void run() {
-		AbstractServer server = ActiveServer.getInstance();	
+		SessionManager server = SessionManager.getInstance();	
 		if(server != null) {
 			forwardTheTask(server);
 		}
@@ -64,11 +63,11 @@ public class ForwardTask extends UtilityTask {
 		return task;
 	}
 	
-	private void forwardTheTask(AbstractServer server) {
+	private void forwardTheTask(SessionManager server) {
 		boolean success = false;
 		String response = "";
-		ClientSession clientFrom = server.getRegisteredClient(fromPlayer);
-		ClientSession clientTo = server.getRegisteredClient(toPlayer);
+		ClientSession clientFrom = server.getLoggedInClient(fromPlayer);
+		ClientSession clientTo = server.getLoggedInClient(toPlayer);
 		
 		if(clientFrom != null) { // ensures that the client sending is registered
 			if(clientTo != null) {

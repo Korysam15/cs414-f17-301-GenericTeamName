@@ -6,29 +6,23 @@ package edu.colostate.cs.cs414.p5.client_server.server.session;
 import java.io.IOException;
 import java.nio.channels.SelectionKey;
 
-import edu.colostate.cs.cs414.p5.client_server.server.AbstractServer;
 import edu.colostate.cs.cs414.p5.client_server.transmission.Task;
-import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.LoginTask;
-import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.RegisterTask;
 
 /**
  * @author pflagert
  *
  */
 public abstract class AbstractSession {
-	protected AbstractServer server;
+	protected SessionManager manager;
 	
 	protected SelectionKey key;
 	
 	protected String ID;
 	
-	protected Boolean isRegistered;
-	
-	public AbstractSession(AbstractServer server, SelectionKey key, String ID) {
-		this.server = server;
+	public AbstractSession(SelectionKey key, String ID) {
+		this.manager = SessionManager.getInstance();
 		this.key = key;
 		this.ID = ID;
-		isRegistered = false;
 	}
 	
 	/**
@@ -79,19 +73,6 @@ public abstract class AbstractSession {
 	 * that instance will no longer be able to communicate to the client.
 	 */
 	public abstract void disconnect();
-	
-	/**
-	 * The isConnected method returns true if the SocketChannel is able to be written to
-	 * or read from (i.e The SocketChannel is open).
-	 * Otherwise returns false.
-	 */
-	public abstract boolean isConnected();
-	
-	public abstract boolean isRegisteredWithServer();
-	
-	public abstract void registerWithServer(RegisterTask t);
-	
-	public abstract void registerWithServer(LoginTask t);
 	
 	public abstract String toString();
 	

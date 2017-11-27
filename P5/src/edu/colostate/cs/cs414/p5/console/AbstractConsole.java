@@ -6,10 +6,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.InterruptedIOException;
 import java.io.PrintStream;
-import java.util.List;
-
-import edu.colostate.cs.cs414.p5.user.Player;
-
 
 public abstract class AbstractConsole implements Runnable {
 
@@ -18,29 +14,27 @@ public abstract class AbstractConsole implements Runnable {
 	public static final String WHITE="\033[0;37m";
 	public static final String NORM="\033[0m";
 
-	protected String acceptedCommand;
-	protected List<String> params;
-	protected String errorMessage;
 	protected String outPutBeforeConsole = "";
-	protected Player player;
 	protected BufferedReader fromConsole;
+	protected Boolean needsPrompt;
 	protected final InputStream input;
 	protected final PrintStream output;
 	protected final PrintStream error;
 
 	protected AbstractConsole() {
+		needsPrompt = true;
 		this.input = System.in;
 		this.output = System.out;
 		this.error = System.err;
 	}
 
 	public abstract void display(Object msg);
+	
+	public abstract void displayNoPrompt(Object msg);
+	
+	public abstract void clear();
 
-	protected abstract boolean acceptCommand(String command);
-
-	protected abstract void handleCommand();
-
-	protected abstract void handleCommandError();
+	protected abstract void handleCommand(String command);
 
 	public synchronized String promptUser(String msg) throws IOException {
 		display(msg);
@@ -56,21 +50,18 @@ public abstract class AbstractConsole implements Runnable {
 		fromConsole = new BufferedReader(new InputStreamReader(input));
 		try{
 			String command;
-
 			while (true) {
 				synchronized(output) {
-					display("");
+					if(needsPrompt)
+						display("");
 				}
 				synchronized(fromConsole) {
 					command = fromConsole.readLine();
 				}
-				if(command == null || command.isEmpty())
+				if(command == null || command.isEmpty()) {
 					continue;
-				else if(acceptCommand(command)) {
-					handleCommand();
-				}
-				else {
-					handleCommandError();
+				} else {
+					handleCommand(command);
 				}
 
 			}
@@ -80,7 +71,7 @@ public abstract class AbstractConsole implements Runnable {
 		}
 		catch (Exception e2) {
 			error("Error reading from console");
-			//e2.printStackTrace();
+			e2.printStackTrace();
 			this.accept();
 		}
 	}
@@ -96,8 +87,6 @@ public abstract class AbstractConsole implements Runnable {
 	public synchronized void notice(String msg) {
 		display(WHITE+msg+NORM);
 	}
-
-	public abstract int getParam();
 
 	@Override
 	public abstract void run();

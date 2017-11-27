@@ -40,7 +40,7 @@ public abstract class EntryResponseTask extends Task {
 				console.error(getResponseMessage());
 			}
 		} else {
-			System.out.println(getResponseMessage());
+			System.out.println("Console is null: " + getResponseMessage());
 		}
 	}
 	

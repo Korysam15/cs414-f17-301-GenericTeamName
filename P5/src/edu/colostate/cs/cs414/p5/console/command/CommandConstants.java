@@ -1,19 +1,20 @@
-package edu.colostate.cs.cs414.p5.console;
+package edu.colostate.cs.cs414.p5.console.command;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class ConsoleConstants {
+public final class CommandConstants {
 	public static final String WHITE="\033[0;37m";
 	public static final String NORM="\033[0m";
 	public static final String[] noParamCommands = 
 		{"exit","help","register","login",
 				"logout","unregister","create-game","view-profile",
-				"view-invites", "view-sent-invites", "clear", "show-players"};
+				"view-invites", "view-sent-invites", "clear", "show-players",
+				"set-log-level"};
 
 	public static final String[] paramCommands =
-		{"login", "register", "create-game","view-profile", "help"};
+		{"login", "register", "create-game","view-profile", "help", "set-log-level"};
 
 	public static final int noParamCommandsLength = noParamCommands.length;
 	public static final int paramCommandsLength = paramCommands.length;

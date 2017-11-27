@@ -7,7 +7,7 @@ public class ActiveRegistry {
 	
 	/**
 	 * Sets the instance of AbstractServer the ActiveServer manages 
-	 * @param server - The AbstractServer that will be returned by {@link #getInstance()}.
+	 * @param manager - The AbstractServer that will be returned by {@link #getInstance()}.
 	 */
 	public static synchronized void setInstance(AbstractRegistry registry) {
 		instance = registry;

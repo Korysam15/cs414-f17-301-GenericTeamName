@@ -11,7 +11,7 @@ import edu.colostate.cs.cs414.p5.client_server.server.AbstractServer;
 		
 		/**
 		 * Sets the instance of AbstractServer the ActiveServer manages 
-		 * @param server - The AbstractServer that will be returned by {@link #getInstance()}.
+		 * @param manager - The AbstractServer that will be returned by {@link #getInstance()}.
 		 */
 		public static synchronized void setInstance(Player player) {
 			instance = player;

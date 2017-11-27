@@ -29,10 +29,6 @@ public class GameServer extends AbstractGameServer {
 		this(new InetSocketAddress(port));
 	}
 
-	private boolean isPlayerOnline(String playerID) {
-		return this.getRegisteredClient(playerID) != null;
-	}
-
 	private boolean playerExists(String playerID) {
 		AbstractRegistry registry = ActiveRegistry.getInstance();
 		// if a registry exists
@@ -40,26 +36,16 @@ public class GameServer extends AbstractGameServer {
 		if(registry != null) {
 			return registry.isNicknameTaken(playerID);
 		} else { // if a registry does not exist then the player only exists if they are logged in.
-			return isPlayerOnline(playerID);
-		}
-	}
-
-	private void sendGameTask(GameTask t, ClientSession client) {
-		if(client != null) {
-			try {
-				client.send(t);
-			} catch (IOException e) {
-				log("Error occured while sending: " + t + " to [" + client + "]");
-			}
+			return sessionManager.isClientOnline(playerID);
 		}
 	}
 
 	private void sendGameTask(GameTask t, String userID) {
-		sendGameTask(t,getRegisteredClient(userID));
+		sessionManager.sendToClient(t, userID);
 	}
 
 	private void sendGameTaskIfOnline(GameTask t, String player) {
-		if(isPlayerOnline(player)) {
+		if(sessionManager.isClientOnline(player)) {
 			sendGameTask(t,player);
 		}
 	}
@@ -71,12 +57,12 @@ public class GameServer extends AbstractGameServer {
 		} else {
 			String message = toPlayer+" has removed their account";
 			GameTask response = new InvalidGameTask(message,t.getGameID());
-			log(fromClient.getID() + " on [" + fromClient + "] tried to send GameTask: "
+			LOG.info(fromClient.getID() + " on [" + fromClient + "] tried to send GameTask: "
 					+ t + " but " + message);
 			try {
 				fromClient.send(response);
 			} catch(IOException e) {
-				log("Failed to notify: " + fromClient + " that " + message);
+				LOG.info("Failed to notify: " + fromClient + " that " + message);
 			}
 			return false;
 		}
@@ -124,8 +110,16 @@ public class GameServer extends AbstractGameServer {
 	@Override
 	public void handleInviteGameTask(InviteTask t, ClientSession client) {
 		// Send InviteTask to playerTwo (if online)
+		String playerOne = t.getPlayerOne();
 		String playerTwo = t.getPlayerTwo();
-		if(checkAndSend(t,playerTwo,client)) {		
+		if(playerOne.equals(playerTwo)) {
+			LOG.info(playerOne + " on [" + client + "] attempted to invite himself to a game.");
+			try {
+				client.send(new InvalidGameTask("You can not invite your self to a game...",t.getGameID()));
+			} catch (IOException e) {
+				LOG.error("Failed to send message to: " + playerOne + " that they invited them selves to a game");
+			}
+		} else if(checkAndSend(t,playerTwo,client)) {		
 			// add invitation
 			inviteManager.addInvitation(t);
 		}
@@ -146,7 +140,7 @@ public class GameServer extends AbstractGameServer {
 					+ t.getPlayerTwo() + 
 					"' never sent you an invitation.",t.getGameID());
 			this.sendGameTaskResponse(response, client);
-			log(client.getID() + " on [" + client + "] "
+			LOG.info(client.getID() + " on [" + client + "] "
 					+ "never received an invitation, but they accepted it.");
 		}
 
@@ -163,11 +157,9 @@ public class GameServer extends AbstractGameServer {
 			checkAndSend(t,playerTwo,client);
 		} else {
 			// ignore the fact that there wasn't an invitation, they rejected it anyway.
-			log(client.getID() + " on [" + client + "] "
+			LOG.info(client.getID() + " on [" + client + "] "
 					+ "never received an invitation, but they rejected it.");
 		}
-
-
 	}
 
 }
