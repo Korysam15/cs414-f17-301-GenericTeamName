@@ -135,7 +135,7 @@ public class CommandController {
 			} else if(params.size() == 2) {
 				email = params.get(0);
 				nickname = params.get(1);
-				password = console.promptUser("Please enter your password:");
+				password = console.securePrompt("Please enter your password:");
 			} else {
 				email = params.get(0);
 				nickname = params.get(1);
@@ -159,10 +159,10 @@ public class CommandController {
 					console.error("Command 'login' only allows 2 aditional arguments <email> <password>");
 				}
 				email = console.promptUser("Please enter in a valid Email:");
-				password = console.promptUser("Please enter your password:");
+				password = console.securePrompt("Please enter your password:");
 			} else if(params.size() == 1) {
 				email = params.get(0);
-				password = console.promptUser("Please enter your password:");
+				password = console.securePrompt("Please enter your password:");
 			} else {
 				email = params.get(0);
 				password = params.get(1);
