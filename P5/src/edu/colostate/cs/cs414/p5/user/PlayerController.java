@@ -8,6 +8,7 @@ import edu.colostate.cs.cs414.p5.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.invite.GetInvitesTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.invite.GetSentInvitesTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.profile.GetAllPlayersTask;
+import edu.colostate.cs.cs414.p5.client_server.transmission.profile.GetGamesTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.profile.GetProfileTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.LoginTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.LogoutTask;
@@ -138,6 +139,13 @@ public class PlayerController {
 		String nickname = player.getNickName();
 		Task showPlayers = new GetAllPlayersTask(nickname);
 		sendTask(showPlayers);
+	}
+	
+	public synchronized void openGames() throws NotLoggedInException, IOException {
+		methodRequiresLoggedIn("openGames");
+		String nickname = player.getNickName();
+		Task getGames = new GetGamesTask(nickname);
+		sendTask(getGames);
 	}
 	
 	public synchronized void disconnect() throws IOException {

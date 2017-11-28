@@ -10,7 +10,7 @@ import java.io.IOException;
 import edu.colostate.cs.cs414.p5.client_server.transmission.util.WriteUtils;
 
 /**
- * @author pflagert
+ * @author pflagert 
  *
  */
 public abstract class Task implements Runnable {	

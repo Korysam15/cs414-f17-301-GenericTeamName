@@ -11,6 +11,7 @@ import edu.colostate.cs.cs414.p5.client_server.logger.Logger;
 import edu.colostate.cs.cs414.p5.client_server.server.AbstractServer;
 import edu.colostate.cs.cs414.p5.client_server.server.ActiveServer;
 import edu.colostate.cs.cs414.p5.client_server.server.game_server.GameInviteManager;
+import edu.colostate.cs.cs414.p5.client_server.server.game_server.GameManager;
 import edu.colostate.cs.cs414.p5.client_server.server.registry.AbstractRegistry;
 import edu.colostate.cs.cs414.p5.client_server.server.registry.ActiveRegistry;
 import edu.colostate.cs.cs414.p5.client_server.transmission.Task;
@@ -25,6 +26,7 @@ import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.r
 import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.response.LoginGreetingTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.response.RegisterGreetingTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.response.RegistrationErrorTask;
+import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.response.ServerDisconnectedTask;
 
 public class SessionManager implements SessionTaskManager {
 	private static final Logger LOG = Logger.getInstance();
@@ -49,7 +51,7 @@ public class SessionManager implements SessionTaskManager {
 	 */
 	private Map<String,ClientSession> loggedInClients;
 	
-	public SessionManager() {
+	private SessionManager() {
 		this.clientMap = new HashMap<SelectionKey,ClientSession>();
 		this.loggedInClients = new HashMap<String,ClientSession>();
 	}
@@ -83,11 +85,11 @@ public class SessionManager implements SessionTaskManager {
 			ClientSession client = getLoggedInClient(clientID);
 			if(client != null) {
 				try {
-					LOG.info("Sending Task: " + t + " to '" + clientID + "'");
+					LOG.info("Sending Task: " + t + " to '" + clientID + "' on [" + client + "]");
 					client.send(t);
 					return true; // only successful if we make it to this line
 				} catch(IOException e) {
-					LOG.error("An IOException occured while sending Task: " + t + " to '" + clientID + "'");
+					LOG.error("An IOException occured while sending Task: " + t + " to '" + clientID + "' on [" + client + "]");
 				}
 			} else {
 				LOG.debug("Target client '" + clientID + "' is not online");
@@ -138,7 +140,7 @@ public class SessionManager implements SessionTaskManager {
 			try {
 				client.send(response);
 			} catch(IOException e) {
-				Logger.getInstance().error("Could not sent response Task: " + response + " to " + client);
+				Logger.getInstance().error("Could not send response Task: " + response + " to " + client);
 			}
 		} else {
 			String id;
@@ -146,7 +148,7 @@ public class SessionManager implements SessionTaskManager {
 				AbstractServer server = ActiveServer.getInstance();
 				server.handleTask(t, client);
 			} else {
-				LOG.info("Client on [" + client + "] submitted Task: " + t + " before loggin in." );
+				LOG.info("Client on [" + client + "] submitted Task: " + t + " before logging in." );
 			}
 		}
 	}
@@ -255,9 +257,15 @@ public class SessionManager implements SessionTaskManager {
 	
 	private String createGreetingMessage(String nickname) {
 		int pendingInvitations = GameInviteManager.getInstance().getInvitationsToUser(nickname).size();
+		int games = GameManager.getInstance().getPlayersGames(nickname).size();
 		String greeting = "Welcome Back " + nickname + "!";
-		if(pendingInvitations > 0) {
-			return greeting + " You have " + pendingInvitations + " pending game invitations.";
+		if(games > 0 && pendingInvitations > 0) {
+			return greeting + " You have " + games + " active game" + ((games > 1) ? "s.\n" : ".\n") +
+					"You also have " + pendingInvitations + " pending game invitation" + ((pendingInvitations > 1) ? "s." : ".");
+		} else if(games > 0) {
+			return greeting + " You have " + games + " active game" + ((games > 1) ? "s." : ".");
+		} else if(pendingInvitations > 0){
+			return greeting + " You have " + pendingInvitations + " pending game invitation" + ((pendingInvitations > 1) ? "s." : ".");
 		} else {
 			return greeting;
 		}
@@ -269,12 +277,23 @@ public class SessionManager implements SessionTaskManager {
 			if(id != null && loggedInClients.containsKey(id)) {
 				loggedInClients.remove(id);
 				LOG.info(id + " has logged off from [" + client + "].");
+				client.setEmail(null);
+				client.setID(null);
 			}
 		}
 	}
 	
 	private void addLoggedInClient(ClientSession client, String nickname) {
 		synchronized(loggedInClients) {
+			if(loggedInClients.containsKey(nickname)) {
+				ClientSession first = loggedInClients.get(nickname);
+				LOG.info(nickname + " has logged in twice: first on [" + first + "] and another on [" + client + "].\n" +
+						"Logging " + nickname + " off from: [" + first + "]");
+				Task logout = new ServerDisconnectedTask("You have been logged off because you have logged in from a different session.");
+				sendToClient(logout,nickname);
+				removeLoggedInClient(first);
+				
+			}
 			loggedInClients.put(nickname, client);
 			LOG.info(nickname + " has logged in from [" + client + "].");
 		}

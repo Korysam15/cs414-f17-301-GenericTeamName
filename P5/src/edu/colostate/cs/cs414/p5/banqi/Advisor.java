@@ -5,9 +5,9 @@ package edu.colostate.cs.cs414.p5.banqi;
  *
  */
 public class Advisor extends Piece {
-
+	public static final int RANK=6; 
 	public Advisor(boolean color) {
-		super.rank=6;
+		super.rank=RANK;
 		super.color=color;
 		if(color){
 			super.icon="R6";

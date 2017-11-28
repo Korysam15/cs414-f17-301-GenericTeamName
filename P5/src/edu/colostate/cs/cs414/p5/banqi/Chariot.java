@@ -4,9 +4,9 @@ package edu.colostate.cs.cs414.p5.banqi;
  *
  */
 public class Chariot extends Piece {
-
+	public static final int RANK=4;
 	public Chariot(boolean color) {
-		super.rank=4;
+		super.rank=RANK;
 		super.color=color;
 		if(color){
 			super.icon="R4";

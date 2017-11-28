@@ -31,7 +31,31 @@ public class BanqiGame {
 	// private Player first;		   // first Player
 	// private Player second;	   // second Player
 	private boolean test=false;	   // TESTING
-
+	private String playerOne;
+	private String playerTwo;
+	
+	public BanqiGame(int gameID, String playerOne, String playerTwo, boolean openConsole) {
+		super();
+		this.gameID = gameID;
+		gameBoard = new GameBoard();
+		this.playerOne = playerOne;
+		this.playerTwo = playerTwo;
+		this.pieces= new Piece[32];
+		if(openConsole) {
+			openConsole();
+		}
+		getAllPieces();
+	}
+	
+	public BanqiGame(int gameID, String playerOne, String playerTwo, GameBoard gameBoard) {
+		super();
+		this.gameID = gameID;
+		this.playerOne = playerOne;
+		this.playerTwo = playerTwo;
+		this.gameBoard = gameBoard;
+		this.pieces= new Piece[32];
+	}
+	
 	public BanqiGame(int gameID) 
 	{
 		super();
@@ -75,6 +99,26 @@ public class BanqiGame {
 		this.pieces= new Piece[32];
 		this.test=test;
 		getAllPieces();
+	}
+	
+	public void openConsole() {
+		console = new JavaConsole();
+		if(ActivePlayer.getInstance() != null) {
+			console.setTitle(ActivePlayer.getInstance().getNickName() + " Game[" + gameID + "]");
+		}
+		System.out.println(gameBoard);
+	}
+	
+	public String getPlayerOne() {
+		return playerOne;
+	}
+	
+	public String getPlayerTwo() {
+		return playerTwo;
+	}
+	
+	public int getGameID() {
+		return gameID;
 	}
 	
 	public GameBoard getGameBoard() 
@@ -187,7 +231,7 @@ public class BanqiGame {
 	}
 
 
-	public  boolean makeMove(Square from, Square to)
+	public boolean makeMove(Square from, Square to)
 	{
 		if(from==null||to==null)
 		{
@@ -210,6 +254,54 @@ public class BanqiGame {
 		}
 		System.out.println("Not a valid move");
 		return false;
+	}
+	
+	public boolean makeMove(int x1, int y1, int x2, int y2) {
+		Square from = null, to = null;
+		try {
+			from = getSquare(x1,y1);
+			to = getSquare(y1,y2);
+		} catch(Exception e) {
+			from = null;
+			to = null;
+			return false;
+		}
+		
+		if(from == null || to == null) {
+			return false;
+		} else if(from.getOn()==null){
+			return false;
+		} else if(from.getOn().faceUp==false){
+			return false;
+		} else if(getValidMoves(from).contains(to)) {
+			to.setOn(from.getOn());
+			from.setOn(null);
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean makeMove(int x, int y) {
+		Square s = null;
+		try {
+			s = getSquare(x,y);
+		} catch(Exception e) {
+			s = null;
+			return false;
+		}
+		
+		if(s == null) {
+			return false;
+		} else if(s.getOn()==null){
+			return false;
+		} else if(s.getOn().faceUp==false)	{
+			s.getOn().flipPiece();
+			return true;
+		} else {
+			return false;
+		}
+		
 	}
 	
 	public boolean makeMove(Square from)
@@ -489,5 +581,19 @@ public class BanqiGame {
 				+ "Red Soldier: R1 \t\t Black Soldier: B1\n");
 
 		System.out.println("Rules:\n Only pieces of equal or lower rank may be captured. However, A Cannon can capture any piece by jumping and a Soldier can capture a general.\n");
+	}
+	
+	@Override
+	public int hashCode() {
+		return gameID;
+	}
+	
+	@Override 
+	public boolean equals(Object other) {
+		if(other == null || !(other instanceof BanqiGame)) {
+			return false;
+		} else {
+			return this.hashCode() == other.hashCode();
+		}
 	}
 }

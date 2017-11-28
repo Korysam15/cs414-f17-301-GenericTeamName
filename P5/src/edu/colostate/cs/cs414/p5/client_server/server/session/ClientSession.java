@@ -168,6 +168,8 @@ public class ClientSession extends AbstractSession {
 	@Override
 	public void disconnect() {
 		manager.clientDisconnected(this, key);
+		if(key != null)
+			key.cancel();
 		try {
 			if(channel != null && channel.isOpen()) {
 				channel.close();
@@ -177,6 +179,8 @@ public class ClientSession extends AbstractSession {
 		} finally {
 			channel = null;
 			email = null;
+			key = null;
+			address = null;
 			setID(null);
 		}
 	}

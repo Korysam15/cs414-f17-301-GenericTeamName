@@ -12,6 +12,7 @@ import edu.colostate.cs.cs414.p5.client_server.transmission.game.ForfeitTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.GameTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.InvalidGameTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.MoveTask;
+import edu.colostate.cs.cs414.p5.client_server.transmission.game.OpenGameTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.invite.AcceptInviteTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.invite.InviteTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.invite.RejectInviteTask;
@@ -19,10 +20,12 @@ import edu.colostate.cs.cs414.p5.client_server.transmission.game.invite.RejectIn
 public class GameServer extends AbstractGameServer {
 
 	private final GameInviteManager inviteManager;
+	private final GameManager gameManager;
 
 	public GameServer(InetSocketAddress address) throws IOException {
 		super(address);
-		this.inviteManager = GameInviteManager.getInstance();	
+		this.inviteManager = GameInviteManager.getInstance();
+		gameManager = GameManager.getInstance();
 	}
 
 	public GameServer(int port) throws IOException {
@@ -37,6 +40,14 @@ public class GameServer extends AbstractGameServer {
 			return registry.isNicknameTaken(playerID);
 		} else { // if a registry does not exist then the player only exists if they are logged in.
 			return sessionManager.isClientOnline(playerID);
+		}
+	}
+	
+	private void sendInvalidGameTaskResponse(InvalidGameTask response, ClientSession client) {
+		try {
+			client.send(response);
+		} catch(IOException e) {
+			LOG.error("Failed to send InvalidGameTask to: " + client);
 		}
 	}
 
@@ -77,22 +88,39 @@ public class GameServer extends AbstractGameServer {
 
 	@Override
 	public void handleGameTask(FlipPieceTask t, ClientSession client) {
-		// TODO validate FlipPieceTask
-
-		// update game state
-		// send FlipPieceTask to playerTwo (if online)
-		String playerTwo = t.getPlayerTwo();
-		checkAndSend(t,playerTwo,client);
+		if(gameManager.isValidMove(t)) {
+			// send FlipPieceTask to playerTwo (if online)
+			String playerTwo = t.getPlayerTwo();
+			checkAndSend(t,playerTwo,client);
+		} else {
+			InvalidGameTask response;
+			if(gameManager.getGame(t.getGameID()) == null) {
+				response = new InvalidGameTask("That move is not valid",t.getGameID());
+			} else {
+				response = new InvalidGameTask("That move is not valid",t.getGameID(),true);
+				GameTask attachment = new OpenGameTask(gameManager.getGame(t.getGameID()));
+				response.attach(attachment);
+			}
+			this.sendInvalidGameTaskResponse(response, client);
+		}
 	}
 
 	@Override
 	public void handleGameTask(MoveTask t, ClientSession client) {
-		// TODO validate MoveTask
-		// update game state
-
-		// send MoveTask to playerTwo (if online)
-		String playerTwo = t.getPlayerTwo();
-		checkAndSend(t,playerTwo,client);
+		if(gameManager.isValidMove(t)) {
+			String playerTwo = t.getPlayerTwo();
+			checkAndSend(t,playerTwo,client);
+		} else {
+			InvalidGameTask response;
+			if(gameManager.getGame(t.getGameID()) == null) {
+				response = new InvalidGameTask("That move is not valid",t.getGameID());
+			} else {
+				response = new InvalidGameTask("That move is not valid",t.getGameID(),true);
+				GameTask attachment = new OpenGameTask(gameManager.getGame(t.getGameID()));
+				response.attach(attachment);
+			}
+			this.sendInvalidGameTaskResponse(response, client);
+		}
 
 	}
 
@@ -101,6 +129,7 @@ public class GameServer extends AbstractGameServer {
 		// TODO validate ForfeitTask?
 		// update playerOne's record to show an additional loss
 		// update playerTwo's record to show an additional win
+		gameManager.closeGame(t.getGameID());
 
 		// send playerTwo a notification about the forfeit (if online)
 		String playerTwo = t.getPlayerTwo();
@@ -128,12 +157,13 @@ public class GameServer extends AbstractGameServer {
 	@Override
 	public void handleInviteGameTask(AcceptInviteTask t, ClientSession client) {
 		// Remove / Check if their was invitation from PlayerTwo
-		if(inviteManager.removeInvitation(t.getPlayerTwo(), t.getPlayerOne())) {
-			// create a game
+		String playerOne = t.getPlayerOne();
+		String playerTwo = t.getPlayerTwo();
+		if(inviteManager.removeInvitation(playerTwo, playerOne)) {
+			int gameID = gameManager.createGame(playerTwo,playerOne);
+			CreateGameTask createGame = new CreateGameTask(gameID,playerTwo,playerOne);
+			t.setCreateGameTask(createGame);
 
-
-			// send AcceptInviteTask to playerTwo (if online)
-			String playerTwo = t.getPlayerTwo();
 			checkAndSend(t,playerTwo,client);
 		} else {
 			GameTask response = new InvalidGameTask("It appears that '"

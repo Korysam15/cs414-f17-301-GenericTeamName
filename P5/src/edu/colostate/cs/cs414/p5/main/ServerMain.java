@@ -3,6 +3,7 @@ package edu.colostate.cs.cs414.p5.main;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
+import edu.colostate.cs.cs414.p5.client_server.logger.Logger;
 import edu.colostate.cs.cs414.p5.client_server.server.AbstractServer;
 import edu.colostate.cs.cs414.p5.client_server.server.ActiveServer;
 import edu.colostate.cs.cs414.p5.client_server.server.game_server.GameInviteManager;
@@ -30,10 +31,10 @@ public class ServerMain {
 			}
 
 			passwordFile = args[1];
-
+			Logger.getInstance().setLogLevel(Logger.LOG_LEVEL.INFO_ERROR);
 			InetSocketAddress address = new InetSocketAddress(port);
 			AbstractServer server = null;
-			GameInviteManager.setInstanceType(GameInviteManager.DB_INVITE_MANAGER);
+			GameInviteManager.setInstanceType(GameInviteManager.FILE_INVITE_MANAGER);
 			server = new GameServer(address);
 			ActiveServer.setInstance(server);
 

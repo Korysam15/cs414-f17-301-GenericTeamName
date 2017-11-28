@@ -28,6 +28,12 @@ public abstract class Piece {
 	public boolean isColor() {
 		return color;
 	}
+	public boolean isRed() {
+		return isColor();
+	}
+	public boolean isBlack() {
+		return !isRed();
+	}
 	public String getIcon() {
 		return icon;
 	}

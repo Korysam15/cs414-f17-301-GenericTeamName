@@ -23,7 +23,7 @@ public class Logger {
 		}
 		this.output = output;
 		logLevel = LOG_LEVEL.DEFAULT;
-		dateFormat = new SimpleDateFormat("HH:mm:ss.S", Locale.ENGLISH);
+		dateFormat = new SimpleDateFormat("E M/dd/y hh:mm:ss.S", Locale.ENGLISH);
 	}
 	
 	public Logger() {
@@ -35,6 +35,10 @@ public class Logger {
 			throw new IllegalArgumentException("Can not set the output stream to null");
 		}
 		this.output = output;
+	}
+	
+	public LOG_LEVEL getLogLevel() {
+		return this.logLevel;
 	}
 	
 	public void setLogLevel(LOG_LEVEL logLevel) {
