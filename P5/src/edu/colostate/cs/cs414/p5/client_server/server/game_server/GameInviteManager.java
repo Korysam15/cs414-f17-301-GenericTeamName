@@ -11,6 +11,11 @@ import java.util.Set;
 import edu.colostate.cs.cs414.p5.client_server.logger.Logger;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.invite.*;
 
+/**
+ * 
+ * @author pflagert
+ *
+ */
 public abstract class GameInviteManager {	
 	protected static final Logger LOG = Logger.getInstance();
 // START INSTANCE VARIABLES / METHODS

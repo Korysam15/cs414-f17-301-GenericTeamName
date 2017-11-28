@@ -5,6 +5,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ * 
+ * @author pflagert
+ *
+ */
 public class Logger {
 	
 	private static final Logger instance = new Logger();

@@ -13,6 +13,11 @@ import edu.colostate.cs.cs414.p5.client_server.transmission.util.WriteUtils;
 import edu.colostate.cs.cs414.p5.user.ActivePlayer;
 import edu.colostate.cs.cs414.p5.user.Player;
 
+/**
+ * 
+ * @author pflagert
+ *
+ */
 public class OpenGameTask extends GameTask {
 
 	public static final String SEPERATOR = ":";

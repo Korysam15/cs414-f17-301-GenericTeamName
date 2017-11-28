@@ -2,6 +2,11 @@ package edu.colostate.cs.cs414.p5.client_server.server.registry;
 
 import edu.colostate.cs.cs414.p5.client_server.server.AbstractServer;
 
+/**
+ * 
+ * @author pflagert
+ *
+ */
 public class ActiveRegistry {
 	private static AbstractRegistry instance;
 	

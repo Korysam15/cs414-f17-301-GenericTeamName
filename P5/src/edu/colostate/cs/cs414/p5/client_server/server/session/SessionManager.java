@@ -28,6 +28,11 @@ import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.r
 import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.response.RegistrationErrorTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.response.ServerDisconnectedTask;
 
+/**
+ * 
+ * @author pflagert
+ *
+ */
 public class SessionManager implements SessionTaskManager {
 	private static final Logger LOG = Logger.getInstance();
 	

@@ -14,6 +14,11 @@ import java.util.Set;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.invite.*;
 import edu.colostate.cs.cs414.p5.util.FileUtils;
 
+/**
+ * 
+ * @author pflagert
+ *
+ */
 public class FileGameInviteManager extends GameInviteManager {
 	private static final File inputFile = new File("invitations");
 	private static final Set<InviteTask> savedTasks = new HashSet<InviteTask>();

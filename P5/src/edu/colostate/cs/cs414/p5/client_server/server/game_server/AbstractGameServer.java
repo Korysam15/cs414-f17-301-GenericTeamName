@@ -12,6 +12,11 @@ import edu.colostate.cs.cs414.p5.client_server.transmission.game.invite.*;
 import edu.colostate.cs.cs414.p5.client_server.transmission.util.ForwardTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.util.MultiForwardTask;
 
+/**
+ * 
+ * @author pflagert
+ *
+ */
 public abstract class AbstractGameServer extends Server {
 
 	public AbstractGameServer(InetSocketAddress address) throws IOException {

@@ -14,6 +14,11 @@ import edu.colostate.cs.cs414.p5.console.AbstractConsole;
 import edu.colostate.cs.cs414.p5.user.ActivePlayer;
 import edu.colostate.cs.cs414.p5.user.Player;
 
+/**
+ * 
+ * @author pflagert
+ *
+ */
 public class OpenAllGamesTask extends GameTask {
 
 	private final List<OpenGameTask> openGameTasks;

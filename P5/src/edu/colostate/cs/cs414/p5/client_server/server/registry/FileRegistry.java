@@ -11,6 +11,11 @@ import java.io.PrintWriter;
 import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.LoginTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.RegisterTask;
 
+/**
+ * 
+ * @author pflagert
+ *
+ */
 public class FileRegistry extends AbstractRegistry {
 
 	/**

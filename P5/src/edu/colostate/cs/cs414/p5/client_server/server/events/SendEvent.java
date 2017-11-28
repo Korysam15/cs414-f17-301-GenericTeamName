@@ -2,9 +2,15 @@ package edu.colostate.cs.cs414.p5.client_server.server.events;
 
 import java.io.IOException;
 
+import edu.colostate.cs.cs414.p5.client_server.logger.Logger;
 import edu.colostate.cs.cs414.p5.client_server.server.session.ClientSession;
 import edu.colostate.cs.cs414.p5.client_server.transmission.Task;
 
+/**
+ * 
+ * @author pflagert
+ *
+ */
 public class SendEvent implements Event {
 	private final ClientSession client;
 	private final Task toSend;
@@ -19,7 +25,7 @@ public class SendEvent implements Event {
 		try {
 			client.send(toSend);
 		} catch (IOException e) {
-			// ignored, SendEvents are used for broadcast messages that likely are not crucial
+			Logger.getInstance().error("SendEvent Failed due to IOException: " + e.getMessage());
 		}
 	}
 

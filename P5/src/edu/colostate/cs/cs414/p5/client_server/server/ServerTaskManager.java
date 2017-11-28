@@ -4,6 +4,11 @@ import edu.colostate.cs.cs414.p5.client_server.server.session.ClientSession;
 import edu.colostate.cs.cs414.p5.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p5.client_server.transmission.TaskManager;
 
+/**
+ * 
+ * @author pflagert
+ *
+ */
 public interface ServerTaskManager extends TaskManager {
 	@Override
 	public default void handleTask(Task t) {

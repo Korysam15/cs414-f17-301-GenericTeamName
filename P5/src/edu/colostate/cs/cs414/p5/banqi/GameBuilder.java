@@ -2,6 +2,11 @@ package edu.colostate.cs.cs414.p5.banqi;
 
 import java.util.Arrays;
 
+/**
+ * 
+ * @author pflagert
+ *
+ */
 public class GameBuilder {
 	
 	private final String fieldSeperator;

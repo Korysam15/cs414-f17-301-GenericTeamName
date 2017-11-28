@@ -1,5 +1,10 @@
 package edu.colostate.cs.cs414.p5.banqi;
 
+/**
+ * 
+ * @author pflagert
+ *
+ */
 public class PieceFactory {
 	private static final PieceFactory instance = new PieceFactory();
 	

@@ -9,6 +9,11 @@ import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.L
 import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.RegisterTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.UnregisterTask;
 
+/**
+ * 
+ * @author pflagert
+ *
+ */
 public interface SessionTaskManager extends TaskManager {
 	@Override
 	public default void handleTask(Task t) {

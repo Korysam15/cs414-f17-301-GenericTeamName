@@ -17,6 +17,11 @@ import edu.colostate.cs.cs414.p5.client_server.transmission.game.invite.AcceptIn
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.invite.InviteTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.invite.RejectInviteTask;
 
+/**
+ * 
+ * @author pflagert
+ *
+ */
 public class GameServer extends AbstractGameServer {
 
 	private final GameInviteManager inviteManager;

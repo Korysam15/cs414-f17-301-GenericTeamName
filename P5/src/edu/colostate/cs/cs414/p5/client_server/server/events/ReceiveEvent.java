@@ -2,10 +2,15 @@ package edu.colostate.cs.cs414.p5.client_server.server.events;
 
 import java.io.IOException;
 
+import edu.colostate.cs.cs414.p5.client_server.logger.Logger;
 import edu.colostate.cs.cs414.p5.client_server.server.session.ClientSession;
 
+/**
+ * 
+ * @author pflagert
+ *
+ */
 public class ReceiveEvent implements Event{
-
 	private ClientSession client;
 	
 	public ReceiveEvent(ClientSession client) {
@@ -17,8 +22,7 @@ public class ReceiveEvent implements Event{
 		try {
 			client.receive();
 		} catch (IOException e) {
-			System.out.println("Receive failed");
-			e.printStackTrace();
+			Logger.getInstance().error("ReceiveEvent Failed due to IOException: " + e.getMessage());
 		}
 	}
 

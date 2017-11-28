@@ -10,6 +10,11 @@ import edu.colostate.cs.cs414.p5.client_server.transmission.TaskConstents;
 import edu.colostate.cs.cs414.p5.user.ActivePlayer;
 import edu.colostate.cs.cs414.p5.user.Player;
 
+/**
+ * 
+ * @author pflagert
+ *
+ */
 public class MoveTask extends GameTask{
 	
 	private int gameID;

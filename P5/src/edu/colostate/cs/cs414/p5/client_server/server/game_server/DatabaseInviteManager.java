@@ -2,6 +2,11 @@ package edu.colostate.cs.cs414.p5.client_server.server.game_server;
 
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.invite.InviteTask;
 
+/**
+ * 
+ * @author pflagert
+ *
+ */
 public class DatabaseInviteManager extends GameInviteManager {
 
 	public DatabaseInviteManager() {

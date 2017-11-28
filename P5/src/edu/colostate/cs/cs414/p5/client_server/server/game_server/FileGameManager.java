@@ -13,7 +13,11 @@ import java.util.Set;
 import edu.colostate.cs.cs414.p5.banqi.BanqiGame;
 import edu.colostate.cs.cs414.p5.banqi.GameBuilder;
 import edu.colostate.cs.cs414.p5.util.FileUtils;
-
+/**
+ * 
+ * @author pflagert
+ *
+ */
 public class FileGameManager extends GameManager {
 	protected static final String SEPERATOR=",";
 	

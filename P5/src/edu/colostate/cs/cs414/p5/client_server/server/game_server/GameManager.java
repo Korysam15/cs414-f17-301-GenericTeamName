@@ -12,6 +12,11 @@ import edu.colostate.cs.cs414.p5.client_server.logger.Logger;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.FlipPieceTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.MoveTask;
 
+/**
+ * 
+ * @author pflagert
+ *
+ */
 public abstract class GameManager {
 	protected static final Logger LOG = Logger.getInstance();
 	protected final Map<Integer,BanqiGame> gameMap;
