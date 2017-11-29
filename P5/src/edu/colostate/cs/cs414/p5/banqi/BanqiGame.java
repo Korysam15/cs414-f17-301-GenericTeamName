@@ -31,8 +31,6 @@ public class BanqiGame {
 	private BanqiPlayer firstPlayer;	   // first Player
 	private BanqiPlayer secondPlayer;	   // second Player
 	private boolean test=false;	   // TESTING
-	private String playerOne;
-	private String playerTwo;
 	private boolean piece_has_flipped;
 
 	public BanqiGame(int gameID, String playerOne, String playerTwo, boolean openConsole) {
@@ -43,7 +41,6 @@ public class BanqiGame {
 		System.out.println(playerTwo);
 		firstPlayer = new BanqiPlayer(playerOne);
 		secondPlayer = new BanqiPlayer(playerTwo);
-		this.playerTwo = playerTwo;
 		this.pieces= new Piece[32];
 		if(openConsole) {
 			openConsole();
@@ -59,6 +56,15 @@ public class BanqiGame {
 		this.gameBoard = gameBoard;
 		this.pieces= new Piece[32];
 	}
+	
+	public BanqiGame(int gameID, BanqiPlayer firstPlayer, BanqiPlayer secondPlayer, GameBoard gameBoard) {
+		super();
+		this.gameID = gameID;
+		this.firstPlayer = firstPlayer;
+		this.secondPlayer = secondPlayer;
+		this.gameBoard = gameBoard;
+		this.pieces= new Piece[32];
+	}
 
 	/* CONSTRUCTOR TO USE KORY */
 	public BanqiGame(int gameID, String playerOne, String playerTwo) 
@@ -71,8 +77,6 @@ public class BanqiGame {
 		console = new JavaConsole();
 		firstPlayer = new BanqiPlayer(playerOne);
 		secondPlayer = new BanqiPlayer(playerTwo);
-		this.playerOne = playerOne;
-		this.playerTwo = playerTwo;
 		if(ActivePlayer.getInstance() != null)
 		{
 			console.setTitle(ActivePlayer.getInstance().getNickName() + " Game[" + gameID + "]");
@@ -120,11 +124,19 @@ public class BanqiGame {
 	}
 
 	public String getPlayerOne() {
-		return playerOne;
+		return firstPlayer.getName();
 	}
 
 	public String getPlayerTwo() {
-		return playerTwo;
+		return secondPlayer.getName();
+	}
+	
+	public BanqiPlayer getFirstPlayer() {
+		return firstPlayer;
+	}
+	
+	public BanqiPlayer getSecondPlayer() {
+		return secondPlayer;
 	}
 
 	public int getGameID() {

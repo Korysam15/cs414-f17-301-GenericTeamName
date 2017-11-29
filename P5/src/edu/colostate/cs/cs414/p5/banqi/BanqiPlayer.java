@@ -21,6 +21,10 @@ public class BanqiPlayer {
 		this.color = color;
 	}
 	
+	public String getName() {
+		return nickName;
+	}
+	
 	public String toString()
 	{
 		return this.nickName + " " + this.color;
