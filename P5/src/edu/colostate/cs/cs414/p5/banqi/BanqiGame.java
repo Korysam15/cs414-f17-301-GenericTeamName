@@ -37,8 +37,6 @@ public class BanqiGame {
 		super();
 		this.gameID = gameID;
 		gameBoard = new GameBoard();
-		System.out.println(playerOne);
-		System.out.println(playerTwo);
 		firstPlayer = new BanqiPlayer(playerOne);
 		secondPlayer = new BanqiPlayer(playerTwo);
 		this.pieces= new Piece[32];
@@ -284,7 +282,7 @@ public class BanqiGame {
 			return false;
 		}
 		if(getValidMoves(from).contains(to)) //check if the move is valid
-		{       
+		{
 			to.setOn(from.getOn());
 			from.setOn(null);
 			return true;
@@ -297,7 +295,7 @@ public class BanqiGame {
 		Square from = null, to = null;
 		try {
 			from = getSquare(x1,y1);
-			to = getSquare(y1,y2);
+			to = getSquare(x2,y2);
 		} catch(Exception e) {
 			from = null;
 			to = null;
@@ -310,7 +308,9 @@ public class BanqiGame {
 			return false;
 		} else if(from.getOn().faceUp==false){
 			return false;
-		} else if(getValidMoves(from).contains(to)) {
+		}
+		else if(getValidMoves(from).contains(to)) {
+			System.out.println("SERVER VALID MOVE");
 			to.setOn(from.getOn());
 			from.setOn(null);
 			return true;
@@ -333,7 +333,8 @@ public class BanqiGame {
 		} else if(s.getOn()==null){
 			return false;
 		} else if(s.getOn().faceUp==false)	{
-			s.getOn().flipPiece();
+//			s.getOn().flipPiece();
+			flipPiece(s);
 			return true;
 		} else {
 			return false;
