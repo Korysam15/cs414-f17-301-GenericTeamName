@@ -95,8 +95,10 @@ public class GameServer extends AbstractGameServer {
 		} else {
 			InvalidGameTask response;
 			if(gameManager.getGame(t.getGameID()) == null) {
+				LOG.info("Handled a game task with an invalid gameID: " + t.getGameID() + " from " + client.getID() + " on [" + client + "]");
 				response = new InvalidGameTask("That move is not valid",t.getGameID());
 			} else {
+				LOG.info("Handled an invalid FlipPieceTask in game: " + t.getGameID() + " from " + client.getID() + " on [" + client + "]");
 				response = new InvalidGameTask("That move is not valid",t.getGameID(),true);
 				GameTask attachment = new OpenGameTask(gameManager.getGame(t.getGameID()));
 				response.attach(attachment);
@@ -113,8 +115,10 @@ public class GameServer extends AbstractGameServer {
 		} else {
 			InvalidGameTask response;
 			if(gameManager.getGame(t.getGameID()) == null) {
+				LOG.info("Handled a game task with an invalid gameID: " + t.getGameID() + " from " + client.getID() + " on [" + client + "]");
 				response = new InvalidGameTask("That move is not valid",t.getGameID());
 			} else {
+				LOG.info("Handled an invalid MoveTask in game: " + t.getGameID() + " from " + client.getID() + " on [" + client + "]");
 				response = new InvalidGameTask("That move is not valid",t.getGameID(),true);
 				GameTask attachment = new OpenGameTask(gameManager.getGame(t.getGameID()));
 				response.attach(attachment);

@@ -1,4 +1,4 @@
-package edu.colostate.cs.cs414.p5.client_server.transmission.game;
+ package edu.colostate.cs.cs414.p5.client_server.transmission.game;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -60,7 +60,7 @@ public class CreateGameTask extends GameTask {
 	}
 	
 	private void createGame(Player player) {
-		BanqiGame game = new BanqiGame(gameID);
+		BanqiGame game = new BanqiGame(gameID,playerOne,playerTwo);
 		player.addGame(gameID, game);
 	}
 }
