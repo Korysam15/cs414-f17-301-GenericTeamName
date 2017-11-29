@@ -15,7 +15,7 @@ import edu.colostate.cs.cs414.p5.user.Player;
 
 public class OpenGameTask extends GameTask {
 
-	public static final String SEPERATOR = ":";
+	public static final String SEPERATOR = ",";
 	private BanqiGame game;
 	
 	public OpenGameTask(BanqiGame game) {
@@ -32,6 +32,7 @@ public class OpenGameTask extends GameTask {
 		} catch(Exception e) {
 			game = null;
 			Logger.getInstance().error("Failed to recreate a game from string in OpenGameTask");
+			e.printStackTrace();
 		}
 		this.game = game;
 	}
@@ -61,10 +62,11 @@ public class OpenGameTask extends GameTask {
 		if(player != null) {
 			BanqiGame oldGame = player.getGame(getGameID());
 			if(oldGame != null) {
-				player.removeGame(oldGame.getGameID());
+				oldGame.setGameBoard(game.getGameBoard());
+			} else {
+				player.addGame(game.getGameID(), game);
+				game.openConsole();
 			}
-			player.addGame(game.getGameID(), game);
-			game.openConsole();
 		}
 
 	}

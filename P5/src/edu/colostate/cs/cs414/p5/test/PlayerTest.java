@@ -36,7 +36,7 @@ class PlayerTest {
 	@Test
 	void testRemoveGame() 
 	{
-		this.default_2.addGame(0, new BanqiGame(0));
+	//	this.default_2.addGame(0, new BanqiGame(0));
 		this.default_2.removeGame(0);
 		assertTrue(this.default_2.getGames().size() == 0);
 	}
@@ -44,7 +44,7 @@ class PlayerTest {
 	@Test
 	void testAddGame() 
 	{
-		this.default_2.addGame(0, new BanqiGame(0));
+	//	this.default_2.addGame(0, new BanqiGame(0));
 		assertTrue(this.default_2.getGames().size() == 1);
 	}
 
