@@ -48,7 +48,7 @@ public class GetGamesTask extends Task {
 	private void sendGames(List<BanqiGame> playersGames) {
 		SessionManager sessionManager = SessionManager.getInstance();
 		if(sessionManager != null) {
-			OpenAllGamesTask response = new OpenAllGamesTask(playersGames);
+			OpenAllGamesTask response = new OpenAllGamesTask(playersGames,playerWhoWants);
 			sessionManager.sendToClient(response, playerWhoWants);
 		}
 	}

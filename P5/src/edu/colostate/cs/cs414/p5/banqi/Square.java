@@ -38,9 +38,20 @@ public class Square {
 	public boolean isEmpty(){
 		return on==null;
 	}
+	
+	@Override
+	public String toString() {
+		return "["+x+"]["+y+"]";
+	}
+	
+	@Override
+	public int hashCode() {
+		return toString().hashCode();
+	}	
+	
 	@Override
 	public boolean equals(Object obj) {
-		if(obj instanceof Square)
+		if(obj != null && obj instanceof Square)
 		{
 			Square s=(Square) obj;
 			return s.x==this.x&&s.y==y;

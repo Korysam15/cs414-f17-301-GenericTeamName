@@ -16,15 +16,26 @@ import edu.colostate.cs.cs414.p5.user.Player;
 public class OpenGameTask extends GameTask {
 
 	public static final String SEPERATOR = ",";
+	private boolean promptTurn;
 	private BanqiGame game;
 	
-	public OpenGameTask(BanqiGame game) {
+	public OpenGameTask(BanqiGame game, boolean promptTurn) {
 		super(game.getPlayerOne(),game.getPlayerTwo());
+		this.promptTurn = promptTurn;
 		this.game = game;
+	}
+	
+	public OpenGameTask(BanqiGame game, String playersName) {
+		this(game,game.getBanqiPlayer(playersName).isTurn);
+	}
+	
+	public OpenGameTask(BanqiGame game) {
+		this(game,false);
 	}
 	
 	public OpenGameTask(DataInputStream din) throws IOException {
 		super(din);
+		this.promptTurn = din.readBoolean();
 		String gameAsString = ReadUtils.readString(din);
 		BanqiGame game = null;
 		try {
@@ -40,6 +51,7 @@ public class OpenGameTask extends GameTask {
 	@Override
 	public void writeBytes(DataOutputStream dout) throws IOException {
 		super.writeBytes(dout);
+		dout.writeBoolean(promptTurn);
 		String gameAsString = GameBuilder.gameToString(game, SEPERATOR);
 		WriteUtils.writeString(gameAsString, dout);
 	}
@@ -60,15 +72,30 @@ public class OpenGameTask extends GameTask {
 			return;
 		Player player = ActivePlayer.getInstance();
 		if(player != null) {
-			BanqiGame oldGame = player.getGame(getGameID());
-			if(oldGame != null) {
-				oldGame.setGameBoard(game.getGameBoard());
-			} else {
-				player.addGame(game.getGameID(), game);
-				game.openConsole();
-			}
+			addGame(player);
 		}
-
+	}
+	
+	private void addGame(Player player) {
+		BanqiGame oldGame = player.getGame(getGameID());
+		if(oldGame != null) {
+			oldGame.setGameBoard(game.getGameBoard());
+			this.game = oldGame;
+		} else {
+			player.addGame(game.getGameID(), game);
+			game.openConsole();
+		}
+		
+		if(promptTurn) {
+			String currentPlayerNickname = ActivePlayer.getInstance().getNickName();
+			String otherPlayer = null;
+			if(game.getFirstPlayer().nickName.equals(currentPlayerNickname)) {
+				otherPlayer = game.getSecondPlayer().nickName;
+			} else {
+				otherPlayer = game.getFirstPlayer().nickName;
+			}
+			game.promptTurn(player, otherPlayer);
+		}
 	}
 
 }

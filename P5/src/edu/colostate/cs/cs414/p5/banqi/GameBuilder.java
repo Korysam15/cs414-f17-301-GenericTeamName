@@ -9,7 +9,9 @@ public class GameBuilder {
 	private final String fieldSeperator;
 
 	private static final String PLAYER_COLOR_NOT_SET = "UNKOWN";
-
+	private static final String PLAYERS_TURN = "YES";
+	private static final String NOT_PLAYERS_TURN = "NO";
+	
 	private static final String PIECE_IS_NULL = "empty";
 	private static final String PIECE_IS_FACE_UP = "U";
 	private static final String PIECE_IS_FACE_DOWN = "D";
@@ -52,7 +54,9 @@ public class GameBuilder {
 		String color = strings.remove(0);
 		if(!PLAYER_COLOR_NOT_SET.equals(color)) {
 			ret.setColor(color);
-		} 
+		}
+		String turn = strings.remove(0);
+		ret.isTurn = PLAYERS_TURN.equals(turn);
 		return ret;
 	}
 
@@ -106,11 +110,19 @@ public class GameBuilder {
 
 	private static void appendPlayer(BanqiPlayer player, String fieldSeperator, StringBuilder ret) {
 		ret.append(player.getName()+fieldSeperator);
+		
 		if(player.getColor() != null && !player.getColor().isEmpty()) {
 			ret.append(player.getColor()+fieldSeperator);
 		} else {
 			ret.append(PLAYER_COLOR_NOT_SET+fieldSeperator);
 		}
+		
+		if(player.isTurn) {
+			ret.append(PLAYERS_TURN+fieldSeperator);
+		} else {
+			ret.append(NOT_PLAYERS_TURN+fieldSeperator);
+		}
+		
 	}
 
 	private static void appendGameBoard(GameBoard board, String fieldSeperator, StringBuilder ret) {
