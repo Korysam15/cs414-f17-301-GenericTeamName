@@ -111,7 +111,7 @@ public abstract class GameManager {
 	}
 	
 	public boolean isValidMove(MoveTask m) {
-		return isValidMove(m.getGameID(),m.getFromX(),m.getFromY(),m.getToX(),m.getFromY());
+		return isValidMove(m.getGameID(),m.getFromX(),m.getFromY(),m.getToX(),m.getToY());
 	}
 	
 	public boolean isValidMove(int gameID, int flipOnX, int flipOnY) {

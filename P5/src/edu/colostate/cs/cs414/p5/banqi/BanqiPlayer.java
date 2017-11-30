@@ -1,14 +1,15 @@
 package edu.colostate.cs.cs414.p5.banqi;
 
 public class BanqiPlayer {
-//	public boolean color;
 	public String nickName;
 	public String color;
+	public boolean isTurn;
 	
 	public BanqiPlayer(String nickName)
 	{
 		this.nickName = nickName;
 		this.color = "";
+		this.isTurn = false;
 	}
 	
 	public String getColor()

@@ -28,8 +28,8 @@ public class BanqiGame {
 	private int gameID;            // unique id
 	private GameBoard gameBoard;   // board that the game is played on
 	private Piece pieces[];        // pieces in game
-	private BanqiPlayer firstPlayer;	   // first Player
-	private BanqiPlayer secondPlayer;	   // second Player
+	private BanqiPlayer firstPlayer;		// first Player
+	private BanqiPlayer secondPlayer;	// second Player
 	private boolean test=false;	   // TESTING
 	private boolean piece_has_flipped;
 
@@ -37,8 +37,6 @@ public class BanqiGame {
 		super();
 		this.gameID = gameID;
 		gameBoard = new GameBoard();
-		System.out.println(playerOne);
-		System.out.println(playerTwo);
 		firstPlayer = new BanqiPlayer(playerOne);
 		secondPlayer = new BanqiPlayer(playerTwo);
 		this.pieces= new Piece[32];
@@ -95,7 +93,22 @@ public class BanqiGame {
 		console = new JavaConsole();
 		getAllPieces();
 	}
-	
+
+	public BanqiGame(int gameID) 
+	{
+		super();
+		this.gameID = gameID;
+		this.gameBoard= new GameBoard();
+		this.pieces= new Piece[32];
+		console = new JavaConsole();
+		if(ActivePlayer.getInstance() != null)
+		{
+			console.setTitle(ActivePlayer.getInstance().getNickName() + " Game[" + gameID + "]");
+		}
+		getAllPieces();
+
+	}
+
 	public BanqiGame(int gameID,Player first, Player second, boolean test) 
 	{
 		this.gameID = gameID;
@@ -269,7 +282,7 @@ public class BanqiGame {
 			return false;
 		}
 		if(getValidMoves(from).contains(to)) //check if the move is valid
-		{       
+		{
 			to.setOn(from.getOn());
 			from.setOn(null);
 			return true;
@@ -282,7 +295,7 @@ public class BanqiGame {
 		Square from = null, to = null;
 		try {
 			from = getSquare(x1,y1);
-			to = getSquare(y1,y2);
+			to = getSquare(x2,y2);
 		} catch(Exception e) {
 			from = null;
 			to = null;
@@ -295,7 +308,9 @@ public class BanqiGame {
 			return false;
 		} else if(from.getOn().faceUp==false){
 			return false;
-		} else if(getValidMoves(from).contains(to)) {
+		}
+		else if(getValidMoves(from).contains(to)) {
+			System.out.println("SERVER VALID MOVE");
 			to.setOn(from.getOn());
 			from.setOn(null);
 			return true;
@@ -318,7 +333,8 @@ public class BanqiGame {
 		} else if(s.getOn()==null){
 			return false;
 		} else if(s.getOn().faceUp==false)	{
-			s.getOn().flipPiece();
+//			s.getOn().flipPiece();
+			flipPiece(s);
 			return true;
 		} else {
 			return false;
@@ -347,7 +363,7 @@ public class BanqiGame {
 
 	public boolean flipPiece(Square from)
 	{
-		String color = "";
+		String color, color2 = "";
 		if(from.getOn().faceUp==false)
 		{
 			from.getOn().flipPiece();
@@ -356,13 +372,15 @@ public class BanqiGame {
 				if(from.getOn().color)
 				{
 					color = "red";
+					color2 = "black";
 				}
 				else
 				{
 					color = "black";
+					color2 = "red";
 				}
 				this.firstPlayer.setColor(color);
-				this.secondPlayer.setColor(color);
+				this.secondPlayer.setColor(color2);
 				System.out.println(this.firstPlayer.getColor());
 				System.out.println(this.secondPlayer.getColor());
 				this.piece_has_flipped = true;
@@ -490,87 +508,93 @@ public class BanqiGame {
 		System.out.println(gameBoard);
 		Task notify = null;
 		BanqiPlayer currentPlayer = getBanqiPlayer(p);
+		currentPlayer.isTurn = true;
 		String color = "";
 		while(true)
 		{
-			System.out.println(currentPlayer.nickName + currentPlayer.color);
-			System.out.println("Type 'forfeit' to forfeit a match or 'help' to get help.");
-			System.out.println("Make a move!  ex. A1");
-			@SuppressWarnings("resource")
-			Scanner scanner = new Scanner(System.in);
-			String in1 = scanner.nextLine();
-			if(in1.toLowerCase().equals("forfeit"))
+			if(currentPlayer.isTurn)
 			{
-				System.out.print("Are you sure you want to forfiet? Type 'yes' to confirm or 'no' to keep playing: ");
-				String choice = scanner.next();
-				if(choice.toLowerCase().equals("yes"))
+				System.out.println(currentPlayer.nickName + currentPlayer.color);
+				System.out.println("Type 'forfeit' to forfeit a match or 'help' to get help.");
+				System.out.println("Make a move!  ex. A1");
+				@SuppressWarnings("resource")
+				Scanner scanner = new Scanner(System.in);
+				String in1 = scanner.nextLine();
+				if(in1.toLowerCase().equals("forfeit"))
 				{
-					forfeit(p,otherPlayer);
-					break;
-				}
-				if(choice.toLowerCase().equals("no"))
-				{
-					continue;
-				}
-			}
-			else if(in1.toLowerCase().equals("help"))
-			{
-				printHelpInformation();
-			}
-			else
-			{
-				if(in1.length() != 2){
-					System.out.println("You entered in: " + '"' + in1 + '"');
-					System.out.println("Invalid Move");
-					continue;
-				}
-				Square from = getSquare(in1);
-
-				if(from == null){
-					System.out.println("You entered in: " + '"' + in1 + '"');
-					System.out.println("Invalid Move - No piece at: "+in1);
-					continue;
-				}
-				else if(!from.getOn().faceUp){
-					if(from.getOn().color)
+					System.out.print("Are you sure you want to forfiet? Type 'yes' to confirm or 'no' to keep playing: ");
+					String choice = scanner.next();
+					if(choice.toLowerCase().equals("yes"))
 					{
-						color = "red";
+						forfeit(p,otherPlayer);
+						break;
 					}
-					else
+					if(choice.toLowerCase().equals("no"))
 					{
-						color = "black";
+						continue;
 					}
-					flipPiece(from);
-					System.out.println(gameBoard);
-					notify = new FlipPieceTask(p.getNickName(),this.gameID,from);
-					break;
 				}
-				else if(from.getOn().faceUp && color.equals(currentPlayer.color))
+				else if(in1.toLowerCase().equals("help"))
 				{
-					System.out.println("The piece you selected is not your piece!");
-					continue;
+					printHelpInformation();
 				}
-				else{
-					System.out.println("to");
-
-
-					String in2 = scanner.nextLine();
-					if(in2.length() != 2){
+				else
+				{
+					if(in1.length() != 2){
+						System.out.println("You entered in: " + '"' + in1 + '"');
 						System.out.println("Invalid Move");
 						continue;
 					}
-					Square to =getSquare(in2);
-					if(to == null){
+					Square from = getSquare(in1);
+
+					if(from == null){
 						System.out.println("You entered in: " + '"' + in1 + '"');
 						System.out.println("Invalid Move - No piece at: "+in1);
 						continue;
 					}
-					if(makeMove(from,to)){
+					else if(!from.getOn().faceUp){
+						flipPiece(from);
+						currentPlayer.isTurn = false;
 						System.out.println(gameBoard);
-						notify = new MoveTask(p.getNickName(),this.gameID,from,to);
+						notify = new FlipPieceTask(p.getNickName(),this.gameID,from);
 						break;
 					}
-					System.out.println("Invalid Move - "+from.getOn().getClass()+" can't move like that");
+					else{
+						if(from.getOn().color)
+						{
+							color = "red";
+						}
+						else
+						{
+							color = "black";
+						}
+						if(!color.equals(currentPlayer.color))
+						{
+							System.out.println("The piece you selected is not your piece!");
+							continue;
+						}
+						System.out.println("to");
+
+
+						String in2 = scanner.nextLine();
+						if(in2.length() != 2){
+							System.out.println("Invalid Move");
+							continue;
+						}
+						Square to =getSquare(in2);
+						if(to == null){
+							System.out.println("You entered in: " + '"' + in1 + '"');
+							System.out.println("Invalid Move - No piece at: "+in1);
+							continue;
+						}
+						if(makeMove(from,to)){
+							System.out.println(gameBoard);
+							notify = new MoveTask(p.getNickName(),this.gameID,from,to);
+							currentPlayer.isTurn = false;
+							break;
+						}
+						System.out.println("Invalid Move - "+from.getOn().getClass()+" can't move like that");
+					}
 				}
 			}
 			//check for the right color 
