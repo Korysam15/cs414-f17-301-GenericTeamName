@@ -18,11 +18,11 @@ public class OpenAllGamesTask extends GameTask {
 
 	private final List<OpenGameTask> openGameTasks;
 	
-	public OpenAllGamesTask(List<BanqiGame> games) {
+	public OpenAllGamesTask(List<BanqiGame> games, String playersName) {
 		super();
 		openGameTasks = new ArrayList<OpenGameTask>(games.size());
 		for(BanqiGame game: games) {
-			openGameTasks.add(new OpenGameTask(game));
+			openGameTasks.add(new OpenGameTask(game,playersName));
 		}
 	}
 	

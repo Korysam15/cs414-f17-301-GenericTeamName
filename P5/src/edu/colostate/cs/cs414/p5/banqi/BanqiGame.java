@@ -41,7 +41,9 @@ public class BanqiGame {
 		this.gameID = gameID;
 		gameBoard = new GameBoard();
 		firstPlayer = new BanqiPlayer(playerOne);
+		firstPlayer.isTurn = true;
 		secondPlayer = new BanqiPlayer(playerTwo);
+		secondPlayer.isTurn = false;
 		this.pieces= new Piece[32];
 		if(openConsole) {
 			openConsole();
@@ -53,9 +55,12 @@ public class BanqiGame {
 		super();
 		this.gameID = gameID;
 		firstPlayer = new BanqiPlayer(playerOne);
+		firstPlayer.isTurn = true;
 		secondPlayer = new BanqiPlayer(playerTwo);
+		secondPlayer.isTurn = false;
 		this.gameBoard = gameBoard;
 		this.pieces= new Piece[32];
+		setPiecesFromGameBoard();
 	}
 	
 	public BanqiGame(int gameID, BanqiPlayer firstPlayer, BanqiPlayer secondPlayer, GameBoard gameBoard) {
@@ -64,7 +69,8 @@ public class BanqiGame {
 		this.firstPlayer = firstPlayer;
 		this.secondPlayer = secondPlayer;
 		this.gameBoard = gameBoard;
-		this.pieces= new Piece[32];
+		this.pieces = new Piece[32];
+		setPiecesFromGameBoard();
 	}
 
 	/* CONSTRUCTOR TO USE KORY */
@@ -77,10 +83,19 @@ public class BanqiGame {
 		this.piece_has_flipped = false;
 		console = new JavaConsole();
 		firstPlayer = new BanqiPlayer(playerOne);
+		firstPlayer.isTurn = true;
 		secondPlayer = new BanqiPlayer(playerTwo);
+		secondPlayer.isTurn = false;
 		if(ActivePlayer.getInstance() != null)
 		{
-			console.setTitle(ActivePlayer.getInstance().getNickName() + " Game[" + gameID + "]");
+			String currentPlayerNickname = ActivePlayer.getInstance().getNickName();
+			String otherPlayer = null;
+			if(firstPlayer.nickName.equals(currentPlayerNickname)) {
+				otherPlayer = secondPlayer.nickName;
+			} else {
+				otherPlayer = firstPlayer.nickName;
+			}
+			console.setTitle(currentPlayerNickname + " Your Opponent is: "  + otherPlayer + " in Game[" + gameID + "]");
 		}
 		getAllPieces();
 
@@ -106,7 +121,14 @@ public class BanqiGame {
 		console = new JavaConsole();
 		if(ActivePlayer.getInstance() != null)
 		{
-			console.setTitle(ActivePlayer.getInstance().getNickName() + " Game[" + gameID + "]");
+			String currentPlayerNickname = ActivePlayer.getInstance().getNickName();
+			String otherPlayer = null;
+			if(firstPlayer.nickName.equals(currentPlayerNickname)) {
+				otherPlayer = secondPlayer.nickName;
+			} else {
+				otherPlayer = firstPlayer.nickName;
+			}
+			console.setTitle(currentPlayerNickname + " Your Opponent is: "  + otherPlayer + " in Game[" + gameID + "]");
 		}
 		getAllPieces();
 
@@ -134,7 +156,14 @@ public class BanqiGame {
 	public void openConsole() {
 		console = new JavaConsole();
 		if(ActivePlayer.getInstance() != null) {
-			console.setTitle(ActivePlayer.getInstance().getNickName() + " Game[" + gameID + "]");
+			String currentPlayerNickname = ActivePlayer.getInstance().getNickName();
+			String otherPlayer = null;
+			if(firstPlayer.nickName.equals(currentPlayerNickname)) {
+				otherPlayer = secondPlayer.nickName;
+			} else {
+				otherPlayer = firstPlayer.nickName;
+			}
+			console.setTitle(currentPlayerNickname + " Your Opponent is: " + otherPlayer + " in Game[" + gameID + "]");
 		}
 		System.out.println(gameBoard);
 	}
@@ -167,6 +196,24 @@ public class BanqiGame {
 	public void setGameBoard(GameBoard gameBoard) 
 	{
 		this.gameBoard = gameBoard;
+		setPiecesFromGameBoard();
+	}
+	
+	private void setPiecesFromGameBoard() {
+		int index = 0;
+		
+		Square temp[] = this.gameBoard.getSquaresOnBoard();
+		for(Square s: temp) {
+			this.pieces[index] = s.getOn();
+			index++;
+		}
+		
+		for(Piece piece: pieces) {
+			if(piece != null && piece.faceUp) {
+				piece_has_flipped = true;
+				break;
+			}
+		}
 	}
 
 	private  void getAllPieces() 
@@ -295,6 +342,7 @@ public class BanqiGame {
 	}
 
 	public boolean makeMove(int x1, int y1, int x2, int y2) {
+		LOG.debug("Checking if moving from square["+x1+"]["+y1+"] to square["+x2+"]["+y2+"] is valid");
 		Square from = null, to = null;
 		try {
 			from = getSquare(x1,y1);
@@ -314,15 +362,16 @@ public class BanqiGame {
 			LOG.debug("No piece on Square: " + from);
 			return false;
 		} else if(from.getOn().faceUp==false){
-			LOG.debug("Square: " + from);
+			LOG.debug("Square: " + from + " piece is not faceUp.");
 			return false;
 		}
 		else if(getValidMoves(from).contains(to)) {
-			LOG.debug("VALID MOVE ON SERVER SIDE");
+			LOG.debug("Move is valid");
 			to.setOn(from.getOn());
 			from.setOn(null);
 			return true;
 		} else {
+			LOG.debug("Move is not valid");
 			return false;
 		}
 	}
@@ -389,6 +438,8 @@ public class BanqiGame {
 				}
 				this.firstPlayer.setColor(color);
 				this.secondPlayer.setColor(color2);
+				LOG.debug("First Player's color is: " + firstPlayer.getColor());
+				LOG.debug("Second Player's color is: " + secondPlayer.getColor());
 				/*System.out.println(this.firstPlayer.getColor());
 				System.out.println(this.secondPlayer.getColor());*/
 				this.piece_has_flipped = true;
@@ -691,6 +742,21 @@ public class BanqiGame {
 		else
 		{
 			return secondPlayer;
+		}
+	}
+	
+	public BanqiPlayer getBanqiPlayer(String playerNickname) {
+		return (playerNickname.equals(firstPlayer.nickName)) ? firstPlayer :
+			secondPlayer;
+	}
+	
+	public void swapTurns(String playerWhoMadeMove) {
+		if(playerWhoMadeMove.equals(firstPlayer.nickName)) {
+			firstPlayer.isTurn = false;
+			secondPlayer.isTurn = true;
+		} else {
+			firstPlayer.isTurn = true;
+			secondPlayer.isTurn = false;
 		}
 	}
 }

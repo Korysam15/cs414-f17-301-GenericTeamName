@@ -107,19 +107,20 @@ public abstract class GameManager {
 	}
 	
 	public boolean isValidMove(FlipPieceTask f) {
-		return isValidMove(f.getGameID(),f.getX(),f.getY());
+		return isValidMove(f.getGameID(),f.getX(),f.getY(),f.getPlayerOne());
 	}
 	
 	public boolean isValidMove(MoveTask m) {
-		return isValidMove(m.getGameID(),m.getFromX(),m.getFromY(),m.getToX(),m.getToY());
+		return isValidMove(m.getGameID(),m.getFromX(),m.getFromY(),m.getToX(),m.getToY(),m.getPlayerOne());
 	}
 	
-	public boolean isValidMove(int gameID, int flipOnX, int flipOnY) {
+	public boolean isValidMove(int gameID, int flipOnX, int flipOnY, String playersName) {
 		synchronized(gameMap) {
 			if(gameMap.containsKey(gameID)) {
 				BanqiGame game = gameMap.get(gameID);
 				boolean ret = game.makeMove(flipOnX, flipOnY);
 				if(ret) {
+					game.swapTurns(playersName);
 					updateRecord(game);
 				}
 				return ret;
@@ -130,12 +131,13 @@ public abstract class GameManager {
 		}
 	}
 
-	public boolean isValidMove(int gameID, int fromX, int fromY, int toX, int toY) {
+	public boolean isValidMove(int gameID, int fromX, int fromY, int toX, int toY, String playersName) {
 		synchronized(gameMap) {
 			if(gameMap.containsKey(gameID)) {
 				BanqiGame game = gameMap.get(gameID);
 				boolean ret = game.makeMove(fromX, fromY, toX, toY);
 				if(ret) {
+					game.swapTurns(playersName);
 					updateRecord(game);
 				}
 				return ret;
