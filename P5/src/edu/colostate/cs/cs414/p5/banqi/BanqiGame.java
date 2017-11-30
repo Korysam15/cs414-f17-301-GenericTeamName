@@ -3,10 +3,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Set;
 
+import edu.colostate.cs.cs414.p5.client_server.logger.Logger;
 import edu.colostate.cs.cs414.p5.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.FlipPieceTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.ForfeitTask;
@@ -22,7 +25,7 @@ import edu.colostate.cs.cs414.p5.user.Player;
  *
  */
 public class BanqiGame {
-
+	private static final Logger LOG = Logger.getInstance();
 
 	private JavaConsole console;
 	private int gameID;            // unique id
@@ -297,20 +300,25 @@ public class BanqiGame {
 			from = getSquare(x1,y1);
 			to = getSquare(x2,y2);
 		} catch(Exception e) {
+			LOG.error("An error occured while moving from square["+x1+"]["+y1+"] to square["+x2+"]["+y2+"]\n" +
+					"In a BanqiGame with GameID: " + gameID);
 			from = null;
 			to = null;
 			return false;
 		}
 
 		if(from == null || to == null) {
+			LOG.debug("At least one of the squares are null");
 			return false;
 		} else if(from.getOn()==null){
+			LOG.debug("No piece on Square: " + from);
 			return false;
 		} else if(from.getOn().faceUp==false){
+			LOG.debug("Square: " + from);
 			return false;
 		}
 		else if(getValidMoves(from).contains(to)) {
-			System.out.println("SERVER VALID MOVE");
+			LOG.debug("VALID MOVE ON SERVER SIDE");
 			to.setOn(from.getOn());
 			from.setOn(null);
 			return true;
@@ -381,8 +389,8 @@ public class BanqiGame {
 				}
 				this.firstPlayer.setColor(color);
 				this.secondPlayer.setColor(color2);
-				System.out.println(this.firstPlayer.getColor());
-				System.out.println(this.secondPlayer.getColor());
+				/*System.out.println(this.firstPlayer.getColor());
+				System.out.println(this.secondPlayer.getColor());*/
 				this.piece_has_flipped = true;
 			}
 			return true;
@@ -390,9 +398,9 @@ public class BanqiGame {
 		return false;
 	}
 
-	public ArrayList<Square> getValidMoves(Square from)
+	public Set<Square> getValidMoves(Square from)
 	{
-		ArrayList<Square> validMoves= new ArrayList<Square>();
+		Set<Square> validMoves= new HashSet<Square>();
 		if(from.isEmpty())
 		{
 			return validMoves;
