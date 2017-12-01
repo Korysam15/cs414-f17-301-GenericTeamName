@@ -18,6 +18,10 @@ import edu.colostate.cs.cs414.p5.client_server.transmission.util.ForwardTask;
 import edu.colostate.cs.cs414.p5.console.JavaConsole;
 import edu.colostate.cs.cs414.p5.gui.enginetester.MainGameLoop;
 import edu.colostate.cs.cs414.p5.gui.entities.Entity;
+import edu.colostate.cs.cs414.p5.gui.models.TexturedModel;
+import edu.colostate.cs.cs414.p5.gui.objconverter.OBJFileLoader;
+import edu.colostate.cs.cs414.p5.gui.renderengine.Loader;
+import edu.colostate.cs.cs414.p5.gui.textures.ModelTexture;
 import edu.colostate.cs.cs414.p5.user.ActivePlayer;
 import edu.colostate.cs.cs414.p5.user.Player;
 
@@ -36,7 +40,7 @@ public class BanqiGame {
 	public Piece[] getPieces() {
 		return pieces;
 	}
-
+	private Entity[] pieceModels;
 	private BanqiPlayer firstPlayer;	   // first Player
 	private BanqiPlayer secondPlayer;	   // second Player
 	private boolean test=false;	   // TESTING
@@ -89,6 +93,7 @@ public class BanqiGame {
 		getAllPieces();
 		
 		game.startGame(this);
+		
 
 	}
 
@@ -175,11 +180,17 @@ public class BanqiGame {
 			Collections.shuffle(list,new Random(gameID));                      //randomize list
 		}
 		//red pieces
+		
+		
+		
+		
+		
 		pieces[0]=new General(true);									// x1 General
 		gameBoard.getSquaresOnBoard()[list.get(0)].setOn(pieces[0]);    
-
+		
 		pieces[1]=new Advisor(true);									// x2 Advisor
 		gameBoard.getSquaresOnBoard()[list.get(1)].setOn(pieces[1]);
+		
 		pieces[2]=new Advisor(true);
 		gameBoard.getSquaresOnBoard()[list.get(2)].setOn(pieces[2]);
 

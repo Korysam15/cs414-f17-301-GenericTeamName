@@ -6,6 +6,7 @@ package edu.colostate.cs.cs414.p5.banqi;
 public class Cavalry extends Piece {
 	public static final int RANK=3;
 	public Cavalry(boolean color) {
+		
 		super.rank=RANK;
 		super.color=color;
 		if(color){
@@ -15,6 +16,7 @@ public class Cavalry extends Piece {
 			super.icon="B3";
 		}
 	}
+	
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub

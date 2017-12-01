@@ -136,7 +136,7 @@ public class MousePicker {
 		else {
 			return -1;
 		}
-		System.out.println(square);
+		
 		return square;
 
 	}

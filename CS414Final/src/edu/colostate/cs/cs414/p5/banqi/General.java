@@ -6,6 +6,7 @@ package edu.colostate.cs.cs414.p5.banqi;
 public class General extends Piece {
 	public static final int RANK=7;
 	public General(boolean color) {
+		
 		super.rank=RANK;
 		super.color=color;
 		if(color){

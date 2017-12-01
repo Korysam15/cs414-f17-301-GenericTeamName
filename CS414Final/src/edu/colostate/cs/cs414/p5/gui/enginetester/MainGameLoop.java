@@ -57,9 +57,9 @@ public class MainGameLoop {
 
 
 	private static final  int  ENTITY_COUNT=33;
-	
-	
-	
+
+
+
 	/**
 	 * A reference to the board
 	 */
@@ -74,19 +74,25 @@ public class MainGameLoop {
 	 * The players that in this game
 	 */
 	private BanqiPlayer player1,player2;
-	 
+
 	private BanqiPlayer currentPlayer;
 	BanqiGame banqiGame;
-	
+
 
 	private int selectedIndex=-1;
 	int toFlip=-1;
+	private GameBoard oldBoard;
 
-	private TexturedModel oldModel;
 	
 
 
+
 	private Piece[] pieces;
+
+
+
+	private TexturedModel whiteSquare ;
+	private TexturedModel blackSquare ;
 
 
 
@@ -102,22 +108,23 @@ public class MainGameLoop {
 		this.board=banqiGame.getGameBoard();
 		this.player1=banqiGame.getFirstPlayer();
 		this.player2=banqiGame.getSecondPlayer();
-		
+
 		this.modelGen=new ModelGenerator();
 		DisplayManager.createDisplay(); 
 		Loader loader = new Loader();
-		
+
 
 		List<Entity> entities = new ArrayList<Entity>();
 		List<Terrain> terrains = new ArrayList<Terrain>();
 		List<Entity> normalMapEntities = new ArrayList<Entity>();
+		Entity[] pieceModels= new Entity[32];
 
 
 		//************************Font************************	
-				TextMaster.init(loader);
-				FontType font = new FontType(loader.loadTexture("arial"), new File("res/arial.fnt"));
-				GUIText text = new GUIText(player1.nickName+"  vs  "+player2.nickName, 3f, font, new Vector2f(0f, 0f), 1f, true);
-				text.setColour(1, 0, 0);	
+		TextMaster.init(loader);
+		FontType font = new FontType(loader.loadTexture("arial"), new File("res/arial.fnt"));
+		GUIText text = new GUIText(player1.nickName+"  vs  "+player2.nickName, 3f, font, new Vector2f(0f, 0f), 1f, true);
+		text.setColour(1, 0, 0);	
 		// *****************************************************
 
 
@@ -125,113 +132,90 @@ public class MainGameLoop {
 
 
 		//************************Terrain************************
-//		TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture("grassy2"));
-//		TerrainTexture rTexture = new TerrainTexture(loader.loadTexture("mud"));
-//		TerrainTexture gTexture = new TerrainTexture(loader.loadTexture("grassFlowers"));
-//		TerrainTexture bTexture = new TerrainTexture(loader.loadTexture("path"));
-//
-//		TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
-//		TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("blendMap"));
-//		TexturedModel rocks = new TexturedModel(OBJFileLoader.loadOBJ("rocks", loader),
-//				new ModelTexture(loader.loadTexture("rocks")));
-//
-//		ModelTexture fernTextureAtlas = new ModelTexture(loader.loadTexture("fern"));
-//		fernTextureAtlas.setNumberOfRows(2);
-//
-//		TexturedModel fern = new TexturedModel(OBJFileLoader.loadOBJ("fern", loader), fernTextureAtlas);
-//
-//		TexturedModel bobble = new TexturedModel(OBJFileLoader.loadOBJ("pine", loader),
-//				new ModelTexture(loader.loadTexture("pine")));
-//		bobble.getTexture().setHasTransparency(true);
-//
-//		fern.getTexture().setHasTransparency(true);
-//
-//		Terrain terrain = new Terrain(-20, -1, loader, texturePack, blendMap, "hi");
-//
-//		terrains.add(terrain);
-//
-//		TexturedModel lamp = new TexturedModel(OBJLoader.loadObjModel("lamp", loader),
-//				new ModelTexture(loader.loadTexture("lamp")));
-//		lamp.getTexture().setUseFakeLighting(true);
+		//		TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture("grassy2"));
+		//		TerrainTexture rTexture = new TerrainTexture(loader.loadTexture("mud"));
+		//		TerrainTexture gTexture = new TerrainTexture(loader.loadTexture("grassFlowers"));
+		//		TerrainTexture bTexture = new TerrainTexture(loader.loadTexture("path"));
+		//
+		//		TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
+		//		TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("blendMap"));
+		//		TexturedModel rocks = new TexturedModel(OBJFileLoader.loadOBJ("rocks", loader),
+		//				new ModelTexture(loader.loadTexture("rocks")));
+		//
+		//		ModelTexture fernTextureAtlas = new ModelTexture(loader.loadTexture("fern"));
+		//		fernTextureAtlas.setNumberOfRows(2);
+		//
+		//		TexturedModel fern = new TexturedModel(OBJFileLoader.loadOBJ("fern", loader), fernTextureAtlas);
+		//
+		//		TexturedModel bobble = new TexturedModel(OBJFileLoader.loadOBJ("pine", loader),
+		//				new ModelTexture(loader.loadTexture("pine")));
+		//		bobble.getTexture().setHasTransparency(true);
+		//
+		//		fern.getTexture().setHasTransparency(true);
+		//
+		//		Terrain terrain = new Terrain(-20, -1, loader, texturePack, blendMap, "hi");
+		//
+		//		terrains.add(terrain);
+		//
+		//		TexturedModel lamp = new TexturedModel(OBJLoader.loadObjModel("lamp", loader),
+		//				new ModelTexture(loader.loadTexture("lamp")));
+		//		lamp.getTexture().setUseFakeLighting(true);
 
 		// *****************************************************************
 		//*
-		
-		
-		
-		
-		
 
-		//****************Entity for the selected piece**********************
+
+
+
+
+
+		//****************Entity for the title**********************
 		TexturedModel title = new TexturedModel(OBJFileLoader.loadOBJ("Banqi_Title", loader), 
 				new ModelTexture(loader.loadTexture("Title_color")));
 		Entity titleEntity = new Entity(title, new Vector3f(4.5f, 50, -100), 90, 0, 0, 2f);
 		entities.add(titleEntity);
 		// *******************************************************************
-//		TexturedModel grassIsland = new TexturedModel(OBJFileLoader.loadOBJ("grass_island", loader), 
-//				new ModelTexture(loader.loadTexture("grass_island")));
-//		Entity grassIslandEntity = new Entity(grassIsland, new Vector3f(10, -50, -90), 0, 0, 0, 100f);
-//		entities.add(grassIslandEntity);
-		
+		//		TexturedModel grassIsland = new TexturedModel(OBJFileLoader.loadOBJ("grass_island", loader), 
+		//				new ModelTexture(loader.loadTexture("grass_island")));
+		//		Entity grassIslandEntity = new Entity(grassIsland, new Vector3f(10, -50, -90), 0, 0, 0, 100f);
+		//		entities.add(grassIslandEntity);
 
 
 
 
-		
+
+
 
 		// ******************************BoardTiles****************************
 		List<Entity> boardTiles= new ArrayList<Entity>() ;  
-	
+
 		boardTiles.addAll(board.generateBoardModel(loader));
 
 		//****************Entity for the selected piece
 		TexturedModel selectedSquare = new TexturedModel(OBJFileLoader.loadOBJ("square", loader),
 				new ModelTexture(loader.loadTexture("square_selected")));
-		
+		whiteSquare = new TexturedModel(OBJFileLoader.loadOBJ("square", loader),
+				new ModelTexture(loader.loadTexture("square_white")));
+		blackSquare = new TexturedModel(OBJFileLoader.loadOBJ("square", loader),
+				new ModelTexture(loader.loadTexture("square_black")));
+
 		// **********************************************************************
 
-		
-		
+
+
 		// ******************************Pieces**********************************
 
 
+		//pieceModels=modelGen.generatePieceModels(board,loader).toArray(new Entity[32]);
+		
 		
 		entities.addAll(modelGen.generatePieceModels(board,loader));
 		entities.addAll(boardTiles);
-		
+
 		// ***********************************************************************
 
-		// ******************************Generate terrain**********************************		
-//		Random random = new Random(5666778);
-//		for (int i = 0; i < 60; i++) {
-//			if (i % 3 == 0) {
-//				float x = random.nextFloat() * 150;
-//				float z = random.nextFloat() * -150;
-//				if ((x > 0 && x < 100) || (z < -50 && z > -100)) {
-//				} else {
-//					float y = terrain.getHeightOfTerrain(x, z);
-//
-//					entities.add(new Entity(fern, 3, new Vector3f(x, y, z), 0,
-//							random.nextFloat() * 360, 0, 0.9f));
-//				}
-//			}
-//			if (i % 2 == 0) {
-//
-//				float x = random.nextFloat() * 150;
-//				float z = random.nextFloat() * -150;
-//				if ((x > 0 && x < 100) || (z < -50 && z > -100)) {
-//
-//				} else {
-//					float y = terrain.getHeightOfTerrain(x, z);
-//					entities.add(new Entity(bobble, 1, new Vector3f(x, y, z), 0,
-//							random.nextFloat() * 360, 0, random.nextFloat() * 0.6f + 0.8f));
-//				}
-//			}
-//		}
-//		
-//		
-//		entities.add(new Entity(rocks, new Vector3f(75, 4.6f, -75), 0, 0, 0, 75));
-		// ***************************************************************************
+		
+		
 
 		List<Light> lights = new ArrayList<Light>();
 		Light sun = new Light(new Vector3f(10000, 10000, -10000), new Vector3f(1.3f, 1.3f, 1.3f));
@@ -259,60 +243,84 @@ public class MainGameLoop {
 		waters.add(water);
 
 		//****************Game Loop Below*********************
-		System.out.println(board);
+
 		ArrayList<Integer> possibleMovesIndex= new ArrayList<Integer>();
+		oldBoard=board;
 		while (!Display.isCloseRequested()) {
-			System.out.println(DisplayManager.delta);
+			System.out.println(oldBoard.equals(board));
+			oldBoard=board;
+			//System.out.println(DisplayManager.delta);
 			camera.move();
 
 			camera.startGame();
 			
+			
+			
+			
+
 
 
 			picker.update();
 			if(Mouse.isButtonDown(0)) {
 
+
 				int square=picker.getClickPosition();
-				if (selectedIndex!=-1&&board.getSquare(square).getOn().isFaceUp()) {
-					
-					
-					
-					entities.get(selectedIndex+ENTITY_COUNT).setModel(oldModel);
-					for(Integer i:possibleMovesIndex) {
-						entities.get(i+ENTITY_COUNT).setModel(oldModel);
+				Piece  selectedPiece= board.getSquare(square).getOn();
+
+				if(square !=-1) {
+					if (selectedIndex!=-1&&selectedIndex!=square) {
+
 						
+						for(Integer i:possibleMovesIndex){
+							entities.get(i+ENTITY_COUNT).setModel(getColor(i));
+							
+							}
+//						if(possibleMovesIndex.contains(square)) {
+//							banqiGame.makeMove(board.getSquare(selectedIndex), board.getSquare(square));
+//							entities.get(selectedIndex+1).setPosition(entities.get(square+1).getPosition());
+//							entities.get(square+1);
+//						}
+						
+						possibleMovesIndex.clear();
+
+
+
+
+
+
+
+
+						selectedIndex=-1;
 					}
-					possibleMovesIndex.clear();
-					
-					banqiGame.makeMove(board.getSquare(selectedIndex), board.getSquare(square));
-					entities.get(selectedIndex+1).setPosition(entities.get(square+1).getPosition());
-					entities.set(square+1, entities.get(selectedIndex+1));
-					
-					selectedIndex=-1;
-				}
-				else if(board.getSquare(square)!=null&&board.getSquare(square).getOn().isFaceUp()) {
-					
-					selectedIndex=square;
-					oldModel= entities.get(square+ENTITY_COUNT).getModel();
-					entities.get(square+ENTITY_COUNT).setModel(selectedSquare);
-					ArrayList <Square> possibleMoves=banqiGame.getValidMoves(banqiGame.getGameBoard().getSquare(square));
-					for(Square sq: possibleMoves) {
-						int index=8*sq.getY()+sq.getX();
-						possibleMovesIndex.add(index);
-						entities.get(index+ENTITY_COUNT).setModel(selectedSquare);
-					
+					else if(board.getSquare(square)!=null&&selectedPiece.isFaceUp()&&selectedIndex!=square) {
+
+						selectedIndex=square;
+						for(Square move:banqiGame.getValidMoves(board.getSquare(square))){
+							entities.get(8*move.getY()+move.getX()+ENTITY_COUNT).setModel(selectedSquare);
+							possibleMovesIndex.add(8*move.getY()+move.getX());
+
+
+						}
+
+
+
+
+
+					}
+					else if(board.getSquare(square)!=null&&!selectedPiece.isFaceUp()&&selectedIndex!=square) {
+						selectedIndex=square;
+						toFlip=square+1;
+						banqiGame.flipPiece(board.getSquare(square));
+						
+						Entity fDPiece=entities.get(toFlip);
+						entities.get(toFlip).setY(fDPiece.getPosition().y+5);
+
 					}
 
-				}
-				else {
-					toFlip=square+1;
-					// banqiGame.flipPiece(banqiGame.getGameBoard().getSquare(square));
-					board.getSquare(square).getOn().flipPiece();
-					Entity fDPiece=entities.get(toFlip);
-					entities.get(toFlip).setY(fDPiece.getPosition().y+5);
-				}
 
 
+
+				}
 			}
 			if(toFlip!=-1) {
 
@@ -323,10 +331,12 @@ public class MainGameLoop {
 					entities.get(toFlip).increaseRotation(0, 0, 0);
 					entities.get(toFlip).setY(entities.get(toFlip).getPosition().y-5);;
 					toFlip=-1;
+					selectedIndex=-1;
 				}
 
 
 			}
+
 
 
 			GL11.glEnable(GL30.GL_CLIP_DISTANCE0);
@@ -336,27 +346,27 @@ public class MainGameLoop {
 			float distance = 2 * (camera.getPosition().y - water.getHeight());
 			camera.getPosition().y -= distance;
 			camera.invertPitch();
-			renderer.renderScene(entities, normalMapEntities,terrains,  lights, camera, new Vector4f(0, 1, 0, -water.getHeight()+1));
+			renderer.renderScene(entities,pieceModels, normalMapEntities,terrains,  lights, camera, new Vector4f(0, 1, 0, -water.getHeight()+1));
 
 			camera.getPosition().y += distance;
 			camera.invertPitch();
 
 			//refraction texture
 			buffers.bindRefractionFrameBuffer();
-			renderer.renderScene(entities, normalMapEntities,terrains,  lights, camera, new Vector4f(0, -1, 0, water.getHeight()));
+			renderer.renderScene(entities,pieceModels, normalMapEntities,terrains,  lights, camera, new Vector4f(0, -1, 0, water.getHeight()));
 
 			//render to screen
 			GL11.glDisable(GL30.GL_CLIP_DISTANCE0);
 			buffers.unbindCurrentFrameBuffer();	
-			renderer.renderScene(entities, normalMapEntities,terrains,  lights, camera, new Vector4f(0, -1, 0, 100000));	
+			renderer.renderScene(entities,pieceModels, normalMapEntities,terrains,  lights, camera, new Vector4f(0, -1, 0, 100000));	
 			waterRenderer.render(waters, camera, sun);
 			guiRenderer.render(guiTextures);
 			TextMaster.render();
 
 			DisplayManager.updateDisplay();
 		}
-		
-		
+
+
 
 		//*********Clean Up Below**************
 
@@ -369,10 +379,23 @@ public class MainGameLoop {
 		DisplayManager.closeDisplay();
 
 	}
-	public boolean getColor(int index) {
-		return !(index%2==0);
+	public TexturedModel getColor(int index) {
+		if(index<8||(index<24&&index>15)){
+			if(index%2!=0) {
+				return whiteSquare;
+			}
+			return blackSquare;
+		}
+		else {
+			if(index%2==0) {
+				return whiteSquare;
+			}
+			return blackSquare;
+			
+		}
 	}
 	
+
 
 
 }

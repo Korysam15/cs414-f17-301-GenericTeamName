@@ -6,6 +6,7 @@ package edu.colostate.cs.cs414.p5.banqi;
 public class Soldier extends Piece {
 	public static final int RANK = 1;
 	public Soldier(boolean color) {
+		
 		super.rank=RANK;
 		super.color=color;
 		if(color){

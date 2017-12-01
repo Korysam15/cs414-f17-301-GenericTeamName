@@ -20,10 +20,16 @@ import org.newdawn.slick.opengl.TextureLoader;
 
 import de.matthiasmann.twl.utils.PNGDecoder;
 import de.matthiasmann.twl.utils.PNGDecoder.Format;
+
 import edu.colostate.cs.cs414.p5.gui.models.RawModel;
 import edu.colostate.cs.cs414.p5.gui.textures.TextureData;
 
 public class Loader {
+private static final Loader instance = new Loader();
+	
+	public static Loader getInstance() {
+		return instance;
+	}
 
 	private List<Integer> vaos = new ArrayList<Integer>();
 	private List<Integer> vbos = new ArrayList<Integer>();

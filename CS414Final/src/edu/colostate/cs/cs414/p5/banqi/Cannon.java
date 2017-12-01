@@ -6,6 +6,7 @@ package edu.colostate.cs.cs414.p5.banqi;
 public class Cannon extends Piece {
 	public static final int RANK=2;
 	public Cannon(boolean color) {
+		
 		super.rank=RANK;
 		super.color=color;
 		if(color){
@@ -15,6 +16,7 @@ public class Cannon extends Piece {
 			super.icon="B2";
 		}
 	}
+	
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub

@@ -43,7 +43,7 @@ public class Square {
 		if(obj instanceof Square)
 		{
 			Square s=(Square) obj;
-			return s.x==this.x&&s.y==y;
+			return s.on.equals(on);
 			
 		}
 		return false ;

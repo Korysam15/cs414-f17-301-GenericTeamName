@@ -199,6 +199,25 @@ public class GameBoard {
 
 
 	}
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof GameBoard)
+		{
+		GameBoard other=(GameBoard)obj;	
+		int i=0;
+		for(Square square:squaresOnBoard) {
+			if(!square.equals(other.squaresOnBoard[i])) {
+				return false;
+			}
+			i++;
+			
+		}
+		return true;
+		
+		}
+		return false;
+		
+	}
 //	public Piece getPiece(Vector3f position) {
 //		
 //

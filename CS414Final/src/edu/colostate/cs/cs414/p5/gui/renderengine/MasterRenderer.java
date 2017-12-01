@@ -59,7 +59,7 @@ public class MasterRenderer {
 		return this.projectionMatrix;
 	}
 
-	public void renderScene(List<Entity> entities, List<Entity> normalEntities, List<Terrain> terrains,  List<Light> lights,
+	public void renderScene(List<Entity> entities, Entity[] pieceModels, List<Entity> normalEntities, List<Terrain> terrains,  List<Light> lights,
 			Camera camera, Vector4f clipPlane) {
 
 		for (Entity entity : entities) {
@@ -72,6 +72,10 @@ public class MasterRenderer {
 			processTerrain(terrain);
 
 		}
+	
+//		for(Entity e : pieceModels) {
+//			processEntity(e);
+//		}
 		render(lights, camera, clipPlane);
 
 	}
