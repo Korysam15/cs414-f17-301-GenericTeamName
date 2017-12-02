@@ -38,6 +38,13 @@ public abstract class AbstractServer implements ServerTaskManager {
 	}
 	
 	/**
+	 * The getStatus method returns a String the shows information regarding
+	 * the Server's state and additional information about the responsibilities the server has performed. 
+	 * @return a String representing the status of the server. 
+	 */
+	public abstract String getStatus();
+	
+	/**
 	 * The start method starts the server.  And the calling {@link Thread} will be the listener.
 	 * Thus, instructions called after this method will only be executed when the server stops.
 	 * Once the server is started, the server will connect/send/receive messages/requests
@@ -106,7 +113,7 @@ public abstract class AbstractServer implements ServerTaskManager {
 	 * Note: Although this method has the permissions to be overwritten,
 	 * it may be better to overwrite the clientConnected method instead.
 	 * @param key - The {@link SelectionKey} to be accepted.
-	 * @return Returns a new ClientSession
+	 * @return a new ClientSession
 	 */
 	protected abstract ClientSession accept(SelectionKey key);
 	

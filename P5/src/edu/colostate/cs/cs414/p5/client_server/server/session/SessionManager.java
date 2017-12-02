@@ -324,24 +324,32 @@ public class SessionManager implements SessionTaskManager {
 		}
 	}
 	
-	private String getAllClientsStatus() {
+	public String getAllClientsStatus() {
 		StringBuilder ret = new StringBuilder();
 		synchronized(clientMap) {
+			int total = clientMap.size();
 			int loggedIn;
 			ClientSession temp;
 			String tempID;
 			synchronized(loggedInClients) {
 				loggedIn = loggedInClients.size(); 
 			}
-			ret.append("There are a total of " + clientMap.size() + 
-					" clients connected, and " + loggedIn + " are logged in.\n");
-			for(Map.Entry<SelectionKey, ClientSession> entry: clientMap.entrySet()) {
-				temp = entry.getValue();
-				tempID = temp.getID();
-				if(tempID != null) {
-					ret.append(tempID + " is connected on: [" + temp + "].\n");
-				} else {
-					ret.append("Client: " + temp + " is not logged in.\n");
+			ret.append("There are a total of " + total + 
+					" clients connected, and " + loggedIn + " are logged in.");
+			if(total > 0) {
+				ret.append("\n");
+				for(Map.Entry<SelectionKey, ClientSession> entry: clientMap.entrySet()) {
+					total--;
+					temp = entry.getValue();
+					tempID = temp.getID();
+					if(tempID != null) {
+						ret.append(tempID + " is connected on: [" + temp + "].");
+					} else {
+						ret.append("Client: " + temp + " is not logged in.");
+					}
+					if(total > 0) {
+						ret.append("\n");
+					}
 				}
 			}
 		}
@@ -349,11 +357,23 @@ public class SessionManager implements SessionTaskManager {
 	}
 	
 	// see SessionManager#startTimer()
-	private class StatusTask extends TimerTask {
-
+	private static class StatusTask extends TimerTask {
+		private static int PREVIOUSLY_LOGGED_INFO = 0; 
 		@Override
 		public void run() {
-			LOG.info(getAllClientsStatus());
+			String toLog;
+			AbstractServer server;
+			if((server = ActiveServer.getInstance()) != null) {
+				toLog = server.getStatus() + "\n" + SessionManager.getInstance().getAllClientsStatus();
+			} else {
+				toLog = SessionManager.getInstance().getAllClientsStatus();
+			}
+			
+			int toLogCode = toLog.hashCode();
+			if(toLogCode != PREVIOUSLY_LOGGED_INFO) { // prevent duplicated logs
+				LOG.info(toLog);
+				PREVIOUSLY_LOGGED_INFO = toLogCode;
+			}
 		}
 		
 	}

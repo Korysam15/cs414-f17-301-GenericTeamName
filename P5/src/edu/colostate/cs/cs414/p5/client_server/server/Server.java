@@ -109,6 +109,42 @@ public class Server extends AbstractServer {
 	public Server(int port) throws IOException {
 		this(new InetSocketAddress(port));
 	}
+	
+	public String getStatus() {
+		StringBuilder ret = new StringBuilder();
+		
+		int port = this.serverChannel.socket().getLocalPort();
+		
+		boolean running = isRunning();
+		boolean listening = isListening();
+		
+		if(running) {
+			ret.append("The server is accepting messages from clients on port: " + port);
+		} else {
+			ret.append("The server is NOT accepting messages from clients");
+		}
+		ret.append(".\n");
+		
+		if(listening) {
+			ret.append("The server is listening for new clients on port: " + port);
+		} else {
+			ret.append(" is NOT listening for new clients");
+		}
+		ret.append(".\n");
+		
+		ret.append(getThreadPoolStatus());
+		
+		
+		return ret.toString();
+	}
+	
+	private String getThreadPoolStatus() {
+		return "The threadpool has performed: " + threadPool.getCompletedTaskCount() + 
+				" tasks with a maximum thread count of: " + threadPool.getLargestPoolSize() +
+				".\n" +
+				"Currently there are: " + threadPool.getActiveCount() +
+				" active threads in the threadpool.";
+	}
 
 	@Override
 	public void start() {
