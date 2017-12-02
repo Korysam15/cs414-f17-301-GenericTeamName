@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.2.1" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+  realizations="true" associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <class id="1" language="java" name="edu.colostate.cs.cs414.p3.console.JavaConsole" project="P3" 
+    file="/P3/src/edu/colostate/cs/cs414/p3/console/JavaConsole.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="533" width="213" x="250" y="1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <package id="2" language="java" name="edu.colostate.cs.cs414.p3.console" project="P3" 
+    file="/P3/src/edu/colostate/cs/cs414/p3/console" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="52" width="254" x="746" y="1"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <class id="3" language="java" name="edu.colostate.cs.cs414.p3.console.AbstractConsole" project="P3" 
+    file="/P3/src/edu/colostate/cs/cs414/p3/console/AbstractConsole.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="515" width="203" x="503" y="1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="edu.colostate.cs.cs414.p3.console.PlayerConsole" project="P3" 
+    file="/P3/src/edu/colostate/cs/cs414/p3/console/PlayerConsole.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="533" width="281" x="503" y="574"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="edu.colostate.cs.cs414.p3.console.BlockCaret" project="P3" 
+    file="/P3/src/edu/colostate/cs/cs414/p3/console/BlockCaret.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="137" width="163" x="1040" y="1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <generalization id="6">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="3"/>  
+  </generalization>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>
