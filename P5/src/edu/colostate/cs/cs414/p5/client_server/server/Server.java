@@ -2,6 +2,7 @@ package edu.colostate.cs.cs414.p5.client_server.server;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.nio.channels.CancelledKeyException;
 import java.nio.channels.ClosedChannelException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.ServerSocketChannel;
@@ -37,29 +38,29 @@ public class Server extends AbstractServer {
 	public static final int MAX_THREAD_POOL_SIZE = 16;
 	public static final int THREAD_KEEP_ALIVE_TIME = 10;
 	public static final TimeUnit ALIVE_TIME_UNIT = TimeUnit.MINUTES;
-	
+
 	/* Server Settings variables */
 	public static final int EVENT_TIME_OUT = 30;
 	public static final TimeUnit TIME_OUT_UNIT = TimeUnit.SECONDS;
 	public static final int SELECT_TIME_OUT = 3000; // Milliseconds
 	public static final int BROADCAST_TIME_OUT = 3;
 	public static final TimeUnit BROADCAST_TIME_OUT_UNIT = TimeUnit.SECONDS;
-	
+
 	/**
 	 * Keeps track of whether or not the server is running. 
 	 */
 	private Boolean isRunning;
-	
+
 	/**
 	 * Keeps track of whether or not the server is listening for new connections.
 	 */
 	private Boolean isListening;
-	
+
 	/**
 	 * A thread pool to manage client sessions
 	 */
 	private ThreadPoolExecutor threadPool;
-	
+
 	/**
 	 * A thread that may be used to start the server.
 	 */
@@ -86,7 +87,7 @@ public class Server extends AbstractServer {
 			initThreadPool();
 		}		
 	}
-	
+
 	private void initThreadPool() {
 		threadPool = new ThreadPoolExecutor(CORE_THREAD_POOL_SIZE,
 				MAX_THREAD_POOL_SIZE,
@@ -125,13 +126,14 @@ public class Server extends AbstractServer {
 			try {
 				runServer();
 			} catch (IOException e) {
+				LOG.error("IOException occurred when running the server");
 				LOG.debug(e.getMessage());
 			} finally {
 				stop();
 			}
 		}
 	}
-	
+
 	@Override
 	public void startWithNewThread() {
 		if(isRunning()) {
@@ -149,7 +151,7 @@ public class Server extends AbstractServer {
 			listener.start();
 		}
 	}
-	
+
 	private void runServer() throws IOException {
 		int eventCount;
 		LOG.info("Server is listening on: " +
@@ -166,32 +168,36 @@ public class Server extends AbstractServer {
 			LOG.debug("Done Iterating keys: " + eventCount + " total events");
 		}
 	}
-	
+
 	private int handleKey(SelectionKey key) {
-		if(!key.isValid()) {
-			LOG.debug("key is Invalid");
-		} else if(key.isAcceptable() && isListening()) {
-			LOG.debug("key is Acceptable");
-			ClientSession client = accept(key);
-			if(client != null) {
-				LOG.debug("Client is not null, adding to clientMap");
-				sessionManager.clientConnected(client,client.getKey());
+		try {
+			if(!key.isValid()) {
+				LOG.debug("key is Invalid");
+			} else if(key.isAcceptable() && isListening()) {
+				LOG.debug("key is Acceptable");
+				ClientSession client = accept(key);
+				if(client != null) {
+					LOG.debug("Client is not null, adding to clientMap");
+					sessionManager.clientConnected(client,client.getKey());
+				} else {
+					LOG.debug("Client is null, NOT adding to clientMap");
+				}
+			} else if(key.isReadable()) {
+				LOG.debug("key is Readable");
+				ClientSession client = sessionManager.getClient(key);
+				if(client == null) {
+					LOG.debug("Client is null");
+				} else {
+					LOG.debug("Client is not null");
+					LOG.debug("Adding ReceiveEvent to thread pool");
+					threadPool.execute(new ReceiveEvent(client));
+					return 1;
+				}
 			} else {
-				LOG.debug("Client is null, NOT adding to clientMap");
+				LOG.debug("key is in unhandled state");
 			}
-		} else if(key.isReadable()) {
-			LOG.debug("key is Readable");
-			ClientSession client = sessionManager.getClient(key);
-			if(client == null) {
-				LOG.debug("Client is null");
-			} else {
-				LOG.debug("Client is not null");
-				LOG.debug("Adding ReceiveEvent to thread pool");
-				threadPool.execute(new ReceiveEvent(client));
-				return 1;
-			}
-		} else {
-			LOG.debug("key is in unhandled state");
+		} catch(CancelledKeyException e) {
+			LOG.error("Key cancelled: " + e.getCause());
 		}
 		return 0;
 	}
@@ -231,7 +237,7 @@ public class Server extends AbstractServer {
 			return isRunning;
 		}
 	}
-	
+
 	@Override
 	public void startListening() {
 		synchronized (isRunning) {
@@ -262,7 +268,7 @@ public class Server extends AbstractServer {
 			return isListening;
 		}
 	}
-	
+
 	@Override
 	public void broadcast(Task t) {
 		List<ClientSession> sessions = SessionManager.getInstance().getClients();
@@ -277,7 +283,7 @@ public class Server extends AbstractServer {
 			LOG.error("Interrupted while broadcasting task: " + t);
 		}
 	}
-	
+
 	private boolean taskIsValid(Task t) {
 		if(t instanceof EntryTask) { // should be handled by sessionManager
 			return false;
@@ -295,30 +301,30 @@ public class Server extends AbstractServer {
 			return true;
 		}
 	}
-	
+
 	public boolean taskIsValid(Task t, ClientSession client) {
 		if(t instanceof ForwardTask) { 
 			ForwardTask forward = (ForwardTask) t;
 			String clientNickname = client.getID();
 			String submittedNickname = forward.getPlayerFrom();
-			
+
 			// a forward task is invalid if the "getPlayerFrom" doesn't match the ID of the session
 			return submittedNickname.equals(clientNickname) &&
 					taskIsValid(forward.getTask(),client); // A forward task is valid if it's "forwarded task" is valid.
-			
+
 		} else if(t instanceof MultiForwardTask) {
 			MultiForwardTask forward = (MultiForwardTask) t;
 			String clientNickname = client.getID();
 			String submittedNickname = forward.getPlayerFrom();
-			
+
 			// a forward task is invalid if the "getPlayerFrom" doesn't match the ID of the session
 			return submittedNickname.equals(clientNickname) &&
-						taskIsValid(forward.getTask(),client); // A forward task is valid if it's "forwarded task" is valid.
+					taskIsValid(forward.getTask(),client); // A forward task is valid if it's "forwarded task" is valid.
 		} else {
 			return taskIsValid(t);
 		}
 	}
-	
+
 	public void runTaskIfValid(Task t, ClientSession client) {
 		if(taskIsValid(t,client)) {
 			LOG.debug("Running TaskCode: " + t.getTaskCode());
@@ -328,7 +334,7 @@ public class Server extends AbstractServer {
 			LOG.info(client.getID() + " [" + client + "] submitted miliscious task: " + t);
 		}
 	}
-	
+
 	@Override
 	protected ClientSession accept(SelectionKey key) {
 		ClientSession ret = null;
@@ -366,13 +372,13 @@ public class Server extends AbstractServer {
 			} else {
 				// first try failed
 			}
-			
+
 		} else {
 			LOG.debug("The key is null");
 		}
 		return ret;
 	}
-	
+
 	private class ServerThread extends Thread {
 		public void run() {
 			try {
