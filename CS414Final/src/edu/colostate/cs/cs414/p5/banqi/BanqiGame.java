@@ -45,6 +45,7 @@ public class BanqiGame {
 	private BanqiPlayer secondPlayer;	   // second Player
 	private boolean test=false;	   // TESTING
 	private boolean piece_has_flipped;
+	private MainGameLoop game;
 	
 
 	public BanqiGame(int gameID, String playerOne, String playerTwo, boolean openConsole) {
@@ -59,7 +60,9 @@ public class BanqiGame {
 		if(openConsole) {
 			openConsole();
 		}
+		game = new MainGameLoop();
 		getAllPieces();
+		game.startGame(this);
 	}
 
 	
@@ -71,6 +74,7 @@ public class BanqiGame {
 		this.secondPlayer = secondPlayer;
 		this.gameBoard = gameBoard;
 		this.pieces= new Piece[32];
+		game = new MainGameLoop();
 	}
 
 	/* CONSTRUCTOR TO USE KORY */
@@ -88,7 +92,7 @@ public class BanqiGame {
 		firstPlayer = new BanqiPlayer(playerOne);
 		secondPlayer = new BanqiPlayer(playerTwo);
 		
-		MainGameLoop game = new MainGameLoop();
+		game = new MainGameLoop();
 	
 		getAllPieces();
 		
@@ -102,10 +106,12 @@ public class BanqiGame {
 		this.gameID = gameID;
 		this.gameBoard= new GameBoard();
 		this.pieces= new Piece[32];
+		game = new MainGameLoop();
 		//this.first=first;             
 		//this.second=second;
 		
 		getAllPieces();
+		game.startGame(this);
 	}
 	
 	public BanqiGame(int gameID,Player first, Player second, boolean test) 
@@ -114,8 +120,9 @@ public class BanqiGame {
 		this.gameBoard= new GameBoard();
 		this.pieces= new Piece[32];
 		this.test=test;
-		
+		game = new MainGameLoop();
 		getAllPieces();
+		game.startGame(this);
 	}
 
 	public BanqiGame(int gameID, boolean test) 
@@ -125,6 +132,8 @@ public class BanqiGame {
 		this.pieces= new Piece[32];
 		this.test=test;
 		getAllPieces();
+		game = new MainGameLoop();
+		game.startGame(this);
 	}
 
 	public void openConsole() {
