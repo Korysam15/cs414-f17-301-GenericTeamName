@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import edu.colostate.cs.cs414.p5.client_server.logger.Logger;
 import edu.colostate.cs.cs414.p5.client_server.server.AbstractServer;
@@ -29,6 +31,14 @@ import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.r
 import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.response.ServerDisconnectedTask;
 
 public class SessionManager implements SessionTaskManager {
+	
+	//// LOG INFO TIMER SETTINGS \\\\
+	public static final int SECOND = 1000;
+	public static final int INFO_TIMER_INITIAL_DELAY = 10; // 10 seconds 
+	public static final int INFO_TIMER_SUBSEQUENT_RATE = 10; // 10 seconds
+	private static final int TIMER_INITIAL_DELAY = INFO_TIMER_INITIAL_DELAY * SECOND;
+	private static final int TIMER_RATE = INFO_TIMER_SUBSEQUENT_RATE * SECOND;
+	
 	private static final Logger LOG = Logger.getInstance();
 	
 	private static final SessionManager instance = new SessionManager();
@@ -51,9 +61,24 @@ public class SessionManager implements SessionTaskManager {
 	 */
 	private Map<String,ClientSession> loggedInClients;
 	
+	/**
+	 * Prints information regarding the number of loggedInClients and
+	 * who is logged in.
+	 */
+	private Timer logInfoTimer;
+	
 	private SessionManager() {
 		this.clientMap = new HashMap<SelectionKey,ClientSession>();
 		this.loggedInClients = new HashMap<String,ClientSession>();
+		this.logInfoTimer = new Timer();
+		startTimer();
+	}
+	
+	private void startTimer() {
+		StatusTask timersTask = new StatusTask();
+		this.logInfoTimer.schedule(timersTask,
+									TIMER_INITIAL_DELAY,
+									TIMER_RATE);
 	}
 	
 	public ClientSession getClient(SelectionKey key) {
@@ -140,7 +165,7 @@ public class SessionManager implements SessionTaskManager {
 			try {
 				client.send(response);
 			} catch(IOException e) {
-				Logger.getInstance().error("Could not send response Task: " + response + " to " + client);
+				LOG.error("Could not send response Task: " + response + " to " + client);
 			}
 		} else {
 			String id;
@@ -297,5 +322,39 @@ public class SessionManager implements SessionTaskManager {
 			loggedInClients.put(nickname, client);
 			LOG.info(nickname + " has logged in from [" + client + "].");
 		}
+	}
+	
+	private String getAllClientsStatus() {
+		StringBuilder ret = new StringBuilder();
+		synchronized(clientMap) {
+			int loggedIn;
+			ClientSession temp;
+			String tempID;
+			synchronized(loggedInClients) {
+				loggedIn = loggedInClients.size(); 
+			}
+			ret.append("There are a total of " + clientMap.size() + 
+					" clients connected, and " + loggedIn + " are logged in.\n");
+			for(Map.Entry<SelectionKey, ClientSession> entry: clientMap.entrySet()) {
+				temp = entry.getValue();
+				tempID = temp.getID();
+				if(tempID != null) {
+					ret.append(tempID + " is connected on: [" + temp + "].\n");
+				} else {
+					ret.append("Client: " + temp + " is not logged in.\n");
+				}
+			}
+		}
+		return ret.toString();
+	}
+	
+	// see SessionManager#startTimer()
+	private class StatusTask extends TimerTask {
+
+		@Override
+		public void run() {
+			LOG.info(getAllClientsStatus());
+		}
+		
 	}
 }
