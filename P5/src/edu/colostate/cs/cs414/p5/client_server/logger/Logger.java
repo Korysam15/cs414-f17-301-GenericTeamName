@@ -5,8 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class Logger {
-	
+public class Logger {	
 	private static final Logger instance = new Logger();
 	
 	public static Logger getInstance() {
@@ -85,7 +84,24 @@ public class Logger {
 	}
 	
 	private synchronized void log(String prefix, String msg) {
-		output.println("[" + getDate() + "]" + prefix + msg);		
+		output.println(formatLogMessage(prefix,msg));		
+	}
+	
+	private String formatLogMessage(String prefix, String msg) {
+		String front = "[" + getDate() + "]" + prefix;
+		if(msg.contains("\n")) {
+			msg = msg.replaceAll("\n", "\n"+getSpaces(front));
+		}
+		return front + msg;
+	}
+	
+	private String getSpaces(String front) {
+		int length = front.length();
+		StringBuilder ret = new StringBuilder(length);
+		for(int i=0;i<length;i++) {
+			ret.append(" ");
+		}
+		return ret.toString();
 	}
 	
 	public static enum LOG_LEVEL {
