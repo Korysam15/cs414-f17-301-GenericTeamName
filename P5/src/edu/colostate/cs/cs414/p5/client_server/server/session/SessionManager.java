@@ -34,10 +34,11 @@ public class SessionManager implements SessionTaskManager {
 	
 	//// LOG INFO TIMER SETTINGS \\\\
 	public static final int SECOND = 1000;
+	public static final int MINUTE = 60 * SECOND; 
 	public static final int INFO_TIMER_INITIAL_DELAY = 10; // 10 seconds 
-	public static final int INFO_TIMER_SUBSEQUENT_RATE = 10; // 10 seconds
+	public static final int INFO_TIMER_SUBSEQUENT_RATE = 10; // 10 minutes
 	private static final int TIMER_INITIAL_DELAY = INFO_TIMER_INITIAL_DELAY * SECOND;
-	private static final int TIMER_RATE = INFO_TIMER_SUBSEQUENT_RATE * SECOND;
+	private static final int TIMER_RATE = INFO_TIMER_SUBSEQUENT_RATE * MINUTE;
 	
 	private static final Logger LOG = Logger.getInstance();
 	
