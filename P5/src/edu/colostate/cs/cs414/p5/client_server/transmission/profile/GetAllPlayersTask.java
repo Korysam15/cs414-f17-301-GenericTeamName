@@ -12,23 +12,20 @@ import edu.colostate.cs.cs414.p5.client_server.server.session.SessionManager;
 import edu.colostate.cs.cs414.p5.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p5.client_server.transmission.TaskConstents;
 import edu.colostate.cs.cs414.p5.client_server.transmission.util.MessageTask;
-import edu.colostate.cs.cs414.p5.client_server.transmission.util.ReadUtils;
-import edu.colostate.cs.cs414.p5.client_server.transmission.util.WriteUtils;
 
-public class GetAllPlayersTask extends Task {
+public class GetAllPlayersTask extends ProfileTask {
 
 	private static final String RED="\033[0;31m";
 	private static final String YELLOW="\033[0;33m";
 	private static final String WHITE="\033[0;37m";
 	private static final String NORM="\033[0m";
 	
-	private String playerWhoWantsToSee;
 	public GetAllPlayersTask(String fromPlayer) {
-		this.playerWhoWantsToSee = fromPlayer;
+		super(fromPlayer);
 	}
 	
 	public GetAllPlayersTask(DataInputStream din) throws IOException {
-		this.playerWhoWantsToSee = ReadUtils.readString(din);
+		super(din);
 	}
 	
 	@Override
@@ -38,7 +35,7 @@ public class GetAllPlayersTask extends Task {
 
 	@Override
 	public void writeBytes(DataOutputStream dout) throws IOException {
-		WriteUtils.writeString(playerWhoWantsToSee, dout);
+		super.writeBytes(dout);
 	}
 
 	@Override
@@ -59,7 +56,7 @@ public class GetAllPlayersTask extends Task {
 		}
 		
 		try {
-			server.sendToClient(response, playerWhoWantsToSee);
+			server.sendToClient(response, super.getRequester());
 		} catch(Exception e) {
 			
 		}

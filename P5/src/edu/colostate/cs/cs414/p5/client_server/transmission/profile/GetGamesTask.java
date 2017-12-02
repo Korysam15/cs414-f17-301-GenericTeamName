@@ -8,21 +8,17 @@ import java.util.List;
 import edu.colostate.cs.cs414.p5.banqi.BanqiGame;
 import edu.colostate.cs.cs414.p5.client_server.server.game_server.GameManager;
 import edu.colostate.cs.cs414.p5.client_server.server.session.SessionManager;
-import edu.colostate.cs.cs414.p5.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p5.client_server.transmission.TaskConstents;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.OpenAllGamesTask;
-import edu.colostate.cs.cs414.p5.client_server.transmission.util.ReadUtils;
-import edu.colostate.cs.cs414.p5.client_server.transmission.util.WriteUtils;
 
-public class GetGamesTask extends Task {
-	private final String playerWhoWants;
+public class GetGamesTask extends ProfileTask {
 	
 	public GetGamesTask(String playerWhoWants) {
-		this.playerWhoWants = playerWhoWants;
+		super(playerWhoWants);
 	}
 	
 	public GetGamesTask(DataInputStream din) throws IOException {
-		this.playerWhoWants = ReadUtils.readString(din);
+		super(din);
 	}
 
 	@Override
@@ -32,7 +28,7 @@ public class GetGamesTask extends Task {
 
 	@Override
 	public void writeBytes(DataOutputStream dout) throws IOException {
-		WriteUtils.writeString(playerWhoWants, dout);		
+		super.writeBytes(dout);		
 	}
 
 	@Override
@@ -40,7 +36,7 @@ public class GetGamesTask extends Task {
 		GameManager gameManager = GameManager.getInstance();
 		if(gameManager != null) {
 			List<BanqiGame> playersGames = 
-					gameManager.getPlayersGames(playerWhoWants);
+					gameManager.getPlayersGames(getRequester());
 			sendGames(playersGames);
 		}
 	}
@@ -48,8 +44,8 @@ public class GetGamesTask extends Task {
 	private void sendGames(List<BanqiGame> playersGames) {
 		SessionManager sessionManager = SessionManager.getInstance();
 		if(sessionManager != null) {
-			OpenAllGamesTask response = new OpenAllGamesTask(playersGames,playerWhoWants);
-			sessionManager.sendToClient(response, playerWhoWants);
+			OpenAllGamesTask response = new OpenAllGamesTask(playersGames,getRequester());
+			sessionManager.sendToClient(response, getRequester());
 		}
 	}
 	

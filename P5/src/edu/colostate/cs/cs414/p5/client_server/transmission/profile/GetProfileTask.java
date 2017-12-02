@@ -12,18 +12,17 @@ import edu.colostate.cs.cs414.p5.client_server.transmission.util.WriteUtils;
 import edu.colostate.cs.cs414.p5.user.ActivePlayer;
 import edu.colostate.cs.cs414.p5.user.Player;
 
-public class GetProfileTask extends Task {
+public class GetProfileTask extends ProfileTask {
 
-	private String playerWhoWantsIt;
 	private String playerWhoHasIt;
 	
 	public GetProfileTask(String playerWhoWantsIt, String playerWhoHasIt) {
-		this.playerWhoWantsIt = playerWhoWantsIt;
+		super(playerWhoWantsIt);
 		this.playerWhoHasIt = playerWhoHasIt;
 	}
 	
 	public GetProfileTask(DataInputStream din) throws IOException {
-		playerWhoWantsIt = ReadUtils.readString(din);
+		super(din);
 		playerWhoHasIt = ReadUtils.readString(din);
 	}
 	
@@ -34,13 +33,13 @@ public class GetProfileTask extends Task {
 	
 	@Override
 	public void writeBytes(DataOutputStream dout) throws IOException {
-		WriteUtils.writeString(playerWhoWantsIt, dout);
+		super.writeBytes(dout);
 		WriteUtils.writeString(playerWhoHasIt, dout);		
 	}
 
 	public String toString() {
 		return "[GetProfileTask, Taskcode: " + getTaskCode() +
-				", Contents: " + playerWhoWantsIt + "," + playerWhoHasIt + "]";
+				", Contents: " + getRequester() + "," + playerWhoHasIt + "]";
 	}
 
 	@Override
@@ -49,7 +48,7 @@ public class GetProfileTask extends Task {
 		if(player != null) {
 			String profile = player.getProfile().toString();
 			Task display = new DisplayProfileTask(profile);
-			Task forward = new ForwardTask(playerWhoHasIt,display,playerWhoWantsIt);
+			Task forward = new ForwardTask(playerWhoHasIt,display,getRequester());
 			try {
 				player.getClient().sendToServer(forward);
 			} catch (IOException e) {
