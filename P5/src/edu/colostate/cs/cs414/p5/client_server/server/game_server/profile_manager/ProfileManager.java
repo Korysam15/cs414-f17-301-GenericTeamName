@@ -43,7 +43,7 @@ public abstract class ProfileManager {
 			if(profileMap.containsKey(playersName)) {
 				LOG.error("Profile Map already contains a record for: " + playersName);
 			} else {
-				profileMap.put(playersName, new Profile(playersName));
+				profileMap.put(playersName, profile);
 			}
 		}
 	}
