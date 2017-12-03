@@ -1,4 +1,4 @@
-package edu.colostate.cs.cs414.p5.client_server.server.game_server.profile_manager;
+package edu.colostate.cs.cs414.p5.client_server.server.profile_manager;
 
 import java.io.BufferedReader;
 import java.io.File;

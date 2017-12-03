@@ -9,7 +9,7 @@ import java.util.Map;
 
 import edu.colostate.cs.cs414.p5.banqi.BanqiGame;
 import edu.colostate.cs.cs414.p5.client_server.logger.Logger;
-import edu.colostate.cs.cs414.p5.client_server.server.game_server.profile_manager.ProfileManager;
+import edu.colostate.cs.cs414.p5.client_server.server.profile_manager.ProfileManager;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.FlipPieceTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.MoveTask;
 
