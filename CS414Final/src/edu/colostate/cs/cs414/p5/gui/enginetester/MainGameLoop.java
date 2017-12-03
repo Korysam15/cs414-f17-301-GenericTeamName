@@ -104,9 +104,6 @@ public class MainGameLoop implements Runnable {
 		this.banqiGame=game;
 	
 	}
-	public void startGame( BanqiGame banqiGame)  {
-		
-	}
 	public TexturedModel getColor(int index) {
 		if(index<8||(index<24&&index>15)){
 			if(index%2!=0) {
@@ -125,15 +122,17 @@ public class MainGameLoop implements Runnable {
 	@Override
 	public void run() {
 		DisplayManager.createDisplay();
+		
 		this.currentPlayer=banqiGame.p1;
-		System.out.println(banqiGame.p1.getNickName());
-		this.otherPlayer=getOtherPlayer();
+		Display.setTitle(currentPlayer.getNickName());
+		
 		this.board=banqiGame.getGameBoard();
 		this.player1=banqiGame.getFirstPlayer();
 		this.player2=banqiGame.getSecondPlayer();
-
+	
 		this.modelGen=new ModelGenerator();
 		
+		this.otherPlayer=getOtherPlayer();
 		Loader loader = new Loader();
 
 
@@ -401,12 +400,14 @@ public class MainGameLoop implements Runnable {
 	}
 	public String getOtherPlayer() {
 		
-		System.out.println(player1.nickName);
+		
 		if (currentPlayer.getNickName().equals(player1.nickName)) {
 			return player2.nickName;
 		}
 		return player1.nickName;
-	}
+		}
+		
+	
 	
 
 
