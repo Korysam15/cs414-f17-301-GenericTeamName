@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.List;
 
 import edu.colostate.cs.cs414.p5.banqi.BanqiGame;
-import edu.colostate.cs.cs414.p5.client_server.server.game_server.GameManager;
+import edu.colostate.cs.cs414.p5.client_server.server.game_server.game_manager.GameManager;
 import edu.colostate.cs.cs414.p5.client_server.server.session.SessionManager;
 import edu.colostate.cs.cs414.p5.client_server.transmission.TaskConstents;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.OpenAllGamesTask;

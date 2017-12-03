@@ -6,8 +6,8 @@ import java.net.InetSocketAddress;
 import edu.colostate.cs.cs414.p5.client_server.logger.Logger;
 import edu.colostate.cs.cs414.p5.client_server.server.AbstractServer;
 import edu.colostate.cs.cs414.p5.client_server.server.ActiveServer;
-import edu.colostate.cs.cs414.p5.client_server.server.game_server.GameInviteManager;
 import edu.colostate.cs.cs414.p5.client_server.server.game_server.GameServer;
+import edu.colostate.cs.cs414.p5.client_server.server.game_server.invite_manager.GameInviteManager;
 import edu.colostate.cs.cs414.p5.client_server.server.registry.ActiveRegistry;
 import edu.colostate.cs.cs414.p5.client_server.server.registry.FileRegistry;
 

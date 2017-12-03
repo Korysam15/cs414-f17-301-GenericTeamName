@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-import edu.colostate.cs.cs414.p5.client_server.server.game_server.GameInviteManager;
+import edu.colostate.cs.cs414.p5.client_server.server.game_server.invite_manager.GameInviteManager;
 import edu.colostate.cs.cs414.p5.client_server.server.session.ClientSession;
 import edu.colostate.cs.cs414.p5.client_server.server.session.SessionManager;
 import edu.colostate.cs.cs414.p5.client_server.transmission.Task;
