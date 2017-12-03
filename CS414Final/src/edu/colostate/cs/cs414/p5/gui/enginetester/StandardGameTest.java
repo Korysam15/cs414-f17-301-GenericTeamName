@@ -12,7 +12,10 @@ public class StandardGameTest {
 	
 	public static void main(String args[]) {
 		
-		BanqiGame bg = new BanqiGame(12323123, "Kory", "Jared");
+		//BanqiGame bg = new BanqiGame(12323123, "Kory", "Jared");
+		
+		
+		
 	}
 
 	

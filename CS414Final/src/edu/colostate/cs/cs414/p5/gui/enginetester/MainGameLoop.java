@@ -1,9 +1,10 @@
 package edu.colostate.cs.cs414.p5.gui.enginetester;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+
 
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
@@ -19,23 +20,23 @@ import edu.colostate.cs.cs414.p5.banqi.BanqiPlayer;
 import edu.colostate.cs.cs414.p5.banqi.GameBoard;
 import edu.colostate.cs.cs414.p5.banqi.Piece;
 import edu.colostate.cs.cs414.p5.banqi.Square;
+import edu.colostate.cs.cs414.p5.client_server.transmission.Task;
+import edu.colostate.cs.cs414.p5.client_server.transmission.game.FlipPieceTask;
+import edu.colostate.cs.cs414.p5.client_server.transmission.util.ForwardTask;
 import edu.colostate.cs.cs414.p5.gui.entities.Camera;
 import edu.colostate.cs.cs414.p5.gui.entities.Entity;
-import edu.colostate.cs.cs414.p5.gui.entities.EntityInfo;
 import edu.colostate.cs.cs414.p5.gui.entities.Light;
 import edu.colostate.cs.cs414.p5.gui.fontmeshcreator.FontType;
 import edu.colostate.cs.cs414.p5.gui.fontmeshcreator.GUIText;
 import edu.colostate.cs.cs414.p5.gui.fontrendering.TextMaster;
 import edu.colostate.cs.cs414.p5.gui.guis.GuiRenderer;
 import edu.colostate.cs.cs414.p5.gui.guis.GuiTexture;
-import edu.colostate.cs.cs414.p5.gui.models.RawModel;
+import edu.colostate.cs.cs414.p5.gui.modelgenerator.ModelGenerator;
 import edu.colostate.cs.cs414.p5.gui.models.TexturedModel;
-import edu.colostate.cs.cs414.p5.gui.normalmappingobjconverter.NormalMappedObjLoader;
 import edu.colostate.cs.cs414.p5.gui.objconverter.OBJFileLoader;
 import edu.colostate.cs.cs414.p5.gui.renderengine.DisplayManager;
 import edu.colostate.cs.cs414.p5.gui.renderengine.Loader;
 import edu.colostate.cs.cs414.p5.gui.renderengine.MasterRenderer;
-import edu.colostate.cs.cs414.p5.gui.renderengine.OBJLoader;
 import edu.colostate.cs.cs414.p5.gui.terrains.Terrain;
 import edu.colostate.cs.cs414.p5.gui.textures.ModelTexture;
 import edu.colostate.cs.cs414.p5.gui.textures.TerrainTexture;
@@ -45,21 +46,20 @@ import edu.colostate.cs.cs414.p5.gui.water.WaterFrameBuffers;
 import edu.colostate.cs.cs414.p5.gui.water.WaterRenderer;
 import edu.colostate.cs.cs414.p5.gui.water.WaterShader;
 import edu.colostate.cs.cs414.p5.gui.water.WaterTile;
-
-import model.game_modes.ModelGenerator;
+import edu.colostate.cs.cs414.p5.user.Player;
 /**
  * 
  * 
  * @author Sam
  *
  */
-public class MainGameLoop {
+public class MainGameLoop implements Runnable {
 
 
 	private static final  int  ENTITY_COUNT=33;
 
 
-
+	
 	/**
 	 * A reference to the board
 	 */
@@ -75,7 +75,7 @@ public class MainGameLoop {
 	 */
 	private BanqiPlayer player1,player2;
 
-	private BanqiPlayer currentPlayer;
+	private Player currentPlayer;
 	BanqiGame banqiGame;
 
 
@@ -87,7 +87,7 @@ public class MainGameLoop {
 
 
 
-	private Piece[] pieces;
+	
 
 
 
@@ -96,21 +96,44 @@ public class MainGameLoop {
 
 
 
-	/**
-	 * @param player1
-	 * @param player2
-	 * @param pieces 
-	 * @param banqiGame 
-	 * @throws InterruptedException
-	 */
+	private String otherPlayer;
+
+
+
+	public MainGameLoop(BanqiGame game) {
+		this.banqiGame=game;
+	
+	}
 	public void startGame( BanqiGame banqiGame)  {
-		this.banqiGame=banqiGame;
+		
+	}
+	public TexturedModel getColor(int index) {
+		if(index<8||(index<24&&index>15)){
+			if(index%2!=0) {
+				return whiteSquare;
+			}
+			return blackSquare;
+		}
+		else {
+			if(index%2==0) {
+				return whiteSquare;
+			}
+			return blackSquare;
+			
+		}
+	}
+	@Override
+	public void run() {
+		DisplayManager.createDisplay();
+		this.currentPlayer=banqiGame.p1;
+		System.out.println(banqiGame.p1.getNickName());
+		this.otherPlayer=getOtherPlayer();
 		this.board=banqiGame.getGameBoard();
 		this.player1=banqiGame.getFirstPlayer();
 		this.player2=banqiGame.getSecondPlayer();
 
 		this.modelGen=new ModelGenerator();
-		DisplayManager.createDisplay(); 
+		
 		Loader loader = new Loader();
 
 
@@ -131,38 +154,7 @@ public class MainGameLoop {
 
 
 
-		//************************Terrain************************
-		//		TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture("grassy2"));
-		//		TerrainTexture rTexture = new TerrainTexture(loader.loadTexture("mud"));
-		//		TerrainTexture gTexture = new TerrainTexture(loader.loadTexture("grassFlowers"));
-		//		TerrainTexture bTexture = new TerrainTexture(loader.loadTexture("path"));
-		//
-		//		TerrainTexturePack texturePack = new TerrainTexturePack(backgroundTexture, rTexture, gTexture, bTexture);
-		//		TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("blendMap"));
-		//		TexturedModel rocks = new TexturedModel(OBJFileLoader.loadOBJ("rocks", loader),
-		//				new ModelTexture(loader.loadTexture("rocks")));
-		//
-		//		ModelTexture fernTextureAtlas = new ModelTexture(loader.loadTexture("fern"));
-		//		fernTextureAtlas.setNumberOfRows(2);
-		//
-		//		TexturedModel fern = new TexturedModel(OBJFileLoader.loadOBJ("fern", loader), fernTextureAtlas);
-		//
-		//		TexturedModel bobble = new TexturedModel(OBJFileLoader.loadOBJ("pine", loader),
-		//				new ModelTexture(loader.loadTexture("pine")));
-		//		bobble.getTexture().setHasTransparency(true);
-		//
-		//		fern.getTexture().setHasTransparency(true);
-		//
-		//		Terrain terrain = new Terrain(-20, -1, loader, texturePack, blendMap, "hi");
-		//
-		//		terrains.add(terrain);
-		//
-		//		TexturedModel lamp = new TexturedModel(OBJLoader.loadObjModel("lamp", loader),
-		//				new ModelTexture(loader.loadTexture("lamp")));
-		//		lamp.getTexture().setUseFakeLighting(true);
-
-		// *****************************************************************
-		//*
+	
 
 
 
@@ -175,10 +167,7 @@ public class MainGameLoop {
 		Entity titleEntity = new Entity(title, new Vector3f(4.5f, 50, -100), 90, 0, 0, 2f);
 		entities.add(titleEntity);
 		// *******************************************************************
-		//		TexturedModel grassIsland = new TexturedModel(OBJFileLoader.loadOBJ("grass_island", loader), 
-		//				new ModelTexture(loader.loadTexture("grass_island")));
-		//		Entity grassIslandEntity = new Entity(grassIsland, new Vector3f(10, -50, -90), 0, 0, 0, 100f);
-		//		entities.add(grassIslandEntity);
+		
 
 
 
@@ -188,10 +177,9 @@ public class MainGameLoop {
 
 		// ******************************BoardTiles****************************
 		List<Entity> boardTiles= new ArrayList<Entity>() ;  
-
 		boardTiles.addAll(board.generateBoardModel(loader));
-
-		//****************Entity for the selected piece
+		
+		//**Entity for the selected tile
 		TexturedModel selectedSquare = new TexturedModel(OBJFileLoader.loadOBJ("square", loader),
 				new ModelTexture(loader.loadTexture("square_selected")));
 		whiteSquare = new TexturedModel(OBJFileLoader.loadOBJ("square", loader),
@@ -200,15 +188,12 @@ public class MainGameLoop {
 				new ModelTexture(loader.loadTexture("square_black")));
 
 		// **********************************************************************
-
-
+		
+		
+		
+		
 
 		// ******************************Pieces**********************************
-
-
-		//pieceModels=modelGen.generatePieceModels(board,loader).toArray(new Entity[32]);
-		
-		
 		entities.addAll(modelGen.generatePieceModels(board,loader));
 		entities.addAll(boardTiles);
 
@@ -244,97 +229,43 @@ public class MainGameLoop {
 
 		//****************Game Loop Below*********************
 
+		
 		ArrayList<Integer> possibleMovesIndex= new ArrayList<Integer>();
 		oldBoard=board;
+		//currentPlayer =player1;
+		
+		
+		
 		while (!Display.isCloseRequested()) {
-			System.out.println(oldBoard.equals(board));
-			oldBoard=board;
+			
+			if(!oldBoard.equals(board)) {
+				System.out.println("diff");
+			}
+			
 			//System.out.println(DisplayManager.delta);
+			
+			
+			Task notify = null;
+			oldBoard=board;
+			
+			
+			
+			//camera setup
 			camera.move();
-
 			camera.startGame();
 			
 			
-			
-			
-
-
-
-			picker.update();
+			//input
 			if(Mouse.isButtonDown(0)) {
-
-
 				int square=picker.getClickPosition();
-				Piece  selectedPiece= board.getSquare(square).getOn();
-
-				if(square !=-1) {
-					if (selectedIndex!=-1&&selectedIndex!=square) {
-
-						
-						for(Integer i:possibleMovesIndex){
-							entities.get(i+ENTITY_COUNT).setModel(getColor(i));
-							
-							}
-//						if(possibleMovesIndex.contains(square)) {
-//							banqiGame.makeMove(board.getSquare(selectedIndex), board.getSquare(square));
-//							entities.get(selectedIndex+1).setPosition(entities.get(square+1).getPosition());
-//							entities.get(square+1);
-//						}
-						
-						possibleMovesIndex.clear();
-
-
-
-
-
-
-
-
-						selectedIndex=-1;
-					}
-					else if(board.getSquare(square)!=null&&selectedPiece.isFaceUp()&&selectedIndex!=square) {
-
-						selectedIndex=square;
-						for(Square move:banqiGame.getValidMoves(board.getSquare(square))){
-							entities.get(8*move.getY()+move.getX()+ENTITY_COUNT).setModel(selectedSquare);
-							possibleMovesIndex.add(8*move.getY()+move.getX());
-
-
-						}
-
-
-
-
-
-					}
-					else if(board.getSquare(square)!=null&&!selectedPiece.isFaceUp()&&selectedIndex!=square) {
-						selectedIndex=square;
-						toFlip=square+1;
-						banqiGame.flipPiece(board.getSquare(square));
-						
-						Entity fDPiece=entities.get(toFlip);
-						entities.get(toFlip).setY(fDPiece.getPosition().y+5);
-
-					}
-
-
-
-
-				}
+				 notify=handleInput(entities, selectedSquare, possibleMovesIndex, square);
 			}
+			
+			
+			//flip animation
 			if(toFlip!=-1) {
 
-				if(entities.get(toFlip).getRotX()!=0) {
-					entities.get(toFlip).increaseRotation(5, 0, 0);
-				}
-				else {
-					entities.get(toFlip).increaseRotation(0, 0, 0);
-					entities.get(toFlip).setY(entities.get(toFlip).getPosition().y-5);;
-					toFlip=-1;
-					selectedIndex=-1;
-				}
-
-
+				flipPieceAnimation(entities);
 			}
 
 
@@ -362,7 +293,17 @@ public class MainGameLoop {
 			waterRenderer.render(waters, camera, sun);
 			guiRenderer.render(guiTextures);
 			TextMaster.render();
-
+			
+			
+			// send move to server
+			if(notify != null) {
+				System.out.println();
+				Task forward = new ForwardTask(currentPlayer.getNickName(),notify,otherPlayer);
+				try {
+					currentPlayer.getClient().sendToServer(forward);
+				} catch (IOException e) {
+				}
+			}
 			DisplayManager.updateDisplay();
 		}
 
@@ -378,21 +319,93 @@ public class MainGameLoop {
 		loader.cleanUp();
 		DisplayManager.closeDisplay();
 
+		
 	}
-	public TexturedModel getColor(int index) {
-		if(index<8||(index<24&&index>15)){
-			if(index%2!=0) {
-				return whiteSquare;
+	public Task handleInput(List<Entity> entities, TexturedModel selectedSquare, ArrayList<Integer> possibleMovesIndex,
+			int square) {
+		
+		Piece  selectedPiece= board.getSquare(square).getOn();
+		Task notify=null;
+		if(square !=-1) {
+			
+			
+			
+			if (selectedIndex!=-1&&selectedIndex!=square) { //Piece has already been selected 
+
+				
+				for(Integer i:possibleMovesIndex){
+					entities.get(i+ENTITY_COUNT).setModel(getColor(i));
+					
+					}
+//						if(possibleMovesIndex.contains(square)) {
+//							banqiGame.makeMove(board.getSquare(selectedIndex), board.getSquare(square));
+//							entities.get(selectedIndex+1).setPosition(entities.get(square+1).getPosition());
+//							entities.get(square+1);
+//						}
+				
+				possibleMovesIndex.clear();
+
+
+
+
+
+
+
+
+				selectedIndex=-1;
 			}
-			return blackSquare;
+			else if(board.getSquare(square)!=null&&selectedPiece.isFaceUp()&&selectedIndex!=square) {  //(new selection) Piece is faceUp
+
+				selectedIndex=square;
+				for(Square move:banqiGame.getValidMoves(board.getSquare(square))){
+					entities.get(8*move.getY()+move.getX()+ENTITY_COUNT).setModel(selectedSquare);
+					possibleMovesIndex.add(8*move.getY()+move.getX());
+
+
+				}
+
+
+
+			}
+			else if(board.getSquare(square)!=null&&!selectedPiece.isFaceUp()&&selectedIndex!=square) { //(new selection) Piece is faceDown
+				selectedIndex=square;
+				toFlip=square+1;
+				banqiGame.flipPiece(board.getSquare(square));
+				notify = new FlipPieceTask(currentPlayer.getNickName(),banqiGame.getGameID(),board.getSquare(square));
+				nextTurn();
+				Entity fDPiece=entities.get(toFlip);
+				entities.get(toFlip).setY(fDPiece.getPosition().y+5);
+
+			}
+
+
+
+
+		}
+		return notify;
+	}
+	public void flipPieceAnimation(List<Entity> entities) {
+		if(entities.get(toFlip).getRotX()!=0) {
+			entities.get(toFlip).increaseRotation(5, 0, 0);
 		}
 		else {
-			if(index%2==0) {
-				return whiteSquare;
-			}
-			return blackSquare;
-			
+			entities.get(toFlip).increaseRotation(0, 0, 0);
+			entities.get(toFlip).setY(entities.get(toFlip).getPosition().y-5);;
+			toFlip=-1;
+			selectedIndex=-1;
 		}
+	}
+	
+	public void nextTurn() {
+			//if
+	}
+	public String getOtherPlayer() {
+		
+		System.out.println(player1.nickName);
+		if (currentPlayer.getNickName().equals(player1.nickName)) {
+			return player2.nickName;
+		}
+		return player1.nickName;
 	}
 	
 

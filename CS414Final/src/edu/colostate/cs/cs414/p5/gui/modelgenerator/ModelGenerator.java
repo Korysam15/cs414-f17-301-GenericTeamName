@@ -1,4 +1,4 @@
-package model.game_modes;
+package edu.colostate.cs.cs414.p5.gui.modelgenerator;
 
 import java.util.ArrayList;
 import java.util.Collections;

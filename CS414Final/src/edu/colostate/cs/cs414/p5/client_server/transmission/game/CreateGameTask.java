@@ -60,7 +60,7 @@ public class CreateGameTask extends GameTask {
 	}
 	
 	private void createGame(Player player) {
-		BanqiGame game = new BanqiGame(gameID,playerOne,playerTwo);
+		BanqiGame game = new BanqiGame(gameID,player,playerOne,playerTwo);
 		player.addGame(gameID, game);
 	}
 }

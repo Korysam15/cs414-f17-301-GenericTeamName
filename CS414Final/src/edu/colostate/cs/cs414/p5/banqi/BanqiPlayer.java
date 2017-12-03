@@ -35,4 +35,12 @@ public class BanqiPlayer {
 		BanqiPlayer p = new BanqiPlayer("KKUDDA");
 		System.out.println(p);
 	}
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof BanqiPlayer) {
+			BanqiPlayer other= (BanqiPlayer) obj;
+			return other.nickName.equals(this.nickName);
+		}
+		return false;
+	}
 }

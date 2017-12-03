@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
+import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
 
 import edu.colostate.cs.cs414.p5.client_server.transmission.Task;
@@ -20,6 +21,7 @@ import edu.colostate.cs.cs414.p5.gui.enginetester.MainGameLoop;
 import edu.colostate.cs.cs414.p5.gui.entities.Entity;
 import edu.colostate.cs.cs414.p5.gui.models.TexturedModel;
 import edu.colostate.cs.cs414.p5.gui.objconverter.OBJFileLoader;
+import edu.colostate.cs.cs414.p5.gui.renderengine.DisplayManager;
 import edu.colostate.cs.cs414.p5.gui.renderengine.Loader;
 import edu.colostate.cs.cs414.p5.gui.textures.ModelTexture;
 import edu.colostate.cs.cs414.p5.user.ActivePlayer;
@@ -45,7 +47,7 @@ public class BanqiGame {
 	private BanqiPlayer secondPlayer;	   // second Player
 	private boolean test=false;	   // TESTING
 	private boolean piece_has_flipped;
-	
+	public Player p1;
 
 	public BanqiGame(int gameID, String playerOne, String playerTwo, boolean openConsole) {
 		super();
@@ -56,10 +58,16 @@ public class BanqiGame {
 		firstPlayer = new BanqiPlayer(playerOne);
 		secondPlayer = new BanqiPlayer(playerTwo);
 		this.pieces= new Piece[32];
+		
+		//MainGameLoop game = new MainGameLoop(this);
+		//Thread t = new Thread(game);
 		if(openConsole) {
 			openConsole();
 		}
+		
+		
 		getAllPieces();
+		//t.start();
 	}
 
 	
@@ -74,13 +82,16 @@ public class BanqiGame {
 	}
 
 	/* CONSTRUCTOR TO USE KORY */
-	public BanqiGame(int gameID, String playerOne, String playerTwo) 
+	public BanqiGame(int gameID,Player p1, String playerOne, String playerTwo) 
 	{
 		
 		
-		super();
 		
+		
+		super();
+	
 		this.gameID = gameID;
+		this.p1=p1;
 		this.gameBoard= new GameBoard();
 		this.pieces= new Piece[32];
 		this.piece_has_flipped = false;
@@ -88,11 +99,12 @@ public class BanqiGame {
 		firstPlayer = new BanqiPlayer(playerOne);
 		secondPlayer = new BanqiPlayer(playerTwo);
 		
-		MainGameLoop game = new MainGameLoop();
+		MainGameLoop game = new MainGameLoop(this);
+		Thread t = new Thread(game);
 	
 		getAllPieces();
 		
-		game.startGame(this);
+		t.start();
 		
 
 	}
@@ -379,8 +391,6 @@ public class BanqiGame {
 				}
 				this.firstPlayer.setColor(color);
 				this.secondPlayer.setColor(color);
-				System.out.println(this.firstPlayer.getColor());
-				System.out.println(this.secondPlayer.getColor());
 				this.piece_has_flipped = true;
 			}
 			return true;
@@ -509,6 +519,7 @@ public class BanqiGame {
 		String color = "";
 		while(true)
 		{
+
 			System.out.println(currentPlayer.nickName + currentPlayer.color);
 			System.out.println("Type 'forfeit' to forfeit a match or 'help' to get help.");
 			System.out.println("Make a move!  ex. A1");
@@ -601,6 +612,25 @@ public class BanqiGame {
 
 	}
 
+	public void forfeit(Player p, String otherPlayer)
+	{
+		System.out.println("FORFEITING");
+		// forfeit game, create forfiet task, update stats for both players
+		UpdateRecordTask updateTask = new UpdateRecordTask(false,true,false,this.gameID);
+		ForfeitTask forfeit = new ForfeitTask(this.gameID, updateTask, p.getNickName() + " has forfeited! " + otherPlayer + " is the winner!");
+		forfeit.run();
+		forfeit.getUpdateRecordTask().setWon(true);
+		forfeit.getUpdateRecordTask().setLoss(false);
+		try {
+			p.getClient().sendToServer(new ForwardTask(p.getNickName(),forfeit,otherPlayer));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+
+
 	public Square getSquare(String from)
 	{
 		from=from.toUpperCase();
@@ -619,23 +649,6 @@ public class BanqiGame {
 	public Square getSquare(int x, int y) 
 	{
 		return gameBoard.getSquare(x, y);
-	}
-
-	public void forfeit(Player p, String otherPlayer)
-	{
-		System.out.println("FORFEITING");
-		// forfeit game, create forfiet task, update stats for both players
-		UpdateRecordTask updateTask = new UpdateRecordTask(false,true,false,this.gameID);
-		ForfeitTask forfeit = new ForfeitTask(this.gameID, updateTask, p.getNickName() + " has forfeited! " + otherPlayer + " is the winner!");
-		forfeit.run();
-		forfeit.getUpdateRecordTask().setWon(true);
-		forfeit.getUpdateRecordTask().setLoss(false);
-		try {
-			p.getClient().sendToServer(new ForwardTask(p.getNickName(),forfeit,otherPlayer));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	public void printHelpInformation()
