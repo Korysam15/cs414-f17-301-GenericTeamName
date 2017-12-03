@@ -19,6 +19,9 @@ public class Profile {
 		this.history = new History();
 	}
 
+	public void setHistory(History history) {
+		this.history = history;
+	}
 	
 	/**
 	 * @see History
@@ -29,18 +32,26 @@ public class Profile {
 		return this.history;
 	}
 	
+	@Override
 	public String toString(){
 		return this.name + "\n" + this.history.toString();
 	}
+	
 	public String getName(){
 		return this.name;
 	}
+	
+	@Override
+	public int hashCode() {
+		return toString().hashCode();
+	}
+	
+	@Override
 	public boolean equals(Object o){
-		if(o instanceof Profile){
-			return ((Profile)o).name.equals(this.name);
-		}
-		else{
+		if(o == null || !(o instanceof Profile)) {
 			return false;
+		} else {
+			return this.hashCode() == o.hashCode();
 		}
 	}
 	
