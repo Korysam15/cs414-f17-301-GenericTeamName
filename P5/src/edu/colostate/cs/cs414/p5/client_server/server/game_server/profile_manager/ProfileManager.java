@@ -1,9 +1,12 @@
 package edu.colostate.cs.cs414.p5.client_server.server.game_server.profile_manager;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import edu.colostate.cs.cs414.p5.client_server.logger.Logger;
+import edu.colostate.cs.cs414.p5.client_server.server.registry.AbstractRegistry;
+import edu.colostate.cs.cs414.p5.client_server.server.registry.ActiveRegistry;
 import edu.colostate.cs.cs414.p5.user.History;
 import edu.colostate.cs.cs414.p5.user.Profile;
 
@@ -22,6 +25,17 @@ public abstract class ProfileManager {
 	protected ProfileManager() {
 		this.profileMap = new HashMap<String,Profile>();
 		buildProfileMapFromRecords();
+		createProfilesForRegisteredUsers();
+	}
+	
+	private void createProfilesForRegisteredUsers() {
+		AbstractRegistry registry = ActiveRegistry.getInstance();
+		if(registry != null) {
+			List<String> userNicknames = registry.getAllUserNicknames();
+			for(String playersName: userNicknames) {
+				addProfileIfAbsent(playersName);
+			}
+		}
 	}
 	
 	protected void addProfileRestoredFromRecords(String playersName, Profile profile) {
@@ -45,7 +59,21 @@ public abstract class ProfileManager {
 			if(profileMap.containsKey(playersName)) {
 				LOG.error("Profile Map already contains a record for: " + playersName);
 			} else {
-				profileMap.put(playersName, new Profile(playersName));
+				Profile p = new Profile(playersName);
+				profileMap.put(playersName, p);
+				addRecord(p);
+			}
+		}
+	}
+	
+	public void addProfileIfAbsent(String playersName) {
+		synchronized(profileMap) {
+			if(profileMap.containsKey(playersName)) {
+				return;
+			} else {
+				Profile p = new Profile(playersName);
+				profileMap.put(playersName, p);
+				addRecord(p);
 			}
 		}
 	}
@@ -53,7 +81,8 @@ public abstract class ProfileManager {
 	public void removeProfile(String playersName) {
 		synchronized(profileMap) {
 			if(profileMap.containsKey(playersName)) {
-				profileMap.remove(playersName);
+				Profile removed = profileMap.remove(playersName);
+				removeRecord(removed);
 			} else {
 				LOG.error("Can not remove the profile for: " + playersName + " as it does not exist");
 			}
