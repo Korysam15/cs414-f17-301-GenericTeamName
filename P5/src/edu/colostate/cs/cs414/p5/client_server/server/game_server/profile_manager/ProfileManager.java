@@ -9,6 +9,7 @@ import edu.colostate.cs.cs414.p5.user.Profile;
 
 public abstract class ProfileManager {
 	protected static final Logger LOG = Logger.getInstance();
+	
 	protected final Map<String,Profile> profileMap;
 	
 	protected ProfileManager() {
