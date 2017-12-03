@@ -5,6 +5,7 @@ import java.net.InetSocketAddress;
 
 import edu.colostate.cs.cs414.p5.client_server.server.game_server.game_manager.GameManager;
 import edu.colostate.cs.cs414.p5.client_server.server.game_server.invite_manager.GameInviteManager;
+import edu.colostate.cs.cs414.p5.client_server.server.game_server.profile_manager.ProfileManager;
 import edu.colostate.cs.cs414.p5.client_server.server.registry.AbstractRegistry;
 import edu.colostate.cs.cs414.p5.client_server.server.registry.ActiveRegistry;
 import edu.colostate.cs.cs414.p5.client_server.server.session.ClientSession;
@@ -23,11 +24,13 @@ public class GameServer extends AbstractGameServer {
 
 	private final GameInviteManager inviteManager;
 	private final GameManager gameManager;
+	private final ProfileManager profileManager;
 
 	public GameServer(InetSocketAddress address) throws IOException {
 		super(address);
 		this.inviteManager = GameInviteManager.getInstance();
-		gameManager = GameManager.getInstance();
+		this.gameManager = GameManager.getInstance();
+		this.profileManager = ProfileManager.getInstance();
 	}
 
 	public GameServer(int port) throws IOException {
@@ -133,12 +136,17 @@ public class GameServer extends AbstractGameServer {
 	@Override
 	public void handleGameTask(ForfeitTask t, ClientSession client) {
 		// TODO validate ForfeitTask?
+		String playerOne = t.getPlayerOne();
+		String playerTwo = t.getPlayerTwo();
+		
 		// update playerOne's record to show an additional loss
+		profileManager.addLoss(playerOne);
 		// update playerTwo's record to show an additional win
+		profileManager.addWin(playerTwo);
+		// remove the game from records
 		gameManager.closeGame(t.getGameID());
 
 		// send playerTwo a notification about the forfeit (if online)
-		String playerTwo = t.getPlayerTwo();
 		checkAndSend(t,playerTwo,client);
 	}
 
