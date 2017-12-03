@@ -18,6 +18,13 @@ public class History {
 		this.draws = 0;
 	}
 	
+	public History(int wins, int losses, int draws, int gamesPlayed) {
+		this.wins = wins;
+		this.losses = losses;
+		this.draws = draws;
+		this.gamesPlayed = gamesPlayed;
+	}
+	
 	public void addDraw(){
 		this.draws++;
 		this.gamesPlayed++;
