@@ -9,6 +9,7 @@ import java.util.Map;
 
 import edu.colostate.cs.cs414.p5.banqi.BanqiGame;
 import edu.colostate.cs.cs414.p5.client_server.logger.Logger;
+import edu.colostate.cs.cs414.p5.client_server.server.game_server.profile_manager.ProfileManager;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.FlipPieceTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.MoveTask;
 
@@ -167,6 +168,26 @@ public abstract class GameManager {
 				} else if(playersGameSet.isEmpty()) {
 					return;
 				} else {
+					removeGames(playersGameSet);					
+				}
+			}
+		}
+	}
+	
+	public void removePlayersGamesAsLoss(String player) {
+		synchronized(gameMap) {
+			synchronized(playerGameMap) {
+				Set<BanqiGame> playersGameSet = playerGameMap.get(player);
+				if(playersGameSet == null) {
+					return;
+				} else if(playersGameSet.isEmpty()) {
+					return;
+				} else {
+					String winner;
+					for(BanqiGame game: playersGameSet) {
+						winner = game.getOtherBanqiPlayer(player).getName();
+						ProfileManager.getInstance().addWin(winner);
+					}					
 					removeGames(playersGameSet);					
 				}
 			}
