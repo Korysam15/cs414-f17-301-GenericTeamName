@@ -226,93 +226,93 @@ public class BanqiGame {
 		}
 		if(test)
 		{
-			//			Collections.shuffle(list,new Random(123)); 
+			Collections.shuffle(list,new Random(123)); 
 		}
 		else
 		{
-			//			Collections.shuffle(list,new Random(gameID));                      //randomize list
+			Collections.shuffle(list,new Random(gameID));                      //randomize list
 		}
 		//red pieces
 		pieces[0]=new General(true);									// x1 General
 		gameBoard.getSquaresOnBoard()[list.get(0)].setOn(pieces[0]);    
 
-		//		pieces[1]=new Advisor(true);									// x2 Advisor
-		//		gameBoard.getSquaresOnBoard()[list.get(1)].setOn(pieces[1]);
-		//		pieces[2]=new Advisor(true);
-		//		gameBoard.getSquaresOnBoard()[list.get(2)].setOn(pieces[2]);
-		//
-		//
-		//		pieces[3]=new Elephant(true);									// x2 Elephant
-		//		gameBoard.getSquaresOnBoard()[list.get(3)].setOn(pieces[3]);	
-		//		pieces[4]=new Elephant(true);
-		//		gameBoard.getSquaresOnBoard()[list.get(4)].setOn(pieces[4]);
-		//
-		//		pieces[5]=new Chariot(true);									// x2 Chariot
-		//		gameBoard.getSquaresOnBoard()[list.get(5)].setOn(pieces[5]);
-		//		pieces[6]=new Chariot(true);
-		//		gameBoard.getSquaresOnBoard()[list.get(6)].setOn(pieces[6]);
-		//
-		//		pieces[7]=new Cavalry(true);									// x2 Cavalry
-		//		gameBoard.getSquaresOnBoard()[list.get(7)].setOn(pieces[7]);
-		//		pieces[8]=new Cavalry(true);
-		//		gameBoard.getSquaresOnBoard()[list.get(8)].setOn(pieces[8]);
-		//
-		//		pieces[9]=new Cannon(true);										// x2 Cannon
-		//		gameBoard.getSquaresOnBoard()[list.get(9)].setOn(pieces[9]);
-		//		pieces[10]=new Cannon(true);
-		//		gameBoard.getSquaresOnBoard()[list.get(10)].setOn(pieces[10]);
-		//
-		//		pieces[11]=new Soldier(true);									// x5 Soldier
-		//		gameBoard.getSquaresOnBoard()[list.get(11)].setOn(pieces[11]);
-		//		pieces[12]=new Soldier(true);
-		//		gameBoard.getSquaresOnBoard()[list.get(12)].setOn(pieces[12]);
-		//		pieces[13]=new Soldier(true);
-		//		gameBoard.getSquaresOnBoard()[list.get(13)].setOn(pieces[13]);
-		//		pieces[14]=new Soldier(true);
-		//		gameBoard.getSquaresOnBoard()[list.get(14)].setOn(pieces[14]);
-		//		pieces[15]=new Soldier(true);
-		//		gameBoard.getSquaresOnBoard()[list.get(15)].setOn(pieces[15]);
+		pieces[1]=new Advisor(true);									// x2 Advisor
+		gameBoard.getSquaresOnBoard()[list.get(1)].setOn(pieces[1]);
+		pieces[2]=new Advisor(true);
+		gameBoard.getSquaresOnBoard()[list.get(2)].setOn(pieces[2]);
+
+
+		pieces[3]=new Elephant(true);									// x2 Elephant
+		gameBoard.getSquaresOnBoard()[list.get(3)].setOn(pieces[3]);	
+		pieces[4]=new Elephant(true);
+		gameBoard.getSquaresOnBoard()[list.get(4)].setOn(pieces[4]);
+
+		pieces[5]=new Chariot(true);									// x2 Chariot
+		gameBoard.getSquaresOnBoard()[list.get(5)].setOn(pieces[5]);
+		pieces[6]=new Chariot(true);
+		gameBoard.getSquaresOnBoard()[list.get(6)].setOn(pieces[6]);
+
+		pieces[7]=new Cavalry(true);									// x2 Cavalry
+		gameBoard.getSquaresOnBoard()[list.get(7)].setOn(pieces[7]);
+		pieces[8]=new Cavalry(true);
+		gameBoard.getSquaresOnBoard()[list.get(8)].setOn(pieces[8]);
+
+		pieces[9]=new Cannon(true);										// x2 Cannon
+		gameBoard.getSquaresOnBoard()[list.get(9)].setOn(pieces[9]);
+		pieces[10]=new Cannon(true);
+		gameBoard.getSquaresOnBoard()[list.get(10)].setOn(pieces[10]);
+
+		pieces[11]=new Soldier(true);									// x5 Soldier
+		gameBoard.getSquaresOnBoard()[list.get(11)].setOn(pieces[11]);
+		pieces[12]=new Soldier(true);
+		gameBoard.getSquaresOnBoard()[list.get(12)].setOn(pieces[12]);
+		pieces[13]=new Soldier(true);
+		gameBoard.getSquaresOnBoard()[list.get(13)].setOn(pieces[13]);
+		pieces[14]=new Soldier(true);
+		gameBoard.getSquaresOnBoard()[list.get(14)].setOn(pieces[14]);
+		pieces[15]=new Soldier(true);
+		gameBoard.getSquaresOnBoard()[list.get(15)].setOn(pieces[15]);
 
 
 		//black pieces
-		pieces[1]=new General(false);
-		gameBoard.getSquaresOnBoard()[list.get(16)].setOn(pieces[1]);
+		pieces[16]=new General(false);
+		gameBoard.getSquaresOnBoard()[list.get(16)].setOn(pieces[16]);
 
-		//		pieces[17]=new Advisor(false);
-		//		gameBoard.getSquaresOnBoard()[list.get(17)].setOn(pieces[17]);
-		//		pieces[18]=new Advisor(false);
-		//		gameBoard.getSquaresOnBoard()[list.get(18)].setOn(pieces[18]);
-		//
-		//		pieces[19]=new Elephant(false);
-		//		gameBoard.getSquaresOnBoard()[list.get(19)].setOn(pieces[19]);
-		//		pieces[20]=new Elephant(false);
-		//		gameBoard.getSquaresOnBoard()[list.get(20)].setOn(pieces[20]);
-		//
-		//		pieces[21]=new Chariot(false);
-		//		gameBoard.getSquaresOnBoard()[list.get(21)].setOn(pieces[21]);
-		//		pieces[22]=new Chariot(false);
-		//		gameBoard.getSquaresOnBoard()[list.get(22)].setOn(pieces[22]);
-		//
-		//		pieces[23]=new Cavalry(false);
-		//		gameBoard.getSquaresOnBoard()[list.get(23)].setOn(pieces[23]);
-		//		pieces[24]=new Cavalry(false);
-		//		gameBoard.getSquaresOnBoard()[list.get(24)].setOn(pieces[24]);
-		//
-		//		pieces[25]=new Cannon(false);
-		//		gameBoard.getSquaresOnBoard()[list.get(25)].setOn(pieces[25]);
-		//		pieces[26]=new Cannon(false);
-		//		gameBoard.getSquaresOnBoard()[list.get(26)].setOn(pieces[26]);
-		//
-		//		pieces[27]=new Soldier(false);
-		//		gameBoard.getSquaresOnBoard()[list.get(27)].setOn(pieces[27]);
-		//		pieces[28]=new Soldier(false);
-		//		gameBoard.getSquaresOnBoard()[list.get(28)].setOn(pieces[28]);
-		//		pieces[29]=new Soldier(false);
-		//		gameBoard.getSquaresOnBoard()[list.get(29)].setOn(pieces[29]);
-		//		pieces[30]=new Soldier(false);
-		//		gameBoard.getSquaresOnBoard()[list.get(30)].setOn(pieces[30]);
-		//		pieces[31]=new Soldier(false);
-		//		gameBoard.getSquaresOnBoard()[list.get(31)].setOn(pieces[31]);
+		pieces[17]=new Advisor(false);
+		gameBoard.getSquaresOnBoard()[list.get(17)].setOn(pieces[17]);
+		pieces[18]=new Advisor(false);
+		gameBoard.getSquaresOnBoard()[list.get(18)].setOn(pieces[18]);
+
+		pieces[19]=new Elephant(false);
+		gameBoard.getSquaresOnBoard()[list.get(19)].setOn(pieces[19]);
+		pieces[20]=new Elephant(false);
+		gameBoard.getSquaresOnBoard()[list.get(20)].setOn(pieces[20]);
+
+		pieces[21]=new Chariot(false);
+		gameBoard.getSquaresOnBoard()[list.get(21)].setOn(pieces[21]);
+		pieces[22]=new Chariot(false);
+		gameBoard.getSquaresOnBoard()[list.get(22)].setOn(pieces[22]);
+
+		pieces[23]=new Cavalry(false);
+		gameBoard.getSquaresOnBoard()[list.get(23)].setOn(pieces[23]);
+		pieces[24]=new Cavalry(false);
+		gameBoard.getSquaresOnBoard()[list.get(24)].setOn(pieces[24]);
+
+		pieces[25]=new Cannon(false);
+		gameBoard.getSquaresOnBoard()[list.get(25)].setOn(pieces[25]);
+		pieces[26]=new Cannon(false);
+		gameBoard.getSquaresOnBoard()[list.get(26)].setOn(pieces[26]);
+
+		pieces[27]=new Soldier(false);
+		gameBoard.getSquaresOnBoard()[list.get(27)].setOn(pieces[27]);
+		pieces[28]=new Soldier(false);
+		gameBoard.getSquaresOnBoard()[list.get(28)].setOn(pieces[28]);
+		pieces[29]=new Soldier(false);
+		gameBoard.getSquaresOnBoard()[list.get(29)].setOn(pieces[29]);
+		pieces[30]=new Soldier(false);
+		gameBoard.getSquaresOnBoard()[list.get(30)].setOn(pieces[30]);
+		pieces[31]=new Soldier(false);
+		gameBoard.getSquaresOnBoard()[list.get(31)].setOn(pieces[31]);
 	}
 
 
@@ -342,32 +342,7 @@ public class BanqiGame {
 	}
 
 	public boolean makeMove(int x1, int y1, int x2, int y2) throws GameOverException {
-		System.out.println(isOver());
 		LOG.debug("Checking if moving from square["+x1+"]["+y1+"] to square["+x2+"]["+y2+"] is valid");
-		if(isOver().equals("red"))
-		{
-			System.out.println("HERE");
-			if(firstPlayer.color.equals("red"))
-			{
-				throw new GameOverException(secondPlayer.getName());
-			}
-			else
-			{
-				throw new GameOverException(firstPlayer.getName());
-			}
-		}
-		if(isOver().equals("black"))
-		{
-			System.out.println("HERE2");
-			if(firstPlayer.color.equals("black"))
-			{
-					throw new GameOverException(secondPlayer.getName());
-			}
-			else
-			{
-					throw new GameOverException(firstPlayer.getName());
-			}
-		}
 		Square from = null, to = null;
 		try {
 			from = getSquare(x1,y1);
@@ -394,11 +369,13 @@ public class BanqiGame {
 			LOG.debug("Move is valid");
 			to.setOn(from.getOn());
 			from.setOn(null);
+			isOver();
 			return true;
 		} else {
 			LOG.debug("Move is not valid");
 			return false;
 		}
+
 	}
 
 	public boolean makeMove(int x, int y) {
@@ -588,7 +565,6 @@ public class BanqiGame {
 
 	public void promptTurn(Player p, String otherPlayer)
 	{
-		System.out.println(isOver());
 		System.out.println("Your Turn!");
 		System.out.println(gameBoard);
 		Task notify = null;
@@ -791,7 +767,7 @@ public class BanqiGame {
 		}
 	}
 
-	public String isOver()
+	public void isOver() throws GameOverException
 	{
 		ArrayList<Piece> blackPieces = new ArrayList<Piece>();
 		ArrayList<Piece> redPieces = new ArrayList<Piece>();
@@ -812,15 +788,25 @@ public class BanqiGame {
 		}
 		if(redPieces.size() == 0)
 		{
-			return "red";
+			if(firstPlayer.color.equals("red"))
+			{
+				throw new GameOverException(secondPlayer.getName());
+			}
+			else
+			{
+				throw new GameOverException(firstPlayer.getName());
+			}
 		}
-		else if(blackPieces.size() == 0)
+		if(blackPieces.size() == 0)
 		{
-			return "black";
-		}
-		else
-		{
-			return "niether";
+			if(firstPlayer.color.equals("black"))
+			{
+				throw new GameOverException(secondPlayer.getName());
+			}
+			else
+			{
+				throw new GameOverException(firstPlayer.getName());
+			}
 		}
 	}
 }
