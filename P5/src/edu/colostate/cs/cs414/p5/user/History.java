@@ -111,4 +111,18 @@ public class History {
 		ret += "Games Played: "+this.gamesPlayed;
 		return ret;
 	}
+	
+	@Override
+	public int hashCode() {
+		return toString().hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(o == null || !(o instanceof History)) {
+			return false;
+		} else {
+			return (this.hashCode() == o.hashCode());
+		}
+	}
 }
