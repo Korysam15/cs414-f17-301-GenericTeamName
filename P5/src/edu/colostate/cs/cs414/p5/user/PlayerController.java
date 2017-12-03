@@ -14,7 +14,6 @@ import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.L
 import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.LogoutTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.RegisterTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.UnregisterTask;
-import edu.colostate.cs.cs414.p5.client_server.transmission.util.ForwardTask;
 import edu.colostate.cs.cs414.p5.util.Encryptor;
 import edu.colostate.cs.cs414.p5.util.LoggedInException;
 import edu.colostate.cs.cs414.p5.util.NotLoggedInException;
@@ -108,8 +107,7 @@ public class PlayerController {
 		}
 		
 		Task getProfile = new GetProfileTask(nickname, playerToView);
-		Task forward = new ForwardTask(nickname,getProfile,playerToView);
-		sendTask(forward);
+		sendTask(getProfile);
 	}
 	
 	public synchronized void viewInvites() throws IOException, NotLoggedInException  {
