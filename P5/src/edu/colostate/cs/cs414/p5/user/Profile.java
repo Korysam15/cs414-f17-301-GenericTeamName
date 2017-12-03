@@ -43,7 +43,7 @@ public class Profile {
 	
 	@Override
 	public int hashCode() {
-		return toString().hashCode();
+		return this.name.hashCode();
 	}
 	
 	@Override
