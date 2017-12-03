@@ -14,6 +14,7 @@ public abstract class ProfileManager {
 	
 	protected ProfileManager() {
 		this.profileMap = new HashMap<String,Profile>();
+		buildProfileMapFromRecords();
 	}
 	
 	protected void addProfileRestoredFromRecords(String playersName, Profile profile) {
