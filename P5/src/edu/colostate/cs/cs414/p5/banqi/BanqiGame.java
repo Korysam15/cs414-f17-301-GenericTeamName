@@ -62,7 +62,7 @@ public class BanqiGame {
 		this.pieces= new Piece[32];
 		setPiecesFromGameBoard();
 	}
-	
+
 	public BanqiGame(int gameID, BanqiPlayer firstPlayer, BanqiPlayer secondPlayer, GameBoard gameBoard) {
 		super();
 		this.gameID = gameID;
@@ -175,11 +175,11 @@ public class BanqiGame {
 	public String getPlayerTwo() {
 		return secondPlayer.getName();
 	}
-	
+
 	public BanqiPlayer getFirstPlayer() {
 		return firstPlayer;
 	}
-	
+
 	public BanqiPlayer getSecondPlayer() {
 		return secondPlayer;
 	}
@@ -198,16 +198,16 @@ public class BanqiGame {
 		this.gameBoard = gameBoard;
 		setPiecesFromGameBoard();
 	}
-	
+
 	private void setPiecesFromGameBoard() {
 		int index = 0;
-		
+
 		Square temp[] = this.gameBoard.getSquaresOnBoard();
 		for(Square s: temp) {
 			this.pieces[index] = s.getOn();
 			index++;
 		}
-		
+
 		for(Piece piece: pieces) {
 			if(piece != null && piece.faceUp) {
 				piece_has_flipped = true;
@@ -341,7 +341,7 @@ public class BanqiGame {
 		return false;
 	}
 
-	public boolean makeMove(int x1, int y1, int x2, int y2) {
+	public boolean makeMove(int x1, int y1, int x2, int y2) throws GameOverException {
 		LOG.debug("Checking if moving from square["+x1+"]["+y1+"] to square["+x2+"]["+y2+"] is valid");
 		Square from = null, to = null;
 		try {
@@ -369,11 +369,13 @@ public class BanqiGame {
 			LOG.debug("Move is valid");
 			to.setOn(from.getOn());
 			from.setOn(null);
+			isOver();
 			return true;
 		} else {
 			LOG.debug("Move is not valid");
 			return false;
 		}
+
 	}
 
 	public boolean makeMove(int x, int y) {
@@ -390,7 +392,7 @@ public class BanqiGame {
 		} else if(s.getOn()==null){
 			return false;
 		} else if(s.getOn().faceUp==false)	{
-//			s.getOn().flipPiece();
+			//			s.getOn().flipPiece();
 			flipPiece(s);
 			return true;
 		} else {
@@ -744,17 +746,17 @@ public class BanqiGame {
 			return secondPlayer;
 		}
 	}
-	
+
 	public BanqiPlayer getBanqiPlayer(String playerNickname) {
 		return (playerNickname.equals(firstPlayer.nickName)) ? firstPlayer :
 			secondPlayer;
 	}
-	
+
 	public BanqiPlayer getOtherBanqiPlayer(String playerNickname) {
 		return (playerNickname.equals(firstPlayer.nickName)) ? secondPlayer :
 			firstPlayer;
 	}
-	
+
 	public void swapTurns(String playerWhoMadeMove) {
 		if(playerWhoMadeMove.equals(firstPlayer.nickName)) {
 			firstPlayer.isTurn = false;
@@ -762,6 +764,49 @@ public class BanqiGame {
 		} else {
 			firstPlayer.isTurn = true;
 			secondPlayer.isTurn = false;
+		}
+	}
+
+	public void isOver() throws GameOverException
+	{
+		ArrayList<Piece> blackPieces = new ArrayList<Piece>();
+		ArrayList<Piece> redPieces = new ArrayList<Piece>();
+		for(Square square: this.gameBoard.getSquaresOnBoard())
+		{
+			Piece piece = square.getOn();
+			if(piece != null)
+			{
+				if(piece.color)
+				{
+					redPieces.add(piece);
+				}
+				else if(!piece.color) 
+				{
+					blackPieces.add(piece);
+				}
+			}
+		}
+		if(redPieces.size() == 0)
+		{
+			if(firstPlayer.color.equals("red"))
+			{
+				throw new GameOverException(secondPlayer.getName());
+			}
+			else
+			{
+				throw new GameOverException(firstPlayer.getName());
+			}
+		}
+		if(blackPieces.size() == 0)
+		{
+			if(firstPlayer.color.equals("black"))
+			{
+				throw new GameOverException(secondPlayer.getName());
+			}
+			else
+			{
+				throw new GameOverException(firstPlayer.getName());
+			}
 		}
 	}
 }

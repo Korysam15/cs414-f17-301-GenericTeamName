@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.Map;
 
 import edu.colostate.cs.cs414.p5.banqi.BanqiGame;
+import edu.colostate.cs.cs414.p5.banqi.GameOverException;
 import edu.colostate.cs.cs414.p5.client_server.logger.Logger;
 import edu.colostate.cs.cs414.p5.client_server.server.profile_manager.ProfileManager;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.FlipPieceTask;
@@ -136,7 +137,13 @@ public abstract class GameManager {
 		synchronized(gameMap) {
 			if(gameMap.containsKey(gameID)) {
 				BanqiGame game = gameMap.get(gameID);
-				boolean ret = game.makeMove(fromX, fromY, toX, toY);
+				boolean ret = false;
+				try {
+					ret = game.makeMove(fromX, fromY, toX, toY);
+				} catch (GameOverException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				if(ret) {
 					game.swapTurns(playersName);
 					updateRecord(game);
