@@ -18,7 +18,10 @@ public class GameBoard {
 
 	private Square squaresOnBoard[]; 
 
-
+	public GameBoard(GameBoard copy) {
+		this.squaresOnBoard=copy.squaresOnBoard;
+	}
+	
 	public Square getSquare(int i) {
 		System.out.println();
 		return squaresOnBoard[i];

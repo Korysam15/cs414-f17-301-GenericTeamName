@@ -58,8 +58,8 @@ public class MainGameLoop implements Runnable {
 
 	private static final  int  ENTITY_COUNT=33;
 
+	boolean gameStarted=false;
 
-	
 	/**
 	 * A reference to the board
 	 */
@@ -76,6 +76,7 @@ public class MainGameLoop implements Runnable {
 	private BanqiPlayer player1,player2;
 
 	private Player currentPlayer;
+	private Player turn;
 	BanqiGame banqiGame;
 
 
@@ -83,11 +84,11 @@ public class MainGameLoop implements Runnable {
 	int toFlip=-1;
 	private GameBoard oldBoard;
 
-	
 
 
 
-	
+
+
 
 
 
@@ -102,7 +103,8 @@ public class MainGameLoop implements Runnable {
 
 	public MainGameLoop(BanqiGame game) {
 		this.banqiGame=game;
-	
+
+
 	}
 	public TexturedModel getColor(int index) {
 		if(index<8||(index<24&&index>15)){
@@ -116,23 +118,29 @@ public class MainGameLoop implements Runnable {
 				return whiteSquare;
 			}
 			return blackSquare;
-			
+
 		}
 	}
 	@Override
 	public void run() {
 		DisplayManager.createDisplay();
-		
+
 		this.currentPlayer=banqiGame.p1;
 		Display.setTitle(currentPlayer.getNickName());
-		
+
 		this.board=banqiGame.getGameBoard();
 		this.player1=banqiGame.getFirstPlayer();
 		this.player2=banqiGame.getSecondPlayer();
-	
+
 		this.modelGen=new ModelGenerator();
-		
+
 		this.otherPlayer=getOtherPlayer();
+		if(currentPlayer.getNickName().equals(player2.nickName)) {
+			turn=null;
+		}
+		else {
+			turn = currentPlayer;
+		}
 		Loader loader = new Loader();
 
 
@@ -153,7 +161,7 @@ public class MainGameLoop implements Runnable {
 
 
 
-	
+
 
 
 
@@ -166,7 +174,7 @@ public class MainGameLoop implements Runnable {
 		Entity titleEntity = new Entity(title, new Vector3f(4.5f, 50, -100), 90, 0, 0, 2f);
 		entities.add(titleEntity);
 		// *******************************************************************
-		
+
 
 
 
@@ -177,7 +185,7 @@ public class MainGameLoop implements Runnable {
 		// ******************************BoardTiles****************************
 		List<Entity> boardTiles= new ArrayList<Entity>() ;  
 		boardTiles.addAll(board.generateBoardModel(loader));
-		
+
 		//**Entity for the selected tile
 		TexturedModel selectedSquare = new TexturedModel(OBJFileLoader.loadOBJ("square", loader),
 				new ModelTexture(loader.loadTexture("square_selected")));
@@ -187,10 +195,10 @@ public class MainGameLoop implements Runnable {
 				new ModelTexture(loader.loadTexture("square_black")));
 
 		// **********************************************************************
-		
-		
-		
-		
+
+
+
+
 
 		// ******************************Pieces**********************************
 		entities.addAll(modelGen.generatePieceModels(board,loader));
@@ -198,8 +206,8 @@ public class MainGameLoop implements Runnable {
 
 		// ***********************************************************************
 
-		
-		
+
+
 
 		List<Light> lights = new ArrayList<Light>();
 		Light sun = new Light(new Vector3f(10000, 10000, -10000), new Vector3f(1.3f, 1.3f, 1.3f));
@@ -228,39 +236,44 @@ public class MainGameLoop implements Runnable {
 
 		//****************Game Loop Below*********************
 
-		
+
 		ArrayList<Integer> possibleMovesIndex= new ArrayList<Integer>();
-		oldBoard=board;
+
 		//currentPlayer =player1;
-		
-		
-		
+
+
+
 		while (!Display.isCloseRequested()) {
-			
-			if(!oldBoard.equals(board)) {
-				System.out.println("diff");
-			}
-			
+
+
+
+
+
+
+
+
+			checkForChange(entities);
+
 			//System.out.println(DisplayManager.delta);
-			
-			
+
+
 			Task notify = null;
-			oldBoard=board;
-			
-			
-			
+
+
+
+
 			//camera setup
 			camera.move();
 			camera.startGame();
-			
-			
+
+
 			//input
-			if(Mouse.isButtonDown(0)) {
+			if(Mouse.isButtonDown(0)&&turn!=null) {
 				int square=picker.getClickPosition();
-				 notify=handleInput(entities, selectedSquare, possibleMovesIndex, square);
+				notify=handleInput(entities, selectedSquare, possibleMovesIndex, square);
 			}
-			
-			
+
+
 			//flip animation
 			if(toFlip!=-1) {
 
@@ -292,8 +305,8 @@ public class MainGameLoop implements Runnable {
 			waterRenderer.render(waters, camera, sun);
 			guiRenderer.render(guiTextures);
 			TextMaster.render();
-			
-			
+
+
 			// send move to server
 			if(notify != null) {
 				System.out.println();
@@ -318,30 +331,50 @@ public class MainGameLoop implements Runnable {
 		loader.cleanUp();
 		DisplayManager.closeDisplay();
 
-		
+
 	}
 	public Task handleInput(List<Entity> entities, TexturedModel selectedSquare, ArrayList<Integer> possibleMovesIndex,
 			int square) {
-		
+
 		Piece  selectedPiece= board.getSquare(square).getOn();
 		Task notify=null;
+		boolean color=false;
+		if(gameStarted) {
+			if(currentPlayer.getNickName().equals(player1.nickName)) {
+				if(player1.color.equals("red")) {
+					color=true;
+				}
+				else {
+					color=false;
+				}
+
+			}
+			else {
+				if(player2.color.equals("red")) {
+					color=true;
+				}
+				else {
+					color=false;
+				}
+			}
+		}
 		if(square !=-1) {
-			
-			
-			
+
+
+
 			if (selectedIndex!=-1&&selectedIndex!=square) { //Piece has already been selected 
 
-				
+
 				for(Integer i:possibleMovesIndex){
 					entities.get(i+ENTITY_COUNT).setModel(getColor(i));
-					
-					}
-//						if(possibleMovesIndex.contains(square)) {
-//							banqiGame.makeMove(board.getSquare(selectedIndex), board.getSquare(square));
-//							entities.get(selectedIndex+1).setPosition(entities.get(square+1).getPosition());
-//							entities.get(square+1);
-//						}
-				
+
+				}
+				//										if(possibleMovesIndex.contains(square)) {
+				//											banqiGame.makeMove(board.getSquare(selectedIndex), board.getSquare(square));
+				//											entities.get(selectedIndex+1).setPosition(entities.get(square+1).getPosition());
+				//											entities.get(square+1);
+				//										}
+
 				possibleMovesIndex.clear();
 
 
@@ -353,12 +386,14 @@ public class MainGameLoop implements Runnable {
 
 				selectedIndex=-1;
 			}
-			else if(board.getSquare(square)!=null&&selectedPiece.isFaceUp()&&selectedIndex!=square) {  //(new selection) Piece is faceUp
+			else if(board.getSquare(square)!=null&&board.getSquare(square).getOn().isColor()==color&&selectedPiece.isFaceUp()&&selectedIndex!=square) {  //(new selection) Piece is faceUp
 
 				selectedIndex=square;
+
 				for(Square move:banqiGame.getValidMoves(board.getSquare(square))){
 					entities.get(8*move.getY()+move.getX()+ENTITY_COUNT).setModel(selectedSquare);
 					possibleMovesIndex.add(8*move.getY()+move.getX());
+
 
 
 				}
@@ -367,6 +402,8 @@ public class MainGameLoop implements Runnable {
 
 			}
 			else if(board.getSquare(square)!=null&&!selectedPiece.isFaceUp()&&selectedIndex!=square) { //(new selection) Piece is faceDown
+
+
 				selectedIndex=square;
 				toFlip=square+1;
 				banqiGame.flipPiece(board.getSquare(square));
@@ -374,6 +411,8 @@ public class MainGameLoop implements Runnable {
 				nextTurn();
 				Entity fDPiece=entities.get(toFlip);
 				entities.get(toFlip).setY(fDPiece.getPosition().y+5);
+				gameStarted=true;
+
 
 			}
 
@@ -392,23 +431,53 @@ public class MainGameLoop implements Runnable {
 			entities.get(toFlip).setY(entities.get(toFlip).getPosition().y-5);;
 			toFlip=-1;
 			selectedIndex=-1;
+
 		}
 	}
-	
+
 	public void nextTurn() {
-			//if
+		if(turn==null) {
+			turn=currentPlayer; 
+		}
+		else {
+			turn=null; 
+		}
+
 	}
 	public String getOtherPlayer() {
-		
-		
+
+
 		if (currentPlayer.getNickName().equals(player1.nickName)) {
 			return player2.nickName;
 		}
 		return player1.nickName;
+	}
+
+	public void checkForChange(List<Entity> entities) {
+		int i=0;
+		for(Square s: banqiGame.getGameBoard().getSquaresOnBoard()) {
+
+			if(s.getOn()!=null&&s.getOn().isFaceUp()&&entities.get(i+1).getRotX()==180) {
+				toFlip=i+1;
+				Entity fDPiece=entities.get(toFlip);
+				entities.get(toFlip).setY(fDPiece.getPosition().y+5);
+//set-log-level
+				nextTurn();
+				return;
+
+			}
+			i++;
+
+
 		}
-		
-	
-	
+
+
+
+
+	}
+
+
+
 
 
 

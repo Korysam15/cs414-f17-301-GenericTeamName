@@ -98,6 +98,8 @@ public class BanqiGame {
 		
 		firstPlayer = new BanqiPlayer(playerOne);
 		secondPlayer = new BanqiPlayer(playerTwo);
+		synchronized (this) {
+			
 		
 		MainGameLoop game = new MainGameLoop(this);
 		Thread t = new Thread(game);
@@ -105,7 +107,7 @@ public class BanqiGame {
 		getAllPieces();
 		
 		t.start();
-		
+}
 
 	}
 
