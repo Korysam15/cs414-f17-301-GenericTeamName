@@ -1,4 +1,4 @@
-package edu.colostate.cs.cs414.p5.client_server.server.game_server;
+package edu.colostate.cs.cs414.p5.client_server.server.game_server.invite_manager;
 
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.invite.InviteTask;
 

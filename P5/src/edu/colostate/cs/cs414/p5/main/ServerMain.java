@@ -6,8 +6,8 @@ import java.net.InetSocketAddress;
 import edu.colostate.cs.cs414.p5.client_server.logger.Logger;
 import edu.colostate.cs.cs414.p5.client_server.server.AbstractServer;
 import edu.colostate.cs.cs414.p5.client_server.server.ActiveServer;
-import edu.colostate.cs.cs414.p5.client_server.server.game_server.GameInviteManager;
 import edu.colostate.cs.cs414.p5.client_server.server.game_server.GameServer;
+import edu.colostate.cs.cs414.p5.client_server.server.game_server.invite_manager.GameInviteManager;
 import edu.colostate.cs.cs414.p5.client_server.server.registry.ActiveRegistry;
 import edu.colostate.cs.cs414.p5.client_server.server.registry.FileRegistry;
 
@@ -29,18 +29,25 @@ public class ServerMain {
 				System.out.println("Invalid port: " + args[0]);
 				return;
 			}
-
-			passwordFile = args[1];
+			
+			// Logger settings
 			Logger.getInstance().setLogLevel(Logger.LOG_LEVEL.INFO_ERROR);
+			
+			// Registry configuration
+			passwordFile = args[1];
+			FileRegistry registry = new FileRegistry(passwordFile);
+			ActiveRegistry.setInstance(registry);
+			
+			// Invitation storage settings
+			GameInviteManager.setInstanceType(GameInviteManager.FILE_INVITE_MANAGER);
+			
+			// Server settings
 			InetSocketAddress address = new InetSocketAddress(port);
 			AbstractServer server = null;
-			GameInviteManager.setInstanceType(GameInviteManager.FILE_INVITE_MANAGER);
 			server = new GameServer(address);
 			ActiveServer.setInstance(server);
 
-			FileRegistry registry = new FileRegistry(passwordFile);
-			ActiveRegistry.setInstance(registry);
-
+			// go
 			server.start();
 
 		}

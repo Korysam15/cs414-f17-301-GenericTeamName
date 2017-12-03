@@ -18,6 +18,13 @@ public class History {
 		this.draws = 0;
 	}
 	
+	public History(int wins, int losses, int draws, int gamesPlayed) {
+		this.wins = wins;
+		this.losses = losses;
+		this.draws = draws;
+		this.gamesPlayed = gamesPlayed;
+	}
+	
 	public void addDraw(){
 		this.draws++;
 		this.gamesPlayed++;
@@ -110,5 +117,19 @@ public class History {
 		ret += "Draws: " + this.draws + "\n";
 		ret += "Games Played: "+this.gamesPlayed;
 		return ret;
+	}
+	
+	@Override
+	public int hashCode() {
+		return toString().hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(o == null || !(o instanceof History)) {
+			return false;
+		} else {
+			return (this.hashCode() == o.hashCode());
+		}
 	}
 }

@@ -750,6 +750,11 @@ public class BanqiGame {
 			secondPlayer;
 	}
 	
+	public BanqiPlayer getOtherBanqiPlayer(String playerNickname) {
+		return (playerNickname.equals(firstPlayer.nickName)) ? secondPlayer :
+			firstPlayer;
+	}
+	
 	public void swapTurns(String playerWhoMadeMove) {
 		if(playerWhoMadeMove.equals(firstPlayer.nickName)) {
 			firstPlayer.isTurn = false;
