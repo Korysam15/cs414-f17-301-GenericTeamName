@@ -141,8 +141,14 @@ public abstract class GameManager {
 				try {
 					ret = game.makeMove(fromX, fromY, toX, toY);
 				} catch (GameOverException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					LOG.info("Game between " + playersName + " and " + 
+							game.getOtherBanqiPlayer(playersName).getName() + " is over.\n" +
+							playersName + " is the Winner!");
+					ProfileManager pM = ProfileManager.getInstance();
+					pM.addWin(playersName);
+					pM.addLoss(game.getOtherBanqiPlayer(playersName).getName());
+					closeGame(gameID);
+					return true;
 				}
 				if(ret) {
 					game.swapTurns(playersName);

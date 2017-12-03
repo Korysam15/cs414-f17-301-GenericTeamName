@@ -769,8 +769,8 @@ public class BanqiGame {
 
 	public void isOver() throws GameOverException
 	{
-		ArrayList<Piece> blackPieces = new ArrayList<Piece>();
-		ArrayList<Piece> redPieces = new ArrayList<Piece>();
+		int blackPieces = 0;
+		int redPieces = 0;
 		for(Square square: this.gameBoard.getSquaresOnBoard())
 		{
 			Piece piece = square.getOn();
@@ -778,15 +778,15 @@ public class BanqiGame {
 			{
 				if(piece.color)
 				{
-					redPieces.add(piece);
+					redPieces++;
 				}
 				else if(!piece.color) 
 				{
-					blackPieces.add(piece);
+					blackPieces++;
 				}
 			}
 		}
-		if(redPieces.size() == 0)
+		if(redPieces == 0)
 		{
 			if(firstPlayer.color.equals("red"))
 			{
@@ -797,7 +797,7 @@ public class BanqiGame {
 				throw new GameOverException(firstPlayer.getName());
 			}
 		}
-		if(blackPieces.size() == 0)
+		if(blackPieces == 0)
 		{
 			if(firstPlayer.color.equals("black"))
 			{
