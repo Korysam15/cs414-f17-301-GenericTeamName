@@ -14,6 +14,7 @@ import edu.colostate.cs.cs414.p5.client_server.server.AbstractServer;
 import edu.colostate.cs.cs414.p5.client_server.server.ActiveServer;
 import edu.colostate.cs.cs414.p5.client_server.server.game_server.game_manager.GameManager;
 import edu.colostate.cs.cs414.p5.client_server.server.game_server.invite_manager.GameInviteManager;
+import edu.colostate.cs.cs414.p5.client_server.server.game_server.profile_manager.ProfileManager;
 import edu.colostate.cs.cs414.p5.client_server.server.registry.AbstractRegistry;
 import edu.colostate.cs.cs414.p5.client_server.server.registry.ActiveRegistry;
 import edu.colostate.cs.cs414.p5.client_server.transmission.Task;
@@ -203,7 +204,12 @@ public class SessionManager implements SessionTaskManager {
 			success = false;
 		}
 		
-		GameInviteManager.getInstance().removeAllInvitationsFromAndToUser(client.getID());
+		String nickname = client.getID();
+		
+		GameInviteManager.getInstance().removeAllInvitationsFromAndToUser(nickname);
+		GameManager.getInstance().removePlayersGamesAsLoss(nickname);
+		ProfileManager.getInstance().removeProfile(nickname);
+		
 
 		String responseMessage = (success) ? "Successfully unregistered '"+client.getID()+"'" :
 			"An error occurred unregistering '" + client.getID() +"'";
@@ -272,6 +278,7 @@ public class SessionManager implements SessionTaskManager {
 				client.setEmail(t.getEmail());
 				addLoggedInClient(client,nickname);
 				response = new RegisterGreetingTask("Welcome " + nickname + "!");
+				ProfileManager.getInstance().addProfile(nickname);
 			} else {
 				response = new RegistrationErrorTask(msg);
 			}
