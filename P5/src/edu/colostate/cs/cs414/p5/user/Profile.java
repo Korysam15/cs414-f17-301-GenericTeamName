@@ -14,9 +14,15 @@ public class Profile {
 		Profile nick = new Profile("default_");
 		System.out.println(nick.toString());
 	}
+	
 	public Profile(String name){
 		this.name = name;
 		this.history = new History();
+	}
+	
+	public Profile(String name, History history) {
+		this.name = name;
+		this.history = history;
 	}
 
 	public void setHistory(History history) {
