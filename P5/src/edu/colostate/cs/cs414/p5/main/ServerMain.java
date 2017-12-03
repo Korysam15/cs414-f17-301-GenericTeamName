@@ -29,18 +29,25 @@ public class ServerMain {
 				System.out.println("Invalid port: " + args[0]);
 				return;
 			}
-
-			passwordFile = args[1];
+			
+			// Logger settings
 			Logger.getInstance().setLogLevel(Logger.LOG_LEVEL.INFO_ERROR);
+			
+			// Registry configuration
+			passwordFile = args[1];
+			FileRegistry registry = new FileRegistry(passwordFile);
+			ActiveRegistry.setInstance(registry);
+			
+			// Invitation storage settings
+			GameInviteManager.setInstanceType(GameInviteManager.FILE_INVITE_MANAGER);
+			
+			// Server settings
 			InetSocketAddress address = new InetSocketAddress(port);
 			AbstractServer server = null;
-			GameInviteManager.setInstanceType(GameInviteManager.FILE_INVITE_MANAGER);
 			server = new GameServer(address);
 			ActiveServer.setInstance(server);
 
-			FileRegistry registry = new FileRegistry(passwordFile);
-			ActiveRegistry.setInstance(registry);
-
+			// go
 			server.start();
 
 		}
