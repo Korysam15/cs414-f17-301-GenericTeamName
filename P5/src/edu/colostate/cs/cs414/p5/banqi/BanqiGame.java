@@ -335,6 +335,11 @@ public class BanqiGame {
 		{
 			to.setOn(from.getOn());
 			from.setOn(null);
+			try {
+				isOver();
+			} catch (GameOverException e) {
+				System.out.println(e.getWinner() + " is the Winner!");
+			}
 			return true;
 		}
 		System.out.println("Not a valid move");
