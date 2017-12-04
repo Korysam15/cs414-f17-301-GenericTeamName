@@ -78,7 +78,7 @@ public final class CommandConstants {
 								  "  Usage: view-sent-invites\n"
 			},
 			{"show-players","show-players: shows a list of players and their status\n" +
-							"  Usage: what-players\n" +
+							"  Usage: show-players\n" +
 							"  Note: that a player's status is online, offline, or unkown.\n"
 			},
 			{"login", "login: to login to your account.\n" +

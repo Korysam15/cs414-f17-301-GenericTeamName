@@ -36,6 +36,10 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 	private final PipedInputStream pin=new PipedInputStream(); 
 	private final PipedInputStream pin2=new PipedInputStream();
 	private final PipedOutputStream pout3=new PipedOutputStream(); //DWM 02-07-2012
+	
+	private PrintStream output;
+	private PrintStream error;
+	private InputStream input;
 
 	/**
 	 * @brief Class Constructor
@@ -70,7 +74,8 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 		try
 		{
 			PipedOutputStream pout=new PipedOutputStream(this.pin);
-			System.setOut(new PrintStream(pout,true));
+			output = new PrintStream(pout,true);
+			System.setOut(output);
 		} 
 		catch (java.io.IOException io)
 		{
@@ -86,7 +91,8 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 		try 
 		{
 			PipedOutputStream pout2=new PipedOutputStream(this.pin2);
-			System.setErr(new PrintStream(pout2,true));
+			error = new PrintStream(pout2,true);
+			System.setErr(error);
 		} 
 		catch (java.io.IOException io)
 		{
@@ -101,7 +107,8 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 		
 		try 
 		{
-			System.setIn(new PipedInputStream(this.pout3));
+			input = new PipedInputStream(this.pout3);
+			System.setIn(input);
 		} 
 		catch (java.io.IOException io)
 		{
@@ -137,6 +144,18 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 		
 	}
 	
+	public PrintStream getOutputStream() {
+		return output;
+	}
+	
+	public PrintStream getErrorStream() {
+		return error;
+	}
+	
+	public InputStream getInputStream() {
+		return input;
+	}
+	
 	/* (non-Javadoc)
 	 * @see java.awt.event.WindowAdapter#windowClosed(java.awt.event.WindowEvent)
 	 */
@@ -144,9 +163,9 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 	{
 		quit=true;
 		this.notifyAll(); // stop all threads
-		try { reader.join(1000);pin.close();   } catch (Exception e){}		
-		try { reader2.join(1000);pin2.close(); } catch (Exception e){}
-		try { pout3.close(); } catch (Exception e){} //DWM 02-07-2012
+		try { reader.join(1000);/*pin.close();*/   } catch (Exception e){}		
+		try { reader2.join(1000);/*pin2.close();*/ } catch (Exception e){}
+		//try { pout3.close(); } catch (Exception e){} //DWM 02-07-2012
 	}		
 		
 	/* (non-Javadoc)
@@ -155,7 +174,7 @@ public class JavaConsole extends WindowAdapter implements WindowListener, Action
 	public synchronized void windowClosing(WindowEvent evt)
 	{
 		frame.setVisible(false); // default behaviour of JFrame	
-		frame.dispose();
+		//frame.dispose();
 	}
 	
 	/* (non-Javadoc)

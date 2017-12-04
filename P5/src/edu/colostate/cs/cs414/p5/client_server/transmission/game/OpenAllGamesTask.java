@@ -52,7 +52,7 @@ public class OpenAllGamesTask extends GameTask {
 	public void run() {
 		if(openGameTasks.size() > 0) {
 			for(OpenGameTask task: openGameTasks) {
-				task.run();
+				new Thread(task).start(); // allows all games to open right away
 			}
 		} else {
 			displayNoOpenGames();

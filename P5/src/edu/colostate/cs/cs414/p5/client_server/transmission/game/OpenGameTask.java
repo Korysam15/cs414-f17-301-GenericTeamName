@@ -18,21 +18,21 @@ public class OpenGameTask extends GameTask {
 	public static final String SEPERATOR = ",";
 	private boolean promptTurn;
 	private BanqiGame game;
-	
+
 	public OpenGameTask(BanqiGame game, boolean promptTurn) {
 		super(game.getPlayerOne(),game.getPlayerTwo());
 		this.promptTurn = promptTurn;
 		this.game = game;
 	}
-	
+
 	public OpenGameTask(BanqiGame game, String playersName) {
 		this(game,game.getBanqiPlayer(playersName).isTurn);
 	}
-	
+
 	public OpenGameTask(BanqiGame game) {
 		this(game,false);
 	}
-	
+
 	public OpenGameTask(DataInputStream din) throws IOException {
 		super(din);
 		this.promptTurn = din.readBoolean();
@@ -47,7 +47,7 @@ public class OpenGameTask extends GameTask {
 		}
 		this.game = game;
 	}
-	
+
 	@Override
 	public void writeBytes(DataOutputStream dout) throws IOException {
 		super.writeBytes(dout);
@@ -55,7 +55,7 @@ public class OpenGameTask extends GameTask {
 		String gameAsString = GameBuilder.gameToString(game, SEPERATOR);
 		WriteUtils.writeString(gameAsString, dout);
 	}
-	
+
 	@Override
 	public int getGameID() {
 		return (game != null) ? game.getGameID() : UNASSIGNED_GAME_ID;
@@ -75,7 +75,7 @@ public class OpenGameTask extends GameTask {
 			addGame(player);
 		}
 	}
-	
+
 	private void addGame(Player player) {
 		BanqiGame oldGame = player.getGame(getGameID());
 		if(oldGame != null) {
@@ -83,9 +83,10 @@ public class OpenGameTask extends GameTask {
 			this.game = oldGame;
 		} else {
 			player.addGame(game.getGameID(), game);
-			game.openConsole();
 		}
-		
+
+		game.openConsole();
+
 		if(promptTurn) {
 			String currentPlayerNickname = ActivePlayer.getInstance().getNickName();
 			String otherPlayer = null;
@@ -97,5 +98,4 @@ public class OpenGameTask extends GameTask {
 			game.promptTurn(player, otherPlayer);
 		}
 	}
-
 }
