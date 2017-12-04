@@ -1,0 +1,2199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.2.1" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+  realizations="true" associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <class id="1" language="java" name="edu.colostate.cs.cs414.p5.client_server.transmission.game.CreateGameTask" 
+    project="P5" file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/game/CreateGameTask.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="245" width="272" x="117" y="4436"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="edu.colostate.cs.cs414.p5.main.PlayerMain" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/main/PlayerMain.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="119" width="151" x="117" y="-94"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="edu.colostate.cs.cs414.p5.console.command.CommandController" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/console/command/CommandController.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="425" width="413" x="1139" y="641"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="edu.colostate.cs.cs414.p5.client_server.transmission.TaskFactory" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/TaskFactory.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="155" width="330" x="308" y="-94"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="edu.colostate.cs.cs414.p5.client_server.transmission.game.UpdateRecordTask" 
+    project="P5" file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/game/UpdateRecordTask.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="317" width="287" x="1063" y="5037"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="edu.colostate.cs.cs414.p5.client_server.transmission.game.invite.InviteGameTask" 
+    project="P5" file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/game/invite/InviteGameTask.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="173" width="298" x="1411" y="4436"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" 
+    name="edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.response.LoginErrorTask" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/registration_login/response/LoginErrorTask.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="209" width="367" x="5013" y="4436"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="edu.colostate.cs.cs414.p5.banqi.PieceFactory" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/banqi/PieceFactory.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="119" width="190" x="688" y="-94"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" 
+    name="edu.colostate.cs.cs414.p5.client_server.server.game_server.invite_manager.DatabaseInviteManager" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/server/game_server/invite_manager/DatabaseInviteManager.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="155" width="347" x="7035" y="5037"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="edu.colostate.cs.cs414.p5.client_server.transmission.game.GameTask" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/game/GameTask.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="317" width="272" x="806" y="4079"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <enumeration id="11" language="java" name="edu.colostate.cs.cs414.p5.user.EndGameState" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/user/EndGameState.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="173" width="228" x="542" y="5394"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </enumeration>  
+  <class id="12" language="java" name="edu.colostate.cs.cs414.p5.client_server.transmission.profile.ProfileTask" 
+    project="P5" file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/profile/ProfileTask.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="155" width="274" x="2802" y="4079"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="13" language="java" name="edu.colostate.cs.cs414.p5.console.command.CommandConstants" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/console/command/CommandConstants.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="335" width="271" x="928" y="-94"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="14" language="java" name="edu.colostate.cs.cs414.p5.client_server.transmission.util.WriteUtils" 
+    project="P5" file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/util/WriteUtils.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="281" width="441" x="1239" y="-94"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="15" language="java" name="edu.colostate.cs.cs414.p5.client_server.transmission.game.OpenAllGamesTask" 
+    project="P5" file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/game/OpenAllGamesTask.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="191" width="272" x="1791" y="4436"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="16" language="java" name="edu.colostate.cs.cs414.p5.main.ServerMain" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/main/ServerMain.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="101" width="151" x="1720" y="-94"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="17" language="java" 
+    name="edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.RegisterTask" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/registration_login/RegisterTask.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="263" width="323" x="3091" y="4436"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="18" language="java" name="edu.colostate.cs.cs414.p5.client_server.transmission.util.UtilityTask" 
+    project="P5" file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/util/UtilityTask.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="83" width="260" x="2732" y="2108"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="19" language="java" name="edu.colostate.cs.cs414.p5.client_server.server.Server" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/server/Server.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="641" width="256" x="4715" y="2969"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="20" language="java" 
+    name="edu.colostate.cs.cs414.p5.client_server.server.game_server.game_manager.FileGameManager" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/server/game_server/game_manager/FileGameManager.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="245" width="348" x="7589" y="5037"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="21" language="java" name="edu.colostate.cs.cs414.p5.client_server.client.AbstractClient" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/client/AbstractClient.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="353" width="251" x="4464" y="1715"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="22" language="java" name="edu.colostate.cs.cs414.p5.client_server.transmission.game.InvalidGameTask" 
+    project="P5" file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/game/InvalidGameTask.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="317" width="272" x="806" y="3650"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="23" language="java" name="edu.colostate.cs.cs414.p5.client_server.client.Client" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/client/Client.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="821" width="273" x="4464" y="2108"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="24" language="java" name="edu.colostate.cs.cs414.p5.client_server.server.session.SessionManager" 
+    project="P5" file="/P5/src/edu/colostate/cs/cs414/p5/client_server/server/session/SessionManager.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="587" width="307" x="6840" y="2969"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="25" language="java" name="edu.colostate.cs.cs414.p5.client_server.transmission.profile.GetAllPlayersTask" 
+    project="P5" file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/profile/GetAllPlayersTask.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="245" width="278" x="2124" y="4436"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="26" language="java" name="edu.colostate.cs.cs414.p5.util.NotLoggedInException" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/util/NotLoggedInException.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="101" width="187" x="1911" y="-94"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="27" language="java" name="edu.colostate.cs.cs414.p5.client_server.server.registry.User" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/server/registry/User.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="479" width="251" x="8386" y="1196"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="28" language="java" name="edu.colostate.cs.cs414.p5.util.FileUtils" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/util/FileUtils.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="173" width="240" x="1469" y="5394"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="29" language="java" name="edu.colostate.cs.cs414.p5.banqi.General" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/banqi/General.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="119" width="153" x="7010" y="7452"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <enumeration id="30" language="java" name="edu.colostate.cs.cs414.p5.client_server.logger.Logger.LOG_LEVEL" 
+    project="P5" file="/P5/src/edu/colostate/cs/cs414/p5/client_server/logger/Logger.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="209" width="216" x="7087" y="6792"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </enumeration>  
+  <class id="31" language="java" name="edu.colostate.cs.cs414.p5.client_server.server.session.AbstractSession" 
+    project="P5" file="/P5/src/edu/colostate/cs/cs414/p5/client_server/server/session/AbstractSession.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="281" width="252" x="7178" y="2108"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="32" language="java" name="edu.colostate.cs.cs414.p5.client_server.transmission.TaskManager" 
+    project="P5" file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/TaskManager.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="101" width="244" x="5680" y="2108"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <interface id="33" language="java" name="edu.colostate.cs.cs414.p5.client_server.server.events.Event" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/server/events/Event.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="65" width="247" x="5393" y="3650"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="34" language="java" name="edu.colostate.cs.cs414.p5.banqi.Soldier" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/banqi/Soldier.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="119" width="153" x="7203" y="7452"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="35" language="java" name="edu.colostate.cs.cs414.p5.client_server.transmission.profile.GetProfileTask" 
+    project="P5" file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/profile/GetProfileTask.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="191" width="274" x="2442" y="4436"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="36" language="java" name="edu.colostate.cs.cs414.p5.client_server.server.registry.AbstractRegistry" 
+    project="P5" file="/P5/src/edu/colostate/cs/cs414/p5/client_server/server/registry/AbstractRegistry.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="281" width="251" x="8532" y="641"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="37" language="java" name="edu.colostate.cs.cs414.p5.client_server.transmission.game.OpenGameTask" 
+    project="P5" file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/game/OpenGameTask.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="263" width="272" x="5343" y="5037"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="38" language="java" 
+    name="edu.colostate.cs.cs414.p5.client_server.server.game_server.invite_manager.FileGameInviteManager" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/server/game_server/invite_manager/FileGameInviteManager.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="209" width="347" x="5655" y="5037"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="39" language="java" name="edu.colostate.cs.cs414.p5.banqi.Elephant" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/banqi/Elephant.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="119" width="153" x="7396" y="7452"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="40" language="java" name="edu.colostate.cs.cs414.p5.client_server.transmission.game.invite.GetInvitesTask" 
+    project="P5" file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/game/invite/GetInvitesTask.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="191" width="298" x="1139" y="4079"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="41" language="java" name="edu.colostate.cs.cs414.p5.client_server.transmission.util.ReadUtils" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/util/ReadUtils.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="245" width="371" x="2138" y="-94"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="42" language="java" name="edu.colostate.cs.cs414.p5.test.ProfileTest" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/test/ProfileTest.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="155" width="151" x="2549" y="-94"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="43" language="java" name="edu.colostate.cs.cs414.p5.user.Profile" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/user/Profile.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="245" width="151" x="1278" y="5394"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <component id="44" language="java" name="src" project="P5" file="/P5/src" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="41" width="129" x="2740" y="-94"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </component>  
+  <class id="45" language="java" 
+    name="edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.response.RegisterGreetingTask" 
+    project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/registration_login/response/RegisterGreetingTask.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="209" width="367" x="5420" y="4436"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="46" language="java" 
+    name="edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.EntryTask" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/registration_login/EntryTask.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="137" width="323" x="3454" y="4079"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="47" language="java" name="edu.colostate.cs.cs414.p5.banqi.BanqiGame" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/banqi/BanqiGame.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="785" width="313" x="7589" y="5394"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="48" language="java" name="edu.colostate.cs.cs414.p5.banqi.Advisor" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/banqi/Advisor.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="119" width="153" x="7589" y="7452"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="49" language="java" name="edu.colostate.cs.cs414.p5.banqi.BanqiPlayer" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/banqi/BanqiPlayer.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="227" width="153" x="7629" y="6219"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="50" language="java" name="edu.colostate.cs.cs414.p5.banqi.GameBoard" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/banqi/GameBoard.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="155" width="193" x="7375" y="6219"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="51" language="java" 
+    name="edu.colostate.cs.cs414.p5.client_server.server.game_server.invite_manager.GameInviteManager" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/server/game_server/invite_manager/GameInviteManager.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="551" width="397" x="6995" y="4436"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="52" language="java" 
+    name="edu.colostate.cs.cs414.p5.client_server.transmission.game.invite.AcceptInviteTask" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/game/invite/AcceptInviteTask.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="227" width="298" x="1770" y="5037"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="53" language="java" name="edu.colostate.cs.cs414.p5.user.GameRecord" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/user/GameRecord.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="227" width="263" x="542" y="5037"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="54" language="java" name="edu.colostate.cs.cs414.p5.client_server.server.events.SendEvent" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/server/events/SendEvent.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="101" width="247" x="5011" y="2969"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="55" language="java" name="edu.colostate.cs.cs414.p5.user.ProfileBuilder" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/user/ProfileBuilder.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="209" width="280" x="5013" y="5394"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="56" language="java" name="edu.colostate.cs.cs414.p5.client_server.transmission.game.MoveTask" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/game/MoveTask.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="389" width="272" x="429" y="4436"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="57" language="java" name="edu.colostate.cs.cs414.p5.client_server.transmission.game.invite.InviteTask" 
+    project="P5" file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/game/invite/InviteTask.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="335" width="298" x="3051" y="5394"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="58" language="java" 
+    name="edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.response.LoginGreetingTask" 
+    project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/registration_login/response/LoginGreetingTask.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="227" width="367" x="5827" y="4436"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="59" language="java" name="edu.colostate.cs.cs414.p5.console.PlayerConsole" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/console/PlayerConsole.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="209" width="272" x="1139" y="1715"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="60" language="java" name="edu.colostate.cs.cs414.p5.console.AbstractConsole" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/console/AbstractConsole.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="479" width="186" x="1179" y="1196"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="61" language="java" 
+    name="edu.colostate.cs.cs414.p5.client_server.transmission.game.invite.GetSentInvitesTask" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/game/invite/GetSentInvitesTask.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="209" width="298" x="1477" y="4079"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="62" language="java" name="edu.colostate.cs.cs414.p5.client_server.transmission.util.ForwardTask" 
+    project="P5" file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/util/ForwardTask.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="299" width="260" x="2432" y="2969"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="63" language="java" 
+    name="edu.colostate.cs.cs414.p5.client_server.server.game_server.game_manager.DatabaseGameManager" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/server/game_server/game_manager/DatabaseGameManager.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="173" width="348" x="7977" y="5037"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="64" language="java" name="edu.colostate.cs.cs414.p5.client_server.server.ServerTaskManager" 
+    project="P5" file="/P5/src/edu/colostate/cs/cs414/p5/client_server/server/ServerTaskManager.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="137" width="236" x="6260" y="2969"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="65" language="java" name="edu.colostate.cs.cs414.p5.console.command.CommandParser" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/console/command/CommandParser.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="317" width="273" x="805" y="1196"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="66" language="java" 
+    name="edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.response.ExitResponseTask" 
+    project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/registration_login/response/ExitResponseTask.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="245" width="367" x="3817" y="4079"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="67" language="java" name="edu.colostate.cs.cs414.p5.banqi.Cannon" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/banqi/Cannon.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="119" width="153" x="7782" y="7452"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="68" language="java" name="edu.colostate.cs.cs414.p5.client_server.logger.Logger" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/logger/Logger.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="335" width="238" x="7087" y="6219"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="69" language="java" 
+    name="edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.LoginTask" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/registration_login/LoginTask.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="245" width="323" x="3454" y="4436"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="70" language="java" name="edu.colostate.cs.cs414.p5.client_server.server.registry.FileRegistry" 
+    project="P5" file="/P5/src/edu/colostate/cs/cs414/p5/client_server/server/registry/FileRegistry.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="425" width="251" x="8677" y="1196"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="71" language="java" name="edu.colostate.cs.cs414.p5.banqi.Cavalry" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/banqi/Cavalry.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="119" width="153" x="7975" y="7452"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="72" language="java" name="edu.colostate.cs.cs414.p5.user.Invitation" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/user/Invitation.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="209" width="229" x="4504" y="1196"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="73" language="java" name="edu.colostate.cs.cs414.p5.user.ActivePlayer" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/user/ActivePlayer.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="119" width="155" x="4269" y="-94"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="74" language="java" name="edu.colostate.cs.cs414.p5.banqi.Square" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/banqi/Square.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="299" width="153" x="7415" y="6792"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="75" language="java" name="edu.colostate.cs.cs414.p5.console.BlockCaret" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/console/BlockCaret.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="137" width="163" x="2909" y="-94"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="76" language="java" name="edu.colostate.cs.cs414.p5.client_server.transmission.profile.DisplayProfileTask" 
+    project="P5" file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/profile/DisplayProfileTask.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="191" width="274" x="1815" y="4079"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="77" language="java" 
+    name="edu.colostate.cs.cs414.p5.client_server.server.game_server.game_manager.GameManager" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/server/game_server/game_manager/GameManager.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="497" width="349" x="7526" y="4436"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="78" language="java" name="edu.colostate.cs.cs414.p5.client_server.server.session.ClientSession" 
+    project="P5" file="/P5/src/edu/colostate/cs/cs414/p5/client_server/server/session/ClientSession.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="389" width="252" x="7150" y="3650"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="79" language="java" name="edu.colostate.cs.cs414.p5.client_server.transmission.profile.GetGamesTask" 
+    project="P5" file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/profile/GetGamesTask.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="173" width="274" x="2756" y="4436"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="80" language="java" name="edu.colostate.cs.cs414.p5.banqi.GameOverException" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/banqi/GameOverException.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="119" width="177" x="3112" y="-94"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="81" language="java" name="edu.colostate.cs.cs414.p5.test.PlayerTest" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/test/PlayerTest.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="173" width="242" x="4464" y="-94"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="82" language="java" 
+    name="edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.UnregisterTask" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/registration_login/UnregisterTask.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="263" width="323" x="4245" y="4436"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="83" language="java" name="edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.ExitTask" 
+    project="P5" file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/registration_login/ExitTask.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="101" width="323" x="4245" y="4079"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="84" language="java" name="edu.colostate.cs.cs414.p5.client_server.client.Client.NotifySender" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/client/Client.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="101" width="211" x="3633" y="2969"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="85" language="java" name="edu.colostate.cs.cs414.p5.client_server.transmission.util.MessageTask" 
+    project="P5" file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/util/MessageTask.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="371" width="260" x="2132" y="2969"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="86" language="java" name="edu.colostate.cs.cs414.p5.client_server.server.game_server.AbstractGameServer" 
+    project="P5" file="/P5/src/edu/colostate/cs/cs414/p5/client_server/server/game_server/AbstractGameServer.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="353" width="361" x="4992" y="3650"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="87" language="java" name="edu.colostate.cs.cs414.p5.client_server.transmission.TaskConstents" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/TaskConstents.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="695" width="244" x="3329" y="-94"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="88" language="java" 
+    name="edu.colostate.cs.cs414.p5.client_server.transmission.game.invite.RejectInviteTask" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/game/invite/RejectInviteTask.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="191" width="298" x="1390" y="5037"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="89" language="java" name="edu.colostate.cs.cs414.p5.client_server.server.game_server.GameServer" 
+    project="P5" file="/P5/src/edu/colostate/cs/cs414/p5/client_server/server/game_server/GameServer.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="317" width="401" x="6641" y="4079"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="90" language="java" name="edu.colostate.cs.cs414.p5.banqi.GameBuilder" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/banqi/GameBuilder.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="461" width="365" x="7942" y="5394"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="91" language="java" name="edu.colostate.cs.cs414.p5.client_server.client.Client.Receiver" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/client/Client.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="101" width="211" x="4464" y="2969"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="92" language="java" name="edu.colostate.cs.cs414.p5.client_server.transmission.profile.DisplayPlayersTask" 
+    project="P5" file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/profile/DisplayPlayersTask.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="173" width="274" x="2129" y="4079"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="93" language="java" 
+    name="edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.response.ServerDisconnectedTask" 
+    project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/registration_login/response/ServerDisconnectedTask.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="191" width="367" x="3817" y="4436"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="94" language="java" name="edu.colostate.cs.cs414.p5.client_server.server.AbstractServer" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/server/AbstractServer.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="317" width="228" x="6840" y="2108"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="95" language="java" name="edu.colostate.cs.cs414.p5.client_server.transmission.Task" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/Task.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="173" width="244" x="2802" y="3650"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="96" language="java" name="edu.colostate.cs.cs414.p5.client_server.transmission.game.FlipPieceTask" 
+    project="P5" file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/game/FlipPieceTask.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="317" width="272" x="741" y="4436"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="97" language="java" name="edu.colostate.cs.cs414.p5.client_server.server.Server.ServerThread" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/server/Server.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="101" width="216" x="4715" y="3650"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="98" language="java" name="edu.colostate.cs.cs414.p5.banqi.Piece" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/banqi/Piece.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="281" width="153" x="7589" y="7131"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="99" language="java" name="edu.colostate.cs.cs414.p5.test.GameRecordTest" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/test/GameRecordTest.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="191" width="178" x="845" y="5037"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="100" language="java" name="edu.colostate.cs.cs414.p5.console.JavaConsole" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/console/JavaConsole.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="533" width="213" x="7822" y="6219"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="101" language="java" name="edu.colostate.cs.cs414.p5.test.HistoryTest" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/test/HistoryTest.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="263" width="174" x="3613" y="-94"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="102" language="java" 
+    name="edu.colostate.cs.cs414.p5.client_server.server.profile_manager.FileProfileManager" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/server/profile_manager/FileProfileManager.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="227" width="290" x="5013" y="5037"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="103" language="java" name="edu.colostate.cs.cs414.p5.banqi.Chariot" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/banqi/Chariot.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="119" width="153" x="8168" y="7452"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="104" language="java" name="edu.colostate.cs.cs414.p5.client_server.server.profile_manager.ProfileManager" 
+    project="P5" file="/P5/src/edu/colostate/cs/cs414/p5/client_server/server/profile_manager/ProfileManager.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="335" width="304" x="6641" y="4436"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="105" language="java" name="edu.colostate.cs.cs414.p5.client_server.server.registry.ActiveRegistry" 
+    project="P5" file="/P5/src/edu/colostate/cs/cs414/p5/client_server/server/registry/ActiveRegistry.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="119" width="251" x="8532" y="-94"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="106" language="java" name="edu.colostate.cs.cs414.p5.client_server.transmission.util.MultiForwardTask" 
+    project="P5" file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/util/MultiForwardTask.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="299" width="269" x="2732" y="2969"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="107" language="java" 
+    name="edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.response.EntryResponseTask" 
+    project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/registration_login/response/EntryResponseTask.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="155" width="367" x="5420" y="4079"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="108" language="java" name="edu.colostate.cs.cs414.p5.user.PlayerController" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/user/PlayerController.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="389" width="235" x="3949" y="1196"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="109" language="java" name="edu.colostate.cs.cs414.p5.util.LoggedInException" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/util/LoggedInException.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="101" width="169" x="3827" y="-94"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="110" language="java" name="edu.colostate.cs.cs414.p5.client_server.server.ActiveServer" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/server/ActiveServer.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="119" width="216" x="6840" y="1715"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="111" language="java" name="edu.colostate.cs.cs414.p5.console.PlayerConsole.ConsoleEraser" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/console/PlayerConsole.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="137" width="163" x="1139" y="2108"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="112" language="java" name="edu.colostate.cs.cs414.p5.util.Encryptor" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/util/Encryptor.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="101" width="193" x="4036" y="-94"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="113" language="java" 
+    name="edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.response.RegistrationErrorTask" 
+    project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/registration_login/response/RegistrationErrorTask.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="209" width="367" x="6234" y="4436"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="114" language="java" 
+    name="edu.colostate.cs.cs414.p5.client_server.transmission.game.invite.DisplayInvitesTask" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/game/invite/DisplayInvitesTask.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="191" width="298" x="3116" y="4079"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="115" language="java" 
+    name="edu.colostate.cs.cs414.p5.client_server.transmission.registration_login.LogoutTask" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/registration_login/LogoutTask.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="191" width="323" x="4608" y="4436"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="116" language="java" 
+    name="edu.colostate.cs.cs414.p5.client_server.server.session.SessionManager.StatusTask" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/server/session/SessionManager.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="119" width="252" x="6840" y="3650"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="117" language="java" name="edu.colostate.cs.cs414.p5.client_server.transmission.game.ForfeitTask" 
+    project="P5" file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/game/ForfeitTask.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="245" width="272" x="1053" y="4436"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="118" language="java" name="edu.colostate.cs.cs414.p5.user.History" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/user/History.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="407" width="151" x="1278" y="6219"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="119" language="java" name="edu.colostate.cs.cs414.p5.user.Player" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/user/Player.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="515" width="262" x="4464" y="641"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <interface id="120" language="java" name="edu.colostate.cs.cs414.p5.client_server.server.session.SessionTaskManager" 
+    project="P5" file="/P5/src/edu/colostate/cs/cs414/p5/client_server/server/session/SessionTaskManager.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="227" width="303" x="5680" y="3650"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </interface>  
+  <class id="121" language="java" 
+    name="edu.colostate.cs.cs414.p5.client_server.transmission.game.invite.DisplaySentInvitesTask" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/transmission/game/invite/DisplaySentInvitesTask.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="191" width="298" x="2443" y="4079"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="122" language="java" name="edu.colostate.cs.cs414.p5.client_server.server.events.ReceiveEvent" project="P5" 
+    file="/P5/src/edu/colostate/cs/cs414/p5/client_server/server/events/ReceiveEvent.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="101" width="247" x="7218" y="2969"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <nesting id="123">    
+    <end type="SOURCE" refId="23"/>    
+    <end type="TARGET" refId="91"/>  
+  </nesting>  
+  <association id="124">    
+    <end type="SOURCE" refId="22" navigable="false">      
+      <attribute id="125" name="attachment"/>      
+      <multiplicity id="126" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="127">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="94"/>  
+  </generalization>  
+  <generalization id="128">    
+    <end type="SOURCE" refId="20"/>    
+    <end type="TARGET" refId="77"/>  
+  </generalization>  
+  <generalization id="129">    
+    <end type="SOURCE" refId="67"/>    
+    <end type="TARGET" refId="98"/>  
+  </generalization>  
+  <association id="130">    
+    <end type="SOURCE" refId="53" navigable="false">      
+      <attribute id="131" name="end"/>      
+      <multiplicity id="132" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="133">    
+    <end type="SOURCE" refId="89" navigable="false">      
+      <attribute id="134" name="inviteManager"/>      
+      <multiplicity id="135" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="51" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="136">    
+    <end type="SOURCE" refId="70"/>    
+    <end type="TARGET" refId="36"/>  
+  </generalization>  
+  <association id="137">    
+    <end type="SOURCE" refId="73" navigable="false">      
+      <attribute id="138" name="instance"/>      
+      <multiplicity id="139" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="119" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="140">    
+    <bendpoint x="3969" y="5037"/>    
+    <end type="SOURCE" refId="104" navigable="false">      
+      <attribute id="141" name="profileMap"/>      
+      <multiplicity id="142" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="43" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="143">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="144" name="openGameTasks"/>      
+      <multiplicity id="145" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="37" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="146">    
+    <end type="SOURCE" refId="36" navigable="false">      
+      <attribute id="147" name="validUsers"/>      
+      <multiplicity id="148" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="27" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="149">    
+    <bendpoint x="7598" y="6219"/>    
+    <bendpoint x="7598" y="6792"/>    
+    <end type="SOURCE" refId="47" navigable="false">      
+      <attribute id="150" name="pieces"/>      
+      <multiplicity id="151" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="98" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="152">    
+    <end type="SOURCE" refId="20" navigable="false">      
+      <attribute id="153" name="savedGames"/>      
+      <multiplicity id="154" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="47" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="155">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="95"/>  
+  </generalization>  
+  <realization id="156">    
+    <end type="SOURCE" refId="54"/>    
+    <end type="TARGET" refId="33"/>  
+  </realization>  
+  <association id="157">    
+    <end type="SOURCE" refId="119" navigable="false">      
+      <attribute id="158" name="invite"/>      
+      <multiplicity id="159" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="72" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="160">    
+    <end type="SOURCE" refId="43" navigable="false">      
+      <attribute id="161" name="history"/>      
+      <multiplicity id="162" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="118" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="163">    
+    <end type="SOURCE" refId="58"/>    
+    <end type="TARGET" refId="107"/>  
+  </generalization>  
+  <association id="164">    
+    <bendpoint x="7495" y="5037"/>    
+    <bendpoint x="7495" y="5394"/>    
+    <end type="SOURCE" refId="77" navigable="false">      
+      <attribute id="165" name="LOG"/>      
+      <multiplicity id="166" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="68" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="167">    
+    <bendpoint x="1108" y="1196"/>    
+    <bendpoint x="1108" y="1715"/>    
+    <bendpoint x="1108" y="2108"/>    
+    <bendpoint x="1108" y="2969"/>    
+    <bendpoint x="1108" y="3650"/>    
+    <bendpoint x="1108" y="4079"/>    
+    <bendpoint x="1739" y="4436"/>    
+    <bendpoint x="1739" y="5037"/>    
+    <bendpoint x="1739" y="5394"/>    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="168" name="LOG"/>      
+      <multiplicity id="169" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="68" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="170">    
+    <end type="SOURCE" refId="106"/>    
+    <end type="TARGET" refId="18"/>  
+  </generalization>  
+  <generalization id="171">    
+    <end type="SOURCE" refId="76"/>    
+    <end type="TARGET" refId="95"/>  
+  </generalization>  
+  <association id="172">    
+    <end type="SOURCE" refId="81" navigable="false">      
+      <attribute id="173" name="default_2"/>      
+      <multiplicity id="174" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="119" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="175">    
+    <end type="SOURCE" refId="51" navigable="false">      
+      <attribute id="176" name="instance"/>      
+      <multiplicity id="177" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="51" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="178">    
+    <end type="SOURCE" refId="105" navigable="false">      
+      <attribute id="179" name="instance"/>      
+      <multiplicity id="180" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="36" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="181">    
+    <bendpoint x="6873" y="5037"/>    
+    <bendpoint x="6873" y="5394"/>    
+    <end type="SOURCE" refId="104" navigable="false">      
+      <attribute id="182" name="LOG"/>      
+      <multiplicity id="183" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="68" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="184">    
+    <end type="SOURCE" refId="88"/>    
+    <end type="TARGET" refId="6"/>  
+  </generalization>  
+  <generalization id="185">    
+    <end type="SOURCE" refId="45"/>    
+    <end type="TARGET" refId="107"/>  
+  </generalization>  
+  <nesting id="186">    
+    <end type="SOURCE" refId="24"/>    
+    <end type="TARGET" refId="116"/>  
+  </nesting>  
+  <nesting id="187">    
+    <end type="SOURCE" refId="59"/>    
+    <end type="TARGET" refId="111"/>  
+  </nesting>  
+  <generalization id="188">    
+    <end type="SOURCE" refId="107"/>    
+    <end type="TARGET" refId="95"/>  
+  </generalization>  
+  <association id="189">    
+    <end type="SOURCE" refId="102" navigable="false">      
+      <attribute id="190" name="savedProfiles"/>      
+      <multiplicity id="191" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="43" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="192">    
+    <end type="SOURCE" refId="79"/>    
+    <end type="TARGET" refId="12"/>  
+  </generalization>  
+  <association id="193">    
+    <end type="SOURCE" refId="106" navigable="false">      
+      <attribute id="194" name="task"/>      
+      <multiplicity id="195" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="95" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="196">    
+    <end type="SOURCE" refId="117"/>    
+    <end type="TARGET" refId="10"/>  
+  </generalization>  
+  <generalization id="197">    
+    <end type="SOURCE" refId="40"/>    
+    <end type="TARGET" refId="95"/>  
+  </generalization>  
+  <association id="198">    
+    <end type="SOURCE" refId="53" navigable="false">      
+      <attribute id="199" name="player2"/>      
+      <multiplicity id="200" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="43" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="201">    
+    <end type="SOURCE" refId="24" navigable="false">      
+      <attribute id="202" name="instance"/>      
+      <multiplicity id="203" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="24" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="204">    
+    <end type="SOURCE" refId="94"/>    
+    <end type="TARGET" refId="64"/>  
+  </realization>  
+  <association id="205">    
+    <end type="SOURCE" refId="38" navigable="false">      
+      <attribute id="206" name="savedTasks"/>      
+      <multiplicity id="207" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="57" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="208">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="10"/>  
+  </generalization>  
+  <generalization id="209">    
+    <end type="SOURCE" refId="48"/>    
+    <end type="TARGET" refId="98"/>  
+  </generalization>  
+  <generalization id="210">    
+    <end type="SOURCE" refId="63"/>    
+    <end type="TARGET" refId="77"/>  
+  </generalization>  
+  <association id="211">    
+    <end type="SOURCE" refId="20" navigable="false">      
+      <attribute id="212" name="builder"/>      
+      <multiplicity id="213" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="90" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="214">    
+    <end type="SOURCE" refId="47" navigable="false">      
+      <attribute id="215" name="LOG"/>      
+      <multiplicity id="216" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="68" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="217">    
+    <end type="SOURCE" refId="119" navigable="false">      
+      <attribute id="218" name="console"/>      
+      <multiplicity id="219" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="60" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="220">    
+    <end type="SOURCE" refId="37" navigable="false">      
+      <attribute id="221" name="game"/>      
+      <multiplicity id="222" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="47" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="223">    
+    <end type="SOURCE" refId="117" navigable="false">      
+      <attribute id="224" name="update"/>      
+      <multiplicity id="225" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="226">    
+    <end type="SOURCE" refId="108" navigable="false">      
+      <attribute id="227" name="client"/>      
+      <multiplicity id="228" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="21" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="229">    
+    <end type="SOURCE" refId="54" navigable="false">      
+      <attribute id="230" name="client"/>      
+      <multiplicity id="231" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="78" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="232">    
+    <bendpoint x="1148" y="1196"/>    
+    <end type="SOURCE" refId="59" navigable="false">      
+      <attribute id="233" name="controller"/>      
+      <multiplicity id="234" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="235">    
+    <end type="SOURCE" refId="94" navigable="false">      
+      <attribute id="236" name="sessionManager"/>      
+      <multiplicity id="237" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="24" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="238">    
+    <end type="SOURCE" refId="84" navigable="false">      
+      <attribute id="239" name="toSend"/>      
+      <multiplicity id="240" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="95" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="241">    
+    <bendpoint x="7915" y="1196"/>    
+    <bendpoint x="7915" y="1715"/>    
+    <bendpoint x="7915" y="2108"/>    
+    <bendpoint x="7915" y="2969"/>    
+    <bendpoint x="7915" y="3650"/>    
+    <bendpoint x="7915" y="4079"/>    
+    <bendpoint x="7915" y="4436"/>    
+    <bendpoint x="7558" y="5037"/>    
+    <bendpoint x="7558" y="5394"/>    
+    <end type="SOURCE" refId="119" navigable="false">      
+      <attribute id="242" name="LOG"/>      
+      <multiplicity id="243" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="68" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="244">    
+    <end type="SOURCE" refId="92"/>    
+    <end type="TARGET" refId="95"/>  
+  </generalization>  
+  <association id="245">    
+    <end type="SOURCE" refId="24" navigable="false">      
+      <attribute id="246" name="clientMap"/>      
+      <multiplicity id="247" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="78" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="248">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="10"/>  
+  </generalization>  
+  <association id="249">    
+    <bendpoint x="7537" y="5037"/>    
+    <end type="SOURCE" refId="77" navigable="false">      
+      <attribute id="250" name="gameMap"/>      
+      <multiplicity id="251" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="47" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="252">    
+    <end type="SOURCE" refId="99" navigable="false">      
+      <attribute id="253" name="p2"/>      
+      <multiplicity id="254" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="43" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="255">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="256" name="playerController"/>      
+      <multiplicity id="257" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="108" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="258">    
+    <end type="SOURCE" refId="69"/>    
+    <end type="TARGET" refId="46"/>  
+  </generalization>  
+  <association id="259">    
+    <end type="SOURCE" refId="54" navigable="false">      
+      <attribute id="260" name="toSend"/>      
+      <multiplicity id="261" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="95" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="262">    
+    <bendpoint x="1355" y="4436"/>    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="10"/>  
+  </generalization>  
+  <association id="263">    
+    <bendpoint x="4961" y="3650"/>    
+    <bendpoint x="4961" y="4079"/>    
+    <bendpoint x="4961" y="4436"/>    
+    <bendpoint x="4961" y="5037"/>    
+    <bendpoint x="4961" y="5394"/>    
+    <end type="SOURCE" refId="54" navigable="false">      
+      <attribute id="264" name="LOG"/>      
+      <multiplicity id="265" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="68" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="266">    
+    <end type="SOURCE" refId="89" navigable="false">      
+      <attribute id="267" name="profileManager"/>      
+      <multiplicity id="268" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="104" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="269">    
+    <end type="SOURCE" refId="64"/>    
+    <end type="TARGET" refId="32"/>  
+  </generalization>  
+  <association id="270">    
+    <end type="SOURCE" refId="50" navigable="false">      
+      <attribute id="271" name="squaresOnBoard"/>      
+      <multiplicity id="272" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="74" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="273">    
+    <end type="SOURCE" refId="61"/>    
+    <end type="TARGET" refId="95"/>  
+  </generalization>  
+  <association id="274">    
+    <end type="SOURCE" refId="68" navigable="false">      
+      <attribute id="275" name="instance"/>      
+      <multiplicity id="276" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="68" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="277">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="51"/>  
+  </generalization>  
+  <generalization id="278">    
+    <end type="SOURCE" refId="22"/>    
+    <end type="TARGET" refId="10"/>  
+  </generalization>  
+  <association id="279">    
+    <end type="SOURCE" refId="108" navigable="false">      
+      <attribute id="280" name="player"/>      
+      <multiplicity id="281" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="119" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="282">    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="46"/>  
+  </generalization>  
+  <generalization id="283">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="107"/>  
+  </generalization>  
+  <generalization id="284">    
+    <end type="SOURCE" refId="113"/>    
+    <end type="TARGET" refId="107"/>  
+  </generalization>  
+  <association id="285">    
+    <end type="SOURCE" refId="28" navigable="false">      
+      <attribute id="286" name="LOG"/>      
+      <multiplicity id="287" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="68" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="288">    
+    <bendpoint x="7187" y="2969"/>    
+    <end type="SOURCE" refId="78"/>    
+    <end type="TARGET" refId="31"/>  
+  </generalization>  
+  <generalization id="289">    
+    <end type="SOURCE" refId="1"/>    
+    <end type="TARGET" refId="10"/>  
+  </generalization>  
+  <association id="290">    
+    <end type="SOURCE" refId="53" navigable="false">      
+      <attribute id="291" name="player1"/>      
+      <multiplicity id="292" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="43" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="293">    
+    <end type="SOURCE" refId="62"/>    
+    <end type="TARGET" refId="18"/>  
+  </generalization>  
+  <nesting id="294">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="97"/>  
+  </nesting>  
+  <generalization id="295">    
+    <end type="SOURCE" refId="83"/>    
+    <end type="TARGET" refId="95"/>  
+  </generalization>  
+  <generalization id="296">    
+    <bendpoint x="3031" y="2969"/>    
+    <end type="SOURCE" refId="18"/>    
+    <end type="TARGET" refId="95"/>  
+  </generalization>  
+  <generalization id="297">    
+    <end type="SOURCE" refId="103"/>    
+    <end type="TARGET" refId="98"/>  
+  </generalization>  
+  <association id="298">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="299" name="console"/>      
+      <multiplicity id="300" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="60" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="301">    
+    <bendpoint x="3060" y="4436"/>    
+    <bendpoint x="3060" y="5037"/>    
+    <end type="SOURCE" refId="114" navigable="false">      
+      <attribute id="302" name="invites"/>      
+      <multiplicity id="303" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="57" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="304">    
+    <end type="SOURCE" refId="24" navigable="false">      
+      <attribute id="305" name="loggedInClients"/>      
+      <multiplicity id="306" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="78" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="307">    
+    <end type="SOURCE" refId="38"/>    
+    <end type="TARGET" refId="51"/>  
+  </generalization>  
+  <nesting id="308">    
+    <end type="SOURCE" refId="68"/>    
+    <end type="TARGET" refId="30"/>  
+  </nesting>  
+  <association id="309">    
+    <bendpoint x="7495" y="2969"/>    
+    <bendpoint x="7495" y="3650"/>    
+    <bendpoint x="7495" y="4079"/>    
+    <bendpoint x="7495" y="4436"/>    
+    <bendpoint x="7516" y="5037"/>    
+    <bendpoint x="7516" y="5394"/>    
+    <end type="SOURCE" refId="94" navigable="false">      
+      <attribute id="310" name="LOG"/>      
+      <multiplicity id="311" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="68" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="312">    
+    <bendpoint x="7432" y="4079"/>    
+    <bendpoint x="7432" y="4436"/>    
+    <bendpoint x="7432" y="5037"/>    
+    <bendpoint x="7432" y="5394"/>    
+    <end type="SOURCE" refId="78" navigable="false">      
+      <attribute id="313" name="LOG"/>      
+      <multiplicity id="314" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="68" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="315">    
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="316" name="listener"/>      
+      <multiplicity id="317" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="97" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="318">    
+    <bendpoint x="7453" y="3650"/>    
+    <bendpoint x="7453" y="4079"/>    
+    <bendpoint x="7453" y="4436"/>    
+    <bendpoint x="7453" y="5037"/>    
+    <bendpoint x="7453" y="5394"/>    
+    <end type="SOURCE" refId="122" navigable="false">      
+      <attribute id="319" name="LOG"/>      
+      <multiplicity id="320" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="68" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="321">    
+    <end type="SOURCE" refId="31" navigable="false">      
+      <attribute id="322" name="manager"/>      
+      <multiplicity id="323" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="24" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="324">    
+    <end type="SOURCE" refId="99" navigable="false">      
+      <attribute id="325" name="p1"/>      
+      <multiplicity id="326" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="43" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="327">    
+    <end type="SOURCE" refId="82"/>    
+    <end type="TARGET" refId="83"/>  
+  </generalization>  
+  <association id="328">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="329" name="instance"/>      
+      <multiplicity id="330" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="331">    
+    <end type="SOURCE" refId="89" navigable="false">      
+      <attribute id="332" name="gameManager"/>      
+      <multiplicity id="333" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="77" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="334">    
+    <end type="SOURCE" refId="81" navigable="false">      
+      <attribute id="335" name="default_1"/>      
+      <multiplicity id="336" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="119" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="337">    
+    <end type="SOURCE" refId="115"/>    
+    <end type="TARGET" refId="83"/>  
+  </generalization>  
+  <generalization id="338">    
+    <end type="SOURCE" refId="102"/>    
+    <end type="TARGET" refId="104"/>  
+  </generalization>  
+  <association id="339">    
+    <bendpoint x="4214" y="1196"/>    
+    <bendpoint x="4214" y="1715"/>    
+    <bendpoint x="4214" y="2108"/>    
+    <bendpoint x="4214" y="2969"/>    
+    <bendpoint x="4214" y="3650"/>    
+    <bendpoint x="4214" y="4079"/>    
+    <bendpoint x="4214" y="4436"/>    
+    <bendpoint x="3039" y="5037"/>    
+    <end type="SOURCE" refId="119" navigable="false">      
+      <attribute id="340" name="profile"/>      
+      <multiplicity id="341" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="43" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="342">    
+    <end type="SOURCE" refId="68" navigable="false">      
+      <attribute id="343" name="logLevel"/>      
+      <multiplicity id="344" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="30" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="345">    
+    <end type="SOURCE" refId="39"/>    
+    <end type="TARGET" refId="98"/>  
+  </generalization>  
+  <association id="346">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="347" name="instance"/>      
+      <multiplicity id="348" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="349">    
+    <end type="SOURCE" refId="104" navigable="false">      
+      <attribute id="350" name="instance"/>      
+      <multiplicity id="351" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="104" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="352">    
+    <end type="SOURCE" refId="86"/>    
+    <end type="TARGET" refId="19"/>  
+  </generalization>  
+  <nesting id="353">    
+    <end type="SOURCE" refId="23"/>    
+    <end type="TARGET" refId="84"/>  
+  </nesting>  
+  <generalization id="354">    
+    <bendpoint x="2093" y="4436"/>    
+    <end type="SOURCE" refId="37"/>    
+    <end type="TARGET" refId="10"/>  
+  </generalization>  
+  <generalization id="355">    
+    <bendpoint x="5689" y="2969"/>    
+    <end type="SOURCE" refId="120"/>    
+    <end type="TARGET" refId="32"/>  
+  </generalization>  
+  <realization id="356">    
+    <end type="SOURCE" refId="24"/>    
+    <end type="TARGET" refId="120"/>  
+  </realization>  
+  <association id="357">    
+    <end type="SOURCE" refId="47" navigable="false">      
+      <attribute id="358" name="secondPlayer"/>      
+      <multiplicity id="359" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="49" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="360">    
+    <end type="SOURCE" refId="56"/>    
+    <end type="TARGET" refId="10"/>  
+  </generalization>  
+  <association id="361">    
+    <bendpoint x="6013" y="2969"/>    
+    <bendpoint x="6013" y="3650"/>    
+    <bendpoint x="5389" y="4079"/>    
+    <bendpoint x="4982" y="4436"/>    
+    <bendpoint x="4982" y="5037"/>    
+    <bendpoint x="4982" y="5394"/>    
+    <end type="SOURCE" refId="23" navigable="false">      
+      <attribute id="362" name="LOG"/>      
+      <multiplicity id="363" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="68" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="364">    
+    <end type="SOURCE" refId="121"/>    
+    <end type="TARGET" refId="95"/>  
+  </generalization>  
+  <generalization id="365">    
+    <end type="SOURCE" refId="23"/>    
+    <end type="TARGET" refId="21"/>  
+  </generalization>  
+  <association id="366">    
+    <end type="SOURCE" refId="122" navigable="false">      
+      <attribute id="367" name="client"/>      
+      <multiplicity id="368" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="78" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="369">    
+    <end type="SOURCE" refId="96"/>    
+    <end type="TARGET" refId="10"/>  
+  </generalization>  
+  <generalization id="370">    
+    <end type="SOURCE" refId="35"/>    
+    <end type="TARGET" refId="12"/>  
+  </generalization>  
+  <association id="371">    
+    <end type="SOURCE" refId="47" navigable="false">      
+      <attribute id="372" name="console"/>      
+      <multiplicity id="373" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="100" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="374">    
+    <end type="SOURCE" refId="62" navigable="false">      
+      <attribute id="375" name="task"/>      
+      <multiplicity id="376" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="95" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="377">    
+    <end type="SOURCE" refId="47" navigable="false">      
+      <attribute id="378" name="gameBoard"/>      
+      <multiplicity id="379" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="50" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="380">    
+    <end type="SOURCE" refId="114"/>    
+    <end type="TARGET" refId="95"/>  
+  </generalization>  
+  <generalization id="381">    
+    <end type="SOURCE" refId="85"/>    
+    <end type="TARGET" refId="18"/>  
+  </generalization>  
+  <generalization id="382">    
+    <end type="SOURCE" refId="71"/>    
+    <end type="TARGET" refId="98"/>  
+  </generalization>  
+  <association id="383">    
+    <bendpoint x="7004" y="5037"/>    
+    <bendpoint x="7004" y="5394"/>    
+    <end type="SOURCE" refId="51" navigable="false">      
+      <attribute id="384" name="LOG"/>      
+      <multiplicity id="385" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="68" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="386">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="98"/>  
+  </generalization>  
+  <generalization id="387">    
+    <end type="SOURCE" refId="66"/>    
+    <end type="TARGET" refId="95"/>  
+  </generalization>  
+  <association id="388">    
+    <end type="SOURCE" refId="110" navigable="false">      
+      <attribute id="389" name="instance"/>      
+      <multiplicity id="390" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="94" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="391">    
+    <end type="SOURCE" refId="52"/>    
+    <end type="TARGET" refId="6"/>  
+  </generalization>  
+  <generalization id="392">    
+    <bendpoint x="1718" y="5037"/>    
+    <end type="SOURCE" refId="57"/>    
+    <end type="TARGET" refId="6"/>  
+  </generalization>  
+  <association id="393">    
+    <end type="SOURCE" refId="102" navigable="false">      
+      <attribute id="394" name="builder"/>      
+      <multiplicity id="395" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="55" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="396">    
+    <end type="SOURCE" refId="89"/>    
+    <end type="TARGET" refId="86"/>  
+  </generalization>  
+  <association id="397">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="398" name="parser"/>      
+      <multiplicity id="399" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="65" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="400">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="95"/>  
+  </generalization>  
+  <association id="401">    
+    <end type="SOURCE" refId="47" navigable="false">      
+      <attribute id="402" name="firstPlayer"/>      
+      <multiplicity id="403" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="49" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="404">    
+    <bendpoint x="7432" y="3650"/>    
+    <bendpoint x="7474" y="4079"/>    
+    <bendpoint x="7474" y="4436"/>    
+    <bendpoint x="7474" y="5037"/>    
+    <bendpoint x="7474" y="5394"/>    
+    <end type="SOURCE" refId="24" navigable="false">      
+      <attribute id="405" name="LOG"/>      
+      <multiplicity id="406" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="68" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="407">    
+    <end type="SOURCE" refId="46"/>    
+    <end type="TARGET" refId="95"/>  
+  </generalization>  
+  <association id="408">    
+    <bendpoint x="8355" y="1196"/>    
+    <bendpoint x="8355" y="1715"/>    
+    <bendpoint x="8355" y="2108"/>    
+    <bendpoint x="8355" y="2969"/>    
+    <bendpoint x="8355" y="3650"/>    
+    <bendpoint x="8355" y="4079"/>    
+    <bendpoint x="8355" y="4436"/>    
+    <bendpoint x="8355" y="5037"/>    
+    <end type="SOURCE" refId="119" navigable="false">      
+      <attribute id="409" name="games"/>      
+      <multiplicity id="410" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="47" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="411">    
+    <end type="SOURCE" refId="122"/>    
+    <end type="TARGET" refId="33"/>  
+  </realization>  
+  <association id="412">    
+    <end type="SOURCE" refId="74" navigable="false">      
+      <attribute id="413" name="on"/>      
+      <multiplicity id="414" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="98" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="415">    
+    <bendpoint x="4473" y="1196"/>    
+    <end type="SOURCE" refId="119" navigable="false">      
+      <attribute id="416" name="client"/>      
+      <multiplicity id="417" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="21" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="418">    
+    <end type="SOURCE" refId="93"/>    
+    <end type="TARGET" refId="66"/>  
+  </generalization>  
+  <association id="419">    
+    <bendpoint x="1760" y="4436"/>    
+    <bendpoint x="2771" y="4079"/>    
+    <end type="SOURCE" refId="52" navigable="false">      
+      <attribute id="420" name="createGameTask"/>      
+      <multiplicity id="421" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="95" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="422">    
+    <end type="SOURCE" refId="29"/>    
+    <end type="TARGET" refId="98"/>  
+  </generalization>  
+  <generalization id="423">    
+    <end type="SOURCE" refId="25"/>    
+    <end type="TARGET" refId="12"/>  
+  </generalization>  
+  <generalization id="424">    
+    <end type="SOURCE" refId="59"/>    
+    <end type="TARGET" refId="60"/>  
+  </generalization>  
+  <association id="425">    
+    <end type="SOURCE" refId="77" navigable="false">      
+      <attribute id="426" name="instance"/>      
+      <multiplicity id="427" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="77" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

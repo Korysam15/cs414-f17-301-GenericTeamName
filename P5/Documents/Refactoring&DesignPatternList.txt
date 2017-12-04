@@ -1,0 +1,385 @@
+#################### Changes to *p4.client_server #########################
+
+	Updated package structor to reflect p4 rather than p3.
+	==================== Changes to *.client ==========================
+		1. AbstractClient.java:
+			1.1. Updated package structor for p4
+				(aka renamed p3 to p4)
+		
+		2. Client.java:
+			2.1. Added a nested class to represent the thread 
+				that receives messages from the server
+			
+			2.2. Added a nested class that sends EntryTask's or
+				ExitTask's to server.  This class assists 
+				in a wait / notfiy mechanisms for crucial
+				tasks that change the state of the client.
+			
+			2.3. Refactored long methods by breaking them
+				down into smaller ones. 
+
+	============ END Changes to *.client ==============================
+
+
+	============ Changes to *.server ==================================
+		1. events.*
+			1.1. Implemented SendEvent.java, this class allows 
+				the Server to distribute the sending of 
+				Tasks among the threadPool.
+		
+		2. registry.*
+			2.1. AbstractRegistry.java:
+				2.1.1. Added more abstract methods.
+
+				2.1.2. Refactored by adding comments.
+
+			2.2. FileRegistry.java: 
+				2.2.1. Implemented methods that were added
+					added to AbstractRegistry.
+			2.3. User.java:
+				2.3.1. Updated how encryption was utilized.
+
+		3. session.*
+			3.1. ClientSession.java:
+				3.1.1. Added security by ensuring the
+ 					session was logged in (registered)
+					with the server.
+
+				3.1.2. Improved response messages for
+					LoginTask's and RegisterTask's.
+
+				3.1.3. Refactored long methods by breaking
+					them down into smaller ones.
+
+		4. Added game_server.*
+			This package is designed specifically for our
+ 			banqi game.
+			
+			It manages games and their state, validates moves
+			players make (send to the server). 
+
+			Manages and validates InviteTasks, 		
+			AcceptInviteTasks, RejectInviteTask, 		
+			as well as CreateGameTasks.
+ 
+			4.1. Added AbstractGameServer.java:
+				4.1.1. Implements methods that are
+					abstracted away from extending 
+					classes. 
+
+				4.1.2. Declares abstract methods that 
+				extending classes should implement for the 
+				handling of specific GameTask's.
+
+			4.2. Added GameServer.java:
+				4.2.1. Implements abstract methods
+					inherited from
+					AbstractGameServer.java
+
+				4.2.2. Improves response's from the 
+					"Server" when a GameTask is 
+					invalid.
+
+				4.2.3. Checks if the other player in the
+					game is online, and only if they
+					are online, will the tasks be
+					forwarded to them.
+					TODO: Otherwise the game state is
+					changed, and when the "other
+					player" is logs in they should
+					receive the updated "GameState".
+
+				4.2.4. Will act as an observer (maybe idk)
+					in a grasp pattern.
+
+				4.2.5. Functions, but is incomplete.
+
+			4.3. Added GameManager.java:
+				4.3.1. Needs implementation, but will be
+					responsible for managing/saving
+					games. As well as validating turns.
+
+				4.3.2. Will act as a controller 
+					in a grasp pattern.
+
+			4.4. Added GameInviteManager.java:
+				4.4.1. Manages invites sent to and from
+					users.
+
+				4.4.2. As of now, if a player invites
+					another player (without them
+					accepting/rejecting the first
+					invitation) the invitation will
+					be overwritten.
+
+				4.4.3. Will act as a controller
+					in a grasp pattern.
+
+				4.4.4. Needs to integrate with a DB/File
+					to actually save the invitation.
+	
+		5. Changes to AbstractServer.java:
+			5.1. Added more comments.
+
+			5.2. Added more abstract methods.
+
+			5.3. Added @Deprecated to methods that may be 
+				insecure.  The only reason they were kept
+				is for backwards compatibility :)
+		
+		6. Changes to Server.java:
+			6.1. Security Enhancements:
+				6.1.1. Checks that ForwardTasks / 
+					MultiForwardTasks playerFrom
+					(nicknames) are not spoofed.
+
+				6.1.2. Checks that ForwardTasks do not 
+					contain EntryTasks/EntryResponses
+					that could crash a player.
+
+				6.1.3. Checks that ForwardTasks do not 
+					contain ExitTasks/ExitResponses
+					that could crash a player.
+
+			6.2. Implemented the added abstract methods 
+				inherited from AbstractServer.java.
+
+
+			6.3. Added use of SendEvent to distribute the
+				sending of tasks among the thread pool.
+
+			6.4. Refactored long methods by breaking them down
+				into several smaller ones.
+
+			6.5. Reflected the @Deprecated changes in
+				AbstractServer.java
+	============ END Changes to *.server ==============================
+
+	============ Changes to *.transmission ============================
+		1. Broke Task's down to separate packages.
+			1.1. Added transimission.game.*:
+				1.1.1. Added GameTask.java, 
+					which improves 
+					inheritance/abstraction.  
+					Declares a few abstract methods
+ 					that all GameTask's should have.
+
+				1.1.2. Made the following classes extend
+ 					GameTask rather than Task.java:
+						CreateGameTask.java
+						FlipPieceTask.java
+						ForfeitTask.java
+						MoveTask.java
+						UpdateRecordTask.java
+
+				1.1.3. Added InvalidGameTask.java:
+					represents an error message from
+					an AbstractGameServer. This class
+					is used to notify players when
+					they submitted an incorrect 
+					GameTask.
+
+			1.2. Added transimission.game.invite.*
+				1.2.1. Added InviteGameTask.java:
+					This class is an abstract class
+					that extends GameTask.java. This 
+					class introduces a higher level of
+					abstraction that separates other
+					GameTask's from Tasks related to 
+					invitations.
+
+				1.2.2. Made the following classes extend
+					InviteGameTask.java rather than
+						Task.java:
+						InviteTask.java
+						AcceptInviteTask.java
+						RejectInviteTask.java
+
+			1.3. Added transmission.profile.*
+				1.3.1. Moved DisplayProfileTask.java
+					from transmission to 
+					transmission.profile.
+
+				1.3.2. Moved GetProfileTask.java
+					from transmission to 
+					transmission.profile.
+			
+			1.4. Added transmission.registration_login.*
+				1.4.1. Added EntryTask.java:
+					This class is an abstract class
+					that extends Task.java. This 
+					class introduces a higher level of
+					abstraction that separates other
+					Task's from Tasks related to 
+					logging in or registering with the
+					server.
+
+				1.4.2. Made the following Tasks extend
+					EntryTask.java rather than 
+					Task.java:
+						LoginTask.java
+						RegisterTask.java
+
+				1.4.3. Added ExitTask.java:
+					This class is an abstract class
+					that extends Task.java. This 
+					class introduces a higher level of
+					abstraction that separates other
+					Task's from Tasks related to 
+					logging off or unregistering with
+					the server.
+
+				1.4.4. Made the following Tasks extend
+					ExitTask.java rather than 
+					Task.java:
+						LogoutTask.java
+						UnregisterTask.java
+
+			1.5. Added transission.registration_login.response
+				1.5.1. Added EntryResponseTask.java:
+					This class is an abstract class
+					that extends Task.java. This 
+					class introduces a higher level of
+					abstraction that separates other
+					Task's from Tasks (sent from the 
+					server)	 related to the status of
+					logging in or registering with the
+					server.
+
+				1.5.2. Made the following Tasks extend
+					EntryResponseTask.java rather than 
+					Task.java:
+						LoginGreetingTask.java
+						RegisterGreetingTask.java
+						LoginErrorTask.java
+						RegistrationErrorTask.java
+
+				1.5.3. Added ExitResponseTask.java
+					This class is responsible for 
+					login off a client after the 
+					server receives a LogoutTask or
+					UnregisterTask.
+			
+				1.5.4. Added ServerDisconnectedTask.java:
+					Extends ExitResponseTask.java.
+					This class is responsible for 
+					notifying users that the server
+					has closed the connection to the
+					client.
+
+			1.6. Added transmission.util
+				1.6.1. Added UtilityTask.java:
+					This class is an abstract class
+					that extends Task.java. This 
+					class introduces a higher level of
+					abstraction that separates other
+					Task's from more common 
+					non-specific Tasks.
+
+				1.6.2. Made the following Tasks extend
+					UtilityTask.java rather than
+					Task.java:
+						ForwardTask.java
+						MultiForwardTask.java
+						MessageTask.java
+				
+		2. Changes to Task.java:
+			2.1. Made toByteArray() non-abstract.
+
+			2.2. Added abstract method writeBytes.
+				This simplifies and significantly reduces,
+				the amount of code extensions of Task.java
+				have to implement.
+
+		3. Changes to all *Task.java
+			3.1. Removed all toByteArray() methods from 
+				classes that extend Task.java.
+
+			3.2. Implemented writeBytes() on all non-abstract
+				Tasks.
+
+	============ END Changes to *.transmission ========================
+
+#################### END Changes to *p4.client_server #####################
+
+#################### CHANGES TO *.p5		      #####################
+Updated GetProfileTask.java to use ProfileManager
+
+Updated ServerMain.java
+
+GameServer.java: Added use of ProfileManager.java
+
+SessionManager.java: Added additional handling for unregistering (IE. removing profile, games, invitations ect..)
+
+ProfileManager.java: Added use of abstract methods (inside of non abstract methods)
+
+GameManager.java: added method removePlayersGamesAsLoss (removes games, but gives the other player a win)
+
+ProfileManager.java: Added singleton pattern
+
+FileProfileManager.java: (Saves / restores players profile)
+
+ProfileManager.java: Small changes to public interface ( Added a new method )
+
+Added ProfileBuilder.java: Converts Profiles to and from Strings
+
+History.java: Added a new constructor for use with ProfileBuilder.java
+
+Profile.java: added another constructor for use with ProfileBuilder.java
+
+ProfileManager.java: Manages / Maintains players Profiles
+
+Profile.java: Added hashCode
+
+History.java: Added equals and hashCode methods. Added
+
+Added Abstract Class: ProfileTask.java ( to provide a level of abstraction between Task's related to Profiles and all other Tasks)
+
+Server.java: Added try catch block in handleKey ( also improves logging )
+
+BanqiGame.java: getValidMoves() now returns a Set instead of List. ( Efficiency improvement )
+
+Square.java: added toString() and hashCode() ( Allows a square to belong in a set correctly )
+
+Logger.java: Changed date format. ( makes the date more readable in logs ) 
+
+Fixed a bug in FileGameManager.java: Games were not saving correctly (ie. The game would have duplicated squares)
+
+Added FileUtils.java: Reduces the amount rewritten code in File*****Manager's
+
+Removed main method from Client.java: (Unused)
+
+Added an additional (optional) argument to PlayerMain.java: (Sets the log the level) useful for debugging
+
+Redesigned PlayerConsole.java, which led to more things being redesigned
+	Adds PlayerController.java
+	Adds CommandConstants.java
+	Adds CommandController.java
+	Adds CommandParser.java
+	Reduces complexity of PlayerConsole and decreases coupling
+
+Removed ServerSession.java: unused and because of feedback#39
+
+ClientSession.java: fixed equals and hashCode methods / reduced size of public interface
+
+Added GetAllPlayersTask.java and DisplayPlayersTask.java: Together displays the players who are registered to the system and shows their status (i.e online or not)
+
+Added DatabaseInviteManager.java: Skeleton class for integration with a Database
+
+Added FileGameInviteManager.java: Class to store invitations to and from players (uses a file for storage hints the name)
+
+GameServer.java: Moved some of the public instance methods into AbstractGameServer.java
+
+GameInviteManager.java: Converted to Abstract Class
+
+ServerMain.java: Added comments and updated main method for the configuration of the GameServer 
+
+
+#################### GRASP & GoF Patterns Implemented #####################
+1.) Abstract Factory
+2.) Factory Method
+3.) Singleton
+4.) Low Coupling
+5.) Polymorphism
+6.) Controller
+
