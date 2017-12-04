@@ -1,5 +1,7 @@
 package edu.colostate.cs.cs414.p5.banqi;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 
 import java.util.Collections;
@@ -28,6 +30,8 @@ public class BanqiGame {
 	private static final Logger LOG = Logger.getInstance();
 
 	private JavaConsole console;
+	private PrintStream output;
+	private InputStream input;
 	private int gameID;            // unique id
 	private GameBoard gameBoard;   // board that the game is played on
 	private Piece pieces[];        // pieces in game
@@ -82,6 +86,8 @@ public class BanqiGame {
 		this.pieces= new Piece[32];
 		this.piece_has_flipped = false;
 		console = new JavaConsole();
+		input = console.getInputStream();
+		output = console.getOutputStream();
 		firstPlayer = new BanqiPlayer(playerOne);
 		firstPlayer.isTurn = true;
 		secondPlayer = new BanqiPlayer(playerTwo);
@@ -109,6 +115,8 @@ public class BanqiGame {
 		//this.first=first;             
 		//this.second=second;
 		console = new JavaConsole();
+		input = console.getInputStream();
+		output = console.getOutputStream();
 		getAllPieces();
 	}
 
@@ -119,6 +127,8 @@ public class BanqiGame {
 		this.gameBoard= new GameBoard();
 		this.pieces= new Piece[32];
 		console = new JavaConsole();
+		input = console.getInputStream();
+		output = console.getOutputStream();
 		if(ActivePlayer.getInstance() != null)
 		{
 			String currentPlayerNickname = ActivePlayer.getInstance().getNickName();
@@ -141,6 +151,8 @@ public class BanqiGame {
 		this.pieces= new Piece[32];
 		this.test=test;
 		console = new JavaConsole();
+		input = console.getInputStream();
+		output = console.getOutputStream();
 		getAllPieces();
 	}
 
@@ -154,18 +166,24 @@ public class BanqiGame {
 	}
 
 	public void openConsole() {
-		console = new JavaConsole();
-		if(ActivePlayer.getInstance() != null) {
-			String currentPlayerNickname = ActivePlayer.getInstance().getNickName();
-			String otherPlayer = null;
-			if(firstPlayer.nickName.equals(currentPlayerNickname)) {
-				otherPlayer = secondPlayer.nickName;
-			} else {
-				otherPlayer = firstPlayer.nickName;
+		if(console == null) {
+			console = new JavaConsole();
+			input = console.getInputStream();
+			output = console.getOutputStream();
+			if(ActivePlayer.getInstance() != null) {
+				String currentPlayerNickname = ActivePlayer.getInstance().getNickName();
+				String otherPlayer = null;
+				if(firstPlayer.nickName.equals(currentPlayerNickname)) {
+					otherPlayer = secondPlayer.nickName;
+				} else {
+					otherPlayer = firstPlayer.nickName;
+				}
+				console.setTitle(currentPlayerNickname + " Your Opponent is: " + otherPlayer + " in Game[" + gameID + "]");
 			}
-			console.setTitle(currentPlayerNickname + " Your Opponent is: " + otherPlayer + " in Game[" + gameID + "]");
+		} else {
+			console.showConsole();
 		}
-		System.out.println(gameBoard);
+		output.println(gameBoard);
 	}
 
 	public String getPlayerOne() {
@@ -320,15 +338,15 @@ public class BanqiGame {
 	{
 		if(from==null||to==null)
 		{
-			System.out.println("Not a valid move");
+			output.println("Not a valid move");
 			return false;
 		}
 		if(from.getOn()==null){
-			System.out.println("There is no piece there");
+			output.println("There is no piece there");
 			return false;
 		}
 		if(from.getOn().faceUp==false){
-			System.out.println("This piece must be flipped first");
+			output.println("This piece must be flipped first");
 			return false;
 		}
 		if(getValidMoves(from).contains(to)) //check if the move is valid
@@ -338,11 +356,11 @@ public class BanqiGame {
 			try {
 				isOver();
 			} catch (GameOverException e) {
-				System.out.println(e.getWinner() + " is the Winner!");
+				output.println(e.getWinner() + " is the Winner!");
 			}
 			return true;
 		}
-		System.out.println("Not a valid move");
+		output.println("Not a valid move");
 		return false;
 	}
 
@@ -410,11 +428,11 @@ public class BanqiGame {
 	{
 		if (from==null)
 		{
-			System.out.println("Not a valid move");
+			output.println("Not a valid move");
 			return false;
 		}
 		if(from.getOn()==null){
-			System.out.println("There is no piece there");
+			output.println("There is no piece there");
 			return false;
 		}
 		if(from.getOn().faceUp==false)
@@ -447,8 +465,8 @@ public class BanqiGame {
 				this.secondPlayer.setColor(color2);
 				LOG.debug("First Player's color is: " + firstPlayer.getColor());
 				LOG.debug("Second Player's color is: " + secondPlayer.getColor());
-				/*System.out.println(this.firstPlayer.getColor());
-				System.out.println(this.secondPlayer.getColor());*/
+				/*output.println(this.firstPlayer.getColor());
+				output.println(this.secondPlayer.getColor());*/
 				this.piece_has_flipped = true;
 			}
 			return true;
@@ -570,8 +588,8 @@ public class BanqiGame {
 
 	public void promptTurn(Player p, String otherPlayer)
 	{
-		System.out.println("Your Turn!");
-		System.out.println(gameBoard);
+		output.println("Your Turn!");
+		output.println(gameBoard);
 		Task notify = null;
 		BanqiPlayer currentPlayer = getBanqiPlayer(p);
 		currentPlayer.isTurn = true;
@@ -580,14 +598,14 @@ public class BanqiGame {
 		{
 			if(currentPlayer.isTurn)
 			{
-				System.out.println("Type 'forfeit' to forfeit a match or 'help' to get help.");
-				System.out.println("Make a move!  ex. A1");
+				output.println("Type 'forfeit' to forfeit a match or 'help' to get help.");
+				output.println("Make a move!  ex. A1");
 				@SuppressWarnings("resource")
-				Scanner scanner = new Scanner(System.in);
+				Scanner scanner = new Scanner(input);
 				String in1 = scanner.nextLine();
 				if(in1.toLowerCase().equals("forfeit"))
 				{
-					System.out.print("Are you sure you want to forfiet? Type 'yes' to confirm or 'no' to keep playing: ");
+					output.print("Are you sure you want to forfiet? Type 'yes' to confirm or 'no' to keep playing: ");
 					String choice = scanner.next();
 					if(choice.toLowerCase().equals("yes"))
 					{
@@ -606,21 +624,20 @@ public class BanqiGame {
 				else
 				{
 					if(in1.length() != 2){
-						System.out.println("You entered in: " + '"' + in1 + '"');
-						System.out.println("Invalid Move");
+						output.println("You entered in: " + '"' + in1 + '"');
+						output.println("Invalid Move");
 						continue;
 					}
 					Square from = getSquare(in1);
-
-					if(from.getOn() == null){
-						System.out.println("You entered in: " + '"' + in1 + '"');
-						System.out.println("Invalid Move - No piece at: "+in1);
+					if(from == null || from.getOn() == null){
+						output.println("You entered in: " + '"' + in1 + '"');
+						output.println("Invalid Move - No piece at: "+in1);
 						continue;
 					}
 					else if(!from.getOn().faceUp){
 						flipPiece(from);
 						currentPlayer.isTurn = false;
-						System.out.println(gameBoard);
+						output.println(gameBoard);
 						notify = new FlipPieceTask(p.getNickName(),this.gameID,from);
 						break;
 					}
@@ -635,30 +652,30 @@ public class BanqiGame {
 						}
 						if(!color.equals(currentPlayer.color))
 						{
-							System.out.println("The piece you selected is not your piece!");
+							output.println("The piece you selected is not your piece!");
 							continue;
 						}
-						System.out.println("to");
+						output.println("to");
 
 
 						String in2 = scanner.nextLine();
 						if(in2.length() != 2){
-							System.out.println("Invalid Move");
+							output.println("Invalid Move");
 							continue;
 						}
 						Square to =getSquare(in2);
 						if(to == null){
-							System.out.println("You entered in: " + '"' + in1 + '"');
-							System.out.println("Invalid Move - No piece at: "+in1);
+							output.println("You entered in: " + '"' + in1 + '"');
+							output.println("Invalid Move - No piece at: "+in1);
 							continue;
 						}
 						if(makeMove(from,to)){
-							System.out.println(gameBoard);
+							output.println(gameBoard);
 							notify = new MoveTask(p.getNickName(),this.gameID,from,to);
 							currentPlayer.isTurn = false;
 							break;
 						}
-						System.out.println("Invalid Move - "+from.getOn().getClass()+" can't move like that");
+						output.println("Invalid Move - "+from.getOn().getClass()+" can't move like that");
 					}
 				}
 			}
@@ -696,7 +713,7 @@ public class BanqiGame {
 
 	public void forfeit(Player p, String otherPlayer)
 	{
-		System.out.println("FORFEITING");
+		output.println("FORFEITING");
 		// forfeit game, create forfiet task, update stats for both players
 		UpdateRecordTask updateTask = new UpdateRecordTask(false,true,false,this.gameID);
 		ForfeitTask forfeit = new ForfeitTask(this.gameID, updateTask, p.getNickName() + " has forfeited! " + otherPlayer + " is the winner!");
@@ -713,8 +730,8 @@ public class BanqiGame {
 
 	public void printHelpInformation()
 	{
-		System.out.println("Below is a list of each piece with their associated number that represents that piece.\n");
-		System.out.println("Red General: R7 \t\t Black General: B7 \n" 
+		output.println("Below is a list of each piece with their associated number that represents that piece.\n");
+		output.println("Red General: R7 \t\t Black General: B7 \n" 
 				+ "Red Advisor: R6 \t\t Black Advisor: B6 \n" 
 				+ "Red Elephant: R5 \t\t Black Elephant: B5 \n" 
 				+ "Red Chariot: R4 \t\t Black Chariot: B4 \n"
@@ -722,7 +739,7 @@ public class BanqiGame {
 				+ "Red Cannon: R2 \t\t Black Cannon: B2 \n"
 				+ "Red Soldier: R1 \t\t Black Soldier: B1\n");
 
-		System.out.println("Rules:\n Only pieces of equal or lower rank may be captured. However, A Cannon can capture any piece by jumping and a Soldier can capture a general.\n");
+		output.println("Rules:\n Only pieces of equal or lower rank may be captured. However, A Cannon can capture any piece by jumping and a Soldier can capture a general.\n");
 	}
 
 	@Override
