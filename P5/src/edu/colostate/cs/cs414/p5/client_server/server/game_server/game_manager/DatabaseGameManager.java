@@ -16,10 +16,10 @@ import edu.colostate.cs.cs414.p5.banqi.GameBuilder;
 public class DatabaseGameManager extends GameManager {
 	protected static final String SEPERATOR=",";
 	private static Connection connect = null;
-    private static Statement statement = null;
-    private static ResultSet resultSet = null;
-    private static final Set<BanqiGame> savedGames = new HashSet<BanqiGame>();
-    private static final GameBuilder builder = new GameBuilder(SEPERATOR);
+	private static Statement statement = null;
+	private static ResultSet resultSet = null;
+	private static final Set<BanqiGame> savedGames = new HashSet<BanqiGame>();
+	private static final GameBuilder builder = new GameBuilder(SEPERATOR);
 	// leave this protected
 	protected DatabaseGameManager() {
 		super();
@@ -27,28 +27,28 @@ public class DatabaseGameManager extends GameManager {
 		// note that stuff here will not used until after #buildGameMaps is called
 		// therefore if you need something else, make it a "private static final" (above this constructor) 
 	}
-	
+
 	public synchronized void connect(){
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 		} catch (ClassNotFoundException e1) {
-			System.err.println("SQL Driver not included in project");
+			LOG.error("SQL Driver not included in project: needed for " + getClass().getSimpleName());
 		}
-	     try {
+		try {
 			connect = DriverManager
-			         .getConnection("jdbc:mysql://sql3.freesqldatabase.com/sql3207530?"
-			                 + "user=sql3207530&password=QSkEyzIj7M");
-			
+					.getConnection("jdbc:mysql://sql3.freesqldatabase.com/sql3207530?"
+							+ "user=sql3207530&password=QSkEyzIj7M");
+
 		} catch (SQLException e) {
-			System.err.println("Cannot connect to Server");
+			LOG.error("Cannot connect to Server in: " + getClass().getSimpleName());
 		}
 	}
 	// this is called by the constructor in GameManager()
 	// this is where you will add games
-	
+
 	// don't use the super method AKA (GameManager#addGame(BanqiGame game)
 	// instead use the super method GameManager#addGameRestoredFromRecord(BanqiGame game)
-	
+
 	// see FileGameManager for examples
 	@Override
 	protected void buildGameMaps() {
@@ -56,39 +56,47 @@ public class DatabaseGameManager extends GameManager {
 		try {
 			statement = connect.createStatement();
 			resultSet = statement
-			         .executeQuery("select * from Invites");
+					.executeQuery("select * from Invites");
 			BanqiGame temp = null;
 			while (resultSet.next()) {
-	            String GameString = resultSet.getString("GameString");
-	            temp = builder.createGameFromString(GameString);
-	            if(temp == null){
-	            	
-	            }
-	           savedGames.add(temp);
-	        }
+				String GameString = resultSet.getString("GameString");
+				try {
+					temp = builder.createGameFromString(GameString);
+				} catch (Exception e) {
+					temp = null;
+					LOG.error("An error occurred trying to recreate a game from a string: Exception: " + e.getMessage());
+				}
+				if(temp == null){
+					LOG.error("Outdated game storage format. Check database configuration.");
+				} else {
+					savedGames.add(temp);
+				}
+			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOG.error("A error occurred when trying to buildGameMaps due to SQLException: " + e.getMessage());
 		}
 
 	}
-	
+
 	@Override
 	protected void addRecord(BanqiGame game) {
 		if(connect==null){
 			this.connect();
 		}
-		System.out.println(game.getGameID());
-		System.out.println(builder.gameToString((game)));
+		LOG.debug("Adding game with gameID: " + game.getGameID() + " to database.");
+		LOG.debug("The games String representation is: " + builder.gameToString((game)));
 		try {
 			statement = connect.createStatement();
-			statement
-			         .executeUpdate("insert into Games values("+game.getGameID()+","+"'"+builder.gameToString(game)+"')");
-			
+			statement.executeUpdate("insert into Games values(" + 
+					game.getGameID() + "," + 
+					"'" + builder.gameToString(game) + "')");
+
 		} catch (MySQLIntegrityConstraintViolationException e){
-			System.err.println("Invite already exists in database");
-		
+			LOG.error("Game: " + game.getGameID() + " already exists in the database.");		
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOG.error("An error occurred when trying to ADD a new BanqiGame: GameID: " +
+					game.getGameID() + ".\n" + 
+					"This error was caused by SQLException: " + e.getMessage());
 		}
 	}
 
@@ -97,18 +105,20 @@ public class DatabaseGameManager extends GameManager {
 		if(connect==null){
 			this.connect();
 		}
-		System.out.println(game.getGameID());
-		System.out.println(builder.gameToString((game)));
+		LOG.debug("Updating game with gameID: " + game.getGameID() + " to database.");
+		LOG.debug("The games String representation is: " + builder.gameToString((game)));
 		try {
 			statement = connect.createStatement();
-			statement
-			         .executeUpdate("UPDATE Games SET GameString='"+builder.gameToString(game)+"' where ID = "+game.getGameID());
-			
+			statement.executeUpdate("UPDATE Games SET GameString='" + 
+					builder.gameToString(game) + "' where ID = "+game.getGameID());
+
 		} catch (MySQLIntegrityConstraintViolationException e){
-			e.printStackTrace();
-		
+			LOG.error("Failed to update game with gameID: " + game.getGameID() + " in the database.\n" +
+					"This error was caused by: " + e.getClass().getSimpleName() + ": " + e.getMessage());
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOG.error("An error occurred when trying to UPDATE a BanqiGame: GameID: " +
+					game.getGameID() + ".\n" + 
+					"This error was caused by SQLException: " + e.getMessage());
 		}
 	}
 
@@ -119,11 +129,11 @@ public class DatabaseGameManager extends GameManager {
 		}
 		try {
 			statement = connect.createStatement();
-			statement
-			         .executeUpdate("delete from Games where ID = "+game.getGameID());
-			
+			statement.executeUpdate("delete from Games where ID = "+game.getGameID());
 		} catch (SQLException e) {
-			e.printStackTrace();
+			LOG.error("An error occurred when trying to REMOVE a BanqiGame: GameID: " +
+					game.getGameID() + ".\n" + 
+					"This error was caused by SQLException: " + e.getMessage());
 		}
 
 	}
