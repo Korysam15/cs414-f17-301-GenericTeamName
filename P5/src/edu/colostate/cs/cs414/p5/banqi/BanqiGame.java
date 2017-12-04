@@ -580,7 +580,6 @@ public class BanqiGame {
 		{
 			if(currentPlayer.isTurn)
 			{
-				System.out.println(currentPlayer.nickName + currentPlayer.color);
 				System.out.println("Type 'forfeit' to forfeit a match or 'help' to get help.");
 				System.out.println("Make a move!  ex. A1");
 				@SuppressWarnings("resource")
