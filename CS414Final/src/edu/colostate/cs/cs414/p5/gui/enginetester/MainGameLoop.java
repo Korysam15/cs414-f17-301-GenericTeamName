@@ -22,6 +22,7 @@ import edu.colostate.cs.cs414.p5.banqi.Piece;
 import edu.colostate.cs.cs414.p5.banqi.Square;
 import edu.colostate.cs.cs414.p5.client_server.transmission.Task;
 import edu.colostate.cs.cs414.p5.client_server.transmission.game.FlipPieceTask;
+import edu.colostate.cs.cs414.p5.client_server.transmission.game.MoveTask;
 import edu.colostate.cs.cs414.p5.client_server.transmission.util.ForwardTask;
 import edu.colostate.cs.cs414.p5.gui.entities.Camera;
 import edu.colostate.cs.cs414.p5.gui.entities.Entity;
@@ -68,7 +69,7 @@ public class MainGameLoop implements Runnable {
 	/**
 	 * The type of game played
 	 */
-	private ModelGenerator modelGen;
+	private ModelGenerator modelGen ;
 
 	/**
 	 * The players that in this game
@@ -76,6 +77,7 @@ public class MainGameLoop implements Runnable {
 	private BanqiPlayer player1,player2;
 
 	private Player currentPlayer;
+	int currentColor=-1;
 	private Player turn;
 	BanqiGame banqiGame;
 
@@ -91,10 +93,10 @@ public class MainGameLoop implements Runnable {
 
 
 
-
+	FontType font;
 	private TexturedModel whiteSquare ;
 	private TexturedModel blackSquare ;
-
+	private ArrayList<Entity> piecies=new ArrayList<Entity>();
 
 
 	private String otherPlayer;
@@ -124,7 +126,8 @@ public class MainGameLoop implements Runnable {
 	@Override
 	public void run() {
 		DisplayManager.createDisplay();
-
+		Loader loader = new Loader();
+		modelGen = new ModelGenerator(loader);
 		this.currentPlayer=banqiGame.p1;
 		Display.setTitle(currentPlayer.getNickName());
 
@@ -132,16 +135,18 @@ public class MainGameLoop implements Runnable {
 		this.player1=banqiGame.getFirstPlayer();
 		this.player2=banqiGame.getSecondPlayer();
 
-		this.modelGen=new ModelGenerator();
+
 
 		this.otherPlayer=getOtherPlayer();
+
+
 		if(currentPlayer.getNickName().equals(player2.nickName)) {
 			turn=null;
 		}
 		else {
 			turn = currentPlayer;
 		}
-		Loader loader = new Loader();
+
 
 
 		List<Entity> entities = new ArrayList<Entity>();
@@ -152,12 +157,14 @@ public class MainGameLoop implements Runnable {
 
 		//************************Font************************	
 		TextMaster.init(loader);
-		FontType font = new FontType(loader.loadTexture("arial"), new File("res/arial.fnt"));
+		font = new FontType(loader.loadTexture("arial"), new File("res/arial.fnt"));
 		GUIText text = new GUIText(player1.nickName+"  vs  "+player2.nickName, 3f, font, new Vector2f(0f, 0f), 1f, true);
-		text.setColour(1, 0, 0);	
+		text.setColour(1, 0, 0);
+		
 		// *****************************************************
 
-
+		GUIText prompt = new GUIText("Your turn", 3f, font, new Vector2f(0f, .8f), 1f, true);
+		text.setColour(1, 0, 0);
 
 
 
@@ -174,7 +181,8 @@ public class MainGameLoop implements Runnable {
 		Entity titleEntity = new Entity(title, new Vector3f(4.5f, 50, -100), 90, 0, 0, 2f);
 		entities.add(titleEntity);
 		// *******************************************************************
-
+		
+		
 
 
 
@@ -201,7 +209,7 @@ public class MainGameLoop implements Runnable {
 
 
 		// ******************************Pieces**********************************
-		entities.addAll(modelGen.generatePieceModels(board,loader));
+
 		entities.addAll(boardTiles);
 
 		// ***********************************************************************
@@ -239,8 +247,8 @@ public class MainGameLoop implements Runnable {
 
 		ArrayList<Integer> possibleMovesIndex= new ArrayList<Integer>();
 
-		//currentPlayer =player1;
-
+		GUIText yourTurn=null;
+		GUIText opponentTurn=null;
 
 
 		while (!Display.isCloseRequested()) {
@@ -248,13 +256,54 @@ public class MainGameLoop implements Runnable {
 
 
 
+		
+			if(turn!=null) {
+				TextMaster.loadText(prompt);
+			}
+		
+				
+			
+			GUIText text2;
+			//board=banqiGame.getGameBoard();
 
-
-
-
-			checkForChange(entities);
+			//checkForChange(entities);
 
 			//System.out.println(DisplayManager.delta);
+
+			piecies=modelGen.generatePieceModels(board);
+			if(!player1.color.equals("")&&!player2.color.equals("")) {
+				if(currentPlayer.getNickName().equals(player1.nickName)) {
+					if(player1.color.equals("red")) {
+						
+						currentColor=1;
+
+					}
+					else {
+						
+						currentColor=0;
+					}
+
+				}
+				else {
+					if(player2.color.equals("red")) {
+						currentColor=0;
+					}
+					else {
+						currentColor=1;
+					}
+				}
+			}
+
+			if(currentColor==1) {
+				 text2 = new GUIText("You are red!", 3f, font, new Vector2f(.3f, 0f), 1f, true);
+				text.setColour(1, 0, 0);
+			}
+			if(currentColor==0) {
+				 text2 = new GUIText("You are black!", 3f, font, new Vector2f(.3f, 0f), 1f, true);
+				text.setColour(1, 0, 0);
+			}
+
+
 
 
 			Task notify = null;
@@ -263,8 +312,12 @@ public class MainGameLoop implements Runnable {
 
 
 			//camera setup
-			camera.move();
+			//camera.move();
 			camera.startGame();
+
+
+
+
 
 
 			//input
@@ -277,7 +330,7 @@ public class MainGameLoop implements Runnable {
 			//flip animation
 			if(toFlip!=-1) {
 
-				flipPieceAnimation(entities);
+				//flipPieceAnimation(entities);
 			}
 
 
@@ -289,19 +342,19 @@ public class MainGameLoop implements Runnable {
 			float distance = 2 * (camera.getPosition().y - water.getHeight());
 			camera.getPosition().y -= distance;
 			camera.invertPitch();
-			renderer.renderScene(entities,pieceModels, normalMapEntities,terrains,  lights, camera, new Vector4f(0, 1, 0, -water.getHeight()+1));
+			renderer.renderScene(entities,piecies, normalMapEntities,terrains,  lights, camera, new Vector4f(0, 1, 0, -water.getHeight()+1));
 
 			camera.getPosition().y += distance;
 			camera.invertPitch();
 
 			//refraction texture
 			buffers.bindRefractionFrameBuffer();
-			renderer.renderScene(entities,pieceModels, normalMapEntities,terrains,  lights, camera, new Vector4f(0, -1, 0, water.getHeight()));
+			renderer.renderScene(entities,piecies, normalMapEntities,terrains,  lights, camera, new Vector4f(0, -1, 0, water.getHeight()));
 
 			//render to screen
 			GL11.glDisable(GL30.GL_CLIP_DISTANCE0);
 			buffers.unbindCurrentFrameBuffer();	
-			renderer.renderScene(entities,pieceModels, normalMapEntities,terrains,  lights, camera, new Vector4f(0, -1, 0, 100000));	
+			renderer.renderScene(entities,piecies, normalMapEntities,terrains,  lights, camera, new Vector4f(0, -1, 0, 100000));	
 			waterRenderer.render(waters, camera, sun);
 			guiRenderer.render(guiTextures);
 			TextMaster.render();
@@ -309,7 +362,7 @@ public class MainGameLoop implements Runnable {
 
 			// send move to server
 			if(notify != null) {
-				System.out.println();
+
 				Task forward = new ForwardTask(currentPlayer.getNickName(),notify,otherPlayer);
 				try {
 					currentPlayer.getClient().sendToServer(forward);
@@ -335,30 +388,15 @@ public class MainGameLoop implements Runnable {
 	}
 	public Task handleInput(List<Entity> entities, TexturedModel selectedSquare, ArrayList<Integer> possibleMovesIndex,
 			int square) {
-
-		Piece  selectedPiece= board.getSquare(square).getOn();
 		Task notify=null;
-		boolean color=false;
-		if(gameStarted) {
-			if(currentPlayer.getNickName().equals(player1.nickName)) {
-				if(player1.color.equals("red")) {
-					color=true;
-				}
-				else {
-					color=false;
-				}
-
-			}
-			else {
-				if(player2.color.equals("red")) {
-					color=true;
-				}
-				else {
-					color=false;
-				}
-			}
-		}
 		if(square !=-1) {
+
+			Piece  selectedPiece= board.getSquare(square).getOn();
+
+
+
+			
+			
 
 
 
@@ -366,14 +404,16 @@ public class MainGameLoop implements Runnable {
 
 
 				for(Integer i:possibleMovesIndex){
-					entities.get(i+ENTITY_COUNT).setModel(getColor(i));
+					entities.get(i+1).setModel(getColor(i));
 
 				}
-				//										if(possibleMovesIndex.contains(square)) {
-				//											banqiGame.makeMove(board.getSquare(selectedIndex), board.getSquare(square));
-				//											entities.get(selectedIndex+1).setPosition(entities.get(square+1).getPosition());
-				//											entities.get(square+1);
-				//										}
+
+				if(banqiGame.makeMove(board.getSquare(selectedIndex), board.getSquare(square))) {
+
+					notify = new MoveTask(currentPlayer.getNickName(),banqiGame.getGameID(),board.getSquare(selectedIndex),board.getSquare(square));
+					nextTurn();
+
+				}
 
 				possibleMovesIndex.clear();
 
@@ -386,12 +426,12 @@ public class MainGameLoop implements Runnable {
 
 				selectedIndex=-1;
 			}
-			else if(board.getSquare(square)!=null&&board.getSquare(square).getOn().isColor()==color&&selectedPiece.isFaceUp()&&selectedIndex!=square) {  //(new selection) Piece is faceUp
+			else if(board.getSquare(square).getOn()!=null&&((board.getSquare(square).getOn().isColor()&&currentColor==1)||!board.getSquare(square).getOn().isColor()&&currentColor==0)&&selectedPiece.isFaceUp()&&selectedIndex!=square) {  //(new selection) Piece is faceUp
 
 				selectedIndex=square;
 
-				for(Square move:banqiGame.getValidMoves(board.getSquare(square))){
-					entities.get(8*move.getY()+move.getX()+ENTITY_COUNT).setModel(selectedSquare);
+				for(Square move:banqiGame.getValidMoves(board.getSquare(selectedIndex))){
+					entities.get(8*move.getY()+move.getX()+1).setModel(selectedSquare);
 					possibleMovesIndex.add(8*move.getY()+move.getX());
 
 
@@ -401,16 +441,19 @@ public class MainGameLoop implements Runnable {
 
 
 			}
-			else if(board.getSquare(square)!=null&&!selectedPiece.isFaceUp()&&selectedIndex!=square) { //(new selection) Piece is faceDown
+			else if(board.getSquare(square).getOn()!=null&&!selectedPiece.isFaceUp()&&selectedIndex!=square) { //(new selection) Piece is faceDown
 
 
 				selectedIndex=square;
-				toFlip=square+1;
+				toFlip=square;
 				banqiGame.flipPiece(board.getSquare(square));
+
 				notify = new FlipPieceTask(currentPlayer.getNickName(),banqiGame.getGameID(),board.getSquare(square));
+
+
 				nextTurn();
-				Entity fDPiece=entities.get(toFlip);
-				entities.get(toFlip).setY(fDPiece.getPosition().y+5);
+				//Entity fDPiece=piecies.get(toFlip);
+				//piecies.get(toFlip).setY(fDPiece.getPosition().y+5);
 				gameStarted=true;
 
 
@@ -423,25 +466,28 @@ public class MainGameLoop implements Runnable {
 		return notify;
 	}
 	public void flipPieceAnimation(List<Entity> entities) {
-		if(entities.get(toFlip).getRotX()!=0) {
-			entities.get(toFlip).increaseRotation(5, 0, 0);
-		}
-		else {
-			entities.get(toFlip).increaseRotation(0, 0, 0);
-			entities.get(toFlip).setY(entities.get(toFlip).getPosition().y-5);;
-			toFlip=-1;
-			selectedIndex=-1;
-
-		}
+		//		if(piecies.get(toFlip).getRotX()!=0) {
+		//			piecies.get(toFlip).increaseRotation(5, 0, 0);
+		//		}
+		//		else {
+		//			piecies.get(toFlip).increaseRotation(0, 0, 0);
+		//			piecies.get(toFlip).setY(piecies.get(toFlip).getPosition().y-5);;
+		//			toFlip=-1;
+		//			selectedIndex=-1;
+		//
+		//		}
 	}
 
 	public void nextTurn() {
+		System.out.println(board);
 		if(turn==null) {
 			turn=currentPlayer; 
 		}
 		else {
 			turn=null; 
 		}
+		selectedIndex=-1;
+		
 
 	}
 	public String getOtherPlayer() {
@@ -453,26 +499,10 @@ public class MainGameLoop implements Runnable {
 		return player1.nickName;
 	}
 
-	public void checkForChange(List<Entity> entities) {
-		int i=0;
-		for(Square s: banqiGame.getGameBoard().getSquaresOnBoard()) {
-
-			if(s.getOn()!=null&&s.getOn().isFaceUp()&&entities.get(i+1).getRotX()==180) {
-				toFlip=i+1;
-				Entity fDPiece=entities.get(toFlip);
-				entities.get(toFlip).setY(fDPiece.getPosition().y+5);
-//set-log-level
-				nextTurn();
-				return;
-
-			}
-			i++;
+	public void updateModels(GameBoard board) {
 
 
-		}
-
-
-
+		piecies=modelGen.generatePieceModels(board);
 
 	}
 

@@ -59,7 +59,7 @@ public class MasterRenderer {
 		return this.projectionMatrix;
 	}
 
-	public void renderScene(List<Entity> entities, Entity[] pieceModels, List<Entity> normalEntities, List<Terrain> terrains,  List<Light> lights,
+	public void renderScene(List<Entity> entities, ArrayList<Entity> pieceModels, List<Entity> normalEntities, List<Terrain> terrains,  List<Light> lights,
 			Camera camera, Vector4f clipPlane) {
 
 		for (Entity entity : entities) {
@@ -73,9 +73,11 @@ public class MasterRenderer {
 
 		}
 	
-//		for(Entity e : pieceModels) {
-//			processEntity(e);
-//		}
+		for(Entity e : pieceModels) {
+			if(e!=null) {
+				processEntity(e);
+			}
+		}
 		render(lights, camera, clipPlane);
 
 	}
@@ -166,6 +168,8 @@ public class MasterRenderer {
 		projectionMatrix.m32 = -((2 * NEAR_PLANE * FAR_PLANE) / frustum_length);
 		projectionMatrix.m33 = 0;
 	}
+
+	
 
 
 

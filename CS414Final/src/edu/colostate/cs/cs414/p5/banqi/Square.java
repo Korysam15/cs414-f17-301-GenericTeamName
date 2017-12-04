@@ -4,18 +4,18 @@ package edu.colostate.cs.cs414.p5.banqi;
  *
  */
 public class Square {
-	
-	
+
+
 	private int x,y; // x,y coordinates of the square
 	private Piece on;
-	
-	
-	
+
+
+
 	public Square(int x, int y) {
-		
+
 		this.x = x;
 		this.y = y;
-		
+
 	}
 	public void setOn(Piece on) {
 		this.on = on;
@@ -40,15 +40,17 @@ public class Square {
 	}
 	@Override
 	public boolean equals(Object obj) {
-		if(obj instanceof Square)
+		if(obj instanceof Square&&obj!=null)
 		{
 			Square s=(Square) obj;
-			return s.on.equals(on);
-			
+			if(!s.isEmpty()) {
+				return s.on.equals(on);
+			}
+
 		}
 		return false ;
 	}
-	
-	
+
+
 
 }
