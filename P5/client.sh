@@ -78,7 +78,7 @@ runFromJarFile() {
 
 # last resort to run the project
 lastResort() {
-  BIN="tempBin"
+  mkdir $BIN
   echo "Attempting build project from javac"
   if find . -name "*.java" | grep -v ".*Test.java" | xargs javac -d $(pwd)/$BIN -cp $(pwd)/lib/mysql-connector-java-5.1.44-bin.jar;
   then
