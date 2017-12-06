@@ -93,17 +93,7 @@ public class BanqiGame {
 		firstPlayer.isTurn = true;
 		secondPlayer = new BanqiPlayer(playerTwo);
 		secondPlayer.isTurn = false;
-		if(ActivePlayer.getInstance() != null)
-		{
-			String currentPlayerNickname = ActivePlayer.getInstance().getNickName();
-			String otherPlayer = null;
-			if(firstPlayer.nickName.equals(currentPlayerNickname)) {
-				otherPlayer = secondPlayer.nickName;
-			} else {
-				otherPlayer = firstPlayer.nickName;
-			}
-			console.setTitle(currentPlayerNickname + " Your Opponent is: "  + otherPlayer + " in Game[" + gameID + "]");
-		}
+		setTitle();
 		getAllPieces();
 
 	}
@@ -118,6 +108,7 @@ public class BanqiGame {
 		console = new JavaConsole();
 		input = console.getInputStream();
 		output = console.getOutputStream();
+		setTitle();
 		getAllPieces();
 	}
 
@@ -130,17 +121,7 @@ public class BanqiGame {
 		console = new JavaConsole();
 		input = console.getInputStream();
 		output = console.getOutputStream();
-		if(ActivePlayer.getInstance() != null)
-		{
-			String currentPlayerNickname = ActivePlayer.getInstance().getNickName();
-			String otherPlayer = null;
-			if(firstPlayer.nickName.equals(currentPlayerNickname)) {
-				otherPlayer = secondPlayer.nickName;
-			} else {
-				otherPlayer = firstPlayer.nickName;
-			}
-			console.setTitle(currentPlayerNickname + " Your Opponent is: "  + otherPlayer + " in Game[" + gameID + "]");
-		}
+		setTitle();
 		getAllPieces();
 
 	}
@@ -166,23 +147,33 @@ public class BanqiGame {
 		getAllPieces();
 	}
 
+	private void setTitle() {
+		if(ActivePlayer.getInstance() != null && console != null) {
+			String currentPlayerNickname = ActivePlayer.getInstance().getNickName();
+			BanqiPlayer p = this.getBanqiPlayer(currentPlayerNickname);
+			BanqiPlayer otherP = this.getOtherBanqiPlayer(currentPlayerNickname);
+			String currentPlayer = p.getName();
+			String otherPlayer = otherP.getName();
+			String whosTurn = "It is: " +
+					((p.isTurn) ? "Your" : otherPlayer + "'s") +
+					" Turn!                                     ";
+			if(piece_has_flipped) {
+				currentPlayer += "["+p.getColor().toUpperCase()+"]";
+				otherPlayer += "["+otherP.getColor().toUpperCase()+"]";
+			}
+			console.setTitle(whosTurn + currentPlayer + " Your Opponent is: " + otherPlayer);
+		}
+	}
+	
 	public void openConsole() {
 		if(console == null) {
 			console = new JavaConsole();
 			input = console.getInputStream();
 			output = console.getOutputStream();
-			if(ActivePlayer.getInstance() != null) {
-				String currentPlayerNickname = ActivePlayer.getInstance().getNickName();
-				String otherPlayer = null;
-				if(firstPlayer.nickName.equals(currentPlayerNickname)) {
-					otherPlayer = secondPlayer.nickName;
-				} else {
-					otherPlayer = firstPlayer.nickName;
-				}
-				console.setTitle(currentPlayerNickname + " Your Opponent is: " + otherPlayer + " in Game[" + gameID + "]");
-			}
+			setTitle();
 		} else {
 			console.showConsole();
+			setTitle();
 		}
 		output.println(gameBoard);
 	}
@@ -469,6 +460,7 @@ public class BanqiGame {
 				/*output.println(this.firstPlayer.getColor());
 				output.println(this.secondPlayer.getColor());*/
 				this.piece_has_flipped = true;
+				setTitle();
 			}
 			return true;
 		}
@@ -596,6 +588,7 @@ public class BanqiGame {
 		}
 		synchronized(this) {
 			promptTurnActiveThread = Thread.currentThread();
+			setTitle();
 			output.println("Your Turn!");
 			output.println(gameBoard);
 			Task notify = null;
