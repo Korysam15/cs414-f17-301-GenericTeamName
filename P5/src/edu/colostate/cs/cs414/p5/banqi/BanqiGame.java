@@ -691,7 +691,8 @@ public class BanqiGame {
 				}
 			}
 			promptTurnActiveThread = null;
-			swapTurns(otherPlayer);
+			currentPlayer.isTurn = false;
+			other.isTurn = true;
 			setTitle();
 		}
 
