@@ -677,7 +677,7 @@ public class BanqiGame {
 								currentPlayer.isTurn = false;
 								break;
 							}
-							output.println("Invalid Move - "+from.getOn().getClass().getName()+" can't move like that");
+							output.println("Invalid Move - "+from.getOn().getClass().getSimpleName()+" can't move like that");
 						}
 					}
 				}
