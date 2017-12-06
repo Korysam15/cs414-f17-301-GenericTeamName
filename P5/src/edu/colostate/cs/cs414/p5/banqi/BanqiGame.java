@@ -460,7 +460,6 @@ public class BanqiGame {
 				/*output.println(this.firstPlayer.getColor());
 				output.println(this.secondPlayer.getColor());*/
 				this.piece_has_flipped = true;
-				setTitle();
 			}
 			return true;
 		}
@@ -588,12 +587,14 @@ public class BanqiGame {
 		}
 		synchronized(this) {
 			promptTurnActiveThread = Thread.currentThread();
+			BanqiPlayer currentPlayer = getBanqiPlayer(p);
+			BanqiPlayer other = getBanqiPlayer(otherPlayer);
+			currentPlayer.isTurn = true;
+			other.isTurn = false;
 			setTitle();
 			output.println("Your Turn!");
 			output.println(gameBoard);
 			Task notify = null;
-			BanqiPlayer currentPlayer = getBanqiPlayer(p);
-			currentPlayer.isTurn = true;
 			String color = "";
 			while(true)
 			{
@@ -690,6 +691,8 @@ public class BanqiGame {
 				}
 			}
 			promptTurnActiveThread = null;
+			swapTurns(otherPlayer);
+			setTitle();
 		}
 
 	}
